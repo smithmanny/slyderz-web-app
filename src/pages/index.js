@@ -22,7 +22,13 @@ const IndexPage = () => (
 
     <main style={{ marginTop: '3rem' }}>
       <p for="email">Notify me when it launches 🚀</p>
-      <form name='notify' method='POST' className='form' netlify>
+      <form 
+        name='notify' 
+        method='POST' 
+        className='form' 
+        data-netlify="true" 
+        data-netlify-honeypot="bot-field"
+      >
         <input type='hidden' name='form-name' value='notify' />
         <input type="email" name="email" className="email" placeholder="Your email" required />
         <input type="submit" className='email-btn' value="Submit 👍🏾" />
