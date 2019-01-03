@@ -7,11 +7,29 @@ import SEO from '../components/seo'
 
 const IndexPage = () => (
   <Layout>
-    <SEO title="Home" keywords={[`slyderz`, `mobile chefs`, ` mobile`]} />
-    <h1>Coming Soon</h1>
-    <div style={{ maxWidth: `300px`, width: '100%', marginBottom: `1.45rem` }}>
+    <SEO title="Home" keywords={[`slyderz`, `mobile chefs`, ` private chefs`]} />
+    <div 
+      style={{ 
+        maxWidth: '640px',
+        margin: '0 auto',
+        display: 'flex',
+        justifyContent: 'center',
+      }}
+    >
       <Image />
     </div>
+    <h3 style={{ textAlign: 'center', margin: 0 }}>On-demand mobile restaurant</h3>
+
+    <main style={{ marginTop: '3rem' }}>
+      <p for="email">Notify me when it launches 🚀</p>
+      <form name='notify' method='POST' className='form'>
+        <input type='hidden' name='form-name' value='notify' />
+        <input type="email" name="email" className="email" placeholder="Your email" required />
+        <input type="submit" className='email-btn' value="Submit 👍🏾" />
+      </form>
+      <p style={{ textAlign: 'center' }}>In the meantime, <a href="https://twitter.com/glimapp" className="brand">follow us on twitter</a> for updates and more...</p>
+    </main>
+
   </Layout>
 )
 
