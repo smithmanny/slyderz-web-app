@@ -33,7 +33,7 @@ const IndexPage = () => (
         <input type="email" name="email" className="email" placeholder="Your email" required />
         <input type="submit" className='email-btn' value="Submit 👍🏾" />
       </form>
-      <p style={{ textAlign: 'center' }}>In the meantime, <a href="https://twitter.com/glimapp" className="brand">follow us on twitter</a> for updates and more...</p>
+      <p style={{ textAlign: 'center' }}>In the meantime, <a href="https://twitter.com/SlyderzApp" className="brand">follow us on twitter</a> for updates and more...</p>
     </main>
 
   </Layout>
