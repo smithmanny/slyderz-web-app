@@ -1,44 +1,51 @@
 import React from 'react';
-import App, { Container } from 'next/app';
 import Head from 'next/head';
-/* eslint-disable import/first */
-import '../utils/material';
-import { ThemeProvider } from '@material-ui/styles';
+import App, { Container } from 'next/app';
+import { ApolloProvider } from 'react-apollo';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import JssProvider from 'react-jss/lib/JssProvider';
 
-import theme from '../utils/theme';
+import getPageContext from '../src/getPageContext';
+import withApollo from '../lib/withApollo';
 
-export default class MyApp extends App {
-  static async getInitialProps({ Component, router, ctx }) {
-    let pageProps = {};
+class MyApp extends App {
+  constructor() {
+    super();
+    this.pageContext = getPageContext();
+  }
 
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
+  componentDidMount() {
+    // Remove the server-side injected CSS.
+    const jssStyles = document.querySelector('#jss-server-side');
+    if (jssStyles && jssStyles.parentNode) {
+      jssStyles.parentNode.removeChild(jssStyles);
     }
-
-    return { pageProps };
   }
 
   render() {
-    const { Component, pageProps } = this.props;
+    const { apolloClient, Component, pageProps } = this.props;
 
     return (
-      <React.Fragment>
+      <Container>
         <Head>
-          <title>Slyderz</title>
-          <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no" />
-          <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
-          <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+          <title>Slyderz | On-demand Restaurant</title>
         </Head>
 
-        <CssBaseline />
-
-        <ThemeProvider theme={theme}>
-          <Container>
-            <Component {...pageProps} />
-          </Container>
-        </ThemeProvider>
-      </React.Fragment>
+        <ApolloProvider client={apolloClient}>
+          <JssProvider
+            registry={this.pageContext.sheetsRegistry}
+            generateClassName={this.pageContext.generateClassName}
+          >
+            <MuiThemeProvider theme={this.pageContext.theme} sheetsManager={this.pageContext.sheetsManager}>
+              <CssBaseline />
+              <Component pageContext={this.pageContext} {...pageProps} />
+            </MuiThemeProvider>
+          </JssProvider>
+        </ApolloProvider>
+      </Container>
     );
   }
 }
+
+export default withApollo(MyApp);
