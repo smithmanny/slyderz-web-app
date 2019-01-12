@@ -79,7 +79,7 @@ const Chefs = ({ classes }) => (
             <Typography variant="caption" color="primary" gutterBottom>
               {cook.specialize}
             </Typography>
-            <Typography variant="subheading" color="inherit">
+            <Typography variant="subtitle1" color="inherit">
               {cook.name}
             </Typography>
             <Typography variant="caption" color="inherit" gutterBottom>

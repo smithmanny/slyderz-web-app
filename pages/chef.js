@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { gql } from 'apollo-boost';
 import { Query } from 'react-apollo';
 import Grid from '@material-ui/core/Grid';
@@ -55,21 +56,6 @@ export const allFoodsQuery = gql`
     }
   }
 `;
-
-const tileData = [
-  {
-    img: '/static/food.jpg',
-    title: 'BBQ',
-  },
-  {
-    img: '/static/food.jpg',
-    title: 'Seafood',
-  },
-  {
-    img: '/static/food.jpg',
-    title: 'American',
-  },
-];
 
 const cookData = [
   {
@@ -157,7 +143,7 @@ const Chef = ({ classes }) => (
                 <Typography variant="caption" color="primary" gutterBottom>
                   {cook.specialize}
                 </Typography>
-                <Typography variant="subheading" color="inherit">
+                <Typography variant="subtitle1" color="inherit">
                   {cook.name}
                 </Typography>
                 <Typography variant="caption" color="inherit" gutterBottom>
@@ -176,5 +162,9 @@ const Chef = ({ classes }) => (
     </section>
   </Layout>
 );
+
+Chef.propTypes = {
+  classes: PropTypes.shape().isRequired,
+};
 
 export default withStyles(useStyles)(Chef);
