@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[4],{395:function(n,o,e){__NEXT_REGISTER_PAGE("/chef",function(){return n.exports=e(396),{page:n.exports.default}})},396:function(n,o){}},[[395,0]]]);

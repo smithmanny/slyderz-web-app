@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -95,5 +96,9 @@ const Chefs = ({ classes }) => (
     </div>
   </div>
 );
+
+Chefs.propTypes = {
+  classes: PropTypes.shape().isRequired,
+};
 
 export default withStyles(styles)(Chefs);
