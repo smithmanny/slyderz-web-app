@@ -37,7 +37,11 @@
       "node_modules/next/dist/pages/_error.js": 33,
       "external \"next/error\"": 34,
       "node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!pages/_app.js 889c8e4417fa5b088020c4b8d60690eb": 35,
-      "node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!pages/index.js 5a8f4166183837710dd89119921d2c7a": 36
+      "node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!pages/index.js 5a8f4166183837710dd89119921d2c7a": 36,
+      "node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!components/Layout.js": 36,
+      "external \"next/link\"": 37,
+      "external \"@material-ui/styles\"": 38,
+      "node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!pages/index.js 62aed7575b9a18b5d9f0588def59afde": 39
     },
     "usedIds": {
       "0": 0,
@@ -76,7 +80,10 @@
       "33": 33,
       "34": 34,
       "35": 35,
-      "36": 36
+      "36": 36,
+      "37": 37,
+      "38": 38,
+      "39": 39
     }
   },
   "chunks": {
@@ -85,15 +92,20 @@
       "static/WwhXYWiVV2LsNwcrMkt1h/pages/_document.js": 1,
       "static/WwhXYWiVV2LsNwcrMkt1h/pages/chef.js": 2,
       "static/WwhXYWiVV2LsNwcrMkt1h/pages/index.js": 3,
-      "static/WwhXYWiVV2LsNwcrMkt1h/pages/_error.js": 4
+      "static/WwhXYWiVV2LsNwcrMkt1h/pages/_error.js": 4,
+      "static/DJ7tyW5WtoItb5yja2~fG/pages/_app.js": 5,
+      "static/DJ7tyW5WtoItb5yja2~fG/pages/_document.js": 6,
+      "static/DJ7tyW5WtoItb5yja2~fG/pages/chef.js": 7,
+      "static/DJ7tyW5WtoItb5yja2~fG/pages/index.js": 8,
+      "static/DJ7tyW5WtoItb5yja2~fG/pages/_error.js": 9
     },
     "bySource": {},
     "usedIds": [
-      0,
-      1,
-      2,
-      3,
-      4
+      5,
+      6,
+      7,
+      8,
+      9
     ]
   }
 }
