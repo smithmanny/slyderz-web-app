@@ -195,7 +195,10 @@ const SignUpForm = ({ classes }) => {
               <Divider className={classes.hDivider} />
 
               <Grid item xs={12}>
-                <Typography variant="body1">Already have a Slyderz account?</Typography>
+                <Typography variant="subtitle1" inline>
+                  Already have a Slyderz account?
+                </Typography>
+                <Typography variant="subtitle1">Login</Typography>
               </Grid>
             </Grid>
           </form>

@@ -419,7 +419,7 @@ var useStyles = function useStyles(theme) {
     },
     modal: {
       position: 'absolute',
-      width: 568,
+      maxWidth: 568,
       backgroundColor: theme.palette.background.paper,
       boxShadow: theme.shadows[5],
       padding: theme.spacing.unit * 4,
@@ -1164,13 +1164,21 @@ var SignUpForm = function SignUpForm(_ref) {
       },
       __self: this
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_13___default.a, {
-      variant: "body1",
+      variant: "subtitle1",
+      inline: true,
       __source: {
         fileName: _jsxFileName,
         lineNumber: 198
       },
       __self: this
-    }, "Already have a Slyderz account?"))));
+    }, "Already have a Slyderz account?"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_13___default.a, {
+      variant: "subtitle1",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 201
+      },
+      __self: this
+    }, "Login"))));
   }));
 };
 
