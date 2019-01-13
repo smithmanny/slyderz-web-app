@@ -64,7 +64,7 @@ const Chefs = ({ classes }) => (
     <div className={classes.orderWrapper}>
       <Grid container spacing={32}>
         {cookData.map(cook => (
-          <Grid key={cook.name} item xs={12} md={3}>
+          <Grid key={cook.name} item xs={12} sm={4} md={3}>
             <Paper className={classes.paper} elevation={2}>
               <img
                 src={cook.img}
