@@ -514,6 +514,7 @@ var useStyles = function useStyles(theme) {
     modal: {
       position: 'absolute',
       maxWidth: 568,
+      width: '90%',
       backgroundColor: theme.palette.background.paper,
       boxShadow: theme.shadows[5],
       padding: theme.spacing.unit * 4,
@@ -553,14 +554,14 @@ var Layout = function Layout(_ref) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 56
+      lineNumber: 57
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: classes.root,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 57
+      lineNumber: 58
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_AppBar__WEBPACK_IMPORTED_MODULE_3___default.a, {
@@ -568,13 +569,13 @@ var Layout = function Layout(_ref) {
     color: "primary",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 58
+      lineNumber: 59
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Toolbar__WEBPACK_IMPORTED_MODULE_5___default.a, {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 59
+      lineNumber: 60
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_6___default.a, {
@@ -583,13 +584,13 @@ var Layout = function Layout(_ref) {
     className: classes.grow,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 60
+      lineNumber: 61
     },
     __self: this
   }, "Slyderz"), !user && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 65
+      lineNumber: 66
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_4___default.a, {
@@ -601,7 +602,7 @@ var Layout = function Layout(_ref) {
     },
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 66
+      lineNumber: 67
     },
     __self: this
   }, "Sign Up"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_4___default.a, {
@@ -610,7 +611,7 @@ var Layout = function Layout(_ref) {
     className: classes.menuItem,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 74
+      lineNumber: 75
     },
     __self: this
   }, "Log In")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Modal__WEBPACK_IMPORTED_MODULE_9___default.a, {
@@ -620,7 +621,7 @@ var Layout = function Layout(_ref) {
     onClose: handleClose,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 80
+      lineNumber: 81
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -628,34 +629,34 @@ var Layout = function Layout(_ref) {
     className: classes.modal,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 86
+      lineNumber: 87
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_SignUpForm__WEBPACK_IMPORTED_MODULE_10__["default"], {
     handleClose: handleClose,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 87
+      lineNumber: 88
     },
     __self: this
   }))), user && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_7___default.a, {
     color: "inherit",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 92
+      lineNumber: 93
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_AccountCircle__WEBPACK_IMPORTED_MODULE_8___default.a, {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 93
+      lineNumber: 94
     },
     __self: this
   }))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("main", {
     className: classes.main,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 99
+      lineNumber: 100
     },
     __self: this
   }, children));
@@ -792,36 +793,41 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var formik__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! formik */ "formik");
 /* harmony import */ var formik__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(formik__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/styles */ "@material-ui/core/styles");
-/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/Paper */ "@material-ui/core/Paper");
-/* harmony import */ var _material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core/Grid */ "@material-ui/core/Grid");
-/* harmony import */ var _material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _material_ui_core_Button__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/Button */ "@material-ui/core/Button");
-/* harmony import */ var _material_ui_core_Button__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _material_ui_core_InputBase__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material-ui/core/InputBase */ "@material-ui/core/InputBase");
-/* harmony import */ var _material_ui_core_InputBase__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_InputBase__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _material_ui_core_Divider__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @material-ui/core/Divider */ "@material-ui/core/Divider");
-/* harmony import */ var _material_ui_core_Divider__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_Divider__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @material-ui/core/IconButton */ "@material-ui/core/IconButton");
-/* harmony import */ var _material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_9__);
-/* harmony import */ var _material_ui_icons_AlternateEmail__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @material-ui/icons/AlternateEmail */ "@material-ui/icons/AlternateEmail");
-/* harmony import */ var _material_ui_icons_AlternateEmail__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_material_ui_icons_AlternateEmail__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var _material_ui_icons_Person__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @material-ui/icons/Person */ "@material-ui/icons/Person");
-/* harmony import */ var _material_ui_icons_Person__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(_material_ui_icons_Person__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var _material_ui_icons_Lock__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @material-ui/icons/Lock */ "@material-ui/icons/Lock");
-/* harmony import */ var _material_ui_icons_Lock__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_material_ui_icons_Lock__WEBPACK_IMPORTED_MODULE_12__);
-/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @material-ui/core/Typography */ "@material-ui/core/Typography");
-/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_13__);
-/* harmony import */ var _material_ui_icons_Visibility__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @material-ui/icons/Visibility */ "@material-ui/icons/Visibility");
-/* harmony import */ var _material_ui_icons_Visibility__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(_material_ui_icons_Visibility__WEBPACK_IMPORTED_MODULE_14__);
-/* harmony import */ var _material_ui_icons_VisibilityOff__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @material-ui/icons/VisibilityOff */ "@material-ui/icons/VisibilityOff");
-/* harmony import */ var _material_ui_icons_VisibilityOff__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(_material_ui_icons_VisibilityOff__WEBPACK_IMPORTED_MODULE_15__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! axios */ "axios");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_16__);
-var _this = undefined,
-    _jsxFileName = "/Users/shakhor/Projects/Web/slyderz/components/form/SignUpForm.js";
+/* harmony import */ var apollo_boost__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! apollo-boost */ "apollo-boost");
+/* harmony import */ var apollo_boost__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(apollo_boost__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var react_apollo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-apollo */ "react-apollo");
+/* harmony import */ var react_apollo__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_apollo__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core/styles */ "@material-ui/core/styles");
+/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/Paper */ "@material-ui/core/Paper");
+/* harmony import */ var _material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material-ui/core/Grid */ "@material-ui/core/Grid");
+/* harmony import */ var _material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _material_ui_core_Button__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @material-ui/core/Button */ "@material-ui/core/Button");
+/* harmony import */ var _material_ui_core_Button__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _material_ui_core_InputBase__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @material-ui/core/InputBase */ "@material-ui/core/InputBase");
+/* harmony import */ var _material_ui_core_InputBase__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_InputBase__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _material_ui_core_Divider__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @material-ui/core/Divider */ "@material-ui/core/Divider");
+/* harmony import */ var _material_ui_core_Divider__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_Divider__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var _material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @material-ui/core/IconButton */ "@material-ui/core/IconButton");
+/* harmony import */ var _material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var _material_ui_icons_AlternateEmail__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @material-ui/icons/AlternateEmail */ "@material-ui/icons/AlternateEmail");
+/* harmony import */ var _material_ui_icons_AlternateEmail__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_material_ui_icons_AlternateEmail__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var _material_ui_icons_Person__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @material-ui/icons/Person */ "@material-ui/icons/Person");
+/* harmony import */ var _material_ui_icons_Person__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(_material_ui_icons_Person__WEBPACK_IMPORTED_MODULE_13__);
+/* harmony import */ var _material_ui_icons_Lock__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @material-ui/icons/Lock */ "@material-ui/icons/Lock");
+/* harmony import */ var _material_ui_icons_Lock__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(_material_ui_icons_Lock__WEBPACK_IMPORTED_MODULE_14__);
+/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @material-ui/core/Typography */ "@material-ui/core/Typography");
+/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_15__);
+/* harmony import */ var _material_ui_icons_Visibility__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @material-ui/icons/Visibility */ "@material-ui/icons/Visibility");
+/* harmony import */ var _material_ui_icons_Visibility__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(_material_ui_icons_Visibility__WEBPACK_IMPORTED_MODULE_16__);
+/* harmony import */ var _material_ui_icons_VisibilityOff__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @material-ui/icons/VisibilityOff */ "@material-ui/icons/VisibilityOff");
+/* harmony import */ var _material_ui_icons_VisibilityOff__WEBPACK_IMPORTED_MODULE_17___default = /*#__PURE__*/__webpack_require__.n(_material_ui_icons_VisibilityOff__WEBPACK_IMPORTED_MODULE_17__);
+/* harmony import */ var _material_ui_core_Snackbar__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @material-ui/core/Snackbar */ "@material-ui/core/Snackbar");
+/* harmony import */ var _material_ui_core_Snackbar__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_Snackbar__WEBPACK_IMPORTED_MODULE_18__);
+/* harmony import */ var _material_ui_icons_Close__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @material-ui/icons/Close */ "@material-ui/icons/Close");
+/* harmony import */ var _material_ui_icons_Close__WEBPACK_IMPORTED_MODULE_19___default = /*#__PURE__*/__webpack_require__.n(_material_ui_icons_Close__WEBPACK_IMPORTED_MODULE_19__);
+var _jsxFileName = "/Users/shakhor/Projects/Web/slyderz/components/form/SignUpForm.js";
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
@@ -830,6 +836,21 @@ function _nonIterableRest() { throw new TypeError("Invalid attempt to destructur
 function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _templateObject() {
+  var data = _taggedTemplateLiteral(["\n  mutation createUser(\n    $username: String!\n    $email: String!\n    $firstName: String!\n    $lastName: String!\n    $password: String!\n  ) {\n    createUser(\n      input: {\n        data: { username: $username, email: $email, firstName: $firstName, lastName: $lastName, password: $password }\n      }\n    ) {\n      user {\n        username\n        email\n        firstName\n        lastName\n        password\n      }\n    }\n  }\n"]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+
+
 
 
 
@@ -892,395 +913,465 @@ var useStyles = function useStyles(theme) {
   };
 };
 
+var createUserMutation = Object(apollo_boost__WEBPACK_IMPORTED_MODULE_3__["gql"])(_templateObject());
+
 var SignUpForm = function SignUpForm(_ref) {
-  var classes = _ref.classes;
+  var classes = _ref.classes,
+      handleClose = _ref.handleClose;
 
   var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(false),
       _React$useState2 = _slicedToArray(_React$useState, 2),
       showPassword = _React$useState2[0],
       setShowPassword = _React$useState2[1];
 
-  var handleClickShowPassword = function handleClickShowPassword() {
+  var _React$useState3 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(false),
+      _React$useState4 = _slicedToArray(_React$useState3, 2),
+      open = _React$useState4[0],
+      setOpen = _React$useState4[1];
+
+  function handleClickShowPassword() {
     setShowPassword(!showPassword);
-  };
+  }
+
+  function handleSnackbar(event, reason) {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  }
 
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 68
+      lineNumber: 105
     },
     __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Divider__WEBPACK_IMPORTED_MODULE_8___default.a, {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Divider__WEBPACK_IMPORTED_MODULE_10___default.a, {
     className: classes.hDivider,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 69
+      lineNumber: 106
     },
     __self: this
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(formik__WEBPACK_IMPORTED_MODULE_2__["Formik"], {
-    validate: function validate(values) {
-      var errors = {};
-
-      if (!values.email) {
-        errors.email = 'Required';
-      } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-        errors.email = 'Invalid email address';
-      }
-
-      return errors;
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_apollo__WEBPACK_IMPORTED_MODULE_4__["Mutation"], {
+    mutation: createUserMutation,
+    onCompleted: function onCompleted(user) {
+      handleClose();
     },
-    onSubmit: function onSubmit(values, _ref2) {
-      var setSubmitting = _ref2.setSubmitting;
-      axios__WEBPACK_IMPORTED_MODULE_16___default.a.post('http://localhost:1337/auth/local/register', {
-        username: "".concat(values.firstName).concat(values.lastName),
-        firstName: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
-        password: values.password
-      }).then(function () {
-        _this.props.handleClose();
-
-        setSubmitting(false);
-      }).catch(function (err) {
-        return console.log('An error occurred', err);
-      });
+    onError: function onError(error) {
+      setOpen(true);
     },
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 70
+      lineNumber: 107
     },
     __self: this
-  }, function (_ref3) {
-    var values = _ref3.values,
-        errors = _ref3.errors,
-        handleChange = _ref3.handleChange,
-        handleBlur = _ref3.handleBlur,
-        handleSubmit = _ref3.handleSubmit,
-        isSubmitting = _ref3.isSubmitting;
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-      onSubmit: handleSubmit,
+  }, function (createUser, _ref2) {
+    var error = _ref2.error;
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(formik__WEBPACK_IMPORTED_MODULE_2__["Formik"], {
+      validate: function validate(values) {
+        var errors = {};
+
+        if (!values.email) {
+          errors.email = 'Required';
+        } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+          errors.email = 'Invalid email address';
+        }
+
+        return errors;
+      },
+      onSubmit: function onSubmit(values, _ref3) {
+        var setSubmitting = _ref3.setSubmitting;
+        createUser({
+          variables: {
+            username: "".concat(values.firstName).concat(values.lastName),
+            firstName: values.firstName,
+            lastName: values.lastName,
+            email: values.email,
+            password: values.password
+          }
+        });
+        setSubmitting(false);
+      },
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 97
+        lineNumber: 117
       },
       __self: this
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_5___default.a, {
-      container: true,
-      spacing: 24,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 98
-      },
-      __self: this
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_5___default.a, {
-      item: true,
-      xs: 12,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 99
-      },
-      __self: this
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_4___default.a, {
-      className: classes.root,
-      elevation: 1,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 100
-      },
-      __self: this
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_9___default.a, {
-      className: classes.iconButton,
-      "aria-label": "Email",
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 101
-      },
-      __self: this
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_AlternateEmail__WEBPACK_IMPORTED_MODULE_10___default.a, {
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 102
-      },
-      __self: this
-    })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Divider__WEBPACK_IMPORTED_MODULE_8___default.a, {
-      className: classes.divider,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 104
-      },
-      __self: this
-    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_InputBase__WEBPACK_IMPORTED_MODULE_7___default.a, {
-      className: classes.input,
-      placeholder: "Email",
-      value: values.email,
-      name: "email",
-      onChange: handleChange,
-      onBlur: handleBlur,
-      type: "email",
-      required: true,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 106
-      },
-      __self: this
-    }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_5___default.a, {
-      item: true,
-      xs: 12,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 119
-      },
-      __self: this
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_4___default.a, {
-      className: classes.root,
-      elevation: 1,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 120
-      },
-      __self: this
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_9___default.a, {
-      className: classes.iconButton,
-      "aria-label": "First Name",
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 121
-      },
-      __self: this
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_Person__WEBPACK_IMPORTED_MODULE_11___default.a, {
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 122
-      },
-      __self: this
-    })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Divider__WEBPACK_IMPORTED_MODULE_8___default.a, {
-      className: classes.divider,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 124
-      },
-      __self: this
-    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_InputBase__WEBPACK_IMPORTED_MODULE_7___default.a, {
-      className: classes.input,
-      placeholder: "First Name",
-      name: "firstName",
-      value: values.firstName,
-      onBlur: handleBlur,
-      onChange: handleChange,
-      required: true,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 126
-      },
-      __self: this
-    }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_5___default.a, {
-      item: true,
-      xs: 12,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 138
-      },
-      __self: this
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_4___default.a, {
-      className: classes.root,
-      elevation: 1,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 139
-      },
-      __self: this
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_9___default.a, {
-      className: classes.iconButton,
-      "aria-label": "Last Name",
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 140
-      },
-      __self: this
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_Person__WEBPACK_IMPORTED_MODULE_11___default.a, {
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 141
-      },
-      __self: this
-    })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Divider__WEBPACK_IMPORTED_MODULE_8___default.a, {
-      className: classes.divider,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 143
-      },
-      __self: this
-    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_InputBase__WEBPACK_IMPORTED_MODULE_7___default.a, {
-      className: classes.input,
-      placeholder: "Last Name",
-      name: "lastName",
-      value: values.lastName,
-      onBlur: handleBlur,
-      onChange: handleChange,
-      required: true,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 145
-      },
-      __self: this
-    }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_5___default.a, {
-      item: true,
-      xs: 12,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 157
-      },
-      __self: this
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_4___default.a, {
-      className: classes.root,
-      elevation: 1,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 158
-      },
-      __self: this
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_9___default.a, {
-      className: classes.iconButton,
-      "aria-label": "Password",
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 159
-      },
-      __self: this
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_Lock__WEBPACK_IMPORTED_MODULE_12___default.a, {
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 160
-      },
-      __self: this
-    })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Divider__WEBPACK_IMPORTED_MODULE_8___default.a, {
-      className: classes.divider,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 162
-      },
-      __self: this
-    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_InputBase__WEBPACK_IMPORTED_MODULE_7___default.a, {
-      className: classes.input,
-      placeholder: "Create a Password",
-      value: values.password,
-      name: "password",
-      onBlur: handleBlur,
-      onChange: handleChange,
-      type: showPassword ? 'text' : 'password',
-      required: true,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 164
-      },
-      __self: this
-    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_9___default.a, {
-      "aria-label": "Toggle password visibility",
-      onClick: handleClickShowPassword,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 174
-      },
-      __self: this
-    }, showPassword ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_Visibility__WEBPACK_IMPORTED_MODULE_14___default.a, {
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 175
-      },
-      __self: this
-    }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_VisibilityOff__WEBPACK_IMPORTED_MODULE_15___default.a, {
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 175
-      },
-      __self: this
-    })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_5___default.a, {
-      item: true,
-      xs: 12,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 180
-      },
-      __self: this
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_13___default.a, {
-      variant: "title",
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 181
-      },
-      __self: this
-    }, "Birthday"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_13___default.a, {
-      variant: "caption",
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 182
-      },
-      __self: this
-    }, "To sign up, you must be 18 or older. Other people won\u2019t see your birthday.")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_5___default.a, {
-      item: true,
-      xs: 12,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 186
-      },
-      __self: this
-    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_5___default.a, {
-      item: true,
-      xs: 12,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 190
-      },
-      __self: this
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_6___default.a, {
-      type: "submit",
-      variant: "contained",
-      color: "secondary",
-      disabled: isSubmitting,
-      fullWidth: true,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 191
-      },
-      __self: this
-    }, "Sign Up")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Divider__WEBPACK_IMPORTED_MODULE_8___default.a, {
-      className: classes.hDivider,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 195
-      },
-      __self: this
-    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_5___default.a, {
-      item: true,
-      xs: 12,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 197
-      },
-      __self: this
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_13___default.a, {
-      variant: "subtitle1",
-      inline: true,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 198
-      },
-      __self: this
-    }, "Already have a Slyderz account?"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_13___default.a, {
-      variant: "subtitle1",
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 201
-      },
-      __self: this
-    }, "Login"))));
+    }, function (_ref4) {
+      var values = _ref4.values,
+          errors = _ref4.errors,
+          handleChange = _ref4.handleChange,
+          handleBlur = _ref4.handleBlur,
+          handleSubmit = _ref4.handleSubmit,
+          isSubmitting = _ref4.isSubmitting;
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        onSubmit: handleSubmit,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 141
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_7___default.a, {
+        container: true,
+        spacing: 24,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 142
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_7___default.a, {
+        item: true,
+        xs: 12,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 143
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_6___default.a, {
+        className: classes.root,
+        elevation: 1,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 144
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_11___default.a, {
+        className: classes.iconButton,
+        "aria-label": "Email",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 145
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_AlternateEmail__WEBPACK_IMPORTED_MODULE_12___default.a, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 146
+        },
+        __self: this
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Divider__WEBPACK_IMPORTED_MODULE_10___default.a, {
+        className: classes.divider,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 148
+        },
+        __self: this
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_InputBase__WEBPACK_IMPORTED_MODULE_9___default.a, {
+        className: classes.input,
+        placeholder: "Email",
+        value: values.email,
+        name: "email",
+        onChange: handleChange,
+        onBlur: handleBlur,
+        type: "email",
+        required: true,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 150
+        },
+        __self: this
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_7___default.a, {
+        item: true,
+        xs: 12,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 163
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_6___default.a, {
+        className: classes.root,
+        elevation: 1,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 164
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_11___default.a, {
+        className: classes.iconButton,
+        "aria-label": "First Name",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 165
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_Person__WEBPACK_IMPORTED_MODULE_13___default.a, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 166
+        },
+        __self: this
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Divider__WEBPACK_IMPORTED_MODULE_10___default.a, {
+        className: classes.divider,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 168
+        },
+        __self: this
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_InputBase__WEBPACK_IMPORTED_MODULE_9___default.a, {
+        className: classes.input,
+        placeholder: "First Name",
+        name: "firstName",
+        value: values.firstName,
+        onBlur: handleBlur,
+        onChange: handleChange,
+        required: true,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 170
+        },
+        __self: this
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_7___default.a, {
+        item: true,
+        xs: 12,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 182
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_6___default.a, {
+        className: classes.root,
+        elevation: 1,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 183
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_11___default.a, {
+        className: classes.iconButton,
+        "aria-label": "Last Name",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 184
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_Person__WEBPACK_IMPORTED_MODULE_13___default.a, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 185
+        },
+        __self: this
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Divider__WEBPACK_IMPORTED_MODULE_10___default.a, {
+        className: classes.divider,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 187
+        },
+        __self: this
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_InputBase__WEBPACK_IMPORTED_MODULE_9___default.a, {
+        className: classes.input,
+        placeholder: "Last Name",
+        name: "lastName",
+        value: values.lastName,
+        onBlur: handleBlur,
+        onChange: handleChange,
+        required: true,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 189
+        },
+        __self: this
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_7___default.a, {
+        item: true,
+        xs: 12,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 201
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_6___default.a, {
+        className: classes.root,
+        elevation: 1,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 202
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_11___default.a, {
+        className: classes.iconButton,
+        "aria-label": "Password",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 203
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_Lock__WEBPACK_IMPORTED_MODULE_14___default.a, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 204
+        },
+        __self: this
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Divider__WEBPACK_IMPORTED_MODULE_10___default.a, {
+        className: classes.divider,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 206
+        },
+        __self: this
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_InputBase__WEBPACK_IMPORTED_MODULE_9___default.a, {
+        className: classes.input,
+        placeholder: "Create a Password",
+        value: values.password,
+        name: "password",
+        onBlur: handleBlur,
+        onChange: handleChange,
+        type: showPassword ? 'text' : 'password',
+        required: true,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 208
+        },
+        __self: this
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_11___default.a, {
+        "aria-label": "Toggle password visibility",
+        onClick: handleClickShowPassword,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 218
+        },
+        __self: this
+      }, showPassword ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_Visibility__WEBPACK_IMPORTED_MODULE_16___default.a, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 219
+        },
+        __self: this
+      }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_VisibilityOff__WEBPACK_IMPORTED_MODULE_17___default.a, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 219
+        },
+        __self: this
+      })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_7___default.a, {
+        item: true,
+        xs: 12,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 224
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_15___default.a, {
+        variant: "h6",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 225
+        },
+        __self: this
+      }, "Birthday"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_15___default.a, {
+        variant: "caption",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 226
+        },
+        __self: this
+      }, "To sign up, you must be 18 or older. Other people won\u2019t see your birthday.")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_7___default.a, {
+        item: true,
+        xs: 12,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 230
+        },
+        __self: this
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_7___default.a, {
+        item: true,
+        xs: 12,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 234
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_8___default.a, {
+        type: "submit",
+        variant: "contained",
+        color: "secondary",
+        disabled: isSubmitting,
+        fullWidth: true,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 235
+        },
+        __self: this
+      }, "Sign Up")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Divider__WEBPACK_IMPORTED_MODULE_10___default.a, {
+        className: classes.hDivider,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 239
+        },
+        __self: this
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_7___default.a, {
+        item: true,
+        xs: 12,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 241
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_15___default.a, {
+        variant: "subtitle1",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 242
+        },
+        __self: this
+      }, "Already have a Slyderz account?"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_15___default.a, {
+        variant: "subtitle1",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 243
+        },
+        __self: this
+      }, "Login"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Snackbar__WEBPACK_IMPORTED_MODULE_18___default.a, {
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'center'
+        },
+        open: open,
+        autoHideDuration: 3000,
+        onClose: handleSnackbar,
+        ContentProps: {
+          'aria-describedby': 'message-id'
+        },
+        message: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          id: "message-id",
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 257
+          },
+          __self: this
+        }, "Error! :("),
+        action: [react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_11___default.a, {
+          key: "close",
+          "aria-label": "Close",
+          color: "inherit",
+          className: classes.close,
+          onClick: handleSnackbar,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 259
+          },
+          __self: this
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_Close__WEBPACK_IMPORTED_MODULE_19___default.a, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 266
+          },
+          __self: this
+        }))],
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 246
+        },
+        __self: this
+      }));
+    });
   }));
 };
 
 SignUpForm.propTypes = {
   classes: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.shape().isRequired
 };
-/* harmony default export */ __webpack_exports__["default"] = (Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_3__["withStyles"])(useStyles)(SignUpForm));
+/* harmony default export */ __webpack_exports__["default"] = (Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_5__["withStyles"])(useStyles)(SignUpForm));
 
 /***/ }),
 
@@ -1480,6 +1571,17 @@ module.exports = require("@material-ui/core/Paper");
 
 /***/ }),
 
+/***/ "@material-ui/core/Snackbar":
+/*!*********************************************!*\
+  !*** external "@material-ui/core/Snackbar" ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/Snackbar");
+
+/***/ }),
+
 /***/ "@material-ui/core/Toolbar":
 /*!********************************************!*\
   !*** external "@material-ui/core/Toolbar" ***!
@@ -1532,6 +1634,17 @@ module.exports = require("@material-ui/icons/AccountCircle");
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/icons/AlternateEmail");
+
+/***/ }),
+
+/***/ "@material-ui/icons/Close":
+/*!*******************************************!*\
+  !*** external "@material-ui/icons/Close" ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/icons/Close");
 
 /***/ }),
 
@@ -1598,17 +1711,6 @@ module.exports = require("@material-ui/icons/VisibilityOff");
 /***/ (function(module, exports) {
 
 module.exports = require("apollo-boost");
-
-/***/ }),
-
-/***/ "axios":
-/*!************************!*\
-  !*** external "axios" ***!
-  \************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("axios");
 
 /***/ }),
 
