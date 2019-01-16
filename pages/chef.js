@@ -46,119 +46,12 @@ const useStyles = theme => ({
   },
 });
 
-export const allFoodsQuery = gql`
-  query {
-    allFoods {
-      title
-      image {
-        url
-      }
-    }
-  }
-`;
-
-const cookData = [
-  {
-    img: '/static/food.jpg',
-    name: 'Shakhor Smith',
-    specialize: 'BBQ',
-    price: 50,
-  },
-  {
-    img: '/static/food.jpg',
-    name: 'Shamar Smith',
-    specialize: 'Seafood',
-    price: 50,
-  },
-  {
-    img: '/static/food.jpg',
-    name: 'Nicole Hollingsworth',
-    specialize: 'American',
-    price: 60,
-  },
-  {
-    img: '/static/food.jpg',
-    name: 'Johnathan Smith',
-    specialize: 'Chinese',
-    price: 70,
-  },
-  {
-    img: '/static/food.jpg',
-    name: 'Jayla Smth',
-    specialize: 'Burgers',
-    price: 20,
-  },
-];
-
 const Chef = ({ classes }) => (
   <Layout>
-    <Typography variant="h5" color="inherit" gutterBottom>
-      What would you like to eat?
-    </Typography>
-    <div className={classes.orderWrapper}>
-      <Query query={allFoodsQuery}>
-        {({ loading, error, data }) => {
-          if (loading) return <div>Loading...</div>;
-          if (error) return <div>Error :(</div>;
-
-          return (
-            <GridList className={classes.gridList} cols={3} spacing={16}>
-              {data.allFoods.map(food => (
-                <GridListTile key={food.title}>
-                  <img src={food.image} alt={food.title} />
-                  <GridListTileBar
-                    title={food.title}
-                    classes={{
-                      root: classes.titleBar,
-                    }}
-                  />
-                </GridListTile>
-              ))}
-            </GridList>
-          );
-        }}
-      </Query>
-    </div>
-
     <section className={classes.section}>
       <Typography variant="h5" color="inherit" gutterBottom>
-        Chefs near you
+        Chefs Page
       </Typography>
-      <div className={classes.orderWrapper}>
-        <Grid container spacing={32}>
-          {cookData.map(cook => (
-            <Grid item xs={12} md={3}>
-              <Link href="/chef">
-                <Paper className={classes.paper} elevation={2}>
-                  <img
-                    src={cook.img}
-                    alt={cook.title}
-                    style={{
-                      height: '100%',
-                      width: '100%',
-                      objectFit: 'cover',
-                    }}
-                  />
-                </Paper>
-                <Typography variant="caption" color="primary" gutterBottom>
-                  {cook.specialize}
-                </Typography>
-                <Typography variant="subtitle1" color="inherit">
-                  {cook.name}
-                </Typography>
-                <Typography variant="caption" color="inherit" gutterBottom>
-                  ${cook.price} per person
-                </Typography>
-              </Link>
-            </Grid>
-          ))}
-          <Grid item xs={12}>
-            <Button variant="contained" size="small" color="primary">
-              View All
-            </Button>
-          </Grid>
-        </Grid>
-      </div>
     </section>
   </Layout>
 );

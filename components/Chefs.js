@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Router from 'next/router';
+
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -64,7 +66,14 @@ const Chefs = ({ classes }) => (
     <div className={classes.orderWrapper}>
       <Grid container spacing={32}>
         {cookData.map(cook => (
-          <Grid key={cook.name} item xs={12} sm={4} md={3}>
+          <Grid
+            key={cook.name}
+            item
+            xs={12}
+            sm={4}
+            md={3}
+            onClick={() => Router.push({ pathname: '/chef', query: { name: cook.name } })}
+          >
             <Paper className={classes.paper} elevation={2}>
               <img
                 src={cook.img}
