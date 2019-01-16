@@ -7,7 +7,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import JssProvider from 'react-jss/lib/JssProvider';
 
 import getPageContext from '../src/getPageContext';
-import withApollo from '../lib/withApollo';
+import withApollo from '../apollo/withApollo';
 
 class MyApp extends App {
   constructor() {

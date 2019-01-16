@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
-import { gql } from 'apollo-boost';
 import { Mutation } from 'react-apollo';
+import Link from 'next/link';
 
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -20,11 +20,19 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 
+import createUserMutation from '../../lib/gql/mutation/createUserMutation.gql';
+
 const useStyles = theme => ({
   divider: {
     width: 1,
     height: 28,
     margin: 4,
+  },
+  haveAccountLink: {
+    '&:hover': {
+      textDecoration: 'underline',
+      cursor: 'pointer',
+    },
   },
   hDivider: {
     height: 1,
@@ -61,31 +69,7 @@ const useStyles = theme => ({
   },
 });
 
-const createUserMutation = gql`
-  mutation createUser(
-    $username: String!
-    $email: String!
-    $firstName: String!
-    $lastName: String!
-    $password: String!
-  ) {
-    createUser(
-      input: {
-        data: { username: $username, email: $email, firstName: $firstName, lastName: $lastName, password: $password }
-      }
-    ) {
-      user {
-        username
-        email
-        firstName
-        lastName
-        password
-      }
-    }
-  }
-`;
-
-const SignUpForm = ({ classes, handleClose }) => {
+const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [open, setOpen] = React.useState(false);
 
@@ -239,8 +223,15 @@ const SignUpForm = ({ classes, handleClose }) => {
                   <Divider className={classes.hDivider} />
 
                   <Grid item xs={12}>
-                    <Typography variant="subtitle1">Already have a Slyderz account?</Typography>
-                    <Typography variant="subtitle1">Login</Typography>
+                    <Typography
+                      variant="subtitle1"
+                      color="primary"
+                      align="center"
+                      onClick={openSignInModal}
+                      className={classes.haveAccountLink}
+                    >
+                      Already have a Slyderz account? Login
+                    </Typography>
                   </Grid>
                 </Grid>
                 <Snackbar
@@ -278,6 +269,8 @@ const SignUpForm = ({ classes, handleClose }) => {
 
 SignUpForm.propTypes = {
   classes: PropTypes.shape().isRequired,
+  handleClose: PropTypes.func.isRequired,
+  openSignInModal: PropTypes.func.isRequired,
 };
 
 export default withStyles(useStyles)(SignUpForm);

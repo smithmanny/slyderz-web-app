@@ -1,0 +1,17 @@
+mutation signInUser(
+  $identifier: String!
+  $password: String!
+) {
+  signInUser(
+    input: {
+      data: { identifier: $identifier, password: $password }
+    }
+  ) {
+    user {
+      username
+      email
+      firstName
+      lastName
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
@@ -7,8 +8,10 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import Modal from '@material-ui/core/Modal';
+
+import SignInForm from './form/SignInForm';
 import SignUpForm from './form/SignUpForm';
+import BasicModal from './BasicModal';
 
 const useStyles = theme => ({
   main: {
@@ -25,33 +28,14 @@ const useStyles = theme => ({
   grow: {
     flexGrow: 1,
   },
-  modal: {
-    position: 'absolute',
-    maxWidth: 568,
-    width: '90%',
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing.unit * 4,
-    outline: 'none',
-  },
 });
-
-function getModalStyle() {
-  const top = 50;
-  const left = 50;
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
-}
 
 const Layout = ({ children, classes }) => {
   const [user, setUser] = useState(false);
-  const [signUpModal, openSignUpModal] = useState(false);
-
-  const handleClose = () => openSignUpModal(false);
+  const [values, setValues] = useState({
+    openAuthModal: false,
+    modalView: 'log_in',
+  });
 
   return (
     <React.Fragment>
@@ -68,26 +52,34 @@ const Layout = ({ children, classes }) => {
                   variant="contained"
                   color="secondary"
                   className={classes.menuItem}
-                  onClick={() => openSignUpModal(true)}
+                  onClick={() => setValues({ ...values, openAuthModal: true, modalView: 'sign_up' })}
                 >
                   Sign Up
                 </Button>
-                <Button variant="contained" color="secondary" className={classes.menuItem}>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  className={classes.menuItem}
+                  onClick={() => setValues({ ...values, openAuthModal: true, modalView: 'log_in' })}
+                >
                   Log In
                 </Button>
               </React.Fragment>
             )}
 
-            <Modal
-              aria-labelledby="simple-modal-title"
-              aria-describedby="simple-modal-description"
-              open={signUpModal}
-              onClose={handleClose}
-            >
-              <div style={getModalStyle()} className={classes.modal}>
-                <SignUpForm handleClose={handleClose} />
-              </div>
-            </Modal>
+            <BasicModal open={values.openAuthModal} onClose={() => setValues({ ...values, openAuthModal: false })}>
+              {values.modalView === 'log_in' ? (
+                <SignInForm
+                  handleClose={() => setValues({ ...values, openAuthModal: false })}
+                  openSignUpModal={() => setValues({ ...values, modalView: 'sign_up' })}
+                />
+              ) : (
+                <SignUpForm
+                  handleClose={() => setValues({ ...values, openAuthModal: false })}
+                  openSignInModal={() => setValues({ ...values, modalView: 'log_in' })}
+                />
+              )}
+            </BasicModal>
 
             {user && (
               <IconButton color="inherit">

@@ -1,9 +1,9 @@
 ((window["webpackJsonp"] = window["webpackJsonp"] || []).push([["static/development/pages/_app.js"],{
 
-/***/ "./lib/init-apollo.js":
-/*!****************************!*\
-  !*** ./lib/init-apollo.js ***!
-  \****************************/
+/***/ "./apollo/init-apollo.js":
+/*!*******************************!*\
+  !*** ./apollo/init-apollo.js ***!
+  \*******************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -66,10 +66,10 @@ function initApollo(initialState, options) {
 
 /***/ }),
 
-/***/ "./lib/withApollo.js":
-/*!***************************!*\
-  !*** ./lib/withApollo.js ***!
-  \***************************/
+/***/ "./apollo/withApollo.js":
+/*!******************************!*\
+  !*** ./apollo/withApollo.js ***!
+  \******************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -87,9 +87,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var cookie__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(cookie__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _init_apollo__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./init-apollo */ "./lib/init-apollo.js");
+/* harmony import */ var _init_apollo__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./init-apollo */ "./apollo/init-apollo.js");
 
-var _jsxFileName = "/Users/shakhor/Projects/Web/slyderz/lib/withApollo.js";
+var _jsxFileName = "/Users/shakhor/Projects/Web/slyderz/apollo/withApollo.js";
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -53958,7 +53958,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_jss_lib_JssProvider__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-jss/lib/JssProvider */ "./node_modules/react-jss/lib/JssProvider.js");
 /* harmony import */ var react_jss_lib_JssProvider__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(react_jss_lib_JssProvider__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var _src_getPageContext__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../src/getPageContext */ "./src/getPageContext.js");
-/* harmony import */ var _lib_withApollo__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../lib/withApollo */ "./lib/withApollo.js");
+/* harmony import */ var _apollo_withApollo__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../apollo/withApollo */ "./apollo/withApollo.js");
 var _jsxFileName = "/Users/shakhor/Projects/Web/slyderz/pages/_app.js";
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -54085,7 +54085,7 @@ function (_App) {
   return MyApp;
 }(next_app__WEBPACK_IMPORTED_MODULE_2___default.a);
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(_lib_withApollo__WEBPACK_IMPORTED_MODULE_8__["default"])(MyApp));
+/* harmony default export */ __webpack_exports__["default"] = (Object(_apollo_withApollo__WEBPACK_IMPORTED_MODULE_8__["default"])(MyApp));
     (function (Component, route) {
       if(!Component) return
       if (false) {}
