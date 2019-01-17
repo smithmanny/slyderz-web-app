@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import Route from 'next/router';
 
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -27,6 +28,9 @@ const useStyles = theme => ({
   },
   grow: {
     flexGrow: 1,
+    '&:hover': {
+      cursor: 'pointer',
+    },
   },
 });
 
@@ -42,7 +46,7 @@ const Layout = ({ children, classes }) => {
       <div className={classes.root}>
         <AppBar position="static" color="primary">
           <Toolbar>
-            <Typography variant="h6" color="inherit" className={classes.grow}>
+            <Typography variant="h6" color="inherit" className={classes.grow} onClick={() => Route.push('/')}>
               Slyderz
             </Typography>
 
