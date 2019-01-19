@@ -85,6 +85,7 @@ const SignInForm = ({ classes, handleClose, openSignUpModal }) => {
 
   return (
     <div>
+      <Typography variant="h6">Sign in with your Slyderz account</Typography>
       <Divider className={classes.hDivider} />
       <Mutation
         mutation={signInUserMutation}

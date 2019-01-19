@@ -12,7 +12,7 @@ if (!process.browser) {
 
 function create(initialState, { getToken }) {
   const httpLink = createHttpLink({
-    uri: 'http://localhost:1337/graphql',
+    uri: 'https://api-slyderz-dev.herokuapp.com/v1alpha1/graphql',
     credentials: 'same-origin',
   });
 

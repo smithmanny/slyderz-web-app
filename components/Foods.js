@@ -30,9 +30,7 @@ export const allFoodsQuery = gql`
   query {
     foods {
       title
-      image {
-        url
-      }
+      image
     }
   }
 `;
@@ -48,7 +46,7 @@ const Foods = ({ classes }) => (
           <GridList className={classes.gridList} cols={3} spacing={16}>
             {data.foods.map(food => (
               <GridListTile key={food.title}>
-                <img src={`/api/${food.image.url}`} alt={food.title} />
+                <img src={food.image} alt={food.title} />
                 <GridListTileBar
                   title={food.title}
                   classes={{

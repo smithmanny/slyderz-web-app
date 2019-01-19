@@ -31,30 +31,35 @@ const cookData = [
     name: 'Shakhor Smith',
     specialize: 'BBQ',
     price: 50,
+    city: 'Ft. Lauderdale, FL'
   },
   {
     img: '/static/food.jpg',
     name: 'Shamar Smith',
     specialize: 'Seafood',
     price: 50,
+    city: 'Ft. Lauderdale, FL',
   },
   {
     img: '/static/food.jpg',
     name: 'Nicole Hollingsworth',
     specialize: 'American',
     price: 60,
+    city: 'Bronx, NY',
   },
   {
     img: '/static/food.jpg',
     name: 'Johnathan Smith',
     specialize: 'Chinese',
     price: 70,
+    city: 'Mount Vernon, NY',
   },
   {
     img: '/static/food.jpg',
     name: 'Jayla Smth',
     specialize: 'Burgers',
     price: 20,
+    city: 'Atlanta, GA',
   },
 ];
 
