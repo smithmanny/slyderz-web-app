@@ -9,6 +9,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import ShoppingCart from '@material-ui/icons/ShoppingCart';
 
 import SignInForm from './form/SignInForm';
 import SignUpForm from './form/SignUpForm';
@@ -50,6 +51,10 @@ const Layout = ({ children, classes }) => {
               Slyderz
             </Typography>
 
+            <IconButton color="inherit">
+              <ShoppingCart />
+            </IconButton>
+
             {!user && (
               <React.Fragment>
                 <Button
@@ -71,6 +76,12 @@ const Layout = ({ children, classes }) => {
               </React.Fragment>
             )}
 
+            {user && (
+              <IconButton color="inherit">
+                <AccountCircle />
+              </IconButton>
+            )}
+
             <BasicModal open={values.openAuthModal} onClose={() => setValues({ ...values, openAuthModal: false })}>
               {values.modalView === 'log_in' ? (
                 <SignInForm
@@ -84,12 +95,6 @@ const Layout = ({ children, classes }) => {
                 />
               )}
             </BasicModal>
-
-            {user && (
-              <IconButton color="inherit">
-                <AccountCircle />
-              </IconButton>
-            )}
           </Toolbar>
         </AppBar>
       </div>
