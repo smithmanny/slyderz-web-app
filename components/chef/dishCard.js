@@ -59,7 +59,8 @@ class DishCard extends React.Component {
           <Typography variant="body1">
               $50
             </Typography>
-          <IconButton
+          <div
+            style={{ padding: 12 }}
             className={classes.addToOrder}
             aria-label="Add to order"
           >
@@ -69,7 +70,7 @@ class DishCard extends React.Component {
             >
               Add to order
             </Button>
-          </IconButton>
+          </div>
         </CardActions>
       </Card>
     );
