@@ -1,17 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Button from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles';
-import classnames from 'classnames';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+
+import Form from '../../components/form/Form';
 
 const styles = theme => ({
   card: {
@@ -21,60 +19,46 @@ const styles = theme => ({
     height: 0,
     paddingTop: '56.25%', // 16:9
   },
-  actions: {
-    display: 'flex',
-  },
   addToOrder: {
     marginLeft: 'auto',
   },
 });
 
-class DishCard extends React.Component {
-  state = { expanded: false };
+const DishCard = ({ classes, name }) => {
+  return (
+    <Card className={classes.card}>
+      <CardMedia
+        className={classes.media}
+        image="/static/food.jpg"
+        title="Paella dish"
+      />
+      <CardContent>
+        <Typography variant="h6" gutterBottom>
+          Dish Title Goes Here
+        </Typography>
+        <Typography component="p">
+          This impressive paella is a perfect party dish and a fun meal to cook together with your
+          guests. Add 1 cup of frozen peas along with the mussels, if you like.
 
-  handleExpandClick = () => {
-    this.setState(state => ({ expanded: !state.expanded }));
-  };
-
-  render() {
-    const { classes } = this.props;
-
-    return (
-      <Card className={classes.card}>
-        <CardMedia
-          className={classes.media}
-          image="/static/food.jpg"
-          title="Paella dish"
-        />
-        <CardContent>
-          <Typography variant="h6" gutterBottom>
-            Dish Title Goes Here
-          </Typography>
-          <Typography component="p">
-            This impressive paella is a perfect party dish and a fun meal to cook together with your
-            guests. Add 1 cup of frozen peas along with the mussels, if you like.
-          </Typography>
-        </CardContent>
-        <CardActions className={classes.actions} disableActionSpacing>
-          <Typography variant="body1">
-              $50
+          This impressive paella is a perfect party dish and a fun meal to cook together with your
+          guests. Add 1 cup of frozen peas along with the mussels, if you like.
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Grid container>
+          <Grid item xs={9}>
+            <Typography variant="body1">
+                $50/per person
             </Typography>
-          <div
-            style={{ padding: 12 }}
-            className={classes.addToOrder}
-            aria-label="Add to order"
-          >
-            <Button
-              variant="contained"
-              color="secondary"
-            >
-              Add to order
-            </Button>
-          </div>
-        </CardActions>
-      </Card>
-    );
-  }
+          </Grid>
+
+          <Grid item xs={3}>
+            <Form.SelectField name={name} />
+          </Grid>
+        </Grid>
+      </CardActions>
+    </Card>
+  );
 }
 
 DishCard  .propTypes = {

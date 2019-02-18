@@ -5,6 +5,8 @@ import { ApolloProvider } from 'react-apollo';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import JssProvider from 'react-jss/lib/JssProvider';
+import { MuiPickersUtilsProvider } from 'material-ui-pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 import getPageContext from '../src/getPageContext';
 import withApollo from '../apollo/withApollo';
@@ -29,7 +31,7 @@ class MyApp extends App {
     return (
       <Container>
         <Head>
-          <title>Slyderz | On-demand Restaurant</title>
+          <title>Slyderz | Your On-demand Restaurant</title>
         </Head>
 
         <ApolloProvider client={apolloClient}>
@@ -38,8 +40,10 @@ class MyApp extends App {
             generateClassName={this.pageContext.generateClassName}
           >
             <MuiThemeProvider theme={this.pageContext.theme} sheetsManager={this.pageContext.sheetsManager}>
-              <CssBaseline />
-              <Component pageContext={this.pageContext} {...pageProps} />
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <CssBaseline />
+                  <Component pageContext={this.pageContext} {...pageProps} />
+              </MuiPickersUtilsProvider>
             </MuiThemeProvider>
           </JssProvider>
         </ApolloProvider>

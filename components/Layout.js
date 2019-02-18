@@ -17,8 +17,7 @@ import BasicModal from './BasicModal';
 
 const useStyles = theme => ({
   main: {
-    padding: '40px 24px',
-    maxWidth: 1032,
+    maxWidth: 1920,
     margin: 'auto',
   },
   menuItem: {
@@ -51,10 +50,6 @@ const Layout = ({ children, classes }) => {
               Slyderz
             </Typography>
 
-            <IconButton color="inherit">
-              <ShoppingCart />
-            </IconButton>
-
             {!user && (
               <React.Fragment>
                 <Button
@@ -65,6 +60,7 @@ const Layout = ({ children, classes }) => {
                 >
                   Sign Up
                 </Button>
+
                 <Button
                   variant="contained"
                   color="secondary"
@@ -77,9 +73,15 @@ const Layout = ({ children, classes }) => {
             )}
 
             {user && (
-              <IconButton color="inherit">
-                <AccountCircle />
-              </IconButton>
+              <React.Fragment>
+                <IconButton color="inherit">
+                  <ShoppingCart />
+                </IconButton>
+
+                <IconButton color="inherit">
+                  <AccountCircle />
+                </IconButton>
+              </React.Fragment>
             )}
 
             <BasicModal open={values.openAuthModal} onClose={() => setValues({ ...values, openAuthModal: false })}>

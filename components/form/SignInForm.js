@@ -79,7 +79,6 @@ const SignInForm = ({ classes, handleClose, openSignUpModal }) => {
     if (reason === 'clickaway') {
       return;
     }
-
     setOpen(false);
   }
 
