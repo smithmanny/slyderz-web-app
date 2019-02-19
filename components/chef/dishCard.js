@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 
-import Form from '../../components/form/Form';
+import { SelectField } from '../../components/form/Form';
 
 const styles = theme => ({
   card: {
@@ -53,7 +53,7 @@ const DishCard = ({ classes, name }) => {
           </Grid>
 
           <Grid item xs={3}>
-            <Form.SelectField name={name} />
+            <SelectField name={name} />
           </Grid>
         </Grid>
       </CardActions>

@@ -23,7 +23,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Content from '../components/Content';
 import Layout from '../components/Layout';
 import DishCard from '../components/chef/dishCard';
-import Form from '../components/form/Form';
+import Form, { DatePickerField } from '../components/form/Form';
 
 const useStyles = theme => ({
   bigAvatar: {
@@ -136,7 +136,7 @@ const Chef = ({ classes }) => {
               <Grid item xs={12} md={3}>
                 <Paper className={classes.paper}>
                   <React.Fragment>
-                    <Form.DatePickerField />
+                    <DatePickerField />
 
                     <FormControl fullWidth margin="normal">
                       <Typography variant="body1" gutterBottom>Event Time</Typography>

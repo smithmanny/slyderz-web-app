@@ -1,8 +1,8 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
 
-import DatePickerGroup from './DatePickerGroup';
-import SelectGroup from './SelectGroup';
+export { default as DatePickerField } from './DatePickerGroup';
+export { default as SelectField} from './SelectGroup';
 
 const BasicForm = ({ children, initialValues }) => {
   return (
@@ -15,8 +15,5 @@ const BasicForm = ({ children, initialValues }) => {
     </Formik>
   );
 };
-
-BasicForm.DatePickerField = DatePickerGroup
-BasicForm.SelectField = SelectGroup
 
 export default BasicForm;

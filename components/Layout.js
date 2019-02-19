@@ -106,7 +106,7 @@ const Layout = ({ children, classes }) => {
 };
 
 Layout.propTypes = {
-  children: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  children: PropTypes.PropTypes.shape().isRequired,
   classes: PropTypes.shape().isRequired,
 };
 
