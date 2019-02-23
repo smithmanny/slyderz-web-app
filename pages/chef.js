@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
-import Link from 'next/link';
+import Router from 'next/router';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -170,7 +170,12 @@ const Chef = ({ classes }) => {
                       </ListItem>
 
                       <ListItem>
-                        <Button variant="contained" color="primary" className={classes.button}>
+                        <Button 
+                          variant="contained" 
+                          color="primary" 
+                          className={classes.button}
+                          onClick={() => Router.push('/order')}
+                        >
                           Book Chef
                         </Button>
                       </ListItem>
