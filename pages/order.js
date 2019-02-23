@@ -145,10 +145,9 @@ const OrderSummary = ({ classes }) => {
                     )}
                     <TextField
                       id="outlined-multiline-static"
-                      label="Multiline"
+                      label="Note to Chef"
                       multiline
                       rows="4"
-                      defaultValue="Note to chef"
                       margin="normal"
                       variant="outlined"
                       fullWidth
