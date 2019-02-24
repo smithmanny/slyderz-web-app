@@ -12,6 +12,7 @@ import Layout from '../../components/Layout';
 import Form from '../../components/form/Form';
 import SummaryView from '../../components/checkout/SummaryView';
 import AddressView from '../../components/checkout/AddressView';
+import PaymentView from '../../components/checkout/PaymentView';
 
 const useStyles = theme => ({
   content: {
@@ -33,10 +34,6 @@ const OrderSummary = ({ classes }) => {
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
 
-  function handlePrev() {
-    setActiveStep(prevActiveStep => prevActiveStep - 1 )
-  }
-
   function handleNext() {
     setActiveStep(prevActiveStep => prevActiveStep + 1 )
   }
@@ -48,7 +45,7 @@ const OrderSummary = ({ classes }) => {
       case 1:
         return <AddressView handleNext={handleNext} />;
       case 2:
-        return 'This is the bit I really care about!';
+        return <PaymentView />;
       default:
         return 'Unknown step';
     }

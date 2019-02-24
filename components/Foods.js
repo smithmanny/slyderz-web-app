@@ -43,7 +43,7 @@ const Foods = ({ classes }) => (
         if (error) return <div>Error :(</div>;
 
         return (
-          <GridList className={classes.gridList} cols={3} spacing={16}>
+          <GridList className={classes.gridList} cols={4} spacing={16}>
             {data.foods.map(food => (
               <GridListTile key={food.title}>
                 <img src={food.image} alt={food.title} />
