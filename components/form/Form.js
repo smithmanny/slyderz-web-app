@@ -4,12 +4,17 @@ import { Formik, Form } from 'formik';
 export { default as DatePickerField } from './DatePickerGroup';
 export { default as SelectField} from './SelectGroup';
 
-const BasicForm = ({ children, initialValues }) => {
+const BasicForm = ({ children, initialValues, onSubmit, validation, ...props }) => {
   return (
-    <Formik initialValues={initialValues}>
-      {({ values, errors }) => (
+    <Formik 
+      initialValues={initialValues} 
+      onSubmit={onSubmit} 
+      validationSchema={validation}
+      {...props}
+    >
+      {({ values, errors, isSubmitting, handleSubmit, handleBlur, handleChange }) => (
         <Form>
-          {children({ values, errors })}
+          {children({ values, errors, isSubmitting, handleSubmit, handleBlur, handleChange })}
         </Form>
       )}
     </Formik>

@@ -20,6 +20,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 
+import Form from './Form';
 import createUserMutation from '../../lib/gql/mutation/createUserMutation.gql';
 
 const useStyles = theme => ({
@@ -43,11 +44,6 @@ const useStyles = theme => ({
     padding: '2px 4px',
     display: 'flex',
     alignItems: 'center',
-  },
-  main: {
-    padding: '40px 24px',
-    maxWidth: 1032,
-    margin: 'auto',
   },
   input: {
     marginLeft: 8,
@@ -87,6 +83,7 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
 
   return (
     <div>
+      <Typography variant="h6">Sign up for a Slyderz account</Typography>
       <Divider className={classes.hDivider} />
       <Mutation
         mutation={createUserMutation}
@@ -97,17 +94,8 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
           setOpen(true);
         }}
       >
-        {(createUser, { error }) => (
-          <Formik
-            validate={values => {
-              const errors = {};
-              if (!values.email) {
-                errors.email = 'Required';
-              } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-                errors.email = 'Invalid email address';
-              }
-              return errors;
-            }}
+        {createUser => (
+          <Form
             onSubmit={(values, { setSubmitting }) => {
               createUser({
                 variables: {
@@ -122,7 +110,7 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
             }}
           >
             {({ values, errors, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
-              <form onSubmit={handleSubmit}>
+              <React.Fragment>
                 <Grid container spacing={24}>
                   <Grid item xs={12}>
                     <Paper className={classes.root} elevation={1}>
@@ -258,9 +246,9 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
                     </IconButton>,
                   ]}
                 />
-              </form>
+              </React.Fragment>
             )}
-          </Formik>
+          </Form>
         )}
       </Mutation>
     </div>
