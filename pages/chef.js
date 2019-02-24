@@ -174,7 +174,7 @@ const Chef = ({ classes }) => {
                           variant="contained" 
                           color="primary" 
                           className={classes.button}
-                          onClick={() => Router.push('/order')}
+                          onClick={() => Router.push('/checkout/summary')}
                         >
                           Book Chef
                         </Button>
