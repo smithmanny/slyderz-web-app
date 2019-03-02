@@ -1,17 +1,8 @@
-mutation signInUser(
-  $identifier: String!
-  $password: String!
-) {
-  signInUser(
-    input: {
-      data: { identifier: $identifier, password: $password }
-    }
-  ) {
-    user {
-      username
-      email
-      firstName
-      lastName
+mutation signInUser($objects: [user_signin_input!]){
+  signInUser(objects: $objects) {
+    returning {
+      id
+      displayName
     }
   }
 }

@@ -40,7 +40,12 @@ const Foods = ({ classes }) => (
     <Query query={allFoodsQuery}>
       {({ loading, error, data }) => {
         if (loading) return <div>Loading...</div>;
-        if (error) return <div>Error :(</div>;
+        if (error) {
+          console.log(error)
+          return (
+            <div>Error :(</div>
+          )
+        }
 
         return (
           <GridList className={classes.gridList} cols={4} spacing={16}>

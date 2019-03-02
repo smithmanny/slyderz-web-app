@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Mutation } from 'react-apollo';
+import Link from 'next/link';
 
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -10,6 +11,7 @@ import InputBase from '@material-ui/core/InputBase';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import EmailIcon from '@material-ui/icons/AlternateEmail';
+import PersonIcon from '@material-ui/icons/Person';
 import LockIcon from '@material-ui/icons/Lock';
 import Typography from '@material-ui/core/Typography';
 import Visibility from '@material-ui/icons/Visibility';
@@ -17,14 +19,20 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 
-import Form from './Form';
-import signInUserMutation from '../../lib/gql/mutation/signInUserMutation.gql';
+import Form from '../form/Form';
+import createUserMutation from '../../lib/gql/mutation/createUserMutation.gql';
 
 const useStyles = theme => ({
   divider: {
     width: 1,
     height: 28,
     margin: 4,
+  },
+  haveAccountLink: {
+    '&:hover': {
+      textDecoration: 'underline',
+      cursor: 'pointer',
+    },
   },
   hDivider: {
     height: 1,
@@ -35,12 +43,6 @@ const useStyles = theme => ({
     padding: '2px 4px',
     display: 'flex',
     alignItems: 'center',
-  },
-  noAccountLink: {
-    '&:hover': {
-      textDecoration: 'underline',
-      cursor: 'pointer',
-    },
   },
   input: {
     marginLeft: 8,
@@ -62,7 +64,7 @@ const useStyles = theme => ({
   },
 });
 
-const SignInForm = ({ classes, handleClose, openSignUpModal }) => {
+const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [open, setOpen] = React.useState(false);
 
@@ -74,15 +76,16 @@ const SignInForm = ({ classes, handleClose, openSignUpModal }) => {
     if (reason === 'clickaway') {
       return;
     }
+
     setOpen(false);
   }
 
   return (
     <div>
-      <Typography variant="h6">Sign in with your Slyderz account</Typography>
+      <Typography variant="h6">Sign up for a Slyderz account</Typography>
       <Divider className={classes.hDivider} />
       <Mutation
-        mutation={signInUserMutation}
+        mutation={createUserMutation}
         onCompleted={user => {
           handleClose();
         }}
@@ -130,6 +133,44 @@ const SignInForm = ({ classes, handleClose, openSignUpModal }) => {
 
                   <Grid item xs={12}>
                     <Paper className={classes.root} elevation={1}>
+                      <IconButton className={classes.iconButton} aria-label="First Name">
+                        <PersonIcon />
+                      </IconButton>
+                      <Divider className={classes.divider} />
+
+                      <InputBase
+                        className={classes.input}
+                        placeholder="First Name"
+                        name="firstName"
+                        value={values.firstName}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        required
+                      />
+                    </Paper>
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <Paper className={classes.root} elevation={1}>
+                      <IconButton className={classes.iconButton} aria-label="Last Name">
+                        <PersonIcon />
+                      </IconButton>
+                      <Divider className={classes.divider} />
+
+                      <InputBase
+                        className={classes.input}
+                        placeholder="Last Name"
+                        name="lastName"
+                        value={values.lastName}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        required
+                      />
+                    </Paper>
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <Paper className={classes.root} elevation={1}>
                       <IconButton className={classes.iconButton} aria-label="Password">
                         <LockIcon />
                       </IconButton>
@@ -152,24 +193,37 @@ const SignInForm = ({ classes, handleClose, openSignUpModal }) => {
                   </Grid>
 
                   <Grid item xs={12}>
-                    <Button type="submit" variant="contained" color="secondary" disabled={isSubmitting} fullWidth>
-                      Sign In
+                    <Typography variant="h6">Birthday</Typography>
+                    <Typography variant="caption">
+                      To sign up, you must be 18 or older. Other people won’t see your birthday.
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    {/* //</Grid>{//</Grid></Grid></Grid>Grid item} */}
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <Button 
+                      type="submit" 
+                      variant="contained" 
+                      color="secondary" 
+                      disabled={isSubmitting}
+                      fullWidth
+                    >
+                      Sign Up
                     </Button>
                   </Grid>
                   <Divider className={classes.hDivider} />
 
-                  <Grid item xs={12} md={6}>
-                    <Typography variant="subtitle1">Forgot password?</Typography>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
+                  <Grid item xs={12}>
                     <Typography
                       variant="subtitle1"
-                      align="right"
                       color="primary"
-                      onClick={openSignUpModal}
-                      className={classes.noAccountLink}
+                      align="center"
+                      onClick={openSignInModal}
+                      className={classes.haveAccountLink}
                     >
-                      Don't have an account?
+                      Already have a Slyderz account? Login
                     </Typography>
                   </Grid>
                 </Grid>
@@ -206,10 +260,10 @@ const SignInForm = ({ classes, handleClose, openSignUpModal }) => {
   );
 };
 
-SignInForm.propTypes = {
+SignUpForm.propTypes = {
   classes: PropTypes.shape().isRequired,
-  openSignUpModal: PropTypes.func.isRequired,
   handleClose: PropTypes.func.isRequired,
+  openSignInModal: PropTypes.func.isRequired,
 };
 
-export default withStyles(useStyles)(SignInForm);
+export default withStyles(useStyles)(SignUpForm);

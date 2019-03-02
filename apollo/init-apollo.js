@@ -3,6 +3,20 @@ import { createHttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 import fetch from 'isomorphic-unfetch';
 
+const defaultOptions = {
+  watchQuery: {
+    fetchPolicy: 'cache-and-network',
+    errorPolicy: 'ignore',
+  },
+  query: {
+    fetchPolicy: 'network-only',
+    errorPolicy: 'all',
+  },
+  mutate: {
+    errorPolicy: 'all'
+  }
+}
+
 let apolloClient = null;
 
 // Polyfill fetch() on the server (used by apollo-client)
@@ -11,6 +25,7 @@ if (!process.browser) {
 }
 
 function create(initialState, { getToken }) {
+  const cache = new InMemoryCache().restore(initialState || {});
   const httpLink = createHttpLink({
     uri: 'https://api-slyderz-dev.herokuapp.com/v1alpha1/graphql',
     credentials: 'same-origin',
@@ -28,9 +43,11 @@ function create(initialState, { getToken }) {
 
   return new ApolloClient({
     connectToDevTools: process.browser,
+    defaultOptions,
     ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
+    ssrForceFetchDelay: 100,
     link: authLink.concat(httpLink),
-    cache: new InMemoryCache().restore(initialState || {}),
+    cache,
   });
 }
 
