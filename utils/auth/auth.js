@@ -1,9 +1,10 @@
 import auth0 from 'auth0-js';
-import cookie from 'cookie';
+import { Query } from 'react-apollo';
 
 import { AUTH_CONFIG } from './auth0-variables';
 import redirect from '../../helpers/redirect';
 import { setCookies, removeCookies} from '../../helpers/helpers';
+import userQuery from '../../lib/gql/query/userQuery.gql';
 
 export default class Auth {
   accessToken;
@@ -16,7 +17,7 @@ export default class Auth {
     redirectUri: AUTH_CONFIG.callbackUrl,
     audience: `https://${AUTH_CONFIG.domain}/userinfo`,
     responseType: 'token id_token',
-    scope: 'openid'
+    scope: 'openid profile'
   });
 
   constructor() {
@@ -31,6 +32,17 @@ export default class Auth {
 
   login() {
     this.auth0.authorize();
+  }
+
+  handleUserDb(token) {
+    <Query
+      query={userQuery}
+      variables={{
+        token,
+      }}
+    >
+
+    </Query>
   }
 
   // Used for Auth0 callback url. Get user info from location.hash
@@ -64,10 +76,11 @@ export default class Auth {
     const cookies = {
       'auth0_idToken': this.idToken,
       'auth0_accessToken': this.accessToken,
-      'auth0_expiresAt': this.expiresAt,
     }
-    // Set cookies
+    // Set session cookies
     setCookies(cookies)
+
+    this.handleUserDb(authResult.accessToken)
 
     // TO-DO:: Maybe route them back to the last page they was at?
     // Navigate to the home route
@@ -95,12 +108,11 @@ export default class Auth {
     const cookies = {
       'auth0_idToken': this.idToken,
       'auth0_accessToken': this.accessToken,
-      'auth0_expiresAt': this.expiresAt,
     }
     // Remove cookies
     removeCookies(cookies)
 
-    // Reset cache 
+    // Reset apollo cache 
     apolloClient.clearStore().then(() => {
       redirect({}, '/');
     })

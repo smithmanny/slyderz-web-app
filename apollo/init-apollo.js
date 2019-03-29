@@ -37,6 +37,7 @@ function create(initialState, { getToken }) {
       headers: {
         ...headers,
         authorization: token ? `Bearer ${token}` : '',
+        'X-Hasura-admin-secret': 'hgasslyderz',
       },
     };
   });

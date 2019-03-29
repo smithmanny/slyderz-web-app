@@ -11,23 +11,24 @@ const useStyles = theme => ({
   },
 });
 
-const Layout = ({ auth, children, classes, ...props }) => {
+const Layout = ({ auth, children, classes }) => {
   const [userToken, setUserToken] = useState();
 
   useEffect(() => {
     const isLoggedIn = auth;
 
     if (isLoggedIn) {
-      const user = auth.getAccessToken();
+      const user = auth.getIdToken();
       setUserToken(user)
     }
-
   });
 
   return (
     <React.Fragment>
-      <AppBar auth={props.auth} />
-      <main className={classes.main}>{children}</main>
+      <AppBar auth={auth} />
+      <main className={classes.main}>
+        {children}
+      </main>
     </React.Fragment>
   );
 };
