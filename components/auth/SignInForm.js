@@ -83,10 +83,10 @@ const SignInForm = ({ classes, handleClose, openSignUpModal }) => {
       <Divider className={classes.hDivider} />
       <Mutation
         mutation={signInUserMutation}
-        onCompleted={user => {
+        onCompleted={(user) => {
           handleClose();
         }}
-        onError={error => {
+        onError={(error) => {
           setOpen(true);
         }}
       >
@@ -102,7 +102,9 @@ const SignInForm = ({ classes, handleClose, openSignUpModal }) => {
               setSubmitting(false);
             }}
           >
-            {({ values, errors, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+            {({
+              values, errors, handleChange, handleBlur, handleSubmit, isSubmitting,
+            }) => (
               <React.Fragment>
                 <Grid container spacing={24}>
                   <Grid item xs={12}>

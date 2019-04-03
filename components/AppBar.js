@@ -34,8 +34,7 @@ const styles = theme => ({
   },
 });
 
-const AppBar = ({ auth, classes }) => {
-  const [user, setUser] = useState(false);
+const AppBar = ({ auth, classes, user }) => {
   const [values, setValues] = useState({
     openAuthModal: false,
     modalView: 'log_in',

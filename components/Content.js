@@ -13,13 +13,11 @@ const useStyles = theme => ({
   },
 });
 
-const Content = ({ classes, children }) => {
-  return (
-    <Grid className={classes.content}>
-      {children}
-    </Grid>
-  )
-}
+const Content = ({ classes, children }) => (
+  <Grid className={classes.content}>
+    {children}
+  </Grid>
+);
 
 Content.propTypes = {
   classes: PropTypes.shape().isRequired,

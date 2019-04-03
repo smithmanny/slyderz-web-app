@@ -26,7 +26,9 @@ class MyApp extends App {
   }
 
   render() {
-    const { apolloClient, auth, Component, pageProps } = this.props;
+    const {
+      apolloClient, auth, Component, pageProps,
+    } = this.props;
 
     return (
       <Container>
@@ -42,7 +44,7 @@ class MyApp extends App {
             <MuiThemeProvider theme={this.pageContext.theme} sheetsManager={this.pageContext.sheetsManager}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <CssBaseline />
-                  <Component pageContext={this.pageContext} auth={auth} {...pageProps} />
+                <Component pageContext={this.pageContext} auth={auth} {...pageProps} />
               </MuiPickersUtilsProvider>
             </MuiThemeProvider>
           </JssProvider>

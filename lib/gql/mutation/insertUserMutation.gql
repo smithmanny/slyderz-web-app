@@ -1,0 +1,10 @@
+mutation insertUser($objects: [user_insert_input!]){
+  insert_user(objects: $objects) {
+    returning {
+      id
+      email
+      email_verified
+      token
+    }
+  }
+}

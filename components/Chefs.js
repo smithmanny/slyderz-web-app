@@ -31,7 +31,7 @@ const cookData = [
     name: 'Shakhor Smith',
     specialize: 'BBQ',
     price: 50,
-    city: 'Ft. Lauderdale, FL'
+    city: 'Ft. Lauderdale, FL',
   },
   {
     img: '/static/food.jpg',
@@ -97,7 +97,10 @@ const Chefs = ({ classes }) => (
               {cook.name}
             </Typography>
             <Typography variant="caption" color="inherit" gutterBottom>
-              ${cook.price} per person
+              $
+              {cook.price}
+              {' '}
+              per person
             </Typography>
           </Grid>
         ))}

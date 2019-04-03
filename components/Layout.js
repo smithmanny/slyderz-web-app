@@ -1,31 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import cookie from 'cookie';
 import { withStyles } from '@material-ui/core/styles';
 
 import AppBar from './AppBar';
 
-const useStyles = theme => ({
+const useStyles = () => ({
   main: {
     maxWidth: 1920,
     margin: 'auto',
   },
 });
 
+function parseCookies(req, options = {}) {
+  return cookie.parse(req ? req.headers.cookie || '' : document.cookie, options);
+}
+
 const Layout = ({ auth, children, classes }) => {
-  const [userToken, setUserToken] = useState();
+  const [user, setUser] = useState();
 
   useEffect(() => {
-    const isLoggedIn = auth;
-
-    if (isLoggedIn) {
-      const user = auth.getIdToken();
-      setUserToken(user)
-    }
-  });
+    const userProfile = parseCookies().auth0_profile;
+    setUser(userProfile);
+  }, [user]);
 
   return (
     <React.Fragment>
-      <AppBar auth={auth} />
+      <AppBar auth={auth} user={user} />
       <main className={classes.main}>
         {children}
       </main>

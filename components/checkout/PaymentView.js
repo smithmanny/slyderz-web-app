@@ -29,46 +29,44 @@ const useStyles = theme => ({
   },
 });
 
-const AddressLabel = classes => (
+const AddressLabel = () => (
   <ListItem alignItems="flex-start">
     <ListItemAvatar>
       <Avatar alt="Remy Sharp" src="/static/food.jpg" />
     </ListItemAvatar>
     <ListItemText
       primary="4288 Glider Circle"
-      secondary={
+      secondary={(
         <React.Fragment>
           <Typography component="span" color="textPrimary">
             Douglasville, GA
           </Typography>
         </React.Fragment>
-      }
+      )}
     />
   </ListItem>
-)
+);
 
-const PaymentView = ({ classes }) => {
-  return (
-    <React.Fragment>
-      <Grid item xs={12} md={9}>
-        <Typography variant="h3">Payment</Typography>
+const PaymentView = ({ classes }) => (
+  <React.Fragment>
+    <Grid item xs={12} md={9}>
+      <Typography variant="h3">Payment</Typography>
 
-        <Grid className={classes.section} item xs={6}>
-          <Button 
-           variant="contained" 
-           color="primary" 
-           className={classes.button}
-          >
-           Pay Now
-         </Button>
-        </Grid>
+      <Grid className={classes.section} item xs={6}>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.button}
+        >
+          Pay Now
+        </Button>
       </Grid>
+    </Grid>
 
-      {/* Right Side */}
-      <SideSummary />
-    </React.Fragment>
-  )
-}
+    {/* Right Side */}
+    <SideSummary />
+  </React.Fragment>
+);
 
 PaymentView.propTypes = {
   classes: PropTypes.shape().isRequired,

@@ -1,10 +1,8 @@
 import auth0 from 'auth0-js';
-import { Query } from 'react-apollo';
 
 import { AUTH_CONFIG } from './auth0-variables';
 import redirect from '../../helpers/redirect';
 import { setCookies, removeCookies} from '../../helpers/helpers';
-import userQuery from '../../lib/gql/query/userQuery.gql';
 
 export default class Auth {
   accessToken;
@@ -34,28 +32,22 @@ export default class Auth {
     this.auth0.authorize();
   }
 
-  handleUserDb(token) {
-    <Query
-      query={userQuery}
-      variables={{
-        token,
-      }}
-    >
-
-    </Query>
-  }
-
   // Used for Auth0 callback url. Get user info from location.hash
   handleAuthentication() {
-    this.auth0.parseHash((err, authResult) => {
-      if (authResult && authResult.accessToken && authResult.idToken) {
-        this.setSession(authResult);
-      } else if (err) {
-        redirect({}, '/');
-        console.log(err);
-        alert(`Error: ${err.error}. Check the console for further details.`);
-      }
-    });
+      this.auth0.parseHash((err, authResult) => {
+        if (authResult && authResult.accessToken && authResult.idToken) {
+          this.auth0.client.userInfo(authResult.accessToken, (err, user) => {
+            if (err) {
+              return console.log(err)
+            }
+
+            this.setSession(authResult, user);
+          })
+        } else if (err) {
+          redirect({}, '/');
+          console.log(err);
+        }
+      });
   }
 
   getAccessToken() {
@@ -66,7 +58,7 @@ export default class Auth {
     return this.idToken;
   }
 
-  setSession(authResult) {
+  setSession(authResult, user) {
     // Set the time that the access token will expire at
     let expiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
     this.accessToken = authResult.accessToken;
@@ -76,11 +68,11 @@ export default class Auth {
     const cookies = {
       'auth0_idToken': this.idToken,
       'auth0_accessToken': this.accessToken,
+      'auth0_profile': JSON.stringify(user),
     }
+
     // Set session cookies
     setCookies(cookies)
-
-    this.handleUserDb(authResult.accessToken)
 
     // TO-DO:: Maybe route them back to the last page they was at?
     // Navigate to the home route
@@ -94,7 +86,6 @@ export default class Auth {
        } else if (err) {
          this.logout();
          console.log(err);
-         alert(`Could not get a new token (${err.error}: ${err.error_description}).`);
        }
     });
   }
@@ -108,14 +99,17 @@ export default class Auth {
     const cookies = {
       'auth0_idToken': this.idToken,
       'auth0_accessToken': this.accessToken,
+      'auth0_profile': null,
     }
     // Remove cookies
     removeCookies(cookies)
 
     // Reset apollo cache 
-    apolloClient.clearStore().then(() => {
-      redirect({}, '/');
-    })
+    if (apolloClient) {
+      apolloClient.clearStore().then(() => {
+        redirect({}, '/');
+      })
+    }
   }
 
   isAuthenticated() {
