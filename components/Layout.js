@@ -16,7 +16,8 @@ function parseCookies(req, options = {}) {
   return cookie.parse(req ? req.headers.cookie || '' : document.cookie, options);
 }
 
-const Layout = ({ auth, children, classes }) => {
+const Layout = ({ auth, children, classes, ...props }) => {
+  console.log(props)
   const [user, setUser] = useState();
 
   useEffect(() => {

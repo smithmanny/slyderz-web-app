@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Route from 'next/router';
 
@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import ShoppingCart from '@material-ui/icons/ShoppingCart';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import SignInForm from './auth/SignInForm';
 import SignUpForm from './auth/SignUpForm';
@@ -35,10 +37,34 @@ const styles = theme => ({
 });
 
 const AppBar = ({ auth, classes, user }) => {
-  const [values, setValues] = useState({
+  const [values, setValues] = React.useState({
     openAuthModal: false,
     modalView: 'log_in',
   });
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const isMenuOpen = Boolean(anchorEl);
+
+  function handleProfileMenuOpen(event) {
+    setAnchorEl(event.currentTarget);
+  }
+
+  function handleMenuClose() {
+    setAnchorEl(null);
+  }
+
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+    </Menu>
+  );
 
   return (
     <div className={classes.root}>
@@ -76,12 +102,18 @@ const AppBar = ({ auth, classes, user }) => {
                 <ShoppingCart />
               </IconButton>
 
-              <IconButton color="inherit">
+              <IconButton
+                aria-owns={isMenuOpen ? 'material-appbar' : undefined}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
                 <AccountCircle />
               </IconButton>
             </React.Fragment>
           )}
-
+          {/* Profile Menu */}
+          {renderMenu}
           <BasicModal open={values.openAuthModal} onClose={() => setValues({ ...values, openAuthModal: false })}>
             {values.modalView === 'log_in' ? (
               <SignInForm
