@@ -1,10 +1,13 @@
 import React from 'react';
 import Head from 'next/head';
-import { getDataFromTree } from 'react-apollo';
 import cookie from 'cookie';
+import { getDataFromTree } from 'react-apollo';
 import PropTypes from 'prop-types';
 
 import initApollo from './init-apollo';
+import Auth from '../utils/auth/auth';
+
+const authService = new Auth();
 
 function parseCookies(req, options = {}) {
   return cookie.parse(req ? req.headers.cookie || '' : document.cookie, options);
@@ -26,7 +29,7 @@ export default App =>
       const apollo = initApollo(
         {},
         {
-          getToken: () => parseCookies(req).token,
+          getToken: () => parseCookies(req).auth0_idToken,
         }
       );
 
@@ -75,11 +78,11 @@ export default App =>
       // `getDataFromTree` renders the component first, the client is passed off as a property.
       // After that rendering is done using Next's normal rendering pipeline
       this.apolloClient = initApollo(props.apolloState, {
-        getToken: () => parseCookies().token,
+        getToken: () => parseCookies().auth0_idToken,
       });
     }
 
     render() {
-      return <App {...this.props} apolloClient={this.apolloClient} />;
+      return <App {...this.props} apolloClient={this.apolloClient} auth={authService} />;
     }
   };

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Formik } from 'formik';
 import { Mutation } from 'react-apollo';
 import Link from 'next/link';
 
@@ -20,8 +19,8 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 
-import Form from './Form';
-import createUserMutation from '../../lib/gql/mutation/createUserMutation.gql';
+import Form from '../form/Form';
+import createUserMutation from '../../lib/gql/mutation/insertUserMutation.gql';
 
 const useStyles = theme => ({
   divider: {
@@ -87,10 +86,10 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
       <Divider className={classes.hDivider} />
       <Mutation
         mutation={createUserMutation}
-        onCompleted={user => {
+        onCompleted={(user) => {
           handleClose();
         }}
-        onError={error => {
+        onError={(error) => {
           setOpen(true);
         }}
       >
@@ -109,7 +108,9 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
               setSubmitting(false);
             }}
           >
-            {({ values, errors, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+            {({
+              values, errors, handleChange, handleBlur, handleSubmit, isSubmitting,
+            }) => (
               <React.Fragment>
                 <Grid container spacing={24}>
                   <Grid item xs={12}>
@@ -204,7 +205,13 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
                   </Grid>
 
                   <Grid item xs={12}>
-                    <Button type="submit" variant="contained" color="secondary" disabled={isSubmitting} fullWidth>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="secondary"
+                      disabled={isSubmitting}
+                      fullWidth
+                    >
                       Sign Up
                     </Button>
                   </Grid>

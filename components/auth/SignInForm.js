@@ -17,7 +17,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 
-import Form from './Form';
+import Form from '../form/Form';
 import signInUserMutation from '../../lib/gql/mutation/signInUserMutation.gql';
 
 const useStyles = theme => ({
@@ -83,21 +83,18 @@ const SignInForm = ({ classes, handleClose, openSignUpModal }) => {
       <Divider className={classes.hDivider} />
       <Mutation
         mutation={signInUserMutation}
-        onCompleted={user => {
+        onCompleted={(user) => {
           handleClose();
         }}
-        onError={error => {
+        onError={(error) => {
           setOpen(true);
         }}
       >
-        {createUser => (
+        {signInUser => (
           <Form
             onSubmit={(values, { setSubmitting }) => {
-              createUser({
+              signInUser({
                 variables: {
-                  username: `${values.firstName}${values.lastName}`,
-                  firstName: values.firstName,
-                  lastName: values.lastName,
                   email: values.email,
                   password: values.password,
                 },
@@ -105,7 +102,9 @@ const SignInForm = ({ classes, handleClose, openSignUpModal }) => {
               setSubmitting(false);
             }}
           >
-            {({ values, errors, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+            {({
+              values, errors, handleChange, handleBlur, handleSubmit, isSubmitting,
+            }) => (
               <React.Fragment>
                 <Grid container spacing={24}>
                   <Grid item xs={12}>

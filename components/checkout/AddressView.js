@@ -34,23 +34,23 @@ const useStyles = theme => ({
   },
 });
 
-const AddressLabel = classes => (
+const AddressLabel = () => (
   <ListItem alignItems="flex-start">
     <ListItemAvatar>
       <Avatar alt="Remy Sharp" src="/static/food.jpg" />
     </ListItemAvatar>
     <ListItemText
       primary="4288 Glider Circle"
-      secondary={
+      secondary={(
         <React.Fragment>
           <Typography component="span" color="textPrimary">
             Douglasville, GA
           </Typography>
         </React.Fragment>
-      }
+      )}
     />
   </ListItem>
-)
+);
 
 const AddressView = ({ classes, handleNext }) => {
   const [value, setValue] = React.useState('home');
@@ -74,22 +74,28 @@ const AddressView = ({ classes, handleNext }) => {
               value={value}
               onChange={handleChange}
             >
-              <FormControlLabel 
-                value="female" 
-                control={<Radio />} 
-                label={<AddressLabel classes={classes} />} 
+              <FormControlLabel
+                value="female"
+                control={<Radio />}
+                label={<AddressLabel classes={classes} />}
               />
-              <FormControlLabel 
-                value="male" 
-                control={<Radio />} 
-                label={<AddressLabel 
-                classes={classes} />} 
+              <FormControlLabel
+                value="male"
+                control={<Radio />}
+                label={(
+                  <AddressLabel
+                    classes={classes}
+                  />
+                )}
               />
-              <FormControlLabel 
-                value="other" 
-                control={<Radio />} 
-                label={<AddressLabel 
-                classes={classes} />} 
+              <FormControlLabel
+                value="other"
+                control={<Radio />}
+                label={(
+                  <AddressLabel
+                    classes={classes}
+                  />
+                )}
               />
               <FormControlLabel
                 value="disabled"
@@ -99,11 +105,11 @@ const AddressView = ({ classes, handleNext }) => {
               />
             </RadioGroup>
           </FormControl>
-          
+
           <Grid item xs={6}>
-            <Button 
-              variant="contained" 
-              color="primary" 
+            <Button
+              variant="contained"
+              color="primary"
               className={classes.button}
               onClick={handleNext}
             >
@@ -116,11 +122,12 @@ const AddressView = ({ classes, handleNext }) => {
       {/* Right Side */}
       <SideSummary />
     </React.Fragment>
-  )
-}
+  );
+};
 
 AddressView.propTypes = {
   classes: PropTypes.shape().isRequired,
+  handleNext: PropTypes.func.isRequired,
 };
 
 export default withStyles(useStyles)(AddressView);

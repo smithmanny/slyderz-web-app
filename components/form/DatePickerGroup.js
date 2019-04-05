@@ -4,7 +4,9 @@ import { Field } from 'formik';
 import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 
-const DatePickerField = ({ classes, field, form, ...other }) => {
+const DatePickerField = ({
+  classes, field, form, ...other
+}) => {
   const currentError = form.errors[field.name];
   return (
     <DatePicker
@@ -28,6 +30,6 @@ const DatePickerGroup = () => (
     <Typography variant="body1" gutterBottom>Event Date</Typography>
     <Field name="eventDate" component={DatePickerField} />
   </FormControl>
-)
+);
 
 export default DatePickerGroup;

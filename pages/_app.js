@@ -8,7 +8,7 @@ import JssProvider from 'react-jss/lib/JssProvider';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
-import getPageContext from '../src/getPageContext';
+import getPageContext from '../utils/getPageContext';
 import withApollo from '../apollo/withApollo';
 
 class MyApp extends App {
@@ -26,7 +26,9 @@ class MyApp extends App {
   }
 
   render() {
-    const { apolloClient, Component, pageProps } = this.props;
+    const {
+      apolloClient, auth, Component, pageProps,
+    } = this.props;
 
     return (
       <Container>
@@ -42,7 +44,7 @@ class MyApp extends App {
             <MuiThemeProvider theme={this.pageContext.theme} sheetsManager={this.pageContext.sheetsManager}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <CssBaseline />
-                  <Component pageContext={this.pageContext} {...pageProps} />
+                <Component pageContext={this.pageContext} auth={auth} {...pageProps} />
               </MuiPickersUtilsProvider>
             </MuiThemeProvider>
           </JssProvider>

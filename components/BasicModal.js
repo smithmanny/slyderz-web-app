@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Modal from '@material-ui/core/Modal';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -15,7 +15,9 @@ const styles = theme => ({
   },
 });
 
-const BasicModal = ({ children, classes, open, onClose }) => {
+const BasicModal = ({
+  children, classes, open, onClose,
+}) => {
   function getModalStyle() {
     const top = 50;
     const left = 50;
