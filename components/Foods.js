@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { gql } from 'apollo-boost';
 import { Query } from 'react-apollo';
 
 import { withStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
+
+import fetchFoodsQuery from '../lib/gql/query/food/fetchFoodsQuery.gql';
 
 const styles = theme => ({
   orderWrapper: {
@@ -26,18 +27,9 @@ const styles = theme => ({
   },
 });
 
-export const allFoodsQuery = gql`
-  query {
-    foods {
-      title
-      image
-    }
-  }
-`;
-
 const Foods = ({ classes }) => (
   <div className={classes.orderWrapper}>
-    <Query query={allFoodsQuery}>
+    <Query query={fetchFoodsQuery}>
       {({ loading, error, data }) => {
         if (loading) {
           return <div>Loading...</div>;

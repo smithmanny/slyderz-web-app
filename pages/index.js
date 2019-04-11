@@ -15,7 +15,7 @@ export default props => {
         <Typography variant="h5" color="inherit" gutterBottom>
           What would you like to eat?
         </Typography>
-        <Foods />
+        {/* <Foods /> */}
 
         <Chefs />
       </Content>

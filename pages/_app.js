@@ -9,9 +9,19 @@ import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
 import getPageContext from '../utils/getPageContext';
-import withApollo from '../apollo/withApollo';
+import withApollo from '../utils/withApollo';
 
 class MyApp extends App {
+  static async getInitialProps({ Component, ctx }) {
+    let pageProps = {};
+    if (Component.getInitialProps) {
+      pageProps = await Component.getInitialProps(ctx);
+    }
+    // this exposes the query to the user
+    pageProps.query = ctx.query;
+    return { pageProps };
+  }
+
   constructor() {
     super();
     this.pageContext = getPageContext();
@@ -27,7 +37,7 @@ class MyApp extends App {
 
   render() {
     const {
-      apolloClient, auth, Component, pageProps,
+      apollo, Component, pageProps,
     } = this.props;
 
     return (
@@ -36,7 +46,7 @@ class MyApp extends App {
           <title>Slyderz | Your On-demand Restaurant</title>
         </Head>
 
-        <ApolloProvider client={apolloClient}>
+        <ApolloProvider client={apollo}>
           <JssProvider
             registry={this.pageContext.sheetsRegistry}
             generateClassName={this.pageContext.generateClassName}
@@ -44,7 +54,7 @@ class MyApp extends App {
             <MuiThemeProvider theme={this.pageContext.theme} sheetsManager={this.pageContext.sheetsManager}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <CssBaseline />
-                <Component pageContext={this.pageContext} auth={auth} {...pageProps} />
+                <Component pageContext={this.pageContext} {...pageProps} />
               </MuiPickersUtilsProvider>
             </MuiThemeProvider>
           </JssProvider>

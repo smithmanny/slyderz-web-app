@@ -18,7 +18,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 
 import Form from '../form/Form';
-import signInUserMutation from '../../lib/gql/mutation/signInUserMutation.gql';
+import signInUserMutation from '../../lib/gql/mutation/auth/signInUserMutation.gql';
 
 const useStyles = theme => ({
   divider: {

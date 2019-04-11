@@ -20,7 +20,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 
 import Form from '../form/Form';
-import createUserMutation from '../../lib/gql/mutation/insertUserMutation.gql';
+import signUpUserMutation from '../../lib/gql/mutation/auth/signUpUserMutation.gql';
 
 const useStyles = theme => ({
   divider: {
@@ -85,7 +85,7 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
       <Typography variant="h6">Sign up for a Slyderz account</Typography>
       <Divider className={classes.hDivider} />
       <Mutation
-        mutation={createUserMutation}
+        mutation={signUpUserMutation}
         onCompleted={(user) => {
           handleClose();
         }}
@@ -93,14 +93,12 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
           setOpen(true);
         }}
       >
-        {createUser => (
+        {signup => (
           <Form
             onSubmit={(values, { setSubmitting }) => {
-              createUser({
+              signup({
                 variables: {
-                  username: `${values.firstName}${values.lastName}`,
-                  firstName: values.firstName,
-                  lastName: values.lastName,
+                  name: values.name,
                   email: values.email,
                   password: values.password,
                 },
@@ -135,15 +133,15 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
 
                   <Grid item xs={12}>
                     <Paper className={classes.root} elevation={1}>
-                      <IconButton className={classes.iconButton} aria-label="First Name">
+                      <IconButton className={classes.iconButton} aria-label="Name">
                         <PersonIcon />
                       </IconButton>
                       <Divider className={classes.divider} />
 
                       <InputBase
                         className={classes.input}
-                        placeholder="First Name"
-                        name="firstName"
+                        placeholder="Name"
+                        name="name"
                         value={values.firstName}
                         onBlur={handleBlur}
                         onChange={handleChange}
@@ -152,7 +150,7 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
                     </Paper>
                   </Grid>
 
-                  <Grid item xs={12}>
+                  {/* <Grid item xs={12}>
                     <Paper className={classes.root} elevation={1}>
                       <IconButton className={classes.iconButton} aria-label="Last Name">
                         <PersonIcon />
@@ -169,7 +167,7 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
                         required
                       />
                     </Paper>
-                  </Grid>
+                  </Grid> */}
 
                   <Grid item xs={12}>
                     <Paper className={classes.root} elevation={1}>
