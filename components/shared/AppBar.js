@@ -13,9 +13,9 @@ import ShoppingCart from '@material-ui/icons/ShoppingCart';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import SignInForm from './auth/SignInForm';
-import SignUpForm from './auth/SignUpForm';
-import BasicModal from './BasicModal';
+import SignInForm from '../auth/SignInForm';
+import SignUpForm from '../auth/SignUpForm';
+import BasicModal from '../BasicModal';
 
 const styles = theme => ({
   main: {
@@ -36,7 +36,7 @@ const styles = theme => ({
   },
 });
 
-const AppBar = ({ auth, classes, user }) => {
+const AppBar = ({ classes, user }) => {
   const [values, setValues] = React.useState({
     openAuthModal: false,
     modalView: 'log_in',
@@ -75,25 +75,14 @@ const AppBar = ({ auth, classes, user }) => {
           </Typography>
 
           {!user && (
-            <React.Fragment>
-              {/* <Button
-                variant="contained"
-                color="secondary"
-                className={classes.menuItem}
-                onClick={() => setValues({ ...values, openAuthModal: true, modalView: 'sign_up' })}
-              >
-                Sign Up
-              </Button> */}
-
-              <Button
-                variant="contained"
-                color="secondary"
-                className={classes.menuItem}
-                onClick={() => auth.login()}
-              >
-                Log In
-              </Button>
-            </React.Fragment>
+            <Button
+              variant="contained"
+              color="secondary"
+              className={classes.menuItem}
+              onClick={() => setValues({ ...values, openAuthModal: true, modalView: 'sign_up' })}
+            >
+              Log In
+            </Button> 
           )}
 
           {user && (

@@ -9,7 +9,6 @@ module.exports = (phase, { defaultConfig }) => {
     // Config used to run in production.
     return {};
   }
-  const withESLint = require('next-eslint');
   const withGraphql = require('next-plugin-graphql');
 
   return withGraphql();
