@@ -1,0 +1,6 @@
+query fetchCusines {
+  cuisines {
+    name
+    image
+  }
+}

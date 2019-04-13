@@ -7,7 +7,7 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 
-import fetchFoodsQuery from '../lib/gql/query/food/fetchFoodsQuery.gql';
+import fetchCuisinesQuery from '../lib/gql/query/cuisines/fetchCuisinesQuery.gql';
 
 const styles = theme => ({
   orderWrapper: {
@@ -29,7 +29,7 @@ const styles = theme => ({
 
 const Foods = ({ classes }) => (
   <div className={classes.orderWrapper}>
-    <Query query={fetchFoodsQuery}>
+    <Query query={fetchCuisinesQuery}>
       {({ loading, error, data }) => {
         if (loading) {
           return <div>Loading...</div>;
@@ -45,11 +45,11 @@ const Foods = ({ classes }) => (
 
         return (
           <GridList className={classes.gridList} cols={4} spacing={16}>
-            {data.foods.map(food => (
-              <GridListTile key={food.title}>
-                <img src={food.image} alt={food.title} />
+            {data.cuisines.map(cuisine => (
+              <GridListTile key={cuisine.title}>
+                <img src={cuisine.image} alt={cuisine.name} />
                 <GridListTileBar
-                  title={food.title}
+                  title={cuisine.name}
                   classes={{
                     root: classes.titleBar,
                   }}

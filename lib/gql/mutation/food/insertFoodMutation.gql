@@ -1,7 +1,6 @@
-mutation createFood($image: String, $title: String) {
-  createFood(data: { image: $image, title: $title} ) {
-    id
+mutation createCuisine($image: String, $name: String) {
+  createCuisine(name: "First Cuisine", image: "Cuisine Image") {
+    name
     image
-    title
   }
 }
