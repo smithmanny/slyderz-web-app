@@ -90,13 +90,14 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
           handleClose();
         }}
         onError={(error) => {
+          console.log(error)
           setOpen(true);
         }}
       >
         {signup => (
           <Form
-            onSubmit={(values, { setSubmitting }) => {
-              signup({
+            onSubmit={async (values, { setSubmitting }) => {
+              await signup({
                 variables: {
                   name: values.name,
                   email: values.email,
@@ -107,7 +108,7 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
             }}
           >
             {({
-              values, errors, handleChange, handleBlur, handleSubmit, isSubmitting,
+              values, errors, handleChange, handleBlur, isSubmitting,
             }) => (
               <React.Fragment>
                 <Grid container spacing={24}>
@@ -142,7 +143,7 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
                         className={classes.input}
                         placeholder="Name"
                         name="name"
-                        value={values.firstName}
+                        value={values.name}
                         onBlur={handleBlur}
                         onChange={handleChange}
                         required
@@ -238,7 +239,7 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
                   ContentProps={{
                     'aria-describedby': 'message-id',
                   }}
-                  message={<span id="message-id">Error! :(</span>}
+                  message={<span id="message-id">{JSON.stringify(errors)}</span>}
                   action={[
                     <IconButton
                       key="close"

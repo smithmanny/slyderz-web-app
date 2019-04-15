@@ -28,7 +28,7 @@ const styles = theme => ({
 });
 
 const Foods = ({ classes }) => (
-  <div className={classes.orderWrapper}>
+  // <div className={classes.orderWrapper}>
     <Query query={fetchCuisinesQuery}>
       {({ loading, error, data }) => {
         if (loading) {
@@ -42,11 +42,10 @@ const Foods = ({ classes }) => (
           );
         }
 
-
         return (
           <GridList className={classes.gridList} cols={4} spacing={16}>
             {data.cuisines.map(cuisine => (
-              <GridListTile key={cuisine.title}>
+              <GridListTile key={cuisine.name}>
                 <img src={cuisine.image} alt={cuisine.name} />
                 <GridListTileBar
                   title={cuisine.name}
@@ -60,7 +59,7 @@ const Foods = ({ classes }) => (
         );
       }}
     </Query>
-  </div>
+  // </div>
 );
 
 Foods.propTypes = {
