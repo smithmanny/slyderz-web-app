@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
 import Link from 'next/link';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -26,33 +27,33 @@ const useStyles = theme => ({
   divider: {
     width: 1,
     height: 28,
-    margin: 4,
+    margin: 4
   },
   haveAccountLink: {
     '&:hover': {
       textDecoration: 'underline',
-      cursor: 'pointer',
-    },
+      cursor: 'pointer'
+    }
   },
   hDivider: {
     height: 1,
     width: '100%',
-    margin: `${theme.spacing.unit * 2}px 0`,
+    margin: `${theme.spacing.unit * 2}px 0`
   },
   root: {
     padding: '2px 4px',
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   input: {
     marginLeft: 8,
-    flex: 1,
+    flex: 1
   },
   iconButton: {
-    padding: 10,
+    padding: 10
   },
   grow: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   paper: {
     position: 'absolute',
@@ -60,8 +61,8 @@ const useStyles = theme => ({
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing.unit * 4,
-    outline: 'none',
-  },
+    outline: 'none'
+  }
 });
 
 const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
@@ -86,35 +87,37 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
       <Divider className={classes.hDivider} />
       <Mutation
         mutation={signUpUserMutation}
-        onCompleted={(user) => {
+        onCompleted={user => {
           handleClose();
         }}
-        onError={(error) => {
-          console.log(error)
+        onError={error => {
+          console.log(error);
           setOpen(true);
         }}
       >
         {signup => (
           <Form
             onSubmit={async (values, { setSubmitting }) => {
+              console.log(values)
               await signup({
                 variables: {
                   name: values.name,
                   email: values.email,
-                  password: values.password,
-                },
+                  password: values.password
+                }
               });
               setSubmitting(false);
             }}
           >
-            {({
-              values, errors, handleChange, handleBlur, isSubmitting,
-            }) => (
+            {({ values, errors, handleChange, handleBlur, isSubmitting }) => (
               <React.Fragment>
                 <Grid container spacing={24}>
                   <Grid item xs={12}>
                     <Paper className={classes.root} elevation={1}>
-                      <IconButton className={classes.iconButton} aria-label="Email">
+                      <IconButton
+                        className={classes.iconButton}
+                        aria-label="Email"
+                      >
                         <EmailIcon />
                       </IconButton>
                       <Divider className={classes.divider} />
@@ -134,7 +137,10 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
 
                   <Grid item xs={12}>
                     <Paper className={classes.root} elevation={1}>
-                      <IconButton className={classes.iconButton} aria-label="Name">
+                      <IconButton
+                        className={classes.iconButton}
+                        aria-label="Name"
+                      >
                         <PersonIcon />
                       </IconButton>
                       <Divider className={classes.divider} />
@@ -172,7 +178,10 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
 
                   <Grid item xs={12}>
                     <Paper className={classes.root} elevation={1}>
-                      <IconButton className={classes.iconButton} aria-label="Password">
+                      <IconButton
+                        className={classes.iconButton}
+                        aria-label="Password"
+                      >
                         <LockIcon />
                       </IconButton>
                       <Divider className={classes.divider} />
@@ -187,7 +196,10 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
                         type={showPassword ? 'text' : 'password'}
                         required
                       />
-                      <IconButton aria-label="Toggle password visibility" onClick={handleClickShowPassword}>
+                      <IconButton
+                        aria-label="Toggle password visibility"
+                        onClick={handleClickShowPassword}
+                      >
                         {showPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>
                     </Paper>
@@ -196,7 +208,8 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
                   <Grid item xs={12}>
                     <Typography variant="h6">Birthday</Typography>
                     <Typography variant="caption">
-                      To sign up, you must be 18 or older. Other people won’t see your birthday.
+                      To sign up, you must be 18 or older. Other people won’t
+                      see your birthday.
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
@@ -231,15 +244,17 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
                 <Snackbar
                   anchorOrigin={{
                     vertical: 'bottom',
-                    horizontal: 'center',
+                    horizontal: 'center'
                   }}
                   open={open}
                   autoHideDuration={3000}
                   onClose={handleSnackbar}
                   ContentProps={{
-                    'aria-describedby': 'message-id',
+                    'aria-describedby': 'message-id'
                   }}
-                  message={<span id="message-id">{JSON.stringify(errors)}</span>}
+                  message={
+                    <span id="message-id">{JSON.stringify(errors)}</span>
+                  }
                   action={[
                     <IconButton
                       key="close"
@@ -249,7 +264,7 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
                       onClick={handleSnackbar}
                     >
                       <CloseIcon />
-                    </IconButton>,
+                    </IconButton>
                   ]}
                 />
               </React.Fragment>
@@ -264,7 +279,7 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
 SignUpForm.propTypes = {
   classes: PropTypes.shape().isRequired,
   handleClose: PropTypes.func.isRequired,
-  openSignInModal: PropTypes.func.isRequired,
+  openSignInModal: PropTypes.func.isRequired
 };
 
 export default withStyles(useStyles)(SignUpForm);

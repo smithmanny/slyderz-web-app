@@ -5,7 +5,11 @@ export { default as DatePickerField } from './DatePickerGroup';
 export { default as SelectField } from './SelectGroup';
 
 const BasicForm = ({
-  children, initialValues, onSubmit, validation, ...props
+  children,
+  initialValues,
+  onSubmit,
+  validation,
+  ...props
 }) => (
   <Formik
     initialValues={initialValues}
@@ -14,11 +18,21 @@ const BasicForm = ({
     {...props}
   >
     {({
-      values, errors, isSubmitting, handleSubmit, handleBlur, handleChange,
+      values,
+      errors,
+      isSubmitting,
+      handleSubmit,
+      handleBlur,
+      handleChange
     }) => (
       <Form>
         {children({
-          values, errors, isSubmitting, handleSubmit, handleBlur, handleChange,
+          values,
+          errors,
+          isSubmitting,
+          handleSubmit,
+          handleBlur,
+          handleChange
         })}
       </Form>
     )}

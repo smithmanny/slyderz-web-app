@@ -13,15 +13,15 @@ import { SelectField } from '../form/Form';
 
 const styles = () => ({
   card: {
-    maxWidth: 400,
+    maxWidth: 400
   },
   media: {
     height: 0,
-    paddingTop: '56.25%', // 16:9
+    paddingTop: '56.25%' // 16:9
   },
   addToOrder: {
-    marginLeft: 'auto',
-  },
+    marginLeft: 'auto'
+  }
 });
 
 const DishCard = ({ classes, name }) => (
@@ -36,19 +36,17 @@ const DishCard = ({ classes, name }) => (
         Dish Title Goes Here
       </Typography>
       <Typography component="p">
-        This impressive paella is a perfect party dish and a fun meal to cook together with your
-        guests. Add 1 cup of frozen peas along with the mussels, if you like.
-
-        This impressive paella is a perfect party dish and a fun meal to cook together with your
-        guests. Add 1 cup of frozen peas along with the mussels, if you like.
+        This impressive paella is a perfect party dish and a fun meal to cook
+        together with your guests. Add 1 cup of frozen peas along with the
+        mussels, if you like. This impressive paella is a perfect party dish and
+        a fun meal to cook together with your guests. Add 1 cup of frozen peas
+        along with the mussels, if you like.
       </Typography>
     </CardContent>
     <CardActions>
       <Grid container>
         <Grid item xs={9}>
-          <Typography variant="body1">
-            $50/per person
-          </Typography>
+          <Typography variant="body1">$50/per person</Typography>
         </Grid>
 
         <Grid item xs={3}>
@@ -60,12 +58,12 @@ const DishCard = ({ classes, name }) => (
 );
 
 DishCard.defaultProps = {
-  name: null,
+  name: null
 };
 
 DishCard.propTypes = {
   classes: PropTypes.shape().isRequired,
-  name: PropTypes.string,
+  name: PropTypes.string
 };
 
 export default withStyles(styles)(DishCard);

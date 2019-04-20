@@ -13,16 +13,16 @@ const styles = theme => ({
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
-    overflow: 'hidden',
+    overflow: 'hidden'
   },
   section: {
     paddingTop: theme.spacing.unit * 5,
-    paddingBottom: theme.spacing.unit * 5,
+    paddingBottom: theme.spacing.unit * 5
   },
   paper: {
     height: 205,
-    marginBottom: theme.spacing.unit,
-  },
+    marginBottom: theme.spacing.unit
+  }
 });
 
 const cookData = [
@@ -31,36 +31,36 @@ const cookData = [
     name: 'Shakhor Smith',
     specialize: 'BBQ',
     price: 50,
-    city: 'Ft. Lauderdale, FL',
+    city: 'Ft. Lauderdale, FL'
   },
   {
     img: '/static/food.jpg',
     name: 'Shamar Smith',
     specialize: 'Seafood',
     price: 50,
-    city: 'Ft. Lauderdale, FL',
+    city: 'Ft. Lauderdale, FL'
   },
   {
     img: '/static/food.jpg',
     name: 'Nicole Hollingsworth',
     specialize: 'American',
     price: 60,
-    city: 'Bronx, NY',
+    city: 'Bronx, NY'
   },
   {
     img: '/static/food.jpg',
     name: 'Johnathan Smith',
     specialize: 'Chinese',
     price: 70,
-    city: 'Mount Vernon, NY',
+    city: 'Mount Vernon, NY'
   },
   {
     img: '/static/food.jpg',
     name: 'Jayla Smth',
     specialize: 'Burgers',
     price: 20,
-    city: 'Atlanta, GA',
-  },
+    city: 'Atlanta, GA'
+  }
 ];
 
 const Chefs = ({ classes }) => (
@@ -77,7 +77,9 @@ const Chefs = ({ classes }) => (
             xs={12}
             sm={4}
             md={3}
-            onClick={() => Router.push({ pathname: '/chef', query: { name: cook.name } })}
+            onClick={() =>
+              Router.push({ pathname: '/chef', query: { name: cook.name } })
+            }
           >
             <Paper className={classes.paper} elevation={2}>
               <img
@@ -86,7 +88,7 @@ const Chefs = ({ classes }) => (
                 style={{
                   height: '100%',
                   width: '100%',
-                  objectFit: 'cover',
+                  objectFit: 'cover'
                 }}
               />
             </Paper>
@@ -97,10 +99,7 @@ const Chefs = ({ classes }) => (
               {cook.name}
             </Typography>
             <Typography variant="caption" color="inherit" gutterBottom>
-              $
-              {cook.price}
-              {' '}
-              per person
+              ${cook.price} per person
             </Typography>
           </Grid>
         ))}
@@ -115,7 +114,7 @@ const Chefs = ({ classes }) => (
 );
 
 Chefs.propTypes = {
-  classes: PropTypes.shape().isRequired,
+  classes: PropTypes.shape().isRequired
 };
 
 export default withStyles(styles)(Chefs);

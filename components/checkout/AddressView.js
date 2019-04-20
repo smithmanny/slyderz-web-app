@@ -20,18 +20,18 @@ import SideSummary from './SideSummary';
 const useStyles = theme => ({
   button: {
     width: '100%',
-    height: 46,
+    height: 46
   },
   content: {
-    padding: `0, ${theme.spacing.unit}`,
+    padding: `0, ${theme.spacing.unit}`
   },
   section: {
     paddingTop: theme.spacing.unit * 5,
-    paddingBottom: theme.spacing.unit * 5,
+    paddingBottom: theme.spacing.unit * 5
   },
   name: {
-    margin: 'auto',
-  },
+    margin: 'auto'
+  }
 });
 
 const AddressLabel = () => (
@@ -41,13 +41,13 @@ const AddressLabel = () => (
     </ListItemAvatar>
     <ListItemText
       primary="4288 Glider Circle"
-      secondary={(
+      secondary={
         <React.Fragment>
           <Typography component="span" color="textPrimary">
             Douglasville, GA
           </Typography>
         </React.Fragment>
-      )}
+      }
     />
   </ListItem>
 );
@@ -82,20 +82,12 @@ const AddressView = ({ classes, handleNext }) => {
               <FormControlLabel
                 value="male"
                 control={<Radio />}
-                label={(
-                  <AddressLabel
-                    classes={classes}
-                  />
-                )}
+                label={<AddressLabel classes={classes} />}
               />
               <FormControlLabel
                 value="other"
                 control={<Radio />}
-                label={(
-                  <AddressLabel
-                    classes={classes}
-                  />
-                )}
+                label={<AddressLabel classes={classes} />}
               />
               <FormControlLabel
                 value="disabled"
@@ -127,7 +119,7 @@ const AddressView = ({ classes, handleNext }) => {
 
 AddressView.propTypes = {
   classes: PropTypes.shape().isRequired,
-  handleNext: PropTypes.func.isRequired,
+  handleNext: PropTypes.func.isRequired
 };
 
 export default withStyles(useStyles)(AddressView);

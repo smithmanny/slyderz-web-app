@@ -4,7 +4,6 @@
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
     "@material-ui/styles": "^3.0.0-alpha.7",
-    "apollo-boost": "^0.3.1",
     "apollo-cache-inmemory": "^1.5.1",
     "apollo-cache-persist": "^0.1.1",
     "apollo-client": "^2.5.1",
@@ -15,11 +14,6 @@
     "apollo-link-ws": "^1.0.17",
     "axios": "^0.18.0",
     "date-fns": "2.0.0-alpha.25",
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-jsx-a11y": "^6.2.1",
-    "eslint-plugin-react": "^7.12.4",
     "express": "^4.16.4",
     "formik": "^1.5.2",
     "graphql": "^14.2.1",
@@ -29,7 +23,6 @@
     "jss": "^9.8.7",
     "material-ui-pickers": "^2.2.4",
     "next": "^8.0.4",
-    "next-eslint": "^0.0.4",
     "next-plugin-graphql": "^0.0.2",
     "next-with-apollo": "^3.4.0",
     "prop-types": "^15.7.2",
@@ -46,5 +39,17 @@
     "build": "next build",
     "start": "next start",
     "lint": "./node_modules/.bin/eslint --ext .js --ext .js components  --fix"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-prettier": "^3.0.1",
+    "eslint-plugin-react": "^7.12.4",
+    "eslint-plugin-react-hooks": "^1.6.0",
+    "prettier": "^1.17.0"
   }
 }

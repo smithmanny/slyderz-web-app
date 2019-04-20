@@ -4,9 +4,7 @@ import { Field } from 'formik';
 import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 
-const DatePickerField = ({
-  classes, field, form, ...other
-}) => {
+const DatePickerField = ({ classes, field, form, ...other }) => {
   const currentError = form.errors[field.name];
   return (
     <DatePicker
@@ -19,7 +17,9 @@ const DatePickerField = ({
       error={Boolean(currentError)}
       onError={(_, error) => form.setFieldError(field.name, error)}
       onChange={date => form.setFieldValue(field.name, date, true)}
-      mask={value => (value ? [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/] : [])}
+      mask={value =>
+        value ? [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/] : []
+      }
       {...other}
     />
   );
@@ -27,7 +27,9 @@ const DatePickerField = ({
 
 const DatePickerGroup = () => (
   <FormControl fullWidth margin="normal">
-    <Typography variant="body1" gutterBottom>Event Date</Typography>
+    <Typography variant="body1" gutterBottom>
+      Event Date
+    </Typography>
     <Field name="eventDate" component={DatePickerField} />
   </FormControl>
 );

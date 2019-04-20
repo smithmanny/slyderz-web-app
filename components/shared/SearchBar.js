@@ -15,25 +15,28 @@ const styles = theme => ({
     width: '100%',
     maxWidth: 900,
     margin: 'auto',
-    marginBottom: theme.spacing.unit * 5,
+    marginBottom: theme.spacing.unit * 5
   },
   input: {
     marginLeft: 8,
-    flex: 1,
+    flex: 1
   },
   iconButton: {
-    padding: 10,
+    padding: 10
   },
   divider: {
     width: 1,
     height: 28,
-    margin: 4,
-  },
+    margin: 4
+  }
 });
 
 const SearchBar = ({ classes }) => (
   <Paper className={classes.root} elevation={1}>
-    <InputBase className={classes.input} placeholder="Search for cooks, food and more..." />
+    <InputBase
+      className={classes.input}
+      placeholder="Search for cooks, food and more..."
+    />
 
     <Divider className={classes.divider} />
     <IconButton className={classes.iconButton} aria-label="Search">
@@ -43,7 +46,7 @@ const SearchBar = ({ classes }) => (
 );
 
 SearchBar.propTypes = {
-  classes: PropTypes.shape().isRequired,
+  classes: PropTypes.shape().isRequired
 };
 
 export default withStyles(styles)(SearchBar);

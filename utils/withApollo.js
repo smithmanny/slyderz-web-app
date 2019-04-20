@@ -62,20 +62,20 @@ export default withApollo(({ headers }) => {
 
   const stateLink = withClientState({
     cache,
-    resolvers: {
-      // Mutation: {
-      //   updateNetworkStatus: (_, { isConnected }, { cache }) => {
-      //     const data = {
-      //       networkStatus: {
-      //         __typename: 'NetworkStatus',
-      //         isConnected
-      //       },
-      //     };
-      //     cache.writeData({ data });
-      //     return null;
-      //   },
-      // },
-    }
+    // resolvers: {
+    //   Mutation: {
+    //     updateNetworkStatus: (_, { isConnected }, { cache }) => {
+    //       const data = {
+    //         networkStatus: {
+    //           __typename: 'NetworkStatus',
+    //           isConnected
+    //         },
+    //       };
+    //       cache.writeData({ data });
+    //       return null;
+    //     },
+    //   },
+    // }
   });
 
   let link = ApolloLink.from([stateLink, errorLink, contextLink, httpLink])

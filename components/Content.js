@@ -8,19 +8,17 @@ const useStyles = theme => ({
   content: {
     padding: theme.spacing.unit,
     [theme.breakpoints.up('md')]: {
-      padding: theme.spacing.unit * 5,
-    },
-  },
+      padding: theme.spacing.unit * 5
+    }
+  }
 });
 
 const Content = ({ classes, children }) => (
-  <Grid className={classes.content}>
-    {children}
-  </Grid>
+  <Grid className={classes.content}>{children}</Grid>
 );
 
 Content.propTypes = {
-  classes: PropTypes.shape().isRequired,
+  classes: PropTypes.shape().isRequired
 };
 
 export default withStyles(useStyles)(Content);

@@ -15,18 +15,18 @@ import SideSummary from './SideSummary';
 const useStyles = theme => ({
   button: {
     width: '100%',
-    height: 46,
+    height: 46
   },
   content: {
-    padding: `0, ${theme.spacing.unit}`,
+    padding: `0, ${theme.spacing.unit}`
   },
   section: {
     paddingTop: theme.spacing.unit * 5,
-    paddingBottom: theme.spacing.unit * 5,
+    paddingBottom: theme.spacing.unit * 5
   },
   name: {
-    margin: 'auto',
-  },
+    margin: 'auto'
+  }
 });
 
 const AddressLabel = () => (
@@ -36,13 +36,13 @@ const AddressLabel = () => (
     </ListItemAvatar>
     <ListItemText
       primary="4288 Glider Circle"
-      secondary={(
+      secondary={
         <React.Fragment>
           <Typography component="span" color="textPrimary">
             Douglasville, GA
           </Typography>
         </React.Fragment>
-      )}
+      }
     />
   </ListItem>
 );
@@ -53,11 +53,7 @@ const PaymentView = ({ classes }) => (
       <Typography variant="h3">Payment</Typography>
 
       <Grid className={classes.section} item xs={6}>
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.button}
-        >
+        <Button variant="contained" color="primary" className={classes.button}>
           Pay Now
         </Button>
       </Grid>
@@ -69,7 +65,7 @@ const PaymentView = ({ classes }) => (
 );
 
 PaymentView.propTypes = {
-  classes: PropTypes.shape().isRequired,
+  classes: PropTypes.shape().isRequired
 };
 
 export default withStyles(useStyles)(PaymentView);

@@ -16,34 +16,36 @@ import SideSummary from './SideSummary';
 const useStyles = theme => ({
   button: {
     width: '100%',
-    height: 46,
+    height: 46
   },
   content: {
-    padding: `0, ${theme.spacing.unit}`,
+    padding: `0, ${theme.spacing.unit}`
   },
   disclaimer: {
     fontWeight: 'bold',
     width: '100%',
-    textAlign: 'center',
+    textAlign: 'center'
   },
   section: {
     paddingTop: theme.spacing.unit * 5,
-    paddingBottom: theme.spacing.unit * 5,
+    paddingBottom: theme.spacing.unit * 5
   },
   name: {
-    margin: 'auto',
-  },
+    margin: 'auto'
+  }
 });
 
 function generate(element) {
-  return [0, 1, 2].map(value => React.cloneElement(element, {
-    key: value,
-  }));
+  return [0, 1, 2].map(value =>
+    React.cloneElement(element, {
+      key: value
+    })
+  );
 }
 
 const SummaryView = ({ classes, handleNext }) => (
   <React.Fragment>
-    { /* Left Side */}
+    {/* Left Side */}
     <Grid item xs={12} md={9}>
       <Grid item xs={12}>
         <Typography variant="h3">Review your event</Typography>
@@ -57,7 +59,7 @@ const SummaryView = ({ classes, handleNext }) => (
               <ListItemSecondaryAction>
                 <ListItemText primary="$100" />
               </ListItemSecondaryAction>
-            </ListItem>,
+            </ListItem>
           )}
           <TextField
             id="outlined-multiline-static"
@@ -79,10 +81,7 @@ const SummaryView = ({ classes, handleNext }) => (
             </Button>
           </ListItem>
           <ListItem>
-            <Typography
-              variant="caption"
-              className={classes.disclaimer}
-            >
+            <Typography variant="caption" className={classes.disclaimer}>
               You won't be charged yet
             </Typography>
           </ListItem>
@@ -90,14 +89,14 @@ const SummaryView = ({ classes, handleNext }) => (
       </Grid>
     </Grid>
 
-    { /* Right Side */}
+    {/* Right Side */}
     <SideSummary />
   </React.Fragment>
 );
 
 SummaryView.propTypes = {
   classes: PropTypes.shape().isRequired,
-  handleNext: PropTypes.func.isRequired,
+  handleNext: PropTypes.func.isRequired
 };
 
 export default withStyles(useStyles)(SummaryView);

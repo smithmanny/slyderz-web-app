@@ -7,24 +7,20 @@ import AppBar from './shared/AppBar';
 const useStyles = () => ({
   main: {
     maxWidth: 1920,
-    margin: 'auto',
-  },
+    margin: 'auto'
+  }
 });
 
-const Layout = ({ children, classes }) => {
-  return (
-    <React.Fragment>
-      <AppBar />
-      <main className={classes.main}>
-        {children}
-      </main>
-    </React.Fragment>
-  );
-};
+const Layout = ({ children, classes }) => (
+  <React.Fragment>
+    <AppBar />
+    <main className={classes.main}>{children}</main>
+  </React.Fragment>
+);
 
 Layout.propTypes = {
   children: PropTypes.PropTypes.shape().isRequired,
-  classes: PropTypes.shape().isRequired,
+  classes: PropTypes.shape().isRequired
 };
 
 export default withStyles(useStyles)(Layout);

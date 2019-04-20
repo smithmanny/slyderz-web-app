@@ -20,26 +20,26 @@ import BasicModal from '../BasicModal';
 const styles = theme => ({
   main: {
     maxWidth: 1920,
-    margin: 'auto',
+    margin: 'auto'
   },
   menuItem: {
-    marginLeft: theme.spacing.unit * 3,
+    marginLeft: theme.spacing.unit * 3
   },
   root: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   grow: {
     flexGrow: 1,
     '&:hover': {
-      cursor: 'pointer',
-    },
-  },
+      cursor: 'pointer'
+    }
+  }
 });
 
 const AppBar = ({ classes, user }) => {
   const [values, setValues] = React.useState({
     openAuthModal: false,
-    modalView: 'log_in',
+    modalView: 'log_in'
   });
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -70,7 +70,12 @@ const AppBar = ({ classes, user }) => {
     <div className={classes.root}>
       <MuiAppBar position="static" color="primary">
         <Toolbar>
-          <Typography variant="h6" color="inherit" className={classes.grow} onClick={() => Route.push('/')}>
+          <Typography
+            variant="h6"
+            color="inherit"
+            className={classes.grow}
+            onClick={() => Route.push('/')}
+          >
             Slyderz
           </Typography>
 
@@ -79,10 +84,16 @@ const AppBar = ({ classes, user }) => {
               variant="contained"
               color="secondary"
               className={classes.menuItem}
-              onClick={() => setValues({ ...values, openAuthModal: true, modalView: 'sign_up' })}
+              onClick={() =>
+                setValues({
+                  ...values,
+                  openAuthModal: true,
+                  modalView: 'sign_up'
+                })
+              }
             >
               Log In
-            </Button> 
+            </Button>
           )}
 
           {user && (
@@ -103,16 +114,27 @@ const AppBar = ({ classes, user }) => {
           )}
           {/* Profile Menu */}
           {renderMenu}
-          <BasicModal open={values.openAuthModal} onClose={() => setValues({ ...values, openAuthModal: false })}>
+          <BasicModal
+            open={values.openAuthModal}
+            onClose={() => setValues({ ...values, openAuthModal: false })}
+          >
             {values.modalView === 'log_in' ? (
               <SignInForm
-                handleClose={() => setValues({ ...values, openAuthModal: false })}
-                openSignUpModal={() => setValues({ ...values, modalView: 'sign_up' })}
+                handleClose={() =>
+                  setValues({ ...values, openAuthModal: false })
+                }
+                openSignUpModal={() =>
+                  setValues({ ...values, modalView: 'sign_up' })
+                }
               />
             ) : (
               <SignUpForm
-                handleClose={() => setValues({ ...values, openAuthModal: false })}
-                openSignInModal={() => setValues({ ...values, modalView: 'log_in' })}
+                handleClose={() =>
+                  setValues({ ...values, openAuthModal: false })
+                }
+                openSignInModal={() =>
+                  setValues({ ...values, modalView: 'log_in' })
+                }
               />
             )}
           </BasicModal>

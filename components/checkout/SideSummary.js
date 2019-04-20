@@ -18,36 +18,38 @@ import ClockIcon from '@material-ui/icons/AccessTime';
 const styles = theme => ({
   bigAvatar: {
     width: 60,
-    height: 60,
+    height: 60
   },
   cancellation: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
   content: {
-    padding: `0, ${theme.spacing.unit}`,
+    padding: `0, ${theme.spacing.unit}`
   },
   datePicker: {
-    marginBottom: theme.spacing.unit,
+    marginBottom: theme.spacing.unit
   },
   time: {
     display: 'flex',
     justifyContent: 'space-between',
     paddingTop: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 2
   },
   name: {
-    margin: 'auto',
+    margin: 'auto'
   },
   paper: {
-    padding: theme.spacing.unit * 2,
-  },
+    padding: theme.spacing.unit * 2
+  }
 });
 
 function generate(element) {
-  return [0, 1, 2].map(value => React.cloneElement(element, {
-    key: value,
-  }));
+  return [0, 1, 2].map(value =>
+    React.cloneElement(element, {
+      key: value
+    })
+  );
 }
 
 const SideSummary = ({ classes }) => (
@@ -59,7 +61,11 @@ const SideSummary = ({ classes }) => (
             <Typography variant="h5">Shakhor Smith</Typography>
           </Grid>
           <Grid item>
-            <Avatar alt="Remy Sharp" src="/static/food.jpg" className={classes.bigAvatar} />
+            <Avatar
+              alt="Remy Sharp"
+              src="/static/food.jpg"
+              className={classes.bigAvatar}
+            />
           </Grid>
 
           <Grid item xs={12}>
@@ -92,14 +98,11 @@ const SideSummary = ({ classes }) => (
             <List dense>
               {generate(
                 <ListItem>
-                  <ListItemText
-                    primary="Single-line item"
-                    secondary="x 2"
-                  />
+                  <ListItemText primary="Single-line item" secondary="x 2" />
                   <ListItemSecondaryAction>
                     <ListItemText primary="$100" />
                   </ListItemSecondaryAction>
-                </ListItem>,
+                </ListItem>
               )}
               <ListItem divider>
                 <ListItemText primary="Total:" />
@@ -125,7 +128,7 @@ const SideSummary = ({ classes }) => (
 );
 
 SideSummary.propTypes = {
-  classes: PropTypes.shape().isRequired,
+  classes: PropTypes.shape().isRequired
 };
 
 export default withStyles(styles)(SideSummary);
