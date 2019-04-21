@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
 import AppBar from './shared/AppBar';
+import User from './shared/User';
 
 const useStyles = () => ({
   main: {
@@ -12,10 +13,18 @@ const useStyles = () => ({
 });
 
 const Layout = ({ children, classes }) => (
-  <React.Fragment>
-    <AppBar />
-    <main className={classes.main}>{children}</main>
-  </React.Fragment>
+  <User>
+    {({ data: { me } }) => (
+      <React.Fragment>
+        <AppBar user={me} />
+        <main 
+          className={classes.main}
+        >
+          {children}
+        </main>
+      </React.Fragment>
+    )}
+  </User>
 );
 
 Layout.propTypes = {

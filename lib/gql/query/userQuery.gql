@@ -1,9 +1,0 @@
-query fetchUser($token: String!) {
-  user(
-    where: { token: { _eq: $token}}
-  ) {
-    id
-    token
-    name
-  }
-}

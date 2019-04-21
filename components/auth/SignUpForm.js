@@ -22,6 +22,7 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import Form from '../form/Form';
 import signUpUserMutation from '../../lib/gql/mutation/auth/signUpUserMutation.gql';
+import currentUserQuery from '../../lib/gql/query/user/currentUserQuery.gql';
 
 const useStyles = theme => ({
   divider: {
@@ -87,11 +88,11 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
       <Divider className={classes.hDivider} />
       <Mutation
         mutation={signUpUserMutation}
+        refetchQueries={[{ query: currentUserQuery }]}
         onCompleted={user => {
           handleClose();
         }}
         onError={error => {
-          console.log(error);
           setOpen(true);
         }}
       >
