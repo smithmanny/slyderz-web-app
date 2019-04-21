@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Route from 'next/router';
+import { Mutation } from 'react-apollo';
 
 import { withStyles } from '@material-ui/core/styles';
 import { default as MuiAppBar } from '@material-ui/core/AppBar';
@@ -16,6 +17,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import SignInForm from '../auth/SignInForm';
 import SignUpForm from '../auth/SignUpForm';
 import BasicModal from '../BasicModal';
+import currentUserQuery from '../../lib/gql/query/user/currentUserQuery.gql';
+import signOutMutation from '../../lib/gql/mutation/auth/signOutUserMutation.gql';
 
 const styles = theme => ({
   main: {
@@ -53,6 +56,18 @@ const AppBar = ({ classes, user }) => {
     setAnchorEl(null);
   }
 
+  const SignoutMenuItem = props => (
+    <Mutation mutation={signOutMutation} refetchQueries={[{ query: currentUserQuery }]}>
+      {signout => <MenuItem onClick={() => {
+        signout()
+        handleMenuClose()
+      }}
+      >
+        Sign out
+      </MenuItem>}
+    </Mutation>
+  );
+
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -63,6 +78,7 @@ const AppBar = ({ classes, user }) => {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <SignoutMenuItem />
     </Menu>
   );
 
