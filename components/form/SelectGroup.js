@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Field } from 'formik';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -19,5 +20,9 @@ const SelectGroup = ({ name }) => (
     />
   </FormControl>
 );
+
+SelectGroup.propTypes = {
+  name: PropTypes.string
+};
 
 export default SelectGroup;

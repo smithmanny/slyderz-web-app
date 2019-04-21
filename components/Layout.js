@@ -17,11 +17,7 @@ const Layout = ({ children, classes }) => (
     {({ data: { me } }) => (
       <React.Fragment>
         <AppBar user={me} />
-        <main 
-          className={classes.main}
-        >
-          {children}
-        </main>
+        <main className={classes.main}>{children}</main>
       </React.Fragment>
     )}
   </User>

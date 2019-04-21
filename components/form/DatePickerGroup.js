@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { DatePicker } from 'material-ui-pickers';
 import { Field } from 'formik';
 import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 
-const DatePickerField = ({ classes, field, form, ...other }) => {
+const DatePickerField = ({ field, form, ...other }) => {
   const currentError = form.errors[field.name];
   return (
     <DatePicker
@@ -33,5 +34,10 @@ const DatePickerGroup = () => (
     <Field name="eventDate" component={DatePickerField} />
   </FormControl>
 );
+
+DatePickerField.propTypes = {
+  field: PropTypes.string.isRequired,
+  form: PropTypes.func.isRequired
+};
 
 export default DatePickerGroup;

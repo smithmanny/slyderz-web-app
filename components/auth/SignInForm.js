@@ -102,14 +102,7 @@ const SignInForm = ({ classes, handleClose, openSignUpModal }) => {
               setSubmitting(false);
             }}
           >
-            {({
-              values,
-              errors,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              isSubmitting
-            }) => (
+            {({ values, errors, handleChange, handleBlur, isSubmitting }) => (
               <React.Fragment>
                 <Grid container spacing={24}>
                   <Grid item xs={12}>

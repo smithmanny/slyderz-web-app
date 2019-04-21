@@ -4,6 +4,7 @@ import Route from 'next/router';
 import { Mutation } from 'react-apollo';
 
 import { withStyles } from '@material-ui/core/styles';
+// eslint-disable-next-line import/no-named-default
 import { default as MuiAppBar } from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -57,14 +58,20 @@ const AppBar = ({ classes, user }) => {
   }
 
   const SignoutMenuItem = props => (
-    <Mutation mutation={signOutMutation} refetchQueries={[{ query: currentUserQuery }]}>
-      {signout => <MenuItem onClick={() => {
-        signout()
-        handleMenuClose()
-      }}
-      >
-        Sign out
-      </MenuItem>}
+    <Mutation
+      mutation={signOutMutation}
+      refetchQueries={[{ query: currentUserQuery }]}
+    >
+      {signout => (
+        <MenuItem
+          onClick={() => {
+            signout();
+            handleMenuClose();
+          }}
+        >
+          Sign out
+        </MenuItem>
+      )}
     </Mutation>
   );
 
@@ -158,6 +165,11 @@ const AppBar = ({ classes, user }) => {
       </MuiAppBar>
     </div>
   );
+};
+
+AppBar.propTypes = {
+  classes: PropTypes.shape(),
+  user: PropTypes.shape()
 };
 
 export default withStyles(styles)(AppBar);

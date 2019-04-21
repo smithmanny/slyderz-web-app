@@ -18,6 +18,7 @@ const Content = ({ classes, children }) => (
 );
 
 Content.propTypes = {
+  children: PropTypes.shape().isRequired,
   classes: PropTypes.shape().isRequired
 };
 

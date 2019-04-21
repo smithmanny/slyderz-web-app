@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Formik, Form } from 'formik';
 
 export { default as DatePickerField } from './DatePickerGroup';
@@ -38,5 +39,12 @@ const BasicForm = ({
     )}
   </Formik>
 );
+
+BasicForm.propTypes = {
+  children: PropTypes.func.isRequired,
+  initialValues: PropTypes.shape(),
+  onSubmit: PropTypes.func.isRequired,
+  validation: PropTypes.func.isRequired
+};
 
 export default BasicForm;
