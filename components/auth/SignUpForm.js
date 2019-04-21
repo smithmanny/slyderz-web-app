@@ -98,7 +98,6 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
         {signup => (
           <Form
             onSubmit={async (values, { setSubmitting }) => {
-              console.log(values)
               await signup({
                 variables: {
                   name: values.name,

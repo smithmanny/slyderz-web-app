@@ -18,23 +18,23 @@ export default withApollo(({ headers }) => {
     uri: process.env.NODE_ENV === 'development' ? configs.DEV_URL : configs.GRAPHQL_URL,
     request: operation => {
       operation.setContext({
-        // fetchOptions: {
-        //   credentials: 'include',
-        // },
+        fetchOptions: {
+          credentials: 'include',
+        },
         headers,
       });
     },
   })
 
-  // const wsLink = !ssrMode && new WebSocketLink({
-  //   uri: configs.WS_URL,
-  //   options: {
-  //     reconnect: true,
-  //     connectionParams: {
-  //       authorization: headers.authorization
-  //     }
-  //   }
-  // })
+  const wsLink = !ssrMode && new WebSocketLink({
+    uri: configs.WS_URL,
+    options: {
+      reconnect: true,
+      connectionParams: {
+        // authorization: headers.authorization
+      }
+    }
+  })
 
   const contextLink = setContext(
     async () => ({
@@ -62,20 +62,20 @@ export default withApollo(({ headers }) => {
 
   const stateLink = withClientState({
     cache,
-    // resolvers: {
-    //   Mutation: {
-    //     updateNetworkStatus: (_, { isConnected }, { cache }) => {
-    //       const data = {
-    //         networkStatus: {
-    //           __typename: 'NetworkStatus',
-    //           isConnected
-    //         },
-    //       };
-    //       cache.writeData({ data });
-    //       return null;
-    //     },
-    //   },
-    // }
+    resolvers: {
+      Mutation: {
+        updateNetworkStatus: (_, { isConnected }, { cache }) => {
+          const data = {
+            networkStatus: {
+              __typename: 'NetworkStatus',
+              isConnected
+            },
+          };
+          cache.writeData({ data });
+          return null;
+        },
+      },
+    }
   });
 
   let link = ApolloLink.from([stateLink, errorLink, contextLink, httpLink])
@@ -90,7 +90,7 @@ export default withApollo(({ headers }) => {
           definition.operation === 'subscription'
         )
       },
-      // wsLink,
+      wsLink,
       link
     )
   }
