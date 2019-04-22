@@ -1,0 +1,8 @@
+fragment UserFragment on User {
+  __typename
+  id
+  email
+  password
+  firstName
+  lastName
+}

@@ -1,9 +1,10 @@
-mutation createUser($email: String!, $password: String!, $name: String!) {
-  signup(email: $email, password: $password, name: $name) {
+mutation createUser($email: String!, $password: String!, $firstName: String!, $lastName: String!) {
+  signup(email: $email, password: $password, firstName: $firstName, lastName: $lastName) {
     __typename
     id
     email
     password
-    name
+    firstName
+    lastName
   }
 }

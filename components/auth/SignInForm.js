@@ -3,72 +3,41 @@ import PropTypes from 'prop-types';
 import { Mutation } from 'react-apollo';
 
 import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import InputBase from '@material-ui/core/InputBase';
+import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import EmailIcon from '@material-ui/icons/AlternateEmail';
 import LockIcon from '@material-ui/icons/Lock';
 import Typography from '@material-ui/core/Typography';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 
 import Form from '../form/Form';
 import signInUserMutation from '../../lib/gql/mutation/auth/signInUserMutation.gql';
+import currentUserQuery from '../../lib/gql/query/user/currentUserQuery.gql';
 
 const useStyles = theme => ({
-  divider: {
-    width: 1,
-    height: 28,
-    margin: 4
+  textField: {
+    width: '100%'
   },
   hDivider: {
     height: 1,
     width: '100%',
     margin: `${theme.spacing.unit * 2}px 0`
   },
-  root: {
-    padding: '2px 4px',
-    display: 'flex',
-    alignItems: 'center'
-  },
   noAccountLink: {
     '&:hover': {
       textDecoration: 'underline',
       cursor: 'pointer'
     }
-  },
-  input: {
-    marginLeft: 8,
-    flex: 1
-  },
-  iconButton: {
-    padding: 10
-  },
-  grow: {
-    flexGrow: 1
-  },
-  paper: {
-    position: 'absolute',
-    width: theme.spacing.unit * 50,
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing.unit * 4,
-    outline: 'none'
   }
 });
 
 const SignInForm = ({ classes, handleClose, openSignUpModal }) => {
-  const [showPassword, setShowPassword] = React.useState(false);
   const [open, setOpen] = React.useState(false);
-
-  function handleClickShowPassword() {
-    setShowPassword(!showPassword);
-  }
+  const [errorMessage, setErrorMessage] = React.useState(null);
 
   function handleSnackbar(event, reason) {
     if (reason === 'clickaway') {
@@ -79,14 +48,16 @@ const SignInForm = ({ classes, handleClose, openSignUpModal }) => {
 
   return (
     <div>
-      <Typography variant="h6">Sign in with your Slyderz account</Typography>
+      <Typography variant="h6">Sign in to your Slyderz account</Typography>
       <Divider className={classes.hDivider} />
       <Mutation
         mutation={signInUserMutation}
-        onCompleted={user => {
+        refetchQueries={[{ query: currentUserQuery }]}
+        onCompleted={() => {
           handleClose();
         }}
         onError={error => {
+          setErrorMessage(error);
           setOpen(true);
         }}
       >
@@ -95,66 +66,47 @@ const SignInForm = ({ classes, handleClose, openSignUpModal }) => {
             onSubmit={(values, { setSubmitting }) => {
               signInUser({
                 variables: {
-                  email: values.email,
-                  password: values.password
+                  ...values
                 }
               });
               setSubmitting(false);
             }}
           >
-            {({ values, errors, handleChange, handleBlur, isSubmitting }) => (
+            {({ values, handleChange, isSubmitting }) => (
               <React.Fragment>
                 <Grid container spacing={24}>
                   <Grid item xs={12}>
-                    <Paper className={classes.root} elevation={1}>
-                      <IconButton
-                        className={classes.iconButton}
-                        aria-label="Email"
-                      >
-                        <EmailIcon />
-                      </IconButton>
-                      <Divider className={classes.divider} />
-
-                      <InputBase
-                        className={classes.input}
-                        placeholder="Email"
-                        value={values.email}
-                        name="email"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        type="email"
-                        required
-                      />
-                    </Paper>
+                    <TextField
+                      id="outlined-email-input"
+                      variant="outlined"
+                      label="Email"
+                      className={classes.textField}
+                      type="email"
+                      name="email"
+                      autoComplete="email"
+                      onChange={handleChange}
+                      value={values.email}
+                      InputProps={{
+                        endAdornment: <EmailIcon />
+                      }}
+                    />
                   </Grid>
 
                   <Grid item xs={12}>
-                    <Paper className={classes.root} elevation={1}>
-                      <IconButton
-                        className={classes.iconButton}
-                        aria-label="Password"
-                      >
-                        <LockIcon />
-                      </IconButton>
-                      <Divider className={classes.divider} />
-
-                      <InputBase
-                        className={classes.input}
-                        placeholder="Create a Password"
-                        value={values.password}
-                        name="password"
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        type={showPassword ? 'text' : 'password'}
-                        required
-                      />
-                      <IconButton
-                        aria-label="Toggle password visibility"
-                        onClick={handleClickShowPassword}
-                      >
-                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    </Paper>
+                    <TextField
+                      id="outlined-password-input"
+                      variant="outlined"
+                      label="Password"
+                      type="password"
+                      className={classes.textField}
+                      name="password"
+                      autoComplete="current-password"
+                      onChange={handleChange}
+                      value={values.password}
+                      InputProps={{
+                        endAdornment: <LockIcon />
+                      }}
+                    />
                   </Grid>
 
                   <Grid item xs={12}>
@@ -198,7 +150,7 @@ const SignInForm = ({ classes, handleClose, openSignUpModal }) => {
                   ContentProps={{
                     'aria-describedby': 'message-id'
                   }}
-                  message={<span id="message-id">Error! :(</span>}
+                  message={<span id="message-id">{errorMessage}(</span>}
                   action={[
                     <IconButton
                       key="close"

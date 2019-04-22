@@ -2,6 +2,6 @@ query currentUser {
   me {
     id
     email
-    name
+    firstName
   }
 }

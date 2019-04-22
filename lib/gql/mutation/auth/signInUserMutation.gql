@@ -1,8 +1,8 @@
-mutation signInUser($objects: [user_signin_input!]){
-  signInUser(objects: $objects) {
-    returning {
-      id
-      displayName
-    }
+mutation signInUser($email: String!, $password: String!) {
+  signin(email: $email, password: $password) {
+   __typename
+   id
+   email
+   firstName
   }
 }

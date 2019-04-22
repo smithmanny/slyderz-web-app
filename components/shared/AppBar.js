@@ -103,20 +103,32 @@ const AppBar = ({ classes, user }) => {
           </Typography>
 
           {!user && (
-            <Button
-              variant="contained"
-              color="secondary"
-              className={classes.menuItem}
-              onClick={() =>
-                setValues({
-                  ...values,
-                  openAuthModal: true,
-                  modalView: 'sign_up'
-                })
-              }
-            >
-              Log In
-            </Button>
+            <React.Fragment>
+              <Button
+                className={classes.menuItem}
+                onClick={() =>
+                  setValues({
+                    ...values,
+                    openAuthModal: true,
+                    modalView: 'sign_up'
+                  })
+                }
+              >
+                Sign up
+              </Button>
+              <Button
+                className={classes.menuItem}
+                onClick={() =>
+                  setValues({
+                    ...values,
+                    openAuthModal: true,
+                    modalView: 'log_in'
+                  })
+                }
+              >
+                Log In
+              </Button>
+            </React.Fragment>
           )}
 
           {user && (

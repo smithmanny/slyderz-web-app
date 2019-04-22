@@ -3,18 +3,15 @@ import PropTypes from 'prop-types';
 import { Mutation } from 'react-apollo';
 
 import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import InputBase from '@material-ui/core/InputBase';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
+import TextField from '@material-ui/core/TextField';
 import EmailIcon from '@material-ui/icons/AlternateEmail';
 import PersonIcon from '@material-ui/icons/Person';
 import LockIcon from '@material-ui/icons/Lock';
 import Typography from '@material-ui/core/Typography';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 
@@ -23,10 +20,8 @@ import signUpUserMutation from '../../lib/gql/mutation/auth/signUpUserMutation.g
 import currentUserQuery from '../../lib/gql/query/user/currentUserQuery.gql';
 
 const useStyles = theme => ({
-  divider: {
-    width: 1,
-    height: 28,
-    margin: 4
+  textField: {
+    width: '100%'
   },
   haveAccountLink: {
     '&:hover': {
@@ -38,39 +33,11 @@ const useStyles = theme => ({
     height: 1,
     width: '100%',
     margin: `${theme.spacing.unit * 2}px 0`
-  },
-  root: {
-    padding: '2px 4px',
-    display: 'flex',
-    alignItems: 'center'
-  },
-  input: {
-    marginLeft: 8,
-    flex: 1
-  },
-  iconButton: {
-    padding: 10
-  },
-  grow: {
-    flexGrow: 1
-  },
-  paper: {
-    position: 'absolute',
-    width: theme.spacing.unit * 50,
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing.unit * 4,
-    outline: 'none'
   }
 });
 
 const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
-  const [showPassword, setShowPassword] = React.useState(false);
   const [open, setOpen] = React.useState(false);
-
-  function handleClickShowPassword() {
-    setShowPassword(!showPassword);
-  }
 
   function handleSnackbar(event, reason) {
     if (reason === 'clickaway') {
@@ -99,9 +66,7 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
             onSubmit={async (values, { setSubmitting }) => {
               await signup({
                 variables: {
-                  name: values.name,
-                  email: values.email,
-                  password: values.password
+                  ...values
                 }
               });
               setSubmitting(false);
@@ -111,103 +76,75 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
               <React.Fragment>
                 <Grid container spacing={24}>
                   <Grid item xs={12}>
-                    <Paper className={classes.root} elevation={1}>
-                      <IconButton
-                        className={classes.iconButton}
-                        aria-label="Email"
-                      >
-                        <EmailIcon />
-                      </IconButton>
-                      <Divider className={classes.divider} />
-
-                      <InputBase
-                        className={classes.input}
-                        placeholder="Email"
-                        value={values.email}
-                        name="email"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        type="email"
-                        required
-                      />
-                    </Paper>
+                    <TextField
+                      id="outlined-email-input"
+                      variant="outlined"
+                      label="Email"
+                      className={classes.textField}
+                      type="email"
+                      name="email"
+                      autoComplete="email"
+                      onChange={handleChange}
+                      value={values.email}
+                      InputProps={{
+                        endAdornment: <EmailIcon />
+                      }}
+                    />
                   </Grid>
 
                   <Grid item xs={12}>
-                    <Paper className={classes.root} elevation={1}>
-                      <IconButton
-                        className={classes.iconButton}
-                        aria-label="Name"
-                      >
-                        <PersonIcon />
-                      </IconButton>
-                      <Divider className={classes.divider} />
-
-                      <InputBase
-                        className={classes.input}
-                        placeholder="Name"
-                        name="name"
-                        value={values.name}
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        required
-                      />
-                    </Paper>
+                    <TextField
+                      id="outlined-first-name-input"
+                      variant="outlined"
+                      label="First Name"
+                      className={classes.textField}
+                      name="firstName"
+                      autoComplete="name"
+                      onChange={handleChange}
+                      value={values.firstName}
+                      InputProps={{
+                        endAdornment: <PersonIcon />
+                      }}
+                    />
                   </Grid>
 
-                  {/* <Grid item xs={12}>
-                    <Paper className={classes.root} elevation={1}>
-                      <IconButton className={classes.iconButton} aria-label="Last Name">
-                        <PersonIcon />
-                      </IconButton>
-                      <Divider className={classes.divider} />
-
-                      <InputBase
-                        className={classes.input}
-                        placeholder="Last Name"
-                        name="lastName"
-                        value={values.lastName}
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        required
-                      />
-                    </Paper>
-                  </Grid> */}
+                  <Grid item xs={12}>
+                    <TextField
+                      id="outlined-last-name-input"
+                      variant="outlined"
+                      label="Last Name"
+                      className={classes.textField}
+                      name="lastName"
+                      onChange={handleChange}
+                      value={values.lastName}
+                      InputProps={{
+                        endAdornment: <PersonIcon />
+                      }}
+                    />
+                  </Grid>
 
                   <Grid item xs={12}>
-                    <Paper className={classes.root} elevation={1}>
-                      <IconButton
-                        className={classes.iconButton}
-                        aria-label="Password"
-                      >
-                        <LockIcon />
-                      </IconButton>
-                      <Divider className={classes.divider} />
-
-                      <InputBase
-                        className={classes.input}
-                        placeholder="Create a Password"
-                        value={values.password}
-                        name="password"
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        type={showPassword ? 'text' : 'password'}
-                        required
-                      />
-                      <IconButton
-                        aria-label="Toggle password visibility"
-                        onClick={handleClickShowPassword}
-                      >
-                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    </Paper>
+                    <TextField
+                      id="outlined-password-input"
+                      variant="outlined"
+                      label="Password"
+                      type="password"
+                      className={classes.textField}
+                      name="password"
+                      autoComplete="current-password"
+                      onChange={handleChange}
+                      value={values.password}
+                      InputProps={{
+                        endAdornment: <LockIcon />
+                      }}
+                    />
                   </Grid>
 
                   <Grid item xs={12}>
                     <Typography variant="h6">Birthday</Typography>
                     <Typography variant="caption">
-                      To sign up, you must be 18 or older. Other people won’t
-                      see your birthday.
+                      To sign up, you must be 18 or older. This is kept
+                      personal.
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
