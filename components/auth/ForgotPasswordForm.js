@@ -9,14 +9,12 @@ import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import EmailIcon from '@material-ui/icons/AlternateEmail';
-import LockIcon from '@material-ui/icons/Lock';
 import Typography from '@material-ui/core/Typography';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 
 import Form from '../form/Form';
-import signInUserMutation from '../../lib/gql/mutation/auth/signInUserMutation.gql';
-import currentUserQuery from '../../lib/gql/query/user/currentUserQuery.gql';
+import forgotPasswordMutation from '../../lib/gql/mutation/auth/forgotPasswordMutation.gql';
 
 const useStyles = theme => ({
   textField: {
@@ -35,12 +33,7 @@ const useStyles = theme => ({
   }
 });
 
-const SignInForm = ({
-  classes,
-  handleClose,
-  openSignUpModal,
-  openForgotPasswordModal
-}) => {
+const ForgotPasswordForm = ({ classes, handleClose, openSignInModal }) => {
   const [open, setOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState(null);
 
@@ -53,11 +46,10 @@ const SignInForm = ({
 
   return (
     <div>
-      <Typography variant="h6">Sign in to your Slyderz account</Typography>
+      <Typography variant="h6">Forgot Your Password?</Typography>
       <Divider className={classes.hDivider} />
       <Mutation
-        mutation={signInUserMutation}
-        refetchQueries={[{ query: currentUserQuery }]}
+        mutation={forgotPasswordMutation}
         onCompleted={() => {
           handleClose();
         }}
@@ -66,10 +58,10 @@ const SignInForm = ({
           setOpen(true);
         }}
       >
-        {signInUser => (
+        {requestReset => (
           <Form
             onSubmit={(values, { setSubmitting }) => {
-              signInUser({
+              requestReset({
                 variables: {
                   ...values
                 }
@@ -98,23 +90,6 @@ const SignInForm = ({
                   </Grid>
 
                   <Grid item xs={12}>
-                    <TextField
-                      id="outlined-password-input"
-                      variant="outlined"
-                      label="Password"
-                      type="password"
-                      className={classes.textField}
-                      name="password"
-                      autoComplete="current-password"
-                      onChange={handleChange}
-                      value={values.password}
-                      InputProps={{
-                        endAdornment: <LockIcon />
-                      }}
-                    />
-                  </Grid>
-
-                  <Grid item xs={12}>
                     <Button
                       type="submit"
                       variant="contained"
@@ -122,7 +97,7 @@ const SignInForm = ({
                       disabled={isSubmitting}
                       fullWidth
                     >
-                      Sign In
+                      Reset Password
                     </Button>
                   </Grid>
                   <Divider className={classes.hDivider} />
@@ -130,21 +105,11 @@ const SignInForm = ({
                   <Grid item xs={12} md={6}>
                     <Typography
                       variant="subtitle1"
-                      onClick={openForgotPasswordModal}
-                      className={classes.noAccountLink}
-                    >
-                      Forgot password?
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Typography
-                      variant="subtitle1"
-                      align="right"
                       color="primary"
-                      onClick={openSignUpModal}
                       className={classes.noAccountLink}
+                      onClick={openSignInModal}
                     >
-                      Don't have an account?
+                      Go Back
                     </Typography>
                   </Grid>
                 </Grid>
@@ -181,11 +146,10 @@ const SignInForm = ({
   );
 };
 
-SignInForm.propTypes = {
+ForgotPasswordForm.propTypes = {
   classes: PropTypes.shape().isRequired,
-  openForgotPasswordModal: PropTypes.func.isRequired,
-  openSignUpModal: PropTypes.func.isRequired,
+  openSignInModal: PropTypes.func.isRequired,
   handleClose: PropTypes.func.isRequired
 };
 
-export default withStyles(useStyles)(SignInForm);
+export default withStyles(useStyles)(ForgotPasswordForm);

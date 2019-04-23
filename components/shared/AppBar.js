@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import Route from 'next/router';
@@ -17,6 +18,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import SignInForm from '../auth/SignInForm';
 import SignUpForm from '../auth/SignUpForm';
+import ForgotPasswordForm from '../auth/ForgotPasswordForm';
 import BasicModal from '../BasicModal';
 import currentUserQuery from '../../lib/gql/query/user/currentUserQuery.gql';
 import signOutMutation from '../../lib/gql/mutation/auth/signOutUserMutation.gql';
@@ -89,6 +91,53 @@ const AppBar = ({ classes, user }) => {
     </Menu>
   );
 
+  function renderModal() {
+    switch (values.modalView) {
+      case 'log_in':
+        return (
+          <SignInForm
+            handleClose={() => setValues({ ...values, openAuthModal: false })}
+            openSignUpModal={() =>
+              setValues({ ...values, modalView: 'sign_up' })
+            }
+            openForgotPasswordModal={() =>
+              setValues({ ...values, modalView: 'forgot_password' })
+            }
+          />
+        );
+        break;
+      case 'sign_up':
+        return (
+          <SignUpForm
+            handleClose={() => setValues({ ...values, openAuthModal: false })}
+            openSignInModal={() =>
+              setValues({ ...values, modalView: 'log_in' })
+            }
+          />
+        );
+        break;
+      case 'forgot_password':
+        return (
+          <ForgotPasswordForm
+            handleClose={() => setValues({ ...values, openAuthModal: false })}
+            openSignInModal={() =>
+              setValues({ ...values, modalView: 'log_in' })
+            }
+          />
+        );
+        break;
+      default:
+        return (
+          <SignUpForm
+            handleClose={() => setValues({ ...values, openAuthModal: false })}
+            openSignInModal={() =>
+              setValues({ ...values, modalView: 'log_in' })
+            }
+          />
+        );
+    }
+  }
+
   return (
     <div className={classes.root}>
       <MuiAppBar position="static" color="primary">
@@ -153,7 +202,8 @@ const AppBar = ({ classes, user }) => {
             open={values.openAuthModal}
             onClose={() => setValues({ ...values, openAuthModal: false })}
           >
-            {values.modalView === 'log_in' ? (
+            {renderModal()}
+            {/* {values.modalView === 'log_in' ? (
               <SignInForm
                 handleClose={() =>
                   setValues({ ...values, openAuthModal: false })
@@ -171,7 +221,7 @@ const AppBar = ({ classes, user }) => {
                   setValues({ ...values, modalView: 'log_in' })
                 }
               />
-            )}
+            )} */}
           </BasicModal>
         </Toolbar>
       </MuiAppBar>
