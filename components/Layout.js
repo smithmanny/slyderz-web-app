@@ -7,7 +7,7 @@ import User from './shared/User';
 
 const useStyles = () => ({
   main: {
-    maxWidth: 1920,
+    maxWidth: 1760,
     margin: 'auto'
   }
 });

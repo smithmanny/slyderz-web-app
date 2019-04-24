@@ -1,12 +1,17 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Content from '../components/Content';
-import Text from '../components/shared/Text';
+import ResetPasswordForm from '../components/auth/ResetPasswordForm';
 
 const Reset = props => (
   <Content>
-    <Text type="display1">Reset Your Password</Text>
+    <ResetPasswordForm resetToken={props.query.resetToken} />
   </Content>
 );
+
+Reset.propTypes = {
+  query: PropTypes.shape()
+};
 
 export default Reset;

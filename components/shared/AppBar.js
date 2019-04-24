@@ -85,8 +85,8 @@ const AppBar = ({ classes, user }) => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={() => Route.push('/settings')}>Profile</MenuItem>
+      <MenuItem onClick={() => Route.push('/settings')}>My account</MenuItem>
       <SignoutMenuItem />
     </Menu>
   );
@@ -203,25 +203,6 @@ const AppBar = ({ classes, user }) => {
             onClose={() => setValues({ ...values, openAuthModal: false })}
           >
             {renderModal()}
-            {/* {values.modalView === 'log_in' ? (
-              <SignInForm
-                handleClose={() =>
-                  setValues({ ...values, openAuthModal: false })
-                }
-                openSignUpModal={() =>
-                  setValues({ ...values, modalView: 'sign_up' })
-                }
-              />
-            ) : (
-              <SignUpForm
-                handleClose={() =>
-                  setValues({ ...values, openAuthModal: false })
-                }
-                openSignInModal={() =>
-                  setValues({ ...values, modalView: 'log_in' })
-                }
-              />
-            )} */}
           </BasicModal>
         </Toolbar>
       </MuiAppBar>

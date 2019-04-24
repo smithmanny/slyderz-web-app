@@ -1,14 +1,17 @@
 import { SheetsRegistry } from 'jss';
-import { createMuiTheme, createGenerateClassName } from '@material-ui/core/styles';
+import {
+  createMuiTheme,
+  createGenerateClassName
+} from '@material-ui/core/styles';
 import red from '@material-ui/core/colors/red';
 
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#14A3A5',
+      main: '#14A3A5'
     },
     secondary: {
-      main: '#E54E44',
+      main: '#E54E44'
     },
     error: red,
     // Used by `getContrastText()` to maximize the contrast between the background and
@@ -17,11 +20,11 @@ const theme = createMuiTheme({
     // Used to shift a color's luminance by approximately
     // two indexes within its tonal palette.
     // E.g., shift from Red 500 to Red 300 or Red 700.
-    tonalOffset: 0.2,
+    tonalOffset: 0.2
   },
   typography: {
-    useNextVariants: true,
-  },
+    useNextVariants: true
+  }
 });
 
 function createPageContext() {
@@ -32,7 +35,7 @@ function createPageContext() {
     // This is needed in order to inject the critical CSS.
     sheetsRegistry: new SheetsRegistry(),
     // The standard class name generator.
-    generateClassName: createGenerateClassName(),
+    generateClassName: createGenerateClassName()
   };
 }
 
