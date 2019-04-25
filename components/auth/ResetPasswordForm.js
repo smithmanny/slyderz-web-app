@@ -6,14 +6,13 @@ import Router from 'next/router';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import LockIcon from '@material-ui/icons/Lock';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 
-import Form from '../form/Form';
+import Form, { TextField } from '../form/Form';
 import Text from '../shared/Text';
 import resetPasswordMutation from '../../lib/gql/mutation/auth/resetPasswordMutation.gql';
 import currentUserQuery from '../../lib/gql/query/user/currentUserQuery.gql';
@@ -22,9 +21,6 @@ const useStyles = theme => ({
   container: {
     maxWidth: '900px',
     margin: 'auto'
-  },
-  textField: {
-    width: '100%'
   },
   hDivider: {
     height: 1,
@@ -77,52 +73,44 @@ const ResetPasswordForm = ({ classes, resetToken }) => {
           >
             {({ values, handleChange, isSubmitting }) => (
               <React.Fragment>
-                <Grid container spacing={24}>
-                  <Grid item xs={12}>
-                    <TextField
-                      id="outlined-password-input"
-                      variant="outlined"
-                      label="Password"
-                      type="password"
-                      className={classes.textField}
-                      name="password"
-                      autoComplete="current-password"
-                      onChange={handleChange}
-                      value={values.password}
-                      InputProps={{
-                        endAdornment: <LockIcon />
-                      }}
-                    />
-                  </Grid>
+                <TextField
+                  id="outlined-password-input"
+                  variant="outlined"
+                  label="Password"
+                  type="password"
+                  name="password"
+                  autoComplete="current-password"
+                  onChange={handleChange}
+                  value={values.password}
+                  InputProps={{
+                    endAdornment: <LockIcon />
+                  }}
+                />
+                <TextField
+                  id="outlined-confirm-password-input"
+                  variant="outlined"
+                  label="Confirm Password"
+                  type="password"
+                  className={classes.textField}
+                  name="confirmPassword"
+                  autoComplete="current-password"
+                  onChange={handleChange}
+                  value={values.confirmPassword}
+                  InputProps={{
+                    endAdornment: <LockIcon />
+                  }}
+                />
 
-                  <Grid item xs={12}>
-                    <TextField
-                      id="outlined-confirm-password-input"
-                      variant="outlined"
-                      label="Confirm Password"
-                      type="password"
-                      className={classes.textField}
-                      name="confirmPassword"
-                      autoComplete="current-password"
-                      onChange={handleChange}
-                      value={values.confirmPassword}
-                      InputProps={{
-                        endAdornment: <LockIcon />
-                      }}
-                    />
-                  </Grid>
-
-                  <Grid item xs={12}>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      color="secondary"
-                      disabled={isSubmitting}
-                      fullWidth
-                    >
-                      Reset Password
-                    </Button>
-                  </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="secondary"
+                    disabled={isSubmitting}
+                    fullWidth
+                  >
+                    Reset Password
+                  </Button>
                 </Grid>
                 <Snackbar
                   anchorOrigin={{

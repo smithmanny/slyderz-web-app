@@ -19,7 +19,7 @@ const styles = theme => ({
   }
 });
 
-const SettingsTabs = ({ classes, setView }) => {
+const SettingsTabs = ({ classes }) => {
   const settings = [
     {
       name: 'Account',
@@ -43,9 +43,9 @@ const SettingsTabs = ({ classes, setView }) => {
 
   return (
     <Grid container spacing={32}>
-      {settings.map(({ name, view, picture }) => (
+      {settings.map(({ name, picture }) => (
         <Grid item xs={12} md={4}>
-          <Card className={classes.card} onClick={() => setView(view)}>
+          <Card>
             <CardContent className={classes.content}>
               <img src={picture} alt={`${name}`} className={classes.image} />
               <Text
@@ -64,8 +64,7 @@ const SettingsTabs = ({ classes, setView }) => {
 };
 
 SettingsTabs.propTypes = {
-  classes: PropTypes.shape(),
-  setView: PropTypes.string
+  classes: PropTypes.shape()
 };
 
 export default withStyles(styles)(SettingsTabs);

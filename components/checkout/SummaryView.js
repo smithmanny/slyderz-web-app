@@ -11,8 +11,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 
-import SideSummary from './SideSummary';
-
 const useStyles = theme => ({
   button: {
     width: '100%',
@@ -44,54 +42,48 @@ function generate(element) {
 }
 
 const SummaryView = ({ classes, handleNext }) => (
-  <React.Fragment>
-    {/* Left Side */}
-    <Grid item xs={12} md={9}>
-      <Grid item xs={12}>
-        <Typography variant="h3">Review your event</Typography>
-      </Grid>
-
-      <Grid className={classes.section} item xs={12} md={6}>
-        <List dense>
-          {generate(
-            <ListItem>
-              <ListItemText primary="Blackend Salmon" />
-              <ListItemSecondaryAction>
-                <ListItemText primary="$100" />
-              </ListItemSecondaryAction>
-            </ListItem>
-          )}
-          <TextField
-            id="outlined-multiline-static"
-            label="Note to Chef"
-            multiline
-            rows="4"
-            margin="normal"
-            variant="outlined"
-            fullWidth
-          />
-          <ListItem>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              onClick={handleNext}
-            >
-              Continue
-            </Button>
-          </ListItem>
-          <ListItem>
-            <Typography variant="caption" className={classes.disclaimer}>
-              You won't be charged yet
-            </Typography>
-          </ListItem>
-        </List>
-      </Grid>
+  <Grid item xs={12} md={9}>
+    <Grid item xs={12}>
+      <Typography variant="h3">Review your event</Typography>
     </Grid>
 
-    {/* Right Side */}
-    <SideSummary />
-  </React.Fragment>
+    <Grid className={classes.section} item xs={12} md={6}>
+      <List dense>
+        {generate(
+          <ListItem>
+            <ListItemText primary="Blackend Salmon" />
+            <ListItemSecondaryAction>
+              <ListItemText primary="$100" />
+            </ListItemSecondaryAction>
+          </ListItem>
+        )}
+        <TextField
+          id="outlined-multiline-static"
+          label="Note to Chef"
+          multiline
+          rows="4"
+          margin="normal"
+          variant="outlined"
+          fullWidth
+        />
+        <ListItem>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            onClick={handleNext}
+          >
+            Continue
+          </Button>
+        </ListItem>
+        <ListItem>
+          <Typography variant="caption" className={classes.disclaimer}>
+            You won't be charged yet
+          </Typography>
+        </ListItem>
+      </List>
+    </Grid>
+  </Grid>
 );
 
 SummaryView.propTypes = {

@@ -1,4 +1,3 @@
-/* eslint-disable no-unreachable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import Route from 'next/router';
@@ -105,7 +104,6 @@ const AppBar = ({ classes, user }) => {
             }
           />
         );
-        break;
       case 'sign_up':
         return (
           <SignUpForm
@@ -115,7 +113,6 @@ const AppBar = ({ classes, user }) => {
             }
           />
         );
-        break;
       case 'forgot_password':
         return (
           <ForgotPasswordForm
@@ -125,7 +122,6 @@ const AppBar = ({ classes, user }) => {
             }
           />
         );
-        break;
       default:
         return (
           <SignUpForm

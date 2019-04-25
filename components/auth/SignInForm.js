@@ -5,7 +5,6 @@ import { Mutation } from 'react-apollo';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import EmailIcon from '@material-ui/icons/AlternateEmail';
@@ -14,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 
-import Form from '../form/Form';
+import Form, { TextField } from '../form/Form';
 import signInUserMutation from '../../lib/gql/mutation/auth/signInUserMutation.gql';
 import currentUserQuery from '../../lib/gql/query/user/currentUserQuery.gql';
 
@@ -79,74 +78,65 @@ const SignInForm = ({
           >
             {({ values, handleChange, isSubmitting }) => (
               <React.Fragment>
-                <Grid container spacing={24}>
-                  <Grid item xs={12}>
-                    <TextField
-                      id="outlined-email-input"
-                      variant="outlined"
-                      label="Email"
-                      className={classes.textField}
-                      type="email"
-                      name="email"
-                      autoComplete="email"
-                      onChange={handleChange}
-                      value={values.email}
-                      InputProps={{
-                        endAdornment: <EmailIcon />
-                      }}
-                    />
-                  </Grid>
+                <TextField
+                  id="outlined-email-input"
+                  variant="outlined"
+                  label="Email"
+                  type="email"
+                  name="email"
+                  autoComplete="email"
+                  onChange={handleChange}
+                  value={values.email}
+                  InputProps={{
+                    endAdornment: <EmailIcon />
+                  }}
+                />
+                <TextField
+                  id="outlined-password-input"
+                  variant="outlined"
+                  label="Password"
+                  type="password"
+                  name="password"
+                  autoComplete="current-password"
+                  onChange={handleChange}
+                  value={values.password}
+                  InputProps={{
+                    endAdornment: <LockIcon />
+                  }}
+                />
 
-                  <Grid item xs={12}>
-                    <TextField
-                      id="outlined-password-input"
-                      variant="outlined"
-                      label="Password"
-                      type="password"
-                      className={classes.textField}
-                      name="password"
-                      autoComplete="current-password"
-                      onChange={handleChange}
-                      value={values.password}
-                      InputProps={{
-                        endAdornment: <LockIcon />
-                      }}
-                    />
-                  </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="secondary"
+                    disabled={isSubmitting}
+                    fullWidth
+                  >
+                    Sign In
+                  </Button>
+                </Grid>
+                <Divider className={classes.hDivider} />
 
-                  <Grid item xs={12}>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      color="secondary"
-                      disabled={isSubmitting}
-                      fullWidth
-                    >
-                      Sign In
-                    </Button>
-                  </Grid>
-                  <Divider className={classes.hDivider} />
-
-                  <Grid item xs={12} md={6}>
-                    <Typography
-                      variant="subtitle1"
-                      onClick={openForgotPasswordModal}
-                      className={classes.noAccountLink}
-                    >
-                      Forgot password?
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Typography
-                      variant="subtitle1"
-                      align="right"
-                      color="primary"
-                      onClick={openSignUpModal}
-                      className={classes.noAccountLink}
-                    >
-                      Don't have an account?
-                    </Typography>
-                  </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography
+                    variant="subtitle1"
+                    onClick={openForgotPasswordModal}
+                    className={classes.noAccountLink}
+                  >
+                    Forgot password?
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography
+                    variant="subtitle1"
+                    align="right"
+                    color="primary"
+                    onClick={openSignUpModal}
+                    className={classes.noAccountLink}
+                  >
+                    Don't have an account?
+                  </Typography>
                 </Grid>
                 <Snackbar
                   anchorOrigin={{

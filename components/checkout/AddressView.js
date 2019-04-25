@@ -15,8 +15,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 
-import SideSummary from './SideSummary';
-
 const useStyles = theme => ({
   button: {
     width: '100%',
@@ -60,60 +58,55 @@ const AddressView = ({ classes, handleNext }) => {
   }
 
   return (
-    <React.Fragment>
-      <Grid item xs={12} md={9}>
-        <Typography variant="h3">Event Address</Typography>
+    <Grid item xs={12} md={9}>
+      <Typography variant="h3">Event Address</Typography>
 
-        <Grid className={classes.section} item xs={12}>
-          <FormControl component="fieldset">
-            <FormLabel component="legend">Choose an address</FormLabel>
-            <RadioGroup
-              aria-label="event-address"
-              name="gender1"
-              className={classes.group}
-              value={value}
-              onChange={handleChange}
-            >
-              <FormControlLabel
-                value="female"
-                control={<Radio />}
-                label={<AddressLabel classes={classes} />}
-              />
-              <FormControlLabel
-                value="male"
-                control={<Radio />}
-                label={<AddressLabel classes={classes} />}
-              />
-              <FormControlLabel
-                value="other"
-                control={<Radio />}
-                label={<AddressLabel classes={classes} />}
-              />
-              <FormControlLabel
-                value="disabled"
-                disabled
-                control={<Radio />}
-                label="(Add Address)"
-              />
-            </RadioGroup>
-          </FormControl>
+      <Grid className={classes.section} item xs={12}>
+        <FormControl component="fieldset">
+          <FormLabel component="legend">Choose an address</FormLabel>
+          <RadioGroup
+            aria-label="event-address"
+            name="gender1"
+            className={classes.group}
+            value={value}
+            onChange={handleChange}
+          >
+            <FormControlLabel
+              value="female"
+              control={<Radio />}
+              label={<AddressLabel classes={classes} />}
+            />
+            <FormControlLabel
+              value="male"
+              control={<Radio />}
+              label={<AddressLabel classes={classes} />}
+            />
+            <FormControlLabel
+              value="other"
+              control={<Radio />}
+              label={<AddressLabel classes={classes} />}
+            />
+            <FormControlLabel
+              value="disabled"
+              disabled
+              control={<Radio />}
+              label="(Add Address)"
+            />
+          </RadioGroup>
+        </FormControl>
 
-          <Grid item xs={6}>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              onClick={handleNext}
-            >
-              Payment
-            </Button>
-          </Grid>
+        <Grid item xs={6}>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            onClick={handleNext}
+          >
+            Payment
+          </Button>
         </Grid>
       </Grid>
-
-      {/* Right Side */}
-      <SideSummary />
-    </React.Fragment>
+    </Grid>
   );
 };
 

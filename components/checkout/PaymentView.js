@@ -10,8 +10,6 @@ import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
-import SideSummary from './SideSummary';
-
 const useStyles = theme => ({
   button: {
     width: '100%',
@@ -48,20 +46,15 @@ const AddressLabel = () => (
 );
 
 const PaymentView = ({ classes }) => (
-  <React.Fragment>
-    <Grid item xs={12} md={9}>
-      <Typography variant="h3">Payment</Typography>
+  <Grid item xs={12} md={9}>
+    <Typography variant="h3">Payment</Typography>
 
-      <Grid className={classes.section} item xs={6}>
-        <Button variant="contained" color="primary" className={classes.button}>
-          Pay Now
-        </Button>
-      </Grid>
+    <Grid className={classes.section} item xs={6}>
+      <Button variant="contained" color="primary" className={classes.button}>
+        Pay Now
+      </Button>
     </Grid>
-
-    {/* Right Side */}
-    <SideSummary />
-  </React.Fragment>
+  </Grid>
 );
 
 PaymentView.propTypes = {

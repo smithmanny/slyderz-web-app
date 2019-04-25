@@ -5,7 +5,6 @@ import { Mutation } from 'react-apollo';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import EmailIcon from '@material-ui/icons/AlternateEmail';
@@ -13,13 +12,10 @@ import Typography from '@material-ui/core/Typography';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 
-import Form from '../form/Form';
+import Form, { TextField } from '../form/Form';
 import forgotPasswordMutation from '../../lib/gql/mutation/auth/forgotPasswordMutation.gql';
 
 const useStyles = theme => ({
-  textField: {
-    width: '100%'
-  },
   hDivider: {
     height: 1,
     width: '100%',
@@ -71,47 +67,42 @@ const ForgotPasswordForm = ({ classes, handleClose, openSignInModal }) => {
           >
             {({ values, handleChange, isSubmitting }) => (
               <React.Fragment>
-                <Grid container spacing={24}>
-                  <Grid item xs={12}>
-                    <TextField
-                      id="outlined-email-input"
-                      variant="outlined"
-                      label="Email"
-                      className={classes.textField}
-                      type="email"
-                      name="email"
-                      autoComplete="email"
-                      onChange={handleChange}
-                      value={values.email}
-                      InputProps={{
-                        endAdornment: <EmailIcon />
-                      }}
-                    />
-                  </Grid>
+                <TextField
+                  id="outlined-email-input"
+                  variant="outlined"
+                  label="Email"
+                  type="email"
+                  name="email"
+                  autoComplete="email"
+                  onChange={handleChange}
+                  value={values.email}
+                  InputProps={{
+                    endAdornment: <EmailIcon />
+                  }}
+                />
 
-                  <Grid item xs={12}>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      color="secondary"
-                      disabled={isSubmitting}
-                      fullWidth
-                    >
-                      Reset Password
-                    </Button>
-                  </Grid>
-                  <Divider className={classes.hDivider} />
+                <Grid item xs={12}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="secondary"
+                    disabled={isSubmitting}
+                    fullWidth
+                  >
+                    Reset Password
+                  </Button>
+                </Grid>
+                <Divider className={classes.hDivider} />
 
-                  <Grid item xs={12} md={6}>
-                    <Typography
-                      variant="subtitle1"
-                      color="primary"
-                      className={classes.noAccountLink}
-                      onClick={openSignInModal}
-                    >
-                      Go Back
-                    </Typography>
-                  </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography
+                    variant="subtitle1"
+                    color="primary"
+                    className={classes.noAccountLink}
+                    onClick={openSignInModal}
+                  >
+                    Go Back
+                  </Typography>
                 </Grid>
                 <Snackbar
                   anchorOrigin={{

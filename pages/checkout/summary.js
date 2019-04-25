@@ -9,21 +9,21 @@ import StepLabel from '@material-ui/core/StepLabel';
 
 import Content from '../../components/Content';
 import Layout from '../../components/Layout';
-import Form from '../../components/form/Form';
+import SideSummary from '../../components/checkout/SideSummary';
 import SummaryView from '../../components/checkout/SummaryView';
 import AddressView from '../../components/checkout/AddressView';
 import PaymentView from '../../components/checkout/PaymentView';
 
 const useStyles = theme => ({
   content: {
-    padding: `0, ${theme.spacing.unit}`,
+    padding: `${theme.spacing.unit * 2}px 0`
   },
   datePicker: {
-    marginBottom: theme.spacing.unit,
+    marginBottom: theme.spacing.unit
   },
   name: {
-    margin: 'auto',
-  },
+    margin: 'auto'
+  }
 });
 
 function getSteps() {
@@ -35,7 +35,7 @@ const OrderSummary = ({ classes }) => {
   const steps = getSteps();
 
   function handleNext() {
-    setActiveStep(prevActiveStep => prevActiveStep + 1 )
+    setActiveStep(prevActiveStep => prevActiveStep + 1);
   }
 
   function getStepContent(step) {
@@ -53,33 +53,30 @@ const OrderSummary = ({ classes }) => {
 
   return (
     <Layout>
-      <Stepper activeStep={activeStep}>
-        {steps.map((label, index) => {
-          const props = {};
-          const labelProps = {};
-          return (
-            <Step key={label} {...props}>
-              <StepLabel {...labelProps}>{label}</StepLabel>
-            </Step>
-          );
-        })}
-      </Stepper>
-
       <Content>
-        <Form>
-          {({ errors, values }) => (
-            <Grid container className={classes.content} spacing={32}>
-              {getStepContent(activeStep)}
-            </Grid>
-          )}
-        </Form>
+        <Stepper activeStep={activeStep}>
+          {steps.map((label, index) => {
+            const props = {};
+            const labelProps = {};
+            return (
+              <Step key={label} {...props}>
+                <StepLabel {...labelProps}>{label}</StepLabel>
+              </Step>
+            );
+          })}
+        </Stepper>
+
+        <Grid container spacing={32} className={classes.content}>
+          {getStepContent(activeStep)}
+          <SideSummary />
+        </Grid>
       </Content>
     </Layout>
-  )
-}
+  );
+};
 
 OrderSummary.propTypes = {
-  classes: PropTypes.shape().isRequired,
+  classes: PropTypes.shape().isRequired
 };
 
 export default withStyles(useStyles)(OrderSummary);

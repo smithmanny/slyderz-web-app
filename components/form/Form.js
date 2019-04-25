@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Form } from 'formik';
+import Grid from '@material-ui/core/Grid';
 
 export { default as DatePickerField } from './DatePickerGroup';
 export { default as SelectField } from './SelectGroup';
+export { default as TextField } from './TextFieldGroup';
 
 const BasicForm = ({
   children,
@@ -27,14 +29,16 @@ const BasicForm = ({
       handleChange
     }) => (
       <Form>
-        {children({
-          values,
-          errors,
-          isSubmitting,
-          handleSubmit,
-          handleBlur,
-          handleChange
-        })}
+        <Grid container spacing={32}>
+          {children({
+            values,
+            errors,
+            isSubmitting,
+            handleSubmit,
+            handleBlur,
+            handleChange
+          })}
+        </Grid>
       </Form>
     )}
   </Formik>
