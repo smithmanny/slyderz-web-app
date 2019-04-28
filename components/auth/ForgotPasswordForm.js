@@ -68,7 +68,6 @@ const ForgotPasswordForm = ({ classes, handleClose, openSignInModal }) => {
             {({ values, handleChange, isSubmitting }) => (
               <React.Fragment>
                 <TextField
-                  id="outlined-email-input"
                   variant="outlined"
                   label="Email"
                   type="email"

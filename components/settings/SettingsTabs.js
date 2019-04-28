@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Router from 'next/router';
 
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
@@ -43,9 +44,9 @@ const SettingsTabs = ({ classes }) => {
 
   return (
     <Grid container spacing={32}>
-      {settings.map(({ name, picture }) => (
+      {settings.map(({ name, picture, view }) => (
         <Grid item xs={12} md={4}>
-          <Card>
+          <Card onClick={() => Router.push(`/settings/${view}`)}>
             <CardContent className={classes.content}>
               <img src={picture} alt={`${name}`} className={classes.image} />
               <Text

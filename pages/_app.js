@@ -10,6 +10,7 @@ import DateFnsUtils from '@date-io/date-fns';
 
 import getPageContext from '../utils/getPageContext';
 import withApollo from '../utils/withApollo';
+import User from '../components/shared/User';
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -36,10 +37,7 @@ class MyApp extends App {
   }
 
   render() {
-    const {
-      apollo, Component, pageProps,
-    } = this.props;
-
+    const { apollo, Component, pageProps } = this.props;
     return (
       <Container>
         <Head>
@@ -51,10 +49,21 @@ class MyApp extends App {
             registry={this.pageContext.sheetsRegistry}
             generateClassName={this.pageContext.generateClassName}
           >
-            <MuiThemeProvider theme={this.pageContext.theme} sheetsManager={this.pageContext.sheetsManager}>
+            <MuiThemeProvider
+              theme={this.pageContext.theme}
+              sheetsManager={this.pageContext.sheetsManager}
+            >
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <CssBaseline />
-                <Component pageContext={this.pageContext} {...pageProps} />
+                <User>
+                  {({ data: { me } }) => (
+                    <Component
+                      pageContext={this.pageContext}
+                      user={me}
+                      {...pageProps}
+                    />
+                  )}
+                </User>
               </MuiPickersUtilsProvider>
             </MuiThemeProvider>
           </JssProvider>

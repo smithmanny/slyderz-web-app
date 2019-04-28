@@ -12,10 +12,21 @@ class MyDocument extends Document {
         <Head>
           <meta charSet="utf-8" />
           {/* Use minimum-scale=1 to enable GPU rasterization */}
-          <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no" />
+          <meta
+            name="viewport"
+            content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
+          />
           {/* PWA primary color */}
-          <meta name="theme-color" content={pageContext ? pageContext.theme.palette.primary.main : null} />
-          <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
+          <meta
+            name="theme-color"
+            content={
+              pageContext ? pageContext.theme.palette.primary.main : null
+            }
+          />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
+          />
         </Head>
         <body>
           <Main />
@@ -53,12 +64,13 @@ MyDocument.getInitialProps = ctx => {
   let pageContext;
   const page = ctx.renderPage(Component => {
     const WrappedComponent = props => {
+      // eslint-disable-next-line prefer-destructuring
       pageContext = props.pageContext;
       return <Component {...props} />;
     };
 
     WrappedComponent.propTypes = {
-      pageContext: PropTypes.shape().isRequired,
+      pageContext: PropTypes.shape().isRequired
     };
 
     return WrappedComponent;
@@ -83,7 +95,7 @@ MyDocument.getInitialProps = ctx => {
         />
         {flush() || null}
       </React.Fragment>
-    ),
+    )
   };
 };
 

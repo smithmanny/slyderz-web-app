@@ -54,119 +54,100 @@ const SignInForm = ({
     <div>
       <Typography variant="h6">Sign in to your Slyderz account</Typography>
       <Divider className={classes.hDivider} />
-      <Mutation
+      <Form
         mutation={signInUserMutation}
-        refetchQueries={[{ query: currentUserQuery }]}
-        onCompleted={() => {
-          handleClose();
-        }}
-        onError={error => {
-          setErrorMessage(error);
-          setOpen(true);
-        }}
+        onSubmit={values => ({
+          ...values
+        })}
+        handleClose={handleClose}
       >
-        {signInUser => (
-          <Form
-            onSubmit={(values, { setSubmitting }) => {
-              signInUser({
-                variables: {
-                  ...values
-                }
-              });
-              setSubmitting(false);
-            }}
-          >
-            {({ values, handleChange, isSubmitting }) => (
-              <React.Fragment>
-                <TextField
-                  id="outlined-email-input"
-                  variant="outlined"
-                  label="Email"
-                  type="email"
-                  name="email"
-                  autoComplete="email"
-                  onChange={handleChange}
-                  value={values.email}
-                  InputProps={{
-                    endAdornment: <EmailIcon />
-                  }}
-                />
-                <TextField
-                  id="outlined-password-input"
-                  variant="outlined"
-                  label="Password"
-                  type="password"
-                  name="password"
-                  autoComplete="current-password"
-                  onChange={handleChange}
-                  value={values.password}
-                  InputProps={{
-                    endAdornment: <LockIcon />
-                  }}
-                />
+        {({ values, handleChange, isSubmitting }) => (
+          <React.Fragment>
+            <TextField
+              variant="outlined"
+              label="Email"
+              type="email"
+              name="email"
+              autoComplete="email"
+              onChange={handleChange}
+              value={values.email}
+              InputProps={{
+                endAdornment: <EmailIcon />
+              }}
+            />
+            <TextField
+              variant="outlined"
+              label="Password"
+              type="password"
+              name="password"
+              autoComplete="current-password"
+              onChange={handleChange}
+              value={values.password}
+              InputProps={{
+                endAdornment: <LockIcon />
+              }}
+            />
 
-                <Grid item xs={12}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="secondary"
-                    disabled={isSubmitting}
-                    fullWidth
-                  >
-                    Sign In
-                  </Button>
-                </Grid>
-                <Divider className={classes.hDivider} />
+            <Grid item xs={12}>
+              <Button
+                type="submit"
+                variant="contained"
+                color="secondary"
+                disabled={isSubmitting}
+                fullWidth
+              >
+                Sign In
+              </Button>
+            </Grid>
+            <Divider className={classes.hDivider} />
 
-                <Grid item xs={12} md={6}>
-                  <Typography
-                    variant="subtitle1"
-                    onClick={openForgotPasswordModal}
-                    className={classes.noAccountLink}
-                  >
-                    Forgot password?
-                  </Typography>
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <Typography
-                    variant="subtitle1"
-                    align="right"
-                    color="primary"
-                    onClick={openSignUpModal}
-                    className={classes.noAccountLink}
-                  >
-                    Don't have an account?
-                  </Typography>
-                </Grid>
-                <Snackbar
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center'
-                  }}
-                  open={open}
-                  autoHideDuration={3000}
-                  onClose={handleSnackbar}
-                  ContentProps={{
-                    'aria-describedby': 'message-id'
-                  }}
-                  message={<span id="message-id">{errorMessage}(</span>}
-                  action={[
-                    <IconButton
-                      key="close"
-                      aria-label="Close"
-                      color="inherit"
-                      className={classes.close}
-                      onClick={handleSnackbar}
-                    >
-                      <CloseIcon />
-                    </IconButton>
-                  ]}
-                />
-              </React.Fragment>
-            )}
-          </Form>
+            <Grid item xs={12} md={6}>
+              <Typography
+                variant="subtitle1"
+                onClick={openForgotPasswordModal}
+                className={classes.noAccountLink}
+              >
+                Forgot password?
+              </Typography>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Typography
+                variant="subtitle1"
+                align="right"
+                color="primary"
+                onClick={openSignUpModal}
+                className={classes.noAccountLink}
+              >
+                Don't have an account?
+              </Typography>
+            </Grid>
+            <Snackbar
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center'
+              }}
+              open={open}
+              autoHideDuration={3000}
+              onClose={handleSnackbar}
+              ContentProps={{
+                'aria-describedby': 'message-id'
+              }}
+              message={<span id="message-id">{errorMessage}(</span>}
+              action={[
+                <IconButton
+                  key="close"
+                  aria-label="Close"
+                  color="inherit"
+                  className={classes.close}
+                  onClick={handleSnackbar}
+                >
+                  <CloseIcon />
+                </IconButton>
+              ]}
+            />
+          </React.Fragment>
         )}
-      </Mutation>
+      </Form>
     </div>
   );
 };

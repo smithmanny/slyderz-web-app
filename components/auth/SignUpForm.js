@@ -71,7 +71,6 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
             {({ values, errors, handleChange, handleBlur, isSubmitting }) => (
               <React.Fragment>
                 <TextField
-                  id="outlined-email-input"
                   variant="outlined"
                   label="Email"
                   type="email"
@@ -84,7 +83,6 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
                   }}
                 />
                 <TextField
-                  id="outlined-first-name-input"
                   variant="outlined"
                   label="First Name"
                   name="firstName"
@@ -96,7 +94,6 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
                   }}
                 />
                 <TextField
-                  id="outlined-last-name-input"
                   variant="outlined"
                   label="Last Name"
                   name="lastName"
@@ -107,7 +104,6 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
                   }}
                 />
                 <TextField
-                  id="outlined-password-input"
                   variant="outlined"
                   label="Password"
                   type="password"

@@ -48,7 +48,7 @@ const ResetPasswordForm = ({ classes, resetToken }) => {
 
   return (
     <div className={classes.container}>
-      <Text type="display1">Reset Your Password</Text>
+      <Text type="h4">Reset Your Password</Text>
       <Divider className={classes.hDivider} />
       <Mutation
         mutation={resetPasswordMutation}
@@ -74,7 +74,6 @@ const ResetPasswordForm = ({ classes, resetToken }) => {
             {({ values, handleChange, isSubmitting }) => (
               <React.Fragment>
                 <TextField
-                  id="outlined-password-input"
                   variant="outlined"
                   label="Password"
                   type="password"
@@ -87,7 +86,6 @@ const ResetPasswordForm = ({ classes, resetToken }) => {
                   }}
                 />
                 <TextField
-                  id="outlined-confirm-password-input"
                   variant="outlined"
                   label="Confirm Password"
                   type="password"

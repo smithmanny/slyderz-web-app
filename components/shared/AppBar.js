@@ -21,6 +21,7 @@ import ForgotPasswordForm from '../auth/ForgotPasswordForm';
 import BasicModal from '../BasicModal';
 import currentUserQuery from '../../lib/gql/query/user/currentUserQuery.gql';
 import signOutMutation from '../../lib/gql/mutation/auth/signOutUserMutation.gql';
+import User from './User';
 
 const styles = theme => ({
   main: {
@@ -41,7 +42,7 @@ const styles = theme => ({
   }
 });
 
-const AppBar = ({ classes, user }) => {
+const AppBar = ({ classes }) => {
   const [values, setValues] = React.useState({
     openAuthModal: false,
     modalView: 'log_in'
@@ -135,80 +136,83 @@ const AppBar = ({ classes, user }) => {
   }
 
   return (
-    <div className={classes.root}>
-      <MuiAppBar position="static" color="primary">
-        <Toolbar>
-          <Typography
-            variant="h6"
-            color="inherit"
-            className={classes.grow}
-            onClick={() => Route.push('/')}
-          >
-            Slyderz
-          </Typography>
-
-          {!user && (
-            <React.Fragment>
-              <Button
-                className={classes.menuItem}
-                onClick={() =>
-                  setValues({
-                    ...values,
-                    openAuthModal: true,
-                    modalView: 'sign_up'
-                  })
-                }
-              >
-                Sign up
-              </Button>
-              <Button
-                className={classes.menuItem}
-                onClick={() =>
-                  setValues({
-                    ...values,
-                    openAuthModal: true,
-                    modalView: 'log_in'
-                  })
-                }
-              >
-                Log In
-              </Button>
-            </React.Fragment>
-          )}
-
-          {user && (
-            <React.Fragment>
-              <IconButton color="inherit">
-                <ShoppingCart />
-              </IconButton>
-
-              <IconButton
-                aria-owns={isMenuOpen ? 'material-appbar' : undefined}
-                aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
+    <User>
+      {({ data: { me } }) => (
+        <div className={classes.root}>
+          <MuiAppBar position="static" color="primary">
+            <Toolbar>
+              <Typography
+                variant="h6"
                 color="inherit"
+                className={classes.grow}
+                onClick={() => Route.push('/')}
               >
-                <AccountCircle />
-              </IconButton>
-            </React.Fragment>
-          )}
-          {/* Profile Menu */}
-          {renderMenu}
-          <BasicModal
-            open={values.openAuthModal}
-            onClose={() => setValues({ ...values, openAuthModal: false })}
-          >
-            {renderModal()}
-          </BasicModal>
-        </Toolbar>
-      </MuiAppBar>
-    </div>
+                Slyderz
+              </Typography>
+
+              {!me && (
+                <React.Fragment>
+                  <Button
+                    className={classes.menuItem}
+                    onClick={() =>
+                      setValues({
+                        ...values,
+                        openAuthModal: true,
+                        modalView: 'sign_up'
+                      })
+                    }
+                  >
+                    Sign up
+                  </Button>
+                  <Button
+                    className={classes.menuItem}
+                    onClick={() =>
+                      setValues({
+                        ...values,
+                        openAuthModal: true,
+                        modalView: 'log_in'
+                      })
+                    }
+                  >
+                    Log In
+                  </Button>
+                </React.Fragment>
+              )}
+
+              {me && (
+                <React.Fragment>
+                  <IconButton color="inherit">
+                    <ShoppingCart />
+                  </IconButton>
+
+                  <IconButton
+                    aria-owns={isMenuOpen ? 'material-appbar' : undefined}
+                    aria-haspopup="true"
+                    onClick={handleProfileMenuOpen}
+                    color="inherit"
+                  >
+                    <AccountCircle />
+                  </IconButton>
+                </React.Fragment>
+              )}
+              {/* Profile Menu */}
+              {renderMenu}
+              <BasicModal
+                open={values.openAuthModal}
+                onClose={() => setValues({ ...values, openAuthModal: false })}
+              >
+                {renderModal()}
+              </BasicModal>
+            </Toolbar>
+          </MuiAppBar>
+        </div>
+      )}
+    </User>
   );
 };
 
 AppBar.propTypes = {
-  classes: PropTypes.shape(),
-  user: PropTypes.shape()
+  classes: PropTypes.shape()
 };
 
 export default withStyles(styles)(AppBar);
