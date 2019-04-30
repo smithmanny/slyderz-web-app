@@ -4,5 +4,10 @@ query currentUser {
     email
     firstName
     lastName
+    address1
+    address2
+    city
+    state
+    postalCode
   }
 }

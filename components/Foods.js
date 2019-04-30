@@ -7,16 +7,10 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 
+import Content from './Content';
 import fetchCuisinesQuery from '../lib/gql/query/cuisines/fetchCuisinesQuery.gql';
 
 const styles = theme => ({
-  orderWrapper: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    overflow: 'hidden',
-    paddingBottom: theme.spacing.unit * 5
-  },
   gridList: {
     flexWrap: 'nowrap',
     // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
@@ -29,36 +23,36 @@ const styles = theme => ({
 });
 
 const Foods = ({ classes }) => (
-  // <div className={classes.orderWrapper}>
-  <Query query={fetchCuisinesQuery}>
-    {({ loading, error, data }) => {
-      if (loading) {
-        return <div>Loading...</div>;
-      }
+  <Content>
+    <Query query={fetchCuisinesQuery}>
+      {({ loading, error, data }) => {
+        if (loading) {
+          return <div>Loading...</div>;
+        }
 
-      if (error) {
-        console.log(error);
-        return <div> Error :( </div>;
-      }
+        if (error) {
+          console.log(error);
+          return <div> Error :( </div>;
+        }
 
-      return (
-        <GridList className={classes.gridList} cols={4} spacing={16}>
-          {data.cuisines.map(cuisine => (
-            <GridListTile key={cuisine.name}>
-              <img src={cuisine.image} alt={cuisine.name} />
-              <GridListTileBar
-                title={cuisine.name}
-                classes={{
-                  root: classes.titleBar
-                }}
-              />
-            </GridListTile>
-          ))}
-        </GridList>
-      );
-    }}
-  </Query>
-  // </div>
+        return (
+          <GridList className={classes.gridList} cols={4} spacing={16}>
+            {data.cuisines.map(cuisine => (
+              <GridListTile key={cuisine.name}>
+                <img src={cuisine.image} alt={cuisine.name} />
+                <GridListTileBar
+                  title={cuisine.name}
+                  classes={{
+                    root: classes.titleBar
+                  }}
+                />
+              </GridListTile>
+            ))}
+          </GridList>
+        );
+      }}
+    </Query>
+  </Content>
 );
 
 Foods.propTypes = {

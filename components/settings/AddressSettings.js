@@ -7,10 +7,11 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { withStyles } from '@material-ui/core/styles';
 
+import { isInteger } from 'formik';
 import Divider from '../shared/Divider';
 import Form, { TextField, SubmitButton } from '../form/Form';
 import Text from '../shared/Text';
-import signInUserMutation from '../../lib/gql/mutation/auth/signInUserMutation.gql';
+import addressSettingsMutation from '../../lib/gql/mutation/settings/AddressSettingsMutation.gql';
 
 const styles = theme => ({
   card: {
@@ -25,13 +26,21 @@ const styles = theme => ({
 });
 
 const AddressSettings = ({ classes, user }) => {
-  // const { email, firstName, lastName } = user;
-  const t = [];
+  const { address1, address2, city, state, postalCode } = user;
   return (
     <Grid item xs={6} className={classes.form}>
       <Card className={classes.card}>
         <CardContent>
-          <Form mutation={signInUserMutation}>
+          <Form
+            defaultValues={{ address1, address2, city, state, postalCode }}
+            mutate={{
+              mutation: addressSettingsMutation,
+              variables: values => ({
+                ...values,
+                postalCode: Number(values.postalCode)
+              })
+            }}
+          >
             {({ values, handleChange }) => (
               <React.Fragment>
                 <Grid item xs={12}>
@@ -77,7 +86,7 @@ const AddressSettings = ({ classes, user }) => {
                   xs={6}
                   variant="outlined"
                   label="Zip Code"
-                  name="postal-code"
+                  name="postalCode"
                   autoComplete="postal-code"
                   onChange={handleChange}
                   value={values.postalCode}

@@ -4,9 +4,9 @@ import { withStyles } from '@material-ui/core/styles';
 
 import AppBar from './shared/AppBar';
 
-const useStyles = () => ({
+const useStyles = theme => ({
   main: {
-    maxWidth: 1760,
+    padding: `${theme.spacing.unit * 5}px 0`,
     margin: 'auto'
   }
 });

@@ -13,6 +13,7 @@ import Divider from '../shared/Divider';
 
 import Form, { TextField, SubmitButton } from '../form/Form';
 import Text from '../shared/Text';
+import accountSettingsMutation from '../../lib/gql/mutation/settings/AccountSettingsMutation.gql';
 
 const styles = theme => ({
   card: {
@@ -32,7 +33,13 @@ const AccountSettings = ({ classes, user }) => {
     <Grid item xs={6} className={classes.form}>
       <Card className={classes.card}>
         <CardContent>
-          <Form defaultValues={{ email, firstName, lastName }}>
+          <Form
+            defaultValues={{ email, firstName, lastName }}
+            mutation={accountSettingsMutation}
+            onSubmit={values => ({
+              ...values
+            })}
+          >
             {({ values, handleChange }) => (
               <React.Fragment>
                 <Grid item xs={12}>

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
 
 const useStyles = theme => ({
@@ -9,12 +8,13 @@ const useStyles = theme => ({
     padding: theme.spacing.unit,
     [theme.breakpoints.up('md')]: {
       padding: theme.spacing.unit * 5
-    }
+    },
+    maxWidth: 1090
   }
 });
 
 const Content = ({ classes, children }) => (
-  <Grid className={classes.content}>{children}</Grid>
+  <div className={classes.content}>{children}</div>
 );
 
 Content.propTypes = {

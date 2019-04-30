@@ -4,6 +4,8 @@ import { ApolloConsumer } from 'react-apollo';
 import { Formik, Form } from 'formik';
 import Grid from '@material-ui/core/Grid';
 
+import currentUserQuery from '../../lib/gql/query/user/currentUserQuery.gql';
+
 export { default as DatePickerField } from './DatePickerGroup';
 export { default as SelectField } from './SelectGroup';
 export { default as TextField } from './TextFieldGroup';
@@ -12,41 +14,34 @@ export { default as SubmitButton } from './SubmitButton';
 const BasicForm = ({
   children,
   defaultValues,
-  onSubmit,
-  mutation,
-  validation,
-  ...props
+  customSubmit,
+  mutate,
+  validation
 }) => (
   <ApolloConsumer>
     {client => {
-      function handleFormSubmit({ setSubmitting, values }) {
-        // Handle onSubmit inside component that called it
-        if (typeof onSubmit === 'function' && !mutation) {
-          onSubmit(values);
+      function handleSubmit({ setSubmitting, variables }) {
+        if (typeof customSubmit === 'function') {
+          customSubmit();
         }
 
-        console.log(values);
-
-        if (mutation) {
-          client.mutate({
-            mutation,
-            variables: values
+        client
+          .mutate({
+            mutation: mutate.mutation,
+            variables,
+            refetchQueries: [{ query: currentUserQuery }]
+          })
+          .then(() => {
+            setSubmitting(false);
           });
-          setSubmitting();
-        }
       }
 
       return (
-        <Formik
-          initialValues={defaultValues}
-          validationSchema={validation}
-          {...props}
-        >
+        <Formik initialValues={defaultValues} validationSchema={validation}>
           {({
             values,
             errors,
             isSubmitting,
-            handleSubmit,
             handleBlur,
             handleChange,
             setSubmitting
@@ -55,7 +50,9 @@ const BasicForm = ({
               onSubmit={e => {
                 e.stopPropagation();
                 e.preventDefault();
-                handleFormSubmit({ setSubmitting, values });
+
+                const variables = mutate.variables(values);
+                handleSubmit({ setSubmitting, variables });
               }}
             >
               <Grid container spacing={32}>
@@ -63,7 +60,6 @@ const BasicForm = ({
                   values,
                   errors,
                   isSubmitting,
-                  handleSubmit,
                   handleBlur,
                   handleChange
                 })}
@@ -79,8 +75,8 @@ const BasicForm = ({
 BasicForm.propTypes = {
   children: PropTypes.func.isRequired,
   defaultValues: PropTypes.shape(),
-  onSubmit: PropTypes.func,
-  mutation: PropTypes.func,
+  customSubmit: PropTypes.func,
+  mutate: PropTypes.func,
   validation: PropTypes.func
 };
 
