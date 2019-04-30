@@ -35,113 +35,62 @@ const useStyles = theme => ({
   }
 });
 
-const ResetPasswordForm = ({ classes, resetToken }) => {
-  const [open, setOpen] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState(null);
-
-  function handleSnackbar(event, reason) {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpen(false);
-  }
-
-  return (
-    <div className={classes.container}>
-      <Text type="h4">Reset Your Password</Text>
-      <Divider className={classes.hDivider} />
-      <Mutation
-        mutation={resetPasswordMutation}
-        refetchQueries={[{ query: currentUserQuery }]}
-        onCompleted={() => Router.push({ pathname: '/' })}
-        onError={error => {
-          setErrorMessage(error);
-          setOpen(true);
-        }}
-      >
-        {resetPassword => (
-          <Form
-            onSubmit={(values, { setSubmitting }) => {
-              resetPassword({
-                variables: {
-                  ...values,
-                  resetToken
-                }
-              });
-              setSubmitting(false);
+const ResetPasswordForm = ({ classes, resetToken }) => (
+  <div className={classes.container}>
+    <Text type="h4">Reset Your Password</Text>
+    <Divider className={classes.hDivider} />
+    <Form
+      mutate={{
+        mutation: resetPasswordMutation,
+        variables: values => ({
+          ...values
+        })
+      }}
+    >
+      {({ values, handleChange, isSubmitting }) => (
+        <React.Fragment>
+          <TextField
+            variant="outlined"
+            label="Password"
+            type="password"
+            name="password"
+            autoComplete="current-password"
+            onChange={handleChange}
+            value={values.password}
+            InputProps={{
+              endAdornment: <LockIcon />
             }}
-          >
-            {({ values, handleChange, isSubmitting }) => (
-              <React.Fragment>
-                <TextField
-                  variant="outlined"
-                  label="Password"
-                  type="password"
-                  name="password"
-                  autoComplete="current-password"
-                  onChange={handleChange}
-                  value={values.password}
-                  InputProps={{
-                    endAdornment: <LockIcon />
-                  }}
-                />
-                <TextField
-                  variant="outlined"
-                  label="Confirm Password"
-                  type="password"
-                  className={classes.textField}
-                  name="confirmPassword"
-                  autoComplete="current-password"
-                  onChange={handleChange}
-                  value={values.confirmPassword}
-                  InputProps={{
-                    endAdornment: <LockIcon />
-                  }}
-                />
+          />
+          <TextField
+            variant="outlined"
+            label="Confirm Password"
+            type="password"
+            className={classes.textField}
+            name="confirmPassword"
+            autoComplete="current-password"
+            onChange={handleChange}
+            value={values.confirmPassword}
+            InputProps={{
+              endAdornment: <LockIcon />
+            }}
+          />
 
-                <Grid item xs={12}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="secondary"
-                    disabled={isSubmitting}
-                    fullWidth
-                  >
-                    Reset Password
-                  </Button>
-                </Grid>
-                <Snackbar
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center'
-                  }}
-                  open={open}
-                  autoHideDuration={3000}
-                  onClose={handleSnackbar}
-                  ContentProps={{
-                    'aria-describedby': 'message-id'
-                  }}
-                  message={<span id="message-id">{errorMessage}(</span>}
-                  action={[
-                    <IconButton
-                      key="close"
-                      aria-label="Close"
-                      color="inherit"
-                      className={classes.close}
-                      onClick={handleSnackbar}
-                    >
-                      <CloseIcon />
-                    </IconButton>
-                  ]}
-                />
-              </React.Fragment>
-            )}
-          </Form>
-        )}
-      </Mutation>
-    </div>
-  );
-};
+          <Grid item xs={12}>
+            <Button
+              type="submit"
+              variant="contained"
+              color="secondary"
+              disabled={isSubmitting}
+              fullWidth
+            >
+              Reset Password
+            </Button>
+          </Grid>
+        </React.Fragment>
+      )}
+    </Form>
+  </div>
+);
 
 ResetPasswordForm.propTypes = {
   classes: PropTypes.shape().isRequired,

@@ -13,7 +13,7 @@ import Divider from '../shared/Divider';
 
 import Form, { TextField, SubmitButton } from '../form/Form';
 import Text from '../shared/Text';
-import accountSettingsMutation from '../../lib/gql/mutation/settings/AccountSettingsMutation.gql';
+import updateAccountSettingsMutation from '../../lib/gql/mutation/settings/UpdateAccountSettingsMutation.gql';
 
 const styles = theme => ({
   card: {
@@ -35,10 +35,12 @@ const AccountSettings = ({ classes, user }) => {
         <CardContent>
           <Form
             defaultValues={{ email, firstName, lastName }}
-            mutation={accountSettingsMutation}
-            onSubmit={values => ({
-              ...values
-            })}
+            mutate={{
+              mutation: updateAccountSettingsMutation,
+              variables: values => ({
+                ...values
+              })
+            }}
           >
             {({ values, handleChange }) => (
               <React.Fragment>
@@ -91,7 +93,14 @@ const AccountSettings = ({ classes, user }) => {
       {/* Password Form */}
       <Card>
         <CardContent>
-          <Form>
+          <Form
+            mutate={{
+              mutation: updateAccountSettingsMutation,
+              variables: values => ({
+                ...values
+              })
+            }}
+          >
             {({ values, handleChange }) => (
               <React.Fragment>
                 <Grid item xs={12}>
@@ -102,18 +111,6 @@ const AccountSettings = ({ classes, user }) => {
                 </Grid>
                 <TextField
                   variant="outlined"
-                  label="Password"
-                  type="password"
-                  name="password"
-                  autoComplete="password"
-                  onChange={handleChange}
-                  value={values.password}
-                  InputProps={{
-                    endAdornment: <LockIcon />
-                  }}
-                />
-                <TextField
-                  variant="outlined"
                   label="Current Password"
                   type="password"
                   name="currentPassword"
@@ -122,6 +119,24 @@ const AccountSettings = ({ classes, user }) => {
                   InputProps={{
                     endAdornment: <LockIcon />
                   }}
+                />
+                <TextField
+                  variant="outlined"
+                  label="New Password"
+                  type="password"
+                  name="newPassword"
+                  autoComplete="password"
+                  onChange={handleChange}
+                  value={values.newPassword}
+                />
+                <TextField
+                  variant="outlined"
+                  label="Confirm New Password"
+                  type="password"
+                  name="confirmNewPassword"
+                  autoComplete="password"
+                  onChange={handleChange}
+                  value={values.confirmNewPassword}
                 />
                 <SubmitButton xs={4}>Update Password</SubmitButton>
               </React.Fragment>

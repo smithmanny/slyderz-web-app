@@ -7,11 +7,10 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { withStyles } from '@material-ui/core/styles';
 
-import { isInteger } from 'formik';
 import Divider from '../shared/Divider';
 import Form, { TextField, SubmitButton } from '../form/Form';
 import Text from '../shared/Text';
-import addressSettingsMutation from '../../lib/gql/mutation/settings/AddressSettingsMutation.gql';
+import updateAddressSettingsMutation from '../../lib/gql/mutation/settings/UpdateAddressSettingsMutation.gql';
 
 const styles = theme => ({
   card: {
@@ -34,7 +33,7 @@ const AddressSettings = ({ classes, user }) => {
           <Form
             defaultValues={{ address1, address2, city, state, postalCode }}
             mutate={{
-              mutation: addressSettingsMutation,
+              mutation: updateAddressSettingsMutation,
               variables: values => ({
                 ...values,
                 postalCode: Number(values.postalCode)

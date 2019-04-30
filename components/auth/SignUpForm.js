@@ -1,22 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Mutation } from 'react-apollo';
 
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
 import EmailIcon from '@material-ui/icons/AlternateEmail';
 import PersonIcon from '@material-ui/icons/Person';
 import LockIcon from '@material-ui/icons/Lock';
 import Typography from '@material-ui/core/Typography';
-import Snackbar from '@material-ui/core/Snackbar';
-import CloseIcon from '@material-ui/icons/Close';
 
 import Form, { TextField } from '../form/Form';
 import signUpUserMutation from '../../lib/gql/mutation/auth/signUpUserMutation.gql';
-import currentUserQuery from '../../lib/gql/query/user/currentUserQuery.gql';
 
 const useStyles = theme => ({
   haveAccountLink: {
@@ -32,158 +27,106 @@ const useStyles = theme => ({
   }
 });
 
-const SignUpForm = ({ classes, handleClose, openSignInModal }) => {
-  const [open, setOpen] = React.useState(false);
-
-  function handleSnackbar(event, reason) {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setOpen(false);
-  }
-
-  return (
-    <div>
-      <Typography variant="h6">Sign up for a Slyderz account</Typography>
-      <Divider className={classes.hDivider} />
-      <Mutation
-        mutation={signUpUserMutation}
-        refetchQueries={[{ query: currentUserQuery }]}
-        onCompleted={user => {
-          handleClose();
-        }}
-        onError={error => {
-          setOpen(true);
-        }}
-      >
-        {signup => (
-          <Form
-            onSubmit={async (values, { setSubmitting }) => {
-              await signup({
-                variables: {
-                  ...values
-                }
-              });
-              setSubmitting(false);
+const SignUpForm = ({ classes, handleClose, openSignInModal }) => (
+  <div>
+    <Typography variant="h6">Sign up for a Slyderz account</Typography>
+    <Divider className={classes.hDivider} />
+    <Form
+      mutate={{
+        mutation: signUpUserMutation,
+        variables: values => ({
+          ...values
+        })
+      }}
+      handleClose={handleClose}
+    >
+      {({ values, errors, handleChange, isSubmitting }) => (
+        <React.Fragment>
+          <TextField
+            variant="outlined"
+            label="Email"
+            type="email"
+            name="email"
+            autoComplete="email"
+            onChange={handleChange}
+            value={values.email}
+            InputProps={{
+              endAdornment: <EmailIcon />
             }}
-          >
-            {({ values, errors, handleChange, handleBlur, isSubmitting }) => (
-              <React.Fragment>
-                <TextField
-                  variant="outlined"
-                  label="Email"
-                  type="email"
-                  name="email"
-                  autoComplete="email"
-                  onChange={handleChange}
-                  value={values.email}
-                  InputProps={{
-                    endAdornment: <EmailIcon />
-                  }}
-                />
-                <TextField
-                  variant="outlined"
-                  label="First Name"
-                  name="firstName"
-                  autoComplete="name"
-                  onChange={handleChange}
-                  value={values.firstName}
-                  InputProps={{
-                    endAdornment: <PersonIcon />
-                  }}
-                />
-                <TextField
-                  variant="outlined"
-                  label="Last Name"
-                  name="lastName"
-                  onChange={handleChange}
-                  value={values.lastName}
-                  InputProps={{
-                    endAdornment: <PersonIcon />
-                  }}
-                />
-                <TextField
-                  variant="outlined"
-                  label="Password"
-                  type="password"
-                  name="password"
-                  autoComplete="current-password"
-                  onChange={handleChange}
-                  value={values.password}
-                  InputProps={{
-                    endAdornment: <LockIcon />
-                  }}
-                />
+          />
+          <TextField
+            variant="outlined"
+            label="First Name"
+            name="firstName"
+            autoComplete="name"
+            onChange={handleChange}
+            value={values.firstName}
+            InputProps={{
+              endAdornment: <PersonIcon />
+            }}
+          />
+          <TextField
+            variant="outlined"
+            label="Last Name"
+            name="lastName"
+            onChange={handleChange}
+            value={values.lastName}
+            InputProps={{
+              endAdornment: <PersonIcon />
+            }}
+          />
+          <TextField
+            variant="outlined"
+            label="Password"
+            type="password"
+            name="password"
+            autoComplete="current-password"
+            onChange={handleChange}
+            value={values.password}
+            InputProps={{
+              endAdornment: <LockIcon />
+            }}
+          />
 
-                <Grid item xs={12}>
-                  <Typography variant="h6">Birthday</Typography>
-                  <Typography variant="caption">
-                    To sign up, you must be 18 or older. This is kept personal.
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  {/* //</Grid>{//</Grid></Grid></Grid>Grid item} */}
-                </Grid>
+          <Grid item xs={12}>
+            <Typography variant="h6">Birthday</Typography>
+            <Typography variant="caption">
+              To sign up, you must be 18 or older. This is kept personal.
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            {/* //</Grid>{//</Grid></Grid></Grid>Grid item} */}
+          </Grid>
 
-                <Grid item xs={12}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="secondary"
-                    disabled={isSubmitting}
-                    fullWidth
-                  >
-                    Sign Up
-                  </Button>
-                </Grid>
-                <Divider className={classes.hDivider} />
+          <Grid item xs={12}>
+            <Button
+              type="submit"
+              variant="contained"
+              color="secondary"
+              disabled={isSubmitting}
+              fullWidth
+            >
+              Sign Up
+            </Button>
+          </Grid>
+          <Divider className={classes.hDivider} />
 
-                <Grid item xs={12}>
-                  <Typography
-                    variant="subtitle1"
-                    color="primary"
-                    align="center"
-                    onClick={openSignInModal}
-                    className={classes.haveAccountLink}
-                  >
-                    Already have a Slyderz account? Login
-                  </Typography>
-                </Grid>
-                <Snackbar
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center'
-                  }}
-                  open={open}
-                  autoHideDuration={3000}
-                  onClose={handleSnackbar}
-                  ContentProps={{
-                    'aria-describedby': 'message-id'
-                  }}
-                  message={
-                    <span id="message-id">{JSON.stringify(errors)}</span>
-                  }
-                  action={[
-                    <IconButton
-                      key="close"
-                      aria-label="Close"
-                      color="inherit"
-                      className={classes.close}
-                      onClick={handleSnackbar}
-                    >
-                      <CloseIcon />
-                    </IconButton>
-                  ]}
-                />
-              </React.Fragment>
-            )}
-          </Form>
-        )}
-      </Mutation>
-    </div>
-  );
-};
+          <Grid item xs={12}>
+            <Typography
+              variant="subtitle1"
+              color="primary"
+              align="center"
+              onClick={openSignInModal}
+              className={classes.haveAccountLink}
+            >
+              Already have a Slyderz account? Login
+            </Typography>
+          </Grid>
+        </React.Fragment>
+      )}
+    </Form>
+  </div>
+);
 
 SignUpForm.propTypes = {
   classes: PropTypes.shape().isRequired,

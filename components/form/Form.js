@@ -5,6 +5,7 @@ import { Formik, Form } from 'formik';
 import Grid from '@material-ui/core/Grid';
 
 import currentUserQuery from '../../lib/gql/query/user/currentUserQuery.gql';
+import DisplayError from '../DisplayError';
 
 export { default as DatePickerField } from './DatePickerGroup';
 export { default as SelectField } from './SelectGroup';
@@ -16,6 +17,7 @@ const BasicForm = ({
   defaultValues,
   customSubmit,
   mutate,
+  handleClose,
   validation
 }) => (
   <ApolloConsumer>
@@ -33,6 +35,10 @@ const BasicForm = ({
           })
           .then(() => {
             setSubmitting(false);
+            // Close modal
+            if (handleClose) {
+              handleClose();
+            }
           });
       }
 
@@ -55,15 +61,18 @@ const BasicForm = ({
                 handleSubmit({ setSubmitting, variables });
               }}
             >
-              <Grid container spacing={32}>
-                {children({
-                  values,
-                  errors,
-                  isSubmitting,
-                  handleBlur,
-                  handleChange
-                })}
-              </Grid>
+              <React.Fragment>
+                <DisplayError error={errors} />
+                <Grid container spacing={32}>
+                  {children({
+                    values,
+                    errors,
+                    isSubmitting,
+                    handleBlur,
+                    handleChange
+                  })}
+                </Grid>
+              </React.Fragment>
             </Form>
           )}
         </Formik>
@@ -76,6 +85,7 @@ BasicForm.propTypes = {
   children: PropTypes.func.isRequired,
   defaultValues: PropTypes.shape(),
   customSubmit: PropTypes.func,
+  handleClose: PropTypes.func,
   mutate: PropTypes.func,
   validation: PropTypes.func
 };
