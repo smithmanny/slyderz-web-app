@@ -6,7 +6,6 @@ import AppBar from './shared/AppBar';
 
 const useStyles = theme => ({
   main: {
-    padding: `${theme.spacing.unit * 5}px 0`,
     margin: 'auto'
   }
 });

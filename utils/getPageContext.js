@@ -13,6 +13,9 @@ const theme = createMuiTheme({
     secondary: {
       main: '#E54E44'
     },
+    white: {
+      main: '#FFF'
+    },
     error: red,
     // Used by `getContrastText()` to maximize the contrast between the background and
     // the text.
@@ -23,7 +26,8 @@ const theme = createMuiTheme({
     tonalOffset: 0.2
   },
   typography: {
-    useNextVariants: true
+    useNextVariants: true,
+    fontSize: 12
   }
 });
 

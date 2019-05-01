@@ -24,10 +24,6 @@ import signOutMutation from '../../lib/gql/mutation/auth/signOutUserMutation.gql
 import User from './User';
 
 const styles = theme => ({
-  main: {
-    maxWidth: 1920,
-    margin: 'auto'
-  },
   menuItem: {
     marginLeft: theme.spacing.unit * 3
   },
@@ -139,7 +135,7 @@ const AppBar = ({ classes }) => {
     <User>
       {({ data: { me } }) => (
         <div className={classes.root}>
-          <MuiAppBar position="static" color="primary">
+          <MuiAppBar position="static">
             <Toolbar>
               <Typography
                 variant="h6"

@@ -30,7 +30,7 @@ const styles = theme => ({
 const AccountSettings = ({ classes, user }) => {
   const { email, firstName, lastName } = user;
   return (
-    <Grid item xs={6} className={classes.form}>
+    <Grid item xs={8} className={classes.form}>
       <Card className={classes.card}>
         <CardContent>
           <Form

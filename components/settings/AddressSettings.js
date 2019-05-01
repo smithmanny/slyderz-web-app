@@ -18,17 +18,14 @@ const styles = theme => ({
   },
   form: {
     margin: 'auto'
-  },
-  settingSection: {
-    marginTop: theme.spacing.unit * 2
   }
 });
 
 const AddressSettings = ({ classes, user }) => {
   const { address1, address2, city, state, postalCode } = user;
   return (
-    <Grid item xs={6} className={classes.form}>
-      <Card className={classes.card}>
+    <Grid item xs={8} className={classes.form}>
+      <Card>
         <CardContent>
           <Form
             defaultValues={{ address1, address2, city, state, postalCode }}
@@ -43,9 +40,7 @@ const AddressSettings = ({ classes, user }) => {
             {({ values, handleChange }) => (
               <React.Fragment>
                 <Grid item xs={12}>
-                  <Text type="h4" className={classes.settingSection}>
-                    Manage Your Address
-                  </Text>
+                  <Text type="h4">Manage Your Address</Text>
                   <Divider />
                 </Grid>
                 <TextField

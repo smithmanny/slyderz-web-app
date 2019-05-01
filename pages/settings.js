@@ -1,14 +1,14 @@
 import React from 'react';
 
-import Content from '../components/Content';
+import Section from '../components/shared/Section';
 import Layout from '../components/Layout';
 import SettingsTabs from '../components/settings/SettingsTabs';
 
 const Index = props => (
   <Layout>
-    <Content>
+    <Section>
       <SettingsTabs />
-    </Content>
+    </Section>
   </Layout>
 );
 

@@ -7,7 +7,7 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 
-import Content from './Content';
+import Section from './shared/Section';
 import fetchCuisinesQuery from '../lib/gql/query/cuisines/fetchCuisinesQuery.gql';
 
 const styles = theme => ({
@@ -23,7 +23,7 @@ const styles = theme => ({
 });
 
 const Foods = ({ classes }) => (
-  <Content>
+  <Section>
     <Query query={fetchCuisinesQuery}>
       {({ loading, error, data }) => {
         if (loading) {
@@ -52,7 +52,7 @@ const Foods = ({ classes }) => (
         );
       }}
     </Query>
-  </Content>
+  </Section>
 );
 
 Foods.propTypes = {

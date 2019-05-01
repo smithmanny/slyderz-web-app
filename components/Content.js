@@ -5,11 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 const useStyles = theme => ({
   content: {
-    padding: theme.spacing.unit,
-    [theme.breakpoints.up('md')]: {
-      padding: theme.spacing.unit * 5
-    },
-    maxWidth: 1090
+    padding: `${theme.spacing.unit * 5}px ${theme.spacing.unit * 2}px `
   }
 });
 

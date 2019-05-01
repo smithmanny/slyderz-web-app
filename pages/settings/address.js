@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Content from '../../components/Content';
+import Section from '../../components/shared/Section';
 import Layout from '../../components/Layout';
 import AddressSettings from '../../components/settings/AddressSettings';
 
 const SettingsAddressContainer = ({ user }) => (
   <Layout>
-    <Content>
+    <Section>
       <AddressSettings user={user} />
-    </Content>
+    </Section>
   </Layout>
 );
 
