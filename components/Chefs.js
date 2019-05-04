@@ -65,19 +65,17 @@ const cookData = [
 
 const Chefs = ({ classes }) => (
   <div className={classes.section}>
-    <Typography variant="h5" color="inherit" gutterBottom>
-      Chefs near you
-    </Typography>
     <div className={classes.orderWrapper}>
       <Grid container spacing={32}>
         {cookData.map(cook => (
           <Grid
+            component="a"
             key={cook.name}
             item
             xs={12}
             sm={4}
             md={3}
-            onClick={() =>
+            onClick={e =>
               Router.push({ pathname: '/chef', query: { name: cook.name } })
             }
           >

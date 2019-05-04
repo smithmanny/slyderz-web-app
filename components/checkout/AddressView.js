@@ -58,7 +58,7 @@ const AddressView = ({ classes, handleNext }) => {
   }
 
   return (
-    <Grid item xs={12} md={9}>
+    <Grid item xs={12} md={8}>
       <Typography variant="h3">Event Address</Typography>
 
       <Grid className={classes.section} item xs={12}>

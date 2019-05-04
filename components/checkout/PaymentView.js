@@ -46,7 +46,7 @@ const AddressLabel = () => (
 );
 
 const PaymentView = ({ classes }) => (
-  <Grid item xs={12} md={9}>
+  <Grid item xs={12} md={8}>
     <Typography variant="h3">Payment</Typography>
 
     <Grid className={classes.section} item xs={6}>

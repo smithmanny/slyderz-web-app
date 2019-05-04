@@ -7,7 +7,7 @@ import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 
-import Content from '../../components/Content';
+import Section from '../../components/shared/Section';
 import Layout from '../../components/Layout';
 import SideSummary from '../../components/checkout/SideSummary';
 import SummaryView from '../../components/checkout/SummaryView';
@@ -53,7 +53,7 @@ const OrderSummary = ({ classes }) => {
 
   return (
     <Layout>
-      <Content>
+      <Section>
         <Stepper activeStep={activeStep}>
           {steps.map((label, index) => {
             const props = {};
@@ -70,7 +70,7 @@ const OrderSummary = ({ classes }) => {
           {getStepContent(activeStep)}
           <SideSummary />
         </Grid>
-      </Content>
+      </Section>
     </Layout>
   );
 };

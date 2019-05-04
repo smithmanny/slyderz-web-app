@@ -1,0 +1,40 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+
+import Text from '../../components/shared/Text';
+import Section from '../../components/shared/Section';
+import Layout from '../../components/Layout';
+
+const styles = theme => ({
+  imageWrapper: {
+    maxWidth: 600,
+    margin: `${theme.spacing.unit * 5}px auto`
+  },
+  image: {
+    width: '100%'
+  }
+});
+
+const Payment = ({ classes }) => (
+  <Layout>
+    <Section>
+      <Text type="p" align="center" color="inherit">
+        You don't have any payments saved.
+      </Text>
+      <div className={classes.imageWrapper}>
+        <img
+          src="https://res.cloudinary.com/slyderz/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1556857856/credit-card_gy6dyg.png"
+          alt="Credit cards"
+          className={classes.image}
+        />
+      </div>
+    </Section>
+  </Layout>
+);
+
+Payment.propTypes = {
+  classes: PropTypes.shape().isRequired
+};
+
+export default withStyles(styles)(Payment);

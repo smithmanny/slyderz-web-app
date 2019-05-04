@@ -24,7 +24,7 @@ const styles = () => ({
   }
 });
 
-const DishCard = ({ classes, name }) => (
+const DishCard = ({ classes, name, price }) => (
   <Card className={classes.card}>
     <CardMedia
       className={classes.media}
@@ -46,7 +46,7 @@ const DishCard = ({ classes, name }) => (
     <CardActions>
       <Grid container>
         <Grid item xs={9}>
-          <Typography variant="body1">$50/per person</Typography>
+          <Typography variant="body1">{`$${price}/per person`}</Typography>
         </Grid>
 
         <Grid item xs={3}>
@@ -63,7 +63,8 @@ DishCard.defaultProps = {
 
 DishCard.propTypes = {
   classes: PropTypes.shape().isRequired,
-  name: PropTypes.string
+  name: PropTypes.string,
+  price: PropTypes.number
 };
 
 export default withStyles(styles)(DishCard);

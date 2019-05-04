@@ -21,7 +21,7 @@ const style = theme => ({
 
 const Index = ({ classes }) => (
   <Section className={classes.header} fullWidth>
-    <Text className={classes.intro} variant="h1" align="center" gutterBottom>
+    <Text className={classes.intro} variant="h2" align="center" gutterBottom>
       Your on-demand Restaurant
     </Text>
     <SearchBar />

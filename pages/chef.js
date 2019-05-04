@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Query } from 'react-apollo';
 import Router from 'next/router';
 
 import Avatar from '@material-ui/core/Avatar';
@@ -20,7 +19,7 @@ import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 import FormControl from '@material-ui/core/FormControl';
 
-import Content from '../components/Content';
+import Section from '../components/shared/Section';
 import Layout from '../components/Layout';
 import DishCard from '../components/chef/dishCard';
 import Form, { DatePickerField } from '../components/form/Form';
@@ -33,12 +32,6 @@ const useStyles = theme => ({
   button: {
     width: '100%',
     height: 46
-  },
-  content: {
-    padding: `0, ${theme.spacing.unit}`
-  },
-  datePicker: {
-    marginBottom: theme.spacing.unit
   },
   disclaimer: {
     fontWeight: 'bold',
@@ -68,35 +61,54 @@ const useStyles = theme => ({
 });
 
 const Chef = ({ classes }) => {
-  function generate(element) {
-    return [0, 1, 2].map(value =>
-      React.cloneElement(element, {
-        key: value
-      })
+  function generateCheckoutItems(values) {
+    const itemsObject = Object.entries(values);
+    const items = itemsObject.map(([name, quantity]) => (
+      <ListItem>
+        <ListItemText primary={name} secondary={`x ${quantity}`} />
+        <ListItemSecondaryAction>
+          <ListItemText primary={`$${quantity}`} />
+        </ListItemSecondaryAction>
+      </ListItem>
+    ));
+
+    const total = itemsObject.map(([name, data]) => data.price * data.quantity);
+
+    return (
+      <div>
+        {items}
+        <ListItem>
+          <ListItemText primary="Total:" />
+          <ListItemSecondaryAction>
+            <ListItemText primary="$Money" />
+          </ListItemSecondaryAction>
+        </ListItem>
+      </div>
     );
   }
 
   return (
     <Layout>
-      <div
-        style={{
-          position: 'relative',
-          height: 300
-        }}
-      >
-        <img
-          style={{ height: '100%', width: '100%' }}
-          src="/static/detail.jpg"
-          alt="Chef header image"
-        />
-      </div>
+      <Section>
+        <div
+          style={{
+            position: 'relative',
+            height: 300,
+            marginBottom: '30px'
+          }}
+        >
+          <img
+            style={{ height: '100%', width: '100%' }}
+            src="/static/detail.jpg"
+            alt="Chef header"
+          />
+        </div>
 
-      <Content>
         <Form>
           {({ errors, values }) => (
-            <Grid container className={classes.content} spacing={32}>
+            <React.Fragment>
               {/* Left Side */}
-              <Grid item xs={12} md={9}>
+              <Grid item xs={12} md={8}>
                 <Grid container spacing={16}>
                   <Grid item>
                     <Avatar
@@ -114,7 +126,7 @@ const Chef = ({ classes }) => {
                   </Grid>
                 </Grid>
 
-                <Grid className={classes.section} item xs={12} md={6}>
+                <Grid className={classes.section} item xs={12}>
                   <ExpansionPanel>
                     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                       <Typography className={classes.heading}>
@@ -131,14 +143,14 @@ const Chef = ({ classes }) => {
                   </ExpansionPanel>
                 </Grid>
 
-                <Typography variant="h5" gutterBottom>
+                <Typography variant="h4" gutterBottom>
                   Chef dishes
                 </Typography>
                 <Grid item xs={12}>
-                  <Grid container spacing={16}>
-                    {[0, 1, 2].map(i => (
-                      <Grid item xs={12} md={4}>
-                        <DishCard name={i} />
+                  <Grid container spacing={32}>
+                    {['Dish 1', 'Dish 2', 'Dish 3'].map(name => (
+                      <Grid item xs={12} md={6}>
+                        <DishCard name={name} />
                       </Grid>
                     ))}
                   </Grid>
@@ -146,7 +158,7 @@ const Chef = ({ classes }) => {
               </Grid>
 
               {/* Right Side */}
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={4}>
                 <Paper className={classes.paper}>
                   <React.Fragment>
                     <DatePickerField />
@@ -166,24 +178,7 @@ const Chef = ({ classes }) => {
                     <Divider />
 
                     <List dense>
-                      {generate(
-                        <ListItem>
-                          <ListItemText
-                            primary="Single-line item"
-                            secondary="x 2"
-                          />
-                          <ListItemSecondaryAction>
-                            <ListItemText primary="$100" />
-                          </ListItemSecondaryAction>
-                        </ListItem>
-                      )}
-                      <ListItem>
-                        <ListItemText primary="Total:" />
-                        <ListItemSecondaryAction>
-                          <ListItemText primary="$300" />
-                        </ListItemSecondaryAction>
-                      </ListItem>
-
+                      {generateCheckoutItems(values)}
                       <ListItem>
                         <Button
                           variant="contained"
@@ -206,10 +201,10 @@ const Chef = ({ classes }) => {
                   </React.Fragment>
                 </Paper>
               </Grid>
-            </Grid>
+            </React.Fragment>
           )}
         </Form>
-      </Content>
+      </Section>
     </Layout>
   );
 };
