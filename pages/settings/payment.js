@@ -19,7 +19,7 @@ const styles = theme => ({
 const Payment = ({ classes }) => (
   <Layout>
     <Section>
-      <Text type="p" align="center" color="inherit">
+      <Text type="h5" align="center" color="inherit">
         You don't have any payments saved.
       </Text>
       <div className={classes.imageWrapper}>

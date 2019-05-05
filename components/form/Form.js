@@ -17,76 +17,81 @@ const BasicForm = ({
   defaultValues,
   customSubmit,
   mutate,
-  handleClose,
   validation
-}) => (
-  <ApolloConsumer>
-    {client => {
-      function handleSubmit({ setSubmitting, variables }) {
-        if (typeof customSubmit === 'function') {
-          customSubmit();
+}) => {
+  const [serverError, setServerError] = React.useState(null);
+  return (
+    <ApolloConsumer>
+      {client => {
+        function handleSubmit({ setSubmitting, variables }) {
+          if (typeof customSubmit === 'function') {
+            customSubmit();
+          }
+
+          client
+            .mutate({
+              mutation: mutate.mutation,
+              variables,
+              refetchQueries: [{ query: currentUserQuery }]
+            })
+            .then(() => {
+              setSubmitting(false);
+              mutate.onCompleted();
+            })
+            .catch(error => {
+              setServerError(error);
+            });
         }
 
-        client
-          .mutate({
-            mutation: mutate.mutation,
-            variables,
-            refetchQueries: [{ query: currentUserQuery }]
-          })
-          .then(() => {
-            setSubmitting(false);
-            // Close modal
-            if (handleClose) {
-              handleClose();
-            }
-          });
-      }
+        return (
+          <Formik initialValues={defaultValues} validationSchema={validation}>
+            {({
+              values,
+              errors,
+              isSubmitting,
+              handleBlur,
+              handleChange,
+              setSubmitting
+            }) => (
+              <Form
+                onSubmit={e => {
+                  e.stopPropagation();
+                  e.preventDefault();
 
-      return (
-        <Formik initialValues={defaultValues} validationSchema={validation}>
-          {({
-            values,
-            errors,
-            isSubmitting,
-            handleBlur,
-            handleChange,
-            setSubmitting
-          }) => (
-            <Form
-              onSubmit={e => {
-                e.stopPropagation();
-                e.preventDefault();
-
-                const variables = mutate.variables(values);
-                handleSubmit({ setSubmitting, variables });
-              }}
-            >
-              <React.Fragment>
-                <DisplayError error={errors} />
-                <Grid container spacing={32}>
-                  {children({
-                    values,
-                    errors,
-                    isSubmitting,
-                    handleBlur,
-                    handleChange
-                  })}
-                </Grid>
-              </React.Fragment>
-            </Form>
-          )}
-        </Formik>
-      );
-    }}
-  </ApolloConsumer>
-);
+                  const variables = mutate.variables(values);
+                  handleSubmit({ setSubmitting, variables });
+                }}
+              >
+                <React.Fragment>
+                  <DisplayError error={serverError} />
+                  <Grid container spacing={32}>
+                    {children({
+                      values,
+                      errors,
+                      isSubmitting,
+                      handleBlur,
+                      handleChange
+                    })}
+                  </Grid>
+                </React.Fragment>
+              </Form>
+            )}
+          </Formik>
+        );
+      }}
+    </ApolloConsumer>
+  );
+};
 
 BasicForm.propTypes = {
   children: PropTypes.func.isRequired,
   defaultValues: PropTypes.shape(),
   customSubmit: PropTypes.func,
-  handleClose: PropTypes.func,
-  mutate: PropTypes.func,
+  mutate: PropTypes.shape({
+    mutation: PropTypes.func,
+    variables: PropTypes.func,
+    onCompleted: PropTypes.func
+  }),
   validation: PropTypes.func
 };
 

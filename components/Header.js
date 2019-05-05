@@ -29,7 +29,7 @@ const Index = ({ classes }) => (
 );
 
 Index.propTypes = {
-  classes: PropTypes.shape()
+  classes: PropTypes.object
 };
 
 export default withStyles(style)(Index);

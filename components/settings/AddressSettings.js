@@ -41,7 +41,6 @@ const AddressSettings = ({ classes, user }) => {
               <React.Fragment>
                 <Grid item xs={12}>
                   <Text type="h4">Manage Your Address</Text>
-                  <Divider />
                 </Grid>
                 <TextField
                   variant="outlined"

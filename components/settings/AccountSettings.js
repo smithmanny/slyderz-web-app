@@ -48,7 +48,6 @@ const AccountSettings = ({ classes, user }) => {
                   <Text type="h4" className={classes.settingSection}>
                     Personal Information
                   </Text>
-                  <Divider />
                 </Grid>
                 <TextField
                   variant="outlined"

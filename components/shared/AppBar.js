@@ -24,6 +24,9 @@ import signOutMutation from '../../lib/gql/mutation/auth/signOutUserMutation.gql
 import User from './User';
 
 const styles = theme => ({
+  slyderButton: {
+    marginRight: theme.spacing.unit * 3
+  },
   menuItem: {
     marginLeft: theme.spacing.unit * 3
   },
@@ -82,7 +85,8 @@ const AppBar = ({ classes }) => {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={() => Route.push('/settings')}>Profile</MenuItem>
-      <MenuItem onClick={() => Route.push('/settings')}>My account</MenuItem>
+      <MenuItem onClick={() => Route.push('/settings')}>My Account</MenuItem>
+      <MenuItem onClick={() => Route.push('/apply')}>Become a Slyder</MenuItem>
       <SignoutMenuItem />
     </Menu>
   );
@@ -148,6 +152,14 @@ const AppBar = ({ classes }) => {
 
               {!me && (
                 <React.Fragment>
+                  <Button
+                    className={classes.slyderButton}
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => Route.push('/apply')}
+                  >
+                    Become a Slyder
+                  </Button>
                   <Button
                     className={classes.menuItem}
                     onClick={() =>

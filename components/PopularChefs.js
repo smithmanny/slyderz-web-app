@@ -18,7 +18,7 @@ const PopularChefs = ({ classes }) => (
 );
 
 PopularChefs.propTypes = {
-  classes: PropTypes.shape()
+  classes: PropTypes.object
 };
 
 export default withStyles(style)(PopularChefs);

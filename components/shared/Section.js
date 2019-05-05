@@ -17,7 +17,7 @@ const Section = ({ children, fullWidth, ...props }) => {
 };
 
 Section.propTypes = {
-  children: PropTypes.shape(),
+  children: PropTypes.node,
   fullWidth: PropTypes.bool
 };
 

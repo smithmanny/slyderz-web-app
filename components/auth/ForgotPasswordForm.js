@@ -38,9 +38,11 @@ const ForgotPasswordForm = ({ classes, handleClose, openSignInModal }) => (
         mutation: forgotPasswordMutation,
         variables: values => ({
           ...values
-        })
+        }),
+        onCompleted: () => {
+          handleClose();
+        }
       }}
-      handleClose={handleClose}
     >
       {({ values, handleChange, isSubmitting }) => (
         <React.Fragment>

@@ -43,9 +43,11 @@ const SignInForm = ({
         mutation: signInUserMutation,
         variables: values => ({
           ...values
-        })
+        }),
+        onCompleted: () => {
+          handleClose();
+        }
       }}
-      handleClose={handleClose}
     >
       {({ values, handleChange, isSubmitting }) => (
         <React.Fragment>

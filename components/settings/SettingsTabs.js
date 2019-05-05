@@ -45,12 +45,12 @@ const SettingsTabs = ({ classes }) => {
   return (
     <Grid container spacing={32}>
       {settings.map(({ name, picture, view }) => (
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={4} key={name}>
           <Card onClick={() => Router.push(`/settings/${view}`)}>
             <CardContent className={classes.content}>
               <img src={picture} alt={`${name}`} className={classes.image} />
               <Text
-                type="title"
+                type="h5"
                 className={classes.title}
                 style={{ textTransform: 'uppercase' }}
               >

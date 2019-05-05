@@ -36,9 +36,11 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => (
         mutation: signUpUserMutation,
         variables: values => ({
           ...values
-        })
+        }),
+        onCompleted: () => {
+          handleClose();
+        }
       }}
-      handleClose={handleClose}
     >
       {({ values, errors, handleChange, isSubmitting }) => (
         <React.Fragment>

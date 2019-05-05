@@ -18,8 +18,8 @@ const Layout = ({ children, classes }) => (
 );
 
 Layout.propTypes = {
-  children: PropTypes.PropTypes.shape().isRequired,
-  classes: PropTypes.shape().isRequired
+  children: PropTypes.PropTypes.node.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(useStyles)(Layout);
