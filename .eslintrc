@@ -42,7 +42,7 @@
       }
     ],
     "prefer-const": [
-      "error",
+      "1",
       {
         "destructuring": "all"
       }

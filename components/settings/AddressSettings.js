@@ -24,7 +24,7 @@ const styles = theme => ({
 const AddressSettings = ({ classes, user }) => {
   const { address1, address2, city, state, postalCode } = user;
   return (
-    <Grid item xs={8} className={classes.form}>
+    <Grid item xs={12} md={8} className={classes.form}>
       <Card>
         <CardContent>
           <Form
@@ -84,7 +84,7 @@ const AddressSettings = ({ classes, user }) => {
                   onChange={handleChange}
                   value={values.postalCode}
                 />
-                <SubmitButton xs={4}>Update Address</SubmitButton>
+                <SubmitButton xs={8} md={3}>Update Address</SubmitButton>
               </React.Fragment>
             )}
           </Form>

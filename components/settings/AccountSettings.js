@@ -30,7 +30,7 @@ const styles = theme => ({
 const AccountSettings = ({ classes, user }) => {
   const { email, firstName, lastName } = user;
   return (
-    <Grid item xs={8} className={classes.form}>
+    <Grid item xs={12} md={8} className={classes.form}>
       <Card className={classes.card}>
         <CardContent>
           <Form
@@ -82,7 +82,7 @@ const AccountSettings = ({ classes, user }) => {
                     endAdornment: <PersonIcon />
                   }}
                 />
-                <SubmitButton xs={4}>Update Account</SubmitButton>
+                <SubmitButton xs={8} md={3}>Update Account</SubmitButton>
               </React.Fragment>
             )}
           </Form>
@@ -137,7 +137,7 @@ const AccountSettings = ({ classes, user }) => {
                   onChange={handleChange}
                   value={values.confirmNewPassword}
                 />
-                <SubmitButton xs={4}>Update Password</SubmitButton>
+                <SubmitButton xs={8} md={3}>Update Password</SubmitButton>
               </React.Fragment>
             )}
           </Form>

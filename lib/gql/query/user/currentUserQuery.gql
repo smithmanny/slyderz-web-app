@@ -9,5 +9,6 @@ query currentUser {
     city
     state
     postalCode
+    isSlyder
   }
 }

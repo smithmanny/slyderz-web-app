@@ -5,7 +5,7 @@ import Content from '../Content';
 
 const Section = ({ children, fullWidth, ...props }) => {
   const sectionStyles = {
-    maxWidth: fullWidth ? '100%' : '1070px',
+    maxWidth: fullWidth ? '100%' : '1250px',
     margin: 'auto'
   };
 

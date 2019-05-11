@@ -76,7 +76,7 @@ const AppBar = ({ classes }) => {
     </Mutation>
   );
 
-  const renderMenu = (
+  const renderMenu = user => (
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
@@ -84,9 +84,13 @@ const AppBar = ({ classes }) => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={() => Route.push('/settings')}>Profile</MenuItem>
       <MenuItem onClick={() => Route.push('/settings')}>My Account</MenuItem>
-      <MenuItem onClick={() => Route.push('/apply')}>Become a Slyder</MenuItem>
+      {user.isSlyder === "CHEF" && (
+        <MenuItem onClick={() => Route.push('/apply')}>Manage Profile</MenuItem>
+      )}
+      {user.isSlyder === ("PENDING" || "NO") && (
+        <MenuItem onClick={() => Route.push('/apply')}>Become a Slyder</MenuItem>
+      )}
       <SignoutMenuItem />
     </Menu>
   );
@@ -142,7 +146,7 @@ const AppBar = ({ classes }) => {
           <MuiAppBar position="static">
             <Toolbar>
               <Typography
-                variant="h6"
+                variant="h4"
                 color="inherit"
                 className={classes.grow}
                 onClick={() => Route.push('/')}
@@ -204,7 +208,7 @@ const AppBar = ({ classes }) => {
                 </React.Fragment>
               )}
               {/* Profile Menu */}
-              {renderMenu}
+              {renderMenu(me)}
               <BasicModal
                 open={values.openAuthModal}
                 onClose={() => setValues({ ...values, openAuthModal: false })}

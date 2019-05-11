@@ -23,26 +23,32 @@ const BasicForm = ({
   return (
     <ApolloConsumer>
       {client => {
+        const { onCompleted, mutation } = mutate || {};
+
         function handleSubmit({ setSubmitting, variables }) {
+          // Handle onSubmit (customSubmit) inside component calling it
           if (typeof customSubmit === 'function') {
             customSubmit();
           }
 
+          // Handle mutation with GraphQL and refetch currentUser
           client
             .mutate({
-              mutation: mutate.mutation,
+              mutation,
               variables,
               refetchQueries: [{ query: currentUserQuery }]
             })
-            .then(() => {
+            .then(data => {
               setSubmitting(false);
-              mutate.onCompleted();
+              if (typeof onCompleted === 'function') {
+                onCompleted(data);
+              }
             })
             .catch(error => {
               setServerError(error);
             });
         }
-
+        
         return (
           <Formik initialValues={defaultValues} validationSchema={validation}>
             {({
@@ -57,7 +63,8 @@ const BasicForm = ({
                 onSubmit={e => {
                   e.stopPropagation();
                   e.preventDefault();
-
+                  
+                  // Pass form values and custom values declared inside component
                   const variables = mutate.variables(values);
                   handleSubmit({ setSubmitting, variables });
                 }}

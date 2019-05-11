@@ -1,21 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Mutation } from 'react-apollo';
 import Router from 'next/router';
 
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
 import LockIcon from '@material-ui/icons/Lock';
-import Snackbar from '@material-ui/core/Snackbar';
-import CloseIcon from '@material-ui/icons/Close';
 
 import Form, { TextField } from '../form/Form';
 import Text from '../shared/Text';
 import resetPasswordMutation from '../../lib/gql/mutation/auth/resetPasswordMutation.gql';
-import currentUserQuery from '../../lib/gql/query/user/currentUserQuery.gql';
 
 const useStyles = theme => ({
   container: {
@@ -44,7 +39,10 @@ const ResetPasswordForm = ({ classes, resetToken }) => (
         mutation: resetPasswordMutation,
         variables: values => ({
           ...values
-        })
+        }),
+        onCompleted: () => {
+          Router.replace('/')
+        }
       }}
     >
       {({ values, handleChange, isSubmitting }) => (
@@ -65,7 +63,6 @@ const ResetPasswordForm = ({ classes, resetToken }) => (
             variant="outlined"
             label="Confirm Password"
             type="password"
-            className={classes.textField}
             name="confirmPassword"
             autoComplete="current-password"
             onChange={handleChange}
@@ -93,7 +90,7 @@ const ResetPasswordForm = ({ classes, resetToken }) => (
 );
 
 ResetPasswordForm.propTypes = {
-  classes: PropTypes.shape().isRequired,
+  classes: PropTypes.object.isRequired,
   resetToken: PropTypes.string
 };
 

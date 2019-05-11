@@ -9,7 +9,7 @@ import Layout from '../components/Layout';
 import Section from '../components/shared/Section';
 import Form, { TextField, SubmitButton } from '../components/form/Form';
 import Text from '../components/shared/Text';
-import updateAddressSettingsMutation from '../lib/gql/mutation/settings/UpdateAddressSettingsMutation.gql';
+import signupSlyderMutation from '../lib/gql/mutation/root/signupSlyderMutation.gql';
 
 const styles = theme => ({
   cancel: {
@@ -20,6 +20,7 @@ const styles = theme => ({
 });
 
 const Apply = ({ classes, user }) => {
+  const [successMessage, setSuccessMessage] = React.useState(null)
   const {
     address1,
     address2,
@@ -28,11 +29,22 @@ const Apply = ({ classes, user }) => {
     firstName,
     lastName,
     state,
-    postalCode
-  } = user;
+    postalCode,
+    isSlyder
+  } = user || {};
   return (
     <Layout>
       <Section>
+      <Grid item xs={12}>
+          <Text type="h2" align="center" gutterBottom>
+            Become a Slyder
+          </Text>
+          {isSlyder === 'PENDING' && (
+            <Text type="body1" align="center" color="inherit" gutterBottom>
+              {successMessage || "Your application has been received! We'll contact you with further instructions."}
+            </Text>
+          )}
+        </Grid>
         <Form
           defaultValues={{
             address1,
@@ -45,20 +57,18 @@ const Apply = ({ classes, user }) => {
             postalCode
           }}
           mutate={{
-            mutation: updateAddressSettingsMutation,
+            mutation: signupSlyderMutation,
             variables: values => ({
               ...values,
               postalCode: Number(values.postalCode)
-            })
+            }),
+            onCompleted: ({ data }) => {
+              setSuccessMessage(data.signupSlyder.message)
+            },
           }}
         >
           {({ values, handleChange }) => (
             <React.Fragment>
-              <Grid item xs={12}>
-                <Text type="h2" align="center" gutterBottom>
-                  Become a Slyder
-                </Text>
-              </Grid>
               <TextField
                 variant="outlined"
                 label="Email"
@@ -67,6 +77,7 @@ const Apply = ({ classes, user }) => {
                 autoComplete="email"
                 onChange={handleChange}
                 value={values.email}
+                disabled={user ? true : false}
               />
               <TextField
                 md={6}
@@ -76,6 +87,7 @@ const Apply = ({ classes, user }) => {
                 autoComplete="name"
                 onChange={handleChange}
                 value={values.firstName}
+                disabled={user ? true : false}
               />
               <TextField
                 md={6}
@@ -84,6 +96,7 @@ const Apply = ({ classes, user }) => {
                 name="lastName"
                 onChange={handleChange}
                 value={values.lastName}
+                disabled={user ? true : false}
               />
               <TextField
                 variant="outlined"
@@ -127,7 +140,7 @@ const Apply = ({ classes, user }) => {
                 onChange={handleChange}
                 value={values.postalCode}
               />
-              <SubmitButton xs={4}>Submit</SubmitButton>
+              <SubmitButton xs={4} md={2} disabled={isSlyder === 'PENDING' ? true : false}>Submit</SubmitButton>
               <Link href="/">
                 <a className={classes.cancel}>cancel</a>
               </Link>

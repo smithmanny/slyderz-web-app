@@ -6,11 +6,11 @@ import { withStyles } from '@material-ui/core/styles';
 
 const useStyles = theme => ({
   textField: {
-    width: '100%'
+    // width: '100%'
   }
 });
 
-const TextFieldGroup = ({ xs = 12, md, lg, classes, ...props }) => (
+const TextFieldGroup = ({ xs, md, lg, classes, ...props }) => (
   <Grid item xs={xs} md={md} lg={lg}>
     <Button
       type="submit"

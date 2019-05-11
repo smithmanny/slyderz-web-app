@@ -1,0 +1,5 @@
+mutation signupSlyder($email: String!, $firstName: String!, $lastName: String!, $address1: String!, $address2: String, $city: String!, $state: String!, $postalCode: Int!) {
+  signupSlyder(email: $email, firstName: $firstName, lastName: $lastName, address1: $address1, address2: $address2, city: $city, state: $state, postalCode: $postalCode) {
+    message
+  }
+}
