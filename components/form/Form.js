@@ -71,7 +71,7 @@ const BasicForm = ({
               >
                 <React.Fragment>
                   <DisplayError error={serverError} />
-                  <Grid container spacing={32}>
+                  <Grid container spacing={3}>
                     {children({
                       values,
                       errors,

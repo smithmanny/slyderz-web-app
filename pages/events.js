@@ -19,7 +19,7 @@ const styles = theme => ({
   }
 });
 
-const Apply = ({ classes, user }) => {
+const Events = ({ classes, user }) => {
   const [successMessage, setSuccessMessage] = React.useState(null);
   const {
     address1,
@@ -158,9 +158,9 @@ const Apply = ({ classes, user }) => {
   );
 };
 
-Apply.propTypes = {
+Events.propTypes = {
   classes: PropTypes.shape(),
   user: PropTypes.shape()
 };
 
-export default withStyles(styles)(Apply);
+export default withStyles(styles)(Events);

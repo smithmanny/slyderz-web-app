@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Route from 'next/router';
 import { Mutation } from 'react-apollo';
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 // eslint-disable-next-line import/no-named-default
 import { default as MuiAppBar } from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
@@ -25,10 +25,10 @@ import User from './User';
 
 const styles = theme => ({
   slyderButton: {
-    marginRight: theme.spacing.unit * 3
+    marginRight: theme.spacing(3)
   },
   menuItem: {
-    marginLeft: theme.spacing.unit * 3
+    marginLeft: theme.spacing(3)
   },
   root: {
     flexGrow: 1
@@ -85,11 +85,14 @@ const AppBar = ({ classes }) => {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={() => Route.push('/settings')}>My Account</MenuItem>
-      {user.isSlyder === "CHEF" && (
+      {user && user.isSlyder === 'CHEF' && (
         <MenuItem onClick={() => Route.push('/apply')}>Manage Profile</MenuItem>
       )}
-      {user.isSlyder === ("PENDING" || "NO") && (
-        <MenuItem onClick={() => Route.push('/apply')}>Become a Slyder</MenuItem>
+      <MenuItem onClick={() => Route.push('/events')}>Events</MenuItem>
+      {user && user.isSlyder === ('PENDING' || 'NO') && (
+        <MenuItem onClick={() => Route.push('/apply')}>
+          Become a Slyder
+        </MenuItem>
       )}
       <SignoutMenuItem />
     </Menu>

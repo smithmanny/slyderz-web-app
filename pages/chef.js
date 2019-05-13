@@ -9,7 +9,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -39,14 +39,13 @@ const useStyles = theme => ({
     textAlign: 'center'
   },
   section: {
-    paddingTop: theme.spacing.unit * 5,
-    paddingBottom: theme.spacing.unit * 5
+    padding: theme.spacing(3, 0)
   },
   time: {
     display: 'flex',
     justifyContent: 'space-between',
-    paddingTop: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit * 2
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(2)
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -56,7 +55,7 @@ const useStyles = theme => ({
     margin: 'auto'
   },
   paper: {
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing(2)
   }
 });
 
@@ -109,7 +108,7 @@ const Chef = ({ classes }) => {
             <React.Fragment>
               {/* Left Side */}
               <Grid item xs={12} md={8}>
-                <Grid container spacing={16}>
+                <Grid container spacing={3}>
                   <Grid item>
                     <Avatar
                       alt="Remy Sharp"
@@ -147,7 +146,7 @@ const Chef = ({ classes }) => {
                   Chef dishes
                 </Typography>
                 <Grid item xs={12}>
-                  <Grid container spacing={32}>
+                  <Grid container spacing={3}>
                     {['Dish 1', 'Dish 2', 'Dish 3'].map(name => (
                       <Grid item xs={12} md={6}>
                         <DishCard name={name} />

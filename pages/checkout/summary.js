@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Grid from '@material-ui/core/Grid';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -16,10 +16,7 @@ import PaymentView from '../../components/checkout/PaymentView';
 
 const useStyles = theme => ({
   content: {
-    padding: `${theme.spacing.unit * 2}px 0`
-  },
-  datePicker: {
-    marginBottom: theme.spacing.unit
+    padding: theme.spacing(2, 0)
   },
   name: {
     margin: 'auto'
@@ -66,7 +63,7 @@ const OrderSummary = ({ classes }) => {
           })}
         </Stepper>
 
-        <Grid container spacing={32} className={classes.content}>
+        <Grid container spacing={3} className={classes.content}>
           {getStepContent(activeStep)}
           <SideSummary />
         </Grid>

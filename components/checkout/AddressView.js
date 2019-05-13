@@ -7,7 +7,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -20,12 +20,9 @@ const useStyles = theme => ({
     width: '100%',
     height: 46
   },
-  content: {
-    padding: `0, ${theme.spacing.unit}`
-  },
   section: {
-    paddingTop: theme.spacing.unit * 5,
-    paddingBottom: theme.spacing.unit * 5
+    paddingTop: theme.spacing(5),
+    paddingBottom: theme.spacing(5)
   },
   name: {
     margin: 'auto'

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Router from 'next/router';
 
 import Grid from '@material-ui/core/Grid';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
@@ -16,12 +16,12 @@ const styles = theme => ({
     overflow: 'hidden'
   },
   section: {
-    paddingTop: theme.spacing.unit * 5,
-    paddingBottom: theme.spacing.unit * 5
+    paddingTop: theme.spacing(5),
+    paddingBottom: theme.spacing(5)
   },
   paper: {
     height: 205,
-    marginBottom: theme.spacing.unit
+    marginBottom: theme.spacing(1)
   }
 });
 
@@ -66,10 +66,9 @@ const cookData = [
 const Chefs = ({ classes }) => (
   <div className={classes.section}>
     <div className={classes.orderWrapper}>
-      <Grid container spacing={32}>
+      <Grid container spacing={3}>
         {cookData.map(cook => (
           <Grid
-            component="a"
             key={cook.name}
             item
             xs={12}

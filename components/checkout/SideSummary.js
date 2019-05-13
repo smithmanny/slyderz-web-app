@@ -7,7 +7,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
@@ -24,23 +24,11 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'column'
   },
-  content: {
-    padding: `0, ${theme.spacing.unit}`
-  },
-  datePicker: {
-    marginBottom: theme.spacing.unit
-  },
-  time: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    paddingTop: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit * 2
-  },
   name: {
     margin: 'auto'
   },
   paper: {
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing(2)
   }
 });
 
@@ -56,7 +44,7 @@ const SideSummary = ({ classes }) => (
   <Grid item xs={12} md={4}>
     <Paper className={classes.paper}>
       <React.Fragment>
-        <Grid container spacing={16}>
+        <Grid container spacing={2}>
           <Grid className={classes.name} item xs>
             <Typography variant="h5">Shakhor Smith</Typography>
           </Grid>

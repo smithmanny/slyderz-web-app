@@ -5,7 +5,7 @@ import { Mutation } from 'react-apollo';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 
 import Divider from '../shared/Divider';
 import Form, { TextField, SubmitButton } from '../form/Form';
@@ -14,7 +14,7 @@ import updateAddressSettingsMutation from '../../lib/gql/mutation/settings/Updat
 
 const styles = theme => ({
   card: {
-    marginBottom: theme.spacing.unit * 5
+    marginBottom: theme.spacing(5)
   },
   form: {
     margin: 'auto'
@@ -84,7 +84,9 @@ const AddressSettings = ({ classes, user }) => {
                   onChange={handleChange}
                   value={values.postalCode}
                 />
-                <SubmitButton xs={8} md={3}>Update Address</SubmitButton>
+                <SubmitButton xs={8} md={3}>
+                  Update Address
+                </SubmitButton>
               </React.Fragment>
             )}
           </Form>
