@@ -72,7 +72,7 @@ const Chefs = ({ classes }) => (
             key={cook.name}
             item
             xs={12}
-            sm={4}
+            sm={6}
             md={3}
             onClick={e =>
               Router.push({ pathname: '/chef', query: { name: cook.name } })

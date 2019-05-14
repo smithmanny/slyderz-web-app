@@ -1,0 +1,5 @@
+mutation signupChef($email: String!, $firstName: String!, $lastName: String!, $address1: String!, $address2: String, $city: String!, $state: String!, $postalCode: Int!) {
+  signupChef(email: $email, firstName: $firstName, lastName: $lastName, address1: $address1, address2: $address2, city: $city, state: $state, postalCode: $postalCode) {
+    message
+  }
+}

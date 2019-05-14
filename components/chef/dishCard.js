@@ -8,16 +8,17 @@ import CardActions from '@material-ui/core/CardActions';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 
 import { SelectField } from '../form/Form';
 
-const styles = () => ({
+const styles = theme => ({
   card: {
-    maxWidth: 400
+    maxWidth: 350,
+    margin: 'auto'
   },
   media: {
-    height: 0,
-    paddingTop: '56.25%' // 16:9
+    height: 200
   },
   addToOrder: {
     marginLeft: 'auto'
@@ -44,13 +45,15 @@ const DishCard = ({ classes, name, price }) => (
       </Typography>
     </CardContent>
     <CardActions>
-      <Grid container>
-        <Grid item xs={9}>
+      <Grid container justify="space-between">
+        <Grid item>
           <Typography variant="body1">{`$${price}/per person`}</Typography>
         </Grid>
 
-        <Grid item xs={3}>
-          <SelectField name={name} />
+        <Grid item>
+          <Button variant="contained" color="primary">
+            Add To Cart
+          </Button>
         </Grid>
       </Grid>
     </CardActions>

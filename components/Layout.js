@@ -6,7 +6,8 @@ import AppBar from './shared/AppBar';
 
 const useStyles = theme => ({
   main: {
-    margin: 'auto'
+    margin: 'auto',
+    backgroundColor: '#ebedf3'
   }
 });
 

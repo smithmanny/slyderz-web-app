@@ -16,6 +16,7 @@ const styles = theme => ({
     marginBottom: theme.spacing(2)
   },
   image: {
+    maxWidth: 350,
     height: '100%',
     [theme.breakpoints.down('sm')]: {
       width: '100%'
@@ -55,17 +56,17 @@ class HowItWorksSection extends React.PureComponent {
         <Grid container spacing={3}>
           <HIWStep
             image="/static/hiw-party.png"
-            title="Set The Occasion"
-            content="Wether it's a birthday party, date night, or dinner for one."
+            title="Plan"
+            content="It can be a birthday party, dinner night, or even a dinner for one."
           />
           <HIWStep
             image="/static/hiw-search.png"
-            title="Browse Our Chef's"
+            title="Browse"
             content="Browse our selection of chefs and select the new cuisine you would like to try."
           />
           <HIWStep
             image="/static/hiw-schedule.png"
-            title="Book It"
+            title="Book"
             content="Select the location and time. Our chef will pick up fresh ingredients
           the day of your event."
           />

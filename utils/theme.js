@@ -1,13 +1,13 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 import red from '@material-ui/core/colors/red';
 
-const theme = createMuiTheme({
+const muiTheme = createMuiTheme({
   palette: {
     primary: {
-      main: '#14A3A5'
+      main: '#E54E44'
     },
     secondary: {
-      main: '#E54E44'
+      main: '#14A3A5'
     },
     white: {
       main: '#FFF'
@@ -23,7 +23,21 @@ const theme = createMuiTheme({
   },
   typography: {
     fontSize: 12
+  },
+  overrides: {
+    MuiFab: {
+      root: {
+        backgroundColor: 'transparent',
+        border: '2px solid #E54E44',
+        color: '#E54E44',
+        boxShadow: 'none',
+        '&:hover': {
+          backgroundColor: 'transparent'
+        }
+      }
+    }
   }
 });
+const theme = responsiveFontSizes(muiTheme);
 
 export default theme;

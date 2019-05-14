@@ -89,7 +89,7 @@ const SignInForm = ({
           </Grid>
           <Divider className={classes.hDivider} />
 
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6}>
             <Typography
               variant="subtitle1"
               onClick={openForgotPasswordModal}
@@ -98,7 +98,7 @@ const SignInForm = ({
               Forgot password?
             </Typography>
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6}>
             <Typography
               variant="subtitle1"
               align="right"

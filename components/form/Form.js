@@ -8,6 +8,7 @@ import currentUserQuery from '../../lib/gql/query/user/currentUserQuery.gql';
 import DisplayError from '../DisplayError';
 
 export { default as DatePickerField } from './DatePickerGroup';
+export { default as TimePickerField } from './TimePickerGroup';
 export { default as SelectField } from './SelectGroup';
 export { default as TextField } from './TextFieldGroup';
 export { default as SubmitButton } from './SubmitButton';
@@ -48,7 +49,7 @@ const BasicForm = ({
               setServerError(error);
             });
         }
-        
+
         return (
           <Formik initialValues={defaultValues} validationSchema={validation}>
             {({
@@ -63,7 +64,7 @@ const BasicForm = ({
                 onSubmit={e => {
                   e.stopPropagation();
                   e.preventDefault();
-                  
+
                   // Pass form values and custom values declared inside component
                   const variables = mutate.variables(values);
                   handleSubmit({ setSubmitting, variables });

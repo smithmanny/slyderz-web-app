@@ -9,7 +9,7 @@ import Layout from '../components/Layout';
 import Section from '../components/shared/Section';
 import Form, { TextField, SubmitButton } from '../components/form/Form';
 import Text from '../components/shared/Text';
-import signupSlyderMutation from '../lib/gql/mutation/root/signupSlyderMutation.gql';
+import signupChefMutation from '../lib/gql/mutation/root/signupChefMutation.gql';
 
 const styles = theme => ({
   cancel: {
@@ -30,7 +30,7 @@ const Apply = ({ classes, user }) => {
     lastName,
     state,
     postalCode,
-    isSlyder
+    isChef
   } = user || {};
   return (
     <Layout>
@@ -42,7 +42,7 @@ const Apply = ({ classes, user }) => {
           <Text type="body1" align="center" color="inherit" gutterBottom>
             {successMessage}
           </Text>
-          {isSlyder === 'PENDING' && (
+          {isChef === 'PENDING' && (
             <Text type="body1" align="center" color="inherit" gutterBottom>
               {successMessage ||
                 "Your application has been received! We'll contact you with further instructions."}
@@ -61,13 +61,13 @@ const Apply = ({ classes, user }) => {
             postalCode
           }}
           mutate={{
-            mutation: signupSlyderMutation,
+            mutation: signupChefMutation,
             variables: values => ({
               ...values,
               postalCode: Number(values.postalCode)
             }),
             onCompleted: ({ data }) => {
-              setSuccessMessage(data.signupSlyder.message);
+              setSuccessMessage(data.signupChef.message);
             }
           }}
         >
@@ -84,7 +84,7 @@ const Apply = ({ classes, user }) => {
                 disabled={!!user}
               />
               <TextField
-                md={6}
+                xs={6}
                 variant="outlined"
                 label="First Name"
                 name="firstName"
@@ -94,7 +94,7 @@ const Apply = ({ classes, user }) => {
                 disabled={!!user}
               />
               <TextField
-                md={6}
+                xs={6}
                 variant="outlined"
                 label="Last Name"
                 name="lastName"
@@ -144,7 +144,7 @@ const Apply = ({ classes, user }) => {
                 onChange={handleChange}
                 value={values.postalCode}
               />
-              <SubmitButton xs={4} md={2} disabled={isSlyder === 'PENDING'}>
+              <SubmitButton xs={4} md={2} disabled={isChef === 'PENDING'}>
                 Submit
               </SubmitButton>
               <Link href="/">

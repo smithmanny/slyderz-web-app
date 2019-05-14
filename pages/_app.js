@@ -8,7 +8,7 @@ import {
   StylesProvider
 } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { MuiPickersUtilsProvider } from 'material-ui-pickers';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
 import theme from '../utils/theme';
@@ -52,7 +52,9 @@ class MyApp extends App {
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <CssBaseline />
                 <User>
-                  {({ data: { me } }) => <Component user={me} {...pageProps} />}
+                  {({ data: { me } }) => (
+                    <Component user={me || {}} {...pageProps} />
+                  )}
                 </User>
               </MuiPickersUtilsProvider>
             </ThemeProvider>

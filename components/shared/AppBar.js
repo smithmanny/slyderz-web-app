@@ -35,6 +35,7 @@ const styles = theme => ({
   },
   grow: {
     flexGrow: 1,
+    textTransform: 'uppercase',
     '&:hover': {
       cursor: 'pointer'
     }
@@ -85,11 +86,11 @@ const AppBar = ({ classes }) => {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={() => Route.push('/settings')}>My Account</MenuItem>
-      {user && user.isSlyder === 'CHEF' && (
+      {user && user.isChef === 'CHEF' && (
         <MenuItem onClick={() => Route.push('/apply')}>Manage Profile</MenuItem>
       )}
       <MenuItem onClick={() => Route.push('/events')}>Events</MenuItem>
-      {user && user.isSlyder === ('PENDING' || 'NO') && (
+      {user && user.isChef === ('PENDING' || 'NO') && (
         <MenuItem onClick={() => Route.push('/apply')}>
           Become a Slyder
         </MenuItem>
@@ -165,7 +166,7 @@ const AppBar = ({ classes }) => {
                     color="secondary"
                     onClick={() => Route.push('/apply')}
                   >
-                    Become a Slyder
+                    Become a Chef
                   </Button>
                   <Button
                     className={classes.menuItem}

@@ -72,7 +72,7 @@ const ForgotPasswordForm = ({ classes, handleClose, openSignInModal }) => (
           </Grid>
           <Divider className={classes.hDivider} />
 
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6}>
             <Typography
               variant="subtitle1"
               color="primary"

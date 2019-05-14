@@ -8,23 +8,26 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Paper from '@material-ui/core/Paper';
-import Divider from '@material-ui/core/Divider';
-import FormControl from '@material-ui/core/FormControl';
+import FolderIcon from '@material-ui/icons/Folder';
+import AddIcon from '@material-ui/icons/Add';
 
 import Section from '../components/shared/Section';
 import Layout from '../components/Layout';
-import DishCard from '../components/chef/dishCard';
-import Form, { DatePickerField } from '../components/form/Form';
+import Fab from '../components/shared/Fab';
+import Form, {
+  DatePickerField,
+  TimePickerField
+} from '../components/form/Form';
 
 const useStyles = theme => ({
+  intro: {
+    marginBottom: theme.spacing(1)
+  },
   bigAvatar: {
     width: 60,
     height: 60
@@ -33,23 +36,18 @@ const useStyles = theme => ({
     width: '100%',
     height: 46
   },
-  disclaimer: {
-    fontWeight: 'bold',
-    width: '100%',
-    textAlign: 'center'
+  fab: {
+    height: 35,
+    width: 35
   },
   section: {
-    padding: theme.spacing(3, 0)
+    padding: theme.spacing(2, 0)
   },
   time: {
     display: 'flex',
     justifyContent: 'space-between',
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(2)
-  },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular
   },
   name: {
     margin: 'auto'
@@ -59,56 +57,30 @@ const useStyles = theme => ({
   }
 });
 
-const Chef = ({ classes }) => {
-  function generateCheckoutItems(values) {
-    const itemsObject = Object.entries(values);
-    const items = itemsObject.map(([name, quantity]) => (
-      <ListItem>
-        <ListItemText primary={name} secondary={`x ${quantity}`} />
-        <ListItemSecondaryAction>
-          <ListItemText primary={`$${quantity}`} />
-        </ListItemSecondaryAction>
-      </ListItem>
-    ));
-
-    const total = itemsObject.map(([name, data]) => data.price * data.quantity);
-
-    return (
-      <div>
-        {items}
-        <ListItem>
-          <ListItemText primary="Total:" />
-          <ListItemSecondaryAction>
-            <ListItemText primary="$Money" />
-          </ListItemSecondaryAction>
-        </ListItem>
+const Chef = ({ classes }) => (
+  <Layout>
+    <Section>
+      <div
+        style={{
+          position: 'relative',
+          height: 300,
+          marginBottom: '30px'
+        }}
+      >
+        <img
+          style={{ height: '100%', width: '100%' }}
+          src="/static/detail.jpg"
+          alt="Chef header"
+        />
       </div>
-    );
-  }
 
-  return (
-    <Layout>
-      <Section>
-        <div
-          style={{
-            position: 'relative',
-            height: 300,
-            marginBottom: '30px'
-          }}
-        >
-          <img
-            style={{ height: '100%', width: '100%' }}
-            src="/static/detail.jpg"
-            alt="Chef header"
-          />
-        </div>
-
-        <Form>
-          {({ errors, values }) => (
-            <React.Fragment>
-              {/* Left Side */}
-              <Grid item xs={12} md={8}>
-                <Grid container spacing={3}>
+      <Form>
+        {({ errors, values }) => (
+          <React.Fragment>
+            {/* Left Side */}
+            <Grid item xs={12} md={8}>
+              <Paper className={classes.paper}>
+                <Grid className={classes.intro} container spacing={3}>
                   <Grid item>
                     <Avatar
                       alt="Remy Sharp"
@@ -125,88 +97,127 @@ const Chef = ({ classes }) => {
                   </Grid>
                 </Grid>
 
-                <Grid className={classes.section} item xs={12}>
-                  <ExpansionPanel>
-                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                      <Typography className={classes.heading}>
-                        Read more about the chef
-                      </Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                      <Typography>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Suspendisse malesuada lacus ex, sit amet blandit leo
-                        lobortis eget.
-                      </Typography>
-                    </ExpansionPanelDetails>
-                  </ExpansionPanel>
+                <Grid item xs={12} className={classes.section}>
+                  <Typography color="primary" variant="h4" gutterBottom>
+                    Main Dishes
+                  </Typography>
+                  <Typography variant="body2" gutterBottom>
+                    Price per person.
+                  </Typography>
+                  <List>
+                    <ListItem divider disableGutters>
+                      <ListItemAvatar>
+                        <Avatar>
+                          <FolderIcon />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary="Dish Name #1"
+                        secondary="Short summary"
+                      />
+                      <ListItemSecondaryAction>
+                        <Fab
+                          className={classes.fab}
+                          size="small"
+                          aria-label="Add"
+                        >
+                          <AddIcon />
+                        </Fab>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                    <ListItem divider disableGutters>
+                      <ListItemAvatar>
+                        <Avatar>
+                          <FolderIcon />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary="Dish Name #2"
+                        secondary="Summary"
+                      />
+                      <ListItemSecondaryAction>
+                        <Fab
+                          className={classes.fab}
+                          size="small"
+                          aria-label="Add"
+                        >
+                          <AddIcon />
+                        </Fab>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  </List>
                 </Grid>
 
-                <Typography variant="h4" gutterBottom>
-                  Chef dishes
-                </Typography>
-                <Grid item xs={12}>
-                  <Grid container spacing={3}>
-                    {['Dish 1', 'Dish 2', 'Dish 3'].map(name => (
-                      <Grid item xs={12} md={6}>
-                        <DishCard name={name} />
-                      </Grid>
-                    ))}
-                  </Grid>
+                <Grid item xs={12} className={classes.section}>
+                  <Typography variant="h4" color="primary" gutterBottom>
+                    Extra Dishes
+                  </Typography>
+                  <List>
+                    <ListItem divider disableGutters>
+                      <ListItemAvatar>
+                        <Avatar>
+                          <FolderIcon />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary="Dish Name #1" secondary="$15" />
+                      <ListItemSecondaryAction>
+                        <Fab
+                          className={classes.fab}
+                          size="small"
+                          aria-label="Add"
+                        >
+                          <AddIcon />
+                        </Fab>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                    <ListItem divider disableGutters>
+                      <ListItemAvatar>
+                        <Avatar>
+                          <FolderIcon />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary="Dish Name #2"
+                        secondary="Summary goes here but we all know how this goes"
+                      />
+                      <ListItemSecondaryAction>
+                        <Fab
+                          className={classes.fab}
+                          size="small"
+                          aria-label="Add"
+                        >
+                          <AddIcon />
+                        </Fab>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  </List>
                 </Grid>
-              </Grid>
+              </Paper>
+            </Grid>
 
-              {/* Right Side */}
-              <Grid item xs={12} md={4}>
-                <Paper className={classes.paper}>
-                  <React.Fragment>
-                    <DatePickerField />
-
-                    <FormControl fullWidth margin="normal">
-                      <Typography variant="body1" gutterBottom>
-                        Event Time
-                      </Typography>
-                      <div className={classes.time}>
-                        {['5:00 pm', '5:30 pm', '6:00 pm'].map(time => (
-                          <Button key={time} variant="contained">
-                            {time}
-                          </Button>
-                        ))}
-                      </div>
-                    </FormControl>
-                    <Divider />
-
-                    <List dense>
-                      {generateCheckoutItems(values)}
-                      <ListItem>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          className={classes.button}
-                          onClick={() => Router.push('/checkout/summary')}
-                        >
-                          Book Chef
-                        </Button>
-                      </ListItem>
-                      <ListItem>
-                        <Typography
-                          variant="caption"
-                          className={classes.disclaimer}
-                        >
-                          You won't be charged yet
-                        </Typography>
-                      </ListItem>
-                    </List>
-                  </React.Fragment>
-                </Paper>
-              </Grid>
-            </React.Fragment>
-          )}
-        </Form>
-      </Section>
-    </Layout>
-  );
-};
+            {/* Right Side */}
+            <Grid item xs={12} md={4}>
+              <Paper className={classes.paper}>
+                <React.Fragment>
+                  <DatePickerField />
+                  <TimePickerField />
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    onClick={() => Router.push('/checkout/summary')}
+                  >
+                    Book Chef
+                  </Button>
+                </React.Fragment>
+              </Paper>
+            </Grid>
+          </React.Fragment>
+        )}
+      </Form>
+    </Section>
+  </Layout>
+);
 
 Chef.propTypes = {
   classes: PropTypes.shape().isRequired
