@@ -20,18 +20,26 @@ const DatePickerField = ({ field, form, ...other }) => {
   );
 };
 
-const DatePickerGroup = () => (
+DatePickerField.propTypes = {
+  field: PropTypes.object.isRequired,
+  form: PropTypes.object.isRequired
+};
+
+const DatePickerGroup = ({ label }) => (
   <FormControl fullWidth margin="normal">
     <Typography variant="body1" gutterBottom>
-      Event Date
+      {label}
     </Typography>
     <Field name="eventDate" component={DatePickerField} />
   </FormControl>
 );
 
-DatePickerField.propTypes = {
-  field: PropTypes.object.isRequired,
-  form: PropTypes.object.isRequired
+DatePickerGroup.defaultProps = {
+  label: null
+};
+
+DatePickerGroup.propTypes = {
+  label: PropTypes.string
 };
 
 export default DatePickerGroup;

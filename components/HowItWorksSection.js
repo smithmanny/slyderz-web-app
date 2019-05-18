@@ -31,7 +31,12 @@ class HowItWorksSection extends React.PureComponent {
     const HIWStep = ({ image, title, content }) => (
       <Grid item xs={12} md={4}>
         <div className={classes.imageWrapper}>
-          <img className={classes.image} src={image} alt={title} />
+          <img
+            className={classes.image}
+            src={image}
+            alt={title}
+            loading="lazy"
+          />
         </div>
         <Text color="inherit" variant="h5" align="center" gutterBottom>
           {title}

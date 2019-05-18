@@ -7,7 +7,8 @@ import AppBar from './shared/AppBar';
 const useStyles = theme => ({
   main: {
     margin: 'auto',
-    backgroundColor: '#ebedf3'
+    backgroundColor: '#ebedf3',
+    minHeight: '100vh'
   }
 });
 

@@ -25,6 +25,11 @@ const muiTheme = createMuiTheme({
     fontSize: 12
   },
   overrides: {
+    MuiButton: {
+      root: {
+        fontWeight: 'bold'
+      }
+    },
     MuiFab: {
       root: {
         backgroundColor: 'transparent',

@@ -17,18 +17,26 @@ const TimePickerField = ({ field, form, ...other }) => {
   );
 };
 
-const TimPickerGroup = () => (
+TimePickerField.propTypes = {
+  field: PropTypes.object.isRequired,
+  form: PropTypes.object.isRequired
+};
+
+const TimPickerGroup = ({ label }) => (
   <FormControl fullWidth margin="normal">
     <Typography variant="body1" gutterBottom>
-      Event Time
+      {label}
     </Typography>
     <Field name="eventTime" component={TimePickerField} />
   </FormControl>
 );
 
-TimePickerField.propTypes = {
-  field: PropTypes.object.isRequired,
-  form: PropTypes.object.isRequired
+TimPickerGroup.defaultProps = {
+  label: null
+};
+
+TimPickerGroup.propTypes = {
+  label: PropTypes.string
 };
 
 export default TimPickerGroup;

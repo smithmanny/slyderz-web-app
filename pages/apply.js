@@ -30,7 +30,7 @@ const Apply = ({ classes, user }) => {
     lastName,
     state,
     postalCode,
-    isChef
+    chef
   } = user || {};
   return (
     <Layout>
@@ -42,7 +42,7 @@ const Apply = ({ classes, user }) => {
           <Text type="body1" align="center" color="inherit" gutterBottom>
             {successMessage}
           </Text>
-          {isChef === 'PENDING' && (
+          {chef && chef.isChef === 'PENDING' && (
             <Text type="body1" align="center" color="inherit" gutterBottom>
               {successMessage ||
                 "Your application has been received! We'll contact you with further instructions."}
@@ -144,7 +144,11 @@ const Apply = ({ classes, user }) => {
                 onChange={handleChange}
                 value={values.postalCode}
               />
-              <SubmitButton xs={4} md={2} disabled={isChef === 'PENDING'}>
+              <SubmitButton
+                xs={4}
+                md={2}
+                disabled={chef && chef.isChef === 'PENDING'}
+              >
                 Submit
               </SubmitButton>
               <Link href="/">

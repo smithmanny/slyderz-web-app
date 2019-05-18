@@ -1,73 +1,92 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Query } from 'react-apollo';
 
-import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/styles';
 import Paper from '@material-ui/core/Paper';
-import Fab from '@material-ui/core/Fab';
-import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
 
 import Layout from '../components/Layout';
 import Section from '../components/shared/Section';
 import Text from '../components/shared/Text';
+import pendingChefsQuery from '../lib/gql/query/chef/pendingChefsQuery.gql';
 
 const styles = theme => ({
-  bigAvatar: {
-    width: 65,
-    height: 65
-  },
   grid: {
     margin: 'auto'
   },
   event: {
-    display: 'flex',
-    minHeight: 65,
-    padding: theme.spacing(1)
-  },
-  eventName: {
-    flex: 1,
-    padding: 5
+    padding: theme.spacing(1),
+    maxWidth: 975,
+    margin: 'auto'
   },
   fab: {
-    margin: theme.spacing(1)
+    marginLeft: theme.spacing(1)
+  },
+  listItem: {
+    paddingLeft: theme.spacing(1)
   }
 });
 
 class Events extends React.Component {
   render() {
     const { classes, user } = this.props;
-
     return (
       <Layout>
         <Section>
           <Grid container>
-            <Grid className={classes.grid} item xs={12} md={6}>
-              <Paper className={classes.event}>
-                <div className={classes.eventName}>
-                  <Text color="inherit" type="body1">
-                    Event Namehhhgyyffujuhjghghffhggfddsaaqqqw hggffgdgsgsfdfsfs
-                  </Text>
-                </div>
-                <div>
-                  <Fab
-                    size="small"
-                    color="error"
-                    aria-label="Delete"
-                    className={classes.fab}
-                  >
-                    <DeleteIcon />
-                  </Fab>
-                  <Fab
-                    size="small"
-                    color="primary"
-                    aria-label="Delete"
-                    className={classes.fab}
-                  >
-                    <DeleteIcon />
-                  </Fab>
-                </div>
-              </Paper>
+            <Grid className={classes.grid} item xs={12}>
+              <Query query={pendingChefsQuery}>
+                {({ data, loading }) => {
+                  if (loading) return 'Loading...';
+
+                  if (data.pendingChefs.length === 0) {
+                    return 'No pending chefs.';
+                  }
+                  return (
+                    <Paper className={classes.event}>
+                      <List>
+                        {data.pendingChefs.map(chef => (
+                          <ListItem
+                            key={chef.id}
+                            className={classes.listItem}
+                            divider
+                            disableGutters
+                          >
+                            <ListItemText
+                              primary={chef.firstName}
+                              secondary={`${chef.city}, ${chef.state}`}
+                            />
+                            <ListItemSecondaryAction>
+                              <IconButton
+                                className={classes.fab}
+                                size="small"
+                                aria-label="Add"
+                              >
+                                <CloseIcon />
+                              </IconButton>
+                              <IconButton
+                                className={classes.fab}
+                                size="small"
+                                aria-label="Add"
+                              >
+                                <CheckIcon />
+                              </IconButton>
+                            </ListItemSecondaryAction>
+                          </ListItem>
+                        ))}
+                      </List>
+                    </Paper>
+                  );
+                }}
+              </Query>
             </Grid>
           </Grid>
         </Section>
@@ -77,7 +96,7 @@ class Events extends React.Component {
 }
 
 Events.propTypes = {
-  classes: PropTypes.shape(),
+  classes: PropTypes.object,
   user: PropTypes.shape()
 };
 

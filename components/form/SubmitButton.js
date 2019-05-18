@@ -15,7 +15,7 @@ const TextFieldGroup = ({ xs, md, lg, classes, ...props }) => (
     <Button
       type="submit"
       variant="contained"
-      color="secondary"
+      color="primary"
       className={classes.textField}
       fullWidth
       {...props}

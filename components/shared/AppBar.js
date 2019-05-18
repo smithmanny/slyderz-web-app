@@ -25,7 +25,9 @@ import User from './User';
 
 const styles = theme => ({
   slyderButton: {
-    marginRight: theme.spacing(3)
+    marginRight: theme.spacing(3),
+    color: 'white',
+    borderColor: 'white'
   },
   menuItem: {
     marginLeft: theme.spacing(3)
@@ -34,7 +36,7 @@ const styles = theme => ({
     flexGrow: 1
   },
   grow: {
-    flexGrow: 1,
+    marginRight: 'auto',
     textTransform: 'uppercase',
     '&:hover': {
       cursor: 'pointer'
@@ -86,11 +88,13 @@ const AppBar = ({ classes }) => {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={() => Route.push('/settings')}>My Account</MenuItem>
-      {user && user.isChef === 'CHEF' && (
+      {/* {user && user.chef && user.chef.isChef === 'CHEF' && (
         <MenuItem onClick={() => Route.push('/apply')}>Manage Profile</MenuItem>
+      )} */}
+      {user && user.permissions.includes('ADMIN') && (
+        <MenuItem onClick={() => Route.push('/events')}>Events</MenuItem>
       )}
-      <MenuItem onClick={() => Route.push('/events')}>Events</MenuItem>
-      {user && user.isChef === ('PENDING' || 'NO') && (
+      {user && user.chef && user.chef.isChef === ('PENDING' || 'NO') && (
         <MenuItem onClick={() => Route.push('/apply')}>
           Become a Slyder
         </MenuItem>
@@ -162,8 +166,7 @@ const AppBar = ({ classes }) => {
                 <React.Fragment>
                   <Button
                     className={classes.slyderButton}
-                    variant="contained"
-                    color="secondary"
+                    variant="outlined"
                     onClick={() => Route.push('/apply')}
                   >
                     Become a Chef
