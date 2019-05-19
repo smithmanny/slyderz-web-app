@@ -92,7 +92,7 @@ const AppBar = ({ classes }) => {
         <MenuItem onClick={() => Route.push('/apply')}>Manage Profile</MenuItem>
       )} */}
       {user && user.permissions.includes('ADMIN') && (
-        <MenuItem onClick={() => Route.push('/events')}>Events</MenuItem>
+        <MenuItem onClick={() => Route.push('/admin/chefs')}>Chefs</MenuItem>
       )}
       {user && user.chef && user.chef.isChef === ('PENDING' || 'NO') && (
         <MenuItem onClick={() => Route.push('/apply')}>
@@ -200,9 +200,9 @@ const AppBar = ({ classes }) => {
 
               {me && (
                 <React.Fragment>
-                  <IconButton color="inherit">
+                  {/* <IconButton color="inherit">
                     <ShoppingCart />
-                  </IconButton>
+                  </IconButton> */}
 
                   <IconButton
                     aria-owns={isMenuOpen ? 'material-appbar' : undefined}

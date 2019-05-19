@@ -1,14 +1,15 @@
-query {
-  chefs {
+query chef($id: ID!) {
+  chef(id: $id) {
+    __typename
     id
-    avatar
     firstName
     lastName
     city
     state
     dishes {
-      dishImage
+      id
       dishName
+      dishImage
       dishType
       pricePerPerson
     }

@@ -1,7 +1,0 @@
-query chefDishes($id: ID!) {
-  chefDishes(id: $id) {
-    id
-    dishName
-    dishPrice
-  }
-}
