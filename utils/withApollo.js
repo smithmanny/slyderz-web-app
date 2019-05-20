@@ -14,7 +14,10 @@ function createClient({ headers }) {
         fetchOptions: {
           credentials: 'include'
         },
-        headers
+        headers: {
+          ...headers,
+          Authorization: `Bearer ${process.env.PRISMA_SECRET}`
+        }
       });
     }
   });
