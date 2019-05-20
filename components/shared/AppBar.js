@@ -149,7 +149,7 @@ const AppBar = ({ classes }) => {
 
   return (
     <User>
-      {({ data: { me } }) => (
+      {({ data }) => (
         <div className={classes.root}>
           <MuiAppBar position="static">
             <Toolbar>
@@ -162,7 +162,7 @@ const AppBar = ({ classes }) => {
                 Slyderz
               </Typography>
 
-              {!me && (
+              {!data && (
                 <React.Fragment>
                   <Button
                     className={classes.slyderButton}
@@ -198,7 +198,7 @@ const AppBar = ({ classes }) => {
                 </React.Fragment>
               )}
 
-              {me && (
+              {data && data.me && (
                 <React.Fragment>
                   {/* <IconButton color="inherit">
                     <ShoppingCart />
@@ -215,7 +215,7 @@ const AppBar = ({ classes }) => {
                 </React.Fragment>
               )}
               {/* Profile Menu */}
-              {renderMenu(me)}
+              {renderMenu(data && data.me)}
               <BasicModal
                 open={values.openAuthModal}
                 onClose={() => setValues({ ...values, openAuthModal: false })}
