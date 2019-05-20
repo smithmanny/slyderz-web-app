@@ -14,6 +14,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import ShoppingCart from '@material-ui/icons/ShoppingCart';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import Grid from '@material-ui/core/Grid';
 
 import SignInForm from '../auth/SignInForm';
 import SignUpForm from '../auth/SignUpForm';
@@ -27,7 +28,10 @@ const styles = theme => ({
   slyderButton: {
     marginRight: theme.spacing(3),
     color: 'white',
-    borderColor: 'white'
+    borderColor: 'white',
+    [theme.breakpoints.down('xs')]: {
+      display: 'none'
+    }
   },
   menuItem: {
     marginLeft: theme.spacing(3),
