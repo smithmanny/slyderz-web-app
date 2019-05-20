@@ -30,7 +30,10 @@ const styles = theme => ({
 
 class Chefs extends React.Component {
   static getStartingDishImage(dishes) {
-    const image = dishes[0].dishImage;
+    let image = '';
+    if (dishes[0].dishImage) {
+      image = dishes[0].dishImage;
+    }
     return image;
   }
 
