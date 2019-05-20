@@ -1,5 +1,6 @@
 query currentUser {
   me {
+    __typename
     id
     email
     firstName
@@ -8,7 +9,14 @@ query currentUser {
     address2
     city
     state
+    permissions
     postalCode
-    isSlyder
+    chef {
+      __typename
+      id
+      isChef
+      city
+      state
+    }
   }
 }

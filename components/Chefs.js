@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Router from 'next/router';
+import { Query } from 'react-apollo';
 
 import Grid from '@material-ui/core/Grid';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
+
+import CHEFS_QUERY from '../lib/gql/query/chef/chefsQuery.gql';
 
 const styles = theme => ({
   orderWrapper: {
@@ -16,100 +19,93 @@ const styles = theme => ({
     overflow: 'hidden'
   },
   section: {
-    paddingTop: theme.spacing.unit * 5,
-    paddingBottom: theme.spacing.unit * 5
+    paddingTop: theme.spacing(5),
+    paddingBottom: theme.spacing(5)
   },
   paper: {
     height: 205,
-    marginBottom: theme.spacing.unit
+    marginBottom: theme.spacing(1)
   }
 });
 
-const cookData = [
-  {
-    img: '/static/food.jpg',
-    name: 'Shakhor Smith',
-    specialize: 'BBQ',
-    price: 50,
-    city: 'Ft. Lauderdale, FL'
-  },
-  {
-    img: '/static/food.jpg',
-    name: 'Shamar Smith',
-    specialize: 'Seafood',
-    price: 50,
-    city: 'Ft. Lauderdale, FL'
-  },
-  {
-    img: '/static/food.jpg',
-    name: 'Nicole Hollingsworth',
-    specialize: 'American',
-    price: 60,
-    city: 'Bronx, NY'
-  },
-  {
-    img: '/static/food.jpg',
-    name: 'Johnathan Smith',
-    specialize: 'Chinese',
-    price: 70,
-    city: 'Mount Vernon, NY'
-  },
-  {
-    img: '/static/food.jpg',
-    name: 'Jayla Smth',
-    specialize: 'Burgers',
-    price: 20,
-    city: 'Atlanta, GA'
+class Chefs extends React.Component {
+  static getStartingDishImage(dishes) {
+    const image = dishes[0].dishImage;
+    return image;
   }
-];
 
-const Chefs = ({ classes }) => (
-  <div className={classes.section}>
-    <div className={classes.orderWrapper}>
-      <Grid container spacing={32}>
-        {cookData.map(cook => (
-          <Grid
-            component="a"
-            key={cook.name}
-            item
-            xs={12}
-            sm={4}
-            md={3}
-            onClick={e =>
-              Router.push({ pathname: '/chef', query: { name: cook.name } })
-            }
-          >
-            <Paper className={classes.paper} elevation={2}>
-              <img
-                src={cook.img}
-                alt={cook.title}
-                style={{
-                  height: '100%',
-                  width: '100%',
-                  objectFit: 'cover'
-                }}
-              />
-            </Paper>
-            <Typography variant="caption" color="primary" gutterBottom>
-              {cook.specialize}
-            </Typography>
-            <Typography variant="subtitle1" color="inherit">
-              {cook.name}
-            </Typography>
-            <Typography variant="caption" color="inherit" gutterBottom>
-              ${cook.price} per person
-            </Typography>
-          </Grid>
-        ))}
-        <Grid item xs={12}>
-          <Button variant="contained" size="small" color="primary">
-            View All
-          </Button>
-        </Grid>
-      </Grid>
-    </div>
-  </div>
-);
+  static getStartingDishPrice(dishes) {
+    const price = dishes[0].pricePerPerson;
+    return `$${price} per person`;
+  }
+
+  static getStartingDishType(dishes) {
+    const type = dishes[0].dishType;
+    return type;
+  }
+
+  render() {
+    const { classes } = this.props;
+    return (
+      <div className={classes.section}>
+        <div className={classes.orderWrapper}>
+          <Query query={CHEFS_QUERY}>
+            {({ data, loading }) => {
+              if (loading) return 'Loading...';
+
+              return (
+                <Grid container spacing={3}>
+                  {data &&
+                    data.chefs &&
+                    data.chefs.map(chef => (
+                      <Grid
+                        key={chef.id}
+                        item
+                        xs={12}
+                        sm={6}
+                        md={3}
+                        onClick={e =>
+                          Router.push({
+                            pathname: '/chef',
+                            query: { id: chef.id }
+                          })
+                        }
+                      >
+                        <Paper className={classes.paper} elevation={2}>
+                          <img
+                            src={Chefs.getStartingDishImage(chef.dishes)}
+                            alt={chef.firstName}
+                            style={{
+                              height: '100%',
+                              width: '100%',
+                              objectFit: 'contain'
+                            }}
+                          />
+                        </Paper>
+                        <Typography variant="body2" color="primary">
+                          {Chefs.getStartingDishType(chef.dishes)}
+                        </Typography>
+                        <Typography variant="h6" color="inherit" gutterBottom>
+                          {chef.firstName} {chef.lastName}
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          color="inherit"
+                          gutterBottom
+                        >
+                          {Chefs.getStartingDishPrice(chef.dishes)}
+                        </Typography>
+                      </Grid>
+                    ))}
+                </Grid>
+              );
+            }}
+          </Query>
+        </div>
+      </div>
+    );
+  }
+}
 
 Chefs.propTypes = {
   classes: PropTypes.shape().isRequired

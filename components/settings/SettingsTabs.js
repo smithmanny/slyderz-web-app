@@ -5,7 +5,7 @@ import Router from 'next/router';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import Text from '../shared/Text';
 
 const styles = theme => ({
@@ -43,7 +43,7 @@ const SettingsTabs = ({ classes }) => {
   ];
 
   return (
-    <Grid container spacing={32}>
+    <Grid container spacing={3}>
       {settings.map(({ name, picture, view }) => (
         <Grid item xs={12} md={4} key={name}>
           <Card onClick={() => Router.push(`/settings/${view}`)}>

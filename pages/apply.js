@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 
 import Grid from '@material-ui/core/Grid';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 
 import Layout from '../components/Layout';
 import Section from '../components/shared/Section';
 import Form, { TextField, SubmitButton } from '../components/form/Form';
 import Text from '../components/shared/Text';
-import signupSlyderMutation from '../lib/gql/mutation/root/signupSlyderMutation.gql';
+import signupChefMutation from '../lib/gql/mutation/root/signupChefMutation.gql';
 
 const styles = theme => ({
   cancel: {
@@ -20,7 +20,7 @@ const styles = theme => ({
 });
 
 const Apply = ({ classes, user }) => {
-  const [successMessage, setSuccessMessage] = React.useState(null)
+  const [successMessage, setSuccessMessage] = React.useState(null);
   const {
     address1,
     address2,
@@ -30,18 +30,22 @@ const Apply = ({ classes, user }) => {
     lastName,
     state,
     postalCode,
-    isSlyder
+    chef
   } = user || {};
   return (
     <Layout>
       <Section>
-      <Grid item xs={12}>
+        <Grid item xs={12}>
           <Text type="h2" align="center" gutterBottom>
             Become a Slyder
           </Text>
-          {isSlyder === 'PENDING' && (
+          <Text type="body1" align="center" color="inherit" gutterBottom>
+            {successMessage}
+          </Text>
+          {chef && chef.isChef === 'PENDING' && (
             <Text type="body1" align="center" color="inherit" gutterBottom>
-              {successMessage || "Your application has been received! We'll contact you with further instructions."}
+              {successMessage ||
+                "Your application has been received! We'll contact you with further instructions."}
             </Text>
           )}
         </Grid>
@@ -57,14 +61,14 @@ const Apply = ({ classes, user }) => {
             postalCode
           }}
           mutate={{
-            mutation: signupSlyderMutation,
+            mutation: signupChefMutation,
             variables: values => ({
               ...values,
               postalCode: Number(values.postalCode)
             }),
             onCompleted: ({ data }) => {
-              setSuccessMessage(data.signupSlyder.message)
-            },
+              setSuccessMessage(data.signupChef.message);
+            }
           }}
         >
           {({ values, handleChange }) => (
@@ -77,26 +81,26 @@ const Apply = ({ classes, user }) => {
                 autoComplete="email"
                 onChange={handleChange}
                 value={values.email}
-                disabled={user ? true : false}
+                disabled={!!user}
               />
               <TextField
-                md={6}
+                xs={6}
                 variant="outlined"
                 label="First Name"
                 name="firstName"
                 autoComplete="name"
                 onChange={handleChange}
                 value={values.firstName}
-                disabled={user ? true : false}
+                disabled={!!user}
               />
               <TextField
-                md={6}
+                xs={6}
                 variant="outlined"
                 label="Last Name"
                 name="lastName"
                 onChange={handleChange}
                 value={values.lastName}
-                disabled={user ? true : false}
+                disabled={!!user}
               />
               <TextField
                 variant="outlined"
@@ -140,7 +144,13 @@ const Apply = ({ classes, user }) => {
                 onChange={handleChange}
                 value={values.postalCode}
               />
-              <SubmitButton xs={4} md={2} disabled={isSlyder === 'PENDING' ? true : false}>Submit</SubmitButton>
+              <SubmitButton
+                xs={4}
+                md={2}
+                disabled={chef && chef.isChef === 'PENDING'}
+              >
+                Submit
+              </SubmitButton>
               <Link href="/">
                 <a className={classes.cancel}>cancel</a>
               </Link>

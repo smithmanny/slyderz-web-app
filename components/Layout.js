@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 
 import AppBar from './shared/AppBar';
 
 const useStyles = theme => ({
   main: {
-    margin: 'auto'
+    margin: 'auto',
+    backgroundColor: '#ebedf3',
+    minHeight: '100vh'
   }
 });
 

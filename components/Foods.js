@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
@@ -36,7 +36,7 @@ const Foods = ({ classes }) => (
         }
 
         return (
-          <GridList className={classes.gridList} cols={4} spacing={16}>
+          <GridList className={classes.gridList} cols={4} spacing={2}>
             {data.cuisines.map(cuisine => (
               <GridListTile key={cuisine.name}>
                 <img src={cuisine.image} alt={cuisine.name} />

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
@@ -23,7 +23,7 @@ const useStyles = theme => ({
   hDivider: {
     height: 1,
     width: '100%',
-    margin: `${theme.spacing.unit * 2}px 0`
+    margin: theme.spacing(2, 0)
   }
 });
 

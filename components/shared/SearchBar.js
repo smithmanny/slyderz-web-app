@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
 import Divider from '@material-ui/core/Divider';
@@ -15,7 +15,7 @@ const styles = theme => ({
     width: '100%',
     maxWidth: 900,
     margin: 'auto',
-    marginBottom: theme.spacing.unit * 5
+    marginBottom: theme.spacing(5)
   },
   input: {
     marginLeft: 8,

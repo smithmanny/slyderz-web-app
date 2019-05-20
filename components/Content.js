@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 
 const useStyles = theme => ({
   content: {
-    padding: `${theme.spacing.unit * 5}px ${theme.spacing.unit * 2}px `
+    padding: theme.spacing(5, 2)
   }
 });
 

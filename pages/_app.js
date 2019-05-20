@@ -2,13 +2,16 @@ import React from 'react';
 import Head from 'next/head';
 import App, { Container } from 'next/app';
 import { ApolloProvider } from 'react-apollo';
-import { MuiThemeProvider } from '@material-ui/core/styles';
+import {
+  createGenerateClassName,
+  ThemeProvider,
+  StylesProvider
+} from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import JssProvider from 'react-jss/lib/JssProvider';
-import { MuiPickersUtilsProvider } from 'material-ui-pickers';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
-import getPageContext from '../utils/getPageContext';
+import theme from '../utils/theme';
 import withApollo from '../utils/withApollo';
 import User from '../components/shared/User';
 
@@ -23,11 +26,6 @@ class MyApp extends App {
     return { pageProps };
   }
 
-  constructor() {
-    super();
-    this.pageContext = getPageContext();
-  }
-
   componentDidMount() {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
@@ -38,6 +36,10 @@ class MyApp extends App {
 
   render() {
     const { apollo, Component, pageProps } = this.props;
+    const generateClassName = createGenerateClassName({
+      productionPrefix: 'sly'
+    });
+
     return (
       <Container>
         <Head>
@@ -45,28 +47,18 @@ class MyApp extends App {
         </Head>
 
         <ApolloProvider client={apollo}>
-          <JssProvider
-            registry={this.pageContext.sheetsRegistry}
-            generateClassName={this.pageContext.generateClassName}
-          >
-            <MuiThemeProvider
-              theme={this.pageContext.theme}
-              sheetsManager={this.pageContext.sheetsManager}
-            >
+          <StylesProvider generateClassName={generateClassName}>
+            <ThemeProvider theme={theme}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <CssBaseline />
                 <User>
                   {({ data: { me } }) => (
-                    <Component
-                      pageContext={this.pageContext}
-                      user={me}
-                      {...pageProps}
-                    />
+                    <Component user={me || {}} {...pageProps} />
                   )}
                 </User>
               </MuiPickersUtilsProvider>
-            </MuiThemeProvider>
-          </JssProvider>
+            </ThemeProvider>
+          </StylesProvider>
         </ApolloProvider>
       </Container>
     );

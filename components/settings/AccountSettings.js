@@ -5,7 +5,7 @@ import { Mutation } from 'react-apollo';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import LockIcon from '@material-ui/icons/Lock';
 import EmailIcon from '@material-ui/icons/AlternateEmail';
 import PersonIcon from '@material-ui/icons/Person';
@@ -17,13 +17,13 @@ import updateAccountSettingsMutation from '../../lib/gql/mutation/settings/Updat
 
 const styles = theme => ({
   card: {
-    marginBottom: theme.spacing.unit * 5
+    marginBottom: theme.spacing(5)
   },
   form: {
     margin: 'auto'
   },
   settingSection: {
-    marginTop: theme.spacing.unit * 2
+    marginTop: theme.spacing(2)
   }
 });
 
@@ -82,7 +82,9 @@ const AccountSettings = ({ classes, user }) => {
                     endAdornment: <PersonIcon />
                   }}
                 />
-                <SubmitButton xs={8} md={3}>Update Account</SubmitButton>
+                <SubmitButton xs={8} md={3}>
+                  Update Account
+                </SubmitButton>
               </React.Fragment>
             )}
           </Form>
@@ -137,7 +139,9 @@ const AccountSettings = ({ classes, user }) => {
                   onChange={handleChange}
                   value={values.confirmNewPassword}
                 />
-                <SubmitButton xs={8} md={3}>Update Password</SubmitButton>
+                <SubmitButton xs={8} md={3}>
+                  Update Password
+                </SubmitButton>
               </React.Fragment>
             )}
           </Form>

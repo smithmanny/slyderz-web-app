@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Router from 'next/router';
+import { Query } from 'react-apollo';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -8,209 +9,341 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Grid from '@material-ui/core/Grid';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Paper from '@material-ui/core/Paper';
-import Divider from '@material-ui/core/Divider';
-import FormControl from '@material-ui/core/FormControl';
+import FolderIcon from '@material-ui/icons/Folder';
+import AddIcon from '@material-ui/icons/Add';
+import ClearIcon from '@material-ui/icons/Clear';
+import { FieldArray } from 'formik';
 
 import Section from '../components/shared/Section';
 import Layout from '../components/Layout';
-import DishCard from '../components/chef/dishCard';
-import Form, { DatePickerField } from '../components/form/Form';
+import Fab from '../components/shared/Fab';
+import Text from '../components/shared/Text';
+import chefQuery from '../lib/gql/query/chef/chefQuery.gql';
+import bookChefMutation from '../lib/gql/mutation/checkout/bookChefMutation.gql';
+import { capitalizeString } from '../helpers';
+import Form, {
+  DatePickerField,
+  TimePickerField
+} from '../components/form/Form';
 
 const useStyles = theme => ({
+  intro: {
+    marginBottom: theme.spacing(1)
+  },
   bigAvatar: {
     width: 60,
     height: 60
   },
-  button: {
+  submitButton: {
     width: '100%',
-    height: 46
+    height: 46,
+    marginBottom: theme.spacing(2)
   },
-  disclaimer: {
-    fontWeight: 'bold',
-    width: '100%',
-    textAlign: 'center'
+  checkoutNote: {
+    fontWeight: 'bold'
+  },
+  fab: {
+    height: 35,
+    width: 35
   },
   section: {
-    paddingTop: theme.spacing.unit * 5,
-    paddingBottom: theme.spacing.unit * 5
+    padding: theme.spacing(2, 0)
   },
   time: {
     display: 'flex',
     justifyContent: 'space-between',
-    paddingTop: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit * 2
-  },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(2)
   },
   name: {
     margin: 'auto'
   },
   paper: {
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing(2)
   }
 });
 
-const Chef = ({ classes }) => {
-  function generateCheckoutItems(values) {
-    const itemsObject = Object.entries(values);
-    const items = itemsObject.map(([name, quantity]) => (
-      <ListItem>
-        <ListItemText primary={name} secondary={`x ${quantity}`} />
-        <ListItemSecondaryAction>
-          <ListItemText primary={`$${quantity}`} />
-        </ListItemSecondaryAction>
-      </ListItem>
-    ));
-
-    const total = itemsObject.map(([name, data]) => data.price * data.quantity);
-
+class Chef extends React.Component {
+  static calculateCartTotal(dishes) {
+    const prices = dishes.map(dish => dish.pricePerPerson);
+    const total = prices.reduce((a, b) => a + b);
     return (
-      <div>
-        {items}
-        <ListItem>
-          <ListItemText primary="Total:" />
-          <ListItemSecondaryAction>
-            <ListItemText primary="$Money" />
-          </ListItemSecondaryAction>
-        </ListItem>
-      </div>
+      <React.Fragment>
+        <ListItemText primary="Total" />
+        <ListItemSecondaryAction>
+          <Text type="body1">${total}</Text>
+        </ListItemSecondaryAction>
+      </React.Fragment>
     );
   }
 
-  return (
-    <Layout>
-      <Section>
-        <div
-          style={{
-            position: 'relative',
-            height: 300,
-            marginBottom: '30px'
-          }}
-        >
-          <img
-            style={{ height: '100%', width: '100%' }}
-            src="/static/detail.jpg"
-            alt="Chef header"
+  renderMainDishes = ({ dishes, push }) => {
+    const { classes } = this.props;
+    return dishes.map(dish => (
+      <List key={dish.id}>
+        <ListItem divider disableGutters>
+          {/* <ListItemAvatar>
+            <Avatar>
+              <FolderIcon />
+            </Avatar>
+          </ListItemAvatar> */}
+          <ListItemText
+            primary={`${dish.dishName} --- $${dish.pricePerPerson}`}
+            secondary="Short summary"
           />
-        </div>
+          <ListItemSecondaryAction>
+            <Fab className={classes.fab} size="small" aria-label="Add">
+              <AddIcon onClick={() => push(dish)} />
+            </Fab>
+          </ListItemSecondaryAction>
+        </ListItem>
+      </List>
+    ));
+  };
 
-        <Form>
-          {({ errors, values }) => (
-            <React.Fragment>
-              {/* Left Side */}
-              <Grid item xs={12} md={8}>
-                <Grid container spacing={16}>
-                  <Grid item>
-                    <Avatar
-                      alt="Remy Sharp"
-                      src="/static/food.jpg"
-                      className={classes.bigAvatar}
+  render() {
+    const { classes, user } = this.props;
+    return (
+      <Layout>
+        <Section>
+          <Query
+            query={chefQuery}
+            variables={{
+              id: this.props.query.id
+            }}
+          >
+            {({ data, loading }) => {
+              if (loading) return 'Loading...';
+
+              const { chef } = data;
+              return (
+                <React.Fragment>
+                  <div
+                    style={{
+                      position: 'relative',
+                      height: 300,
+                      marginBottom: '30px'
+                    }}
+                  >
+                    <img
+                      style={{ height: '100%', width: '100%' }}
+                      src="/static/detail.jpg"
+                      alt="Chef header"
                     />
-                  </Grid>
-                  <Grid className={classes.name} item xs>
-                    <Typography variant="h5">Shakhor Smith</Typography>
-                  </Grid>
+                  </div>
 
-                  <Grid item xs={12} style={{ marginTop: 6 }}>
-                    <Typography variant="body1">Atlanta, GA</Typography>
-                  </Grid>
-                </Grid>
+                  <Form
+                    mutate={{
+                      mutation: bookChefMutation,
+                      variables: variables => ({
+                        chef: this.props.query.id,
+                        dishes: variables.dishes.map(dish => dish.id),
+                        eventStatus: 'PENDING',
+                        customer: user.id,
+                        eventDate: variables.eventDate,
+                        eventTime: variables.eventTime
+                      }),
+                      onCompleted: e => {
+                        alert(
+                          "Thanks! Your submission has been sent! We'll contact you with updates and further instructions."
+                        );
+                      }
+                    }}
+                  >
+                    {({ values }) => (
+                      <FieldArray
+                        name="dishes"
+                        render={({ push, remove }) => (
+                          <React.Fragment>
+                            {/* Left Side */}
+                            <Grid item xs={12} md={8}>
+                              <Paper className={classes.paper}>
+                                <Grid
+                                  className={classes.intro}
+                                  container
+                                  spacing={3}
+                                >
+                                  <Grid item>
+                                    <Avatar
+                                      alt={chef && chef.firstName}
+                                      src="/static/food.jpg"
+                                      className={classes.bigAvatar}
+                                    />
+                                  </Grid>
+                                  <Grid className={classes.name} item xs>
+                                    <Typography variant="h5">
+                                      {chef && capitalizeString(chef.firstName)}{' '}
+                                      {chef && capitalizeString(chef.lastName)}
+                                    </Typography>
+                                  </Grid>
 
-                <Grid className={classes.section} item xs={12}>
-                  <ExpansionPanel>
-                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                      <Typography className={classes.heading}>
-                        Read more about the chef
-                      </Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                      <Typography>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Suspendisse malesuada lacus ex, sit amet blandit leo
-                        lobortis eget.
-                      </Typography>
-                    </ExpansionPanelDetails>
-                  </ExpansionPanel>
-                </Grid>
+                                  <Grid item xs={12} style={{ marginTop: 6 }}>
+                                    <Typography variant="body1">
+                                      Atlanta, GA
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
 
-                <Typography variant="h4" gutterBottom>
-                  Chef dishes
-                </Typography>
-                <Grid item xs={12}>
-                  <Grid container spacing={32}>
-                    {['Dish 1', 'Dish 2', 'Dish 3'].map(name => (
-                      <Grid item xs={12} md={6}>
-                        <DishCard name={name} />
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Grid>
-              </Grid>
+                                <Grid item xs={12} className={classes.section}>
+                                  <Typography
+                                    color="primary"
+                                    variant="h4"
+                                    gutterBottom
+                                  >
+                                    Main Dishes
+                                  </Typography>
+                                  <Typography variant="body2" gutterBottom>
+                                    Price per person.
+                                  </Typography>
+                                  {this.renderMainDishes({
+                                    dishes: (chef && chef.dishes) || [],
+                                    push
+                                  })}
+                                </Grid>
+                                {/* 
+                                <Grid item xs={12} className={classes.section}>
+                                  <Typography
+                                    variant="h4"
+                                    color="primary"
+                                    gutterBottom
+                                  >
+                                    Extra Dishes
+                                  </Typography>
+                                  <List>
+                                    <ListItem divider disableGutters>
+                                      <ListItemAvatar>
+                                        <Avatar>
+                                          <FolderIcon />
+                                        </Avatar>
+                                      </ListItemAvatar>
+                                      <ListItemText
+                                        primary="Dish Name #1"
+                                        secondary="$15"
+                                      />
+                                      <ListItemSecondaryAction>
+                                        <Fab
+                                          className={classes.fab}
+                                          size="small"
+                                          aria-label="Add"
+                                        >
+                                          <AddIcon />
+                                        </Fab>
+                                      </ListItemSecondaryAction>
+                                    </ListItem>
+                                    <ListItem divider disableGutters>
+                                      <ListItemAvatar>
+                                        <Avatar>
+                                          <FolderIcon />
+                                        </Avatar>
+                                      </ListItemAvatar>
+                                      <ListItemText
+                                        primary="Dish Name #2"
+                                        secondary="Summary goes here but we all know how this goes"
+                                      />
+                                      <ListItemSecondaryAction>
+                                        <Fab
+                                          className={classes.fab}
+                                          size="small"
+                                          aria-label="Add"
+                                        >
+                                          <AddIcon />
+                                        </Fab>
+                                      </ListItemSecondaryAction>
+                                    </ListItem>
+                                  </List>
+                                </Grid> */}
+                              </Paper>
+                            </Grid>
 
-              {/* Right Side */}
-              <Grid item xs={12} md={4}>
-                <Paper className={classes.paper}>
-                  <React.Fragment>
-                    <DatePickerField />
+                            {/* Right Side */}
+                            <Grid item xs={12} md={4}>
+                              <Paper className={classes.paper}>
+                                <Text type="h6">Your Order</Text>
+                                <DatePickerField label="Event Date" />
+                                <TimePickerField label="Event Time" />
+                                <List>
+                                  {values.dishes &&
+                                  values.dishes.length >= 1 ? (
+                                    <React.Fragment>
+                                      {values.dishes.map((dish, i) => (
+                                        <ListItem
+                                          key={dish.id}
+                                          divider
+                                          disableGutters
+                                        >
+                                          <ListItemText
+                                            primary={dish.dishName}
+                                            secondary={`$${
+                                              dish.pricePerPerson
+                                            }`}
+                                          />
+                                          <ListItemSecondaryAction>
+                                            <ClearIcon
+                                              onClick={() => remove(i)}
+                                            />
+                                          </ListItemSecondaryAction>
+                                        </ListItem>
+                                      ))}
+                                      {values.dishes &&
+                                        values.dishes.length >= 1 && (
+                                          <ListItem disableGutters>
+                                            {Chef.calculateCartTotal(
+                                              values.dishes
+                                            )}
+                                          </ListItem>
+                                        )}
+                                    </React.Fragment>
+                                  ) : (
+                                    <Text align="center" type="h6">
+                                      Your cart is empty
+                                    </Text>
+                                  )}
+                                </List>
+                                <Button
+                                  variant="contained"
+                                  color="primary"
+                                  className={classes.submitButton}
+                                  type="submit"
+                                >
+                                  Book Chef
+                                </Button>
+                                <Text
+                                  className={classes.checkoutNote}
+                                  align="center"
+                                  type="body2"
+                                >
+                                  You will not be charged yet.
+                                </Text>
+                              </Paper>
+                            </Grid>
+                          </React.Fragment>
+                        )}
+                      />
+                    )}
+                  </Form>
+                </React.Fragment>
+              );
+            }}
+          </Query>
+        </Section>
+      </Layout>
+    );
+  }
+}
 
-                    <FormControl fullWidth margin="normal">
-                      <Typography variant="body1" gutterBottom>
-                        Event Time
-                      </Typography>
-                      <div className={classes.time}>
-                        {['5:00 pm', '5:30 pm', '6:00 pm'].map(time => (
-                          <Button key={time} variant="contained">
-                            {time}
-                          </Button>
-                        ))}
-                      </div>
-                    </FormControl>
-                    <Divider />
-
-                    <List dense>
-                      {generateCheckoutItems(values)}
-                      <ListItem>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          className={classes.button}
-                          onClick={() => Router.push('/checkout/summary')}
-                        >
-                          Book Chef
-                        </Button>
-                      </ListItem>
-                      <ListItem>
-                        <Typography
-                          variant="caption"
-                          className={classes.disclaimer}
-                        >
-                          You won't be charged yet
-                        </Typography>
-                      </ListItem>
-                    </List>
-                  </React.Fragment>
-                </Paper>
-              </Grid>
-            </React.Fragment>
-          )}
-        </Form>
-      </Section>
-    </Layout>
-  );
+Chef.defaultProps = {
+  user: {}
 };
 
 Chef.propTypes = {
-  classes: PropTypes.shape().isRequired
+  classes: PropTypes.shape().isRequired,
+  query: PropTypes.object,
+  user: PropTypes.object
 };
 
 export default withStyles(useStyles)(Chef);

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 
 import Text from '../../components/shared/Text';
 import Section from '../../components/shared/Section';
@@ -9,7 +9,7 @@ import Layout from '../../components/Layout';
 const styles = theme => ({
   imageWrapper: {
     maxWidth: 600,
-    margin: `${theme.spacing.unit * 5}px auto`
+    margin: `${theme.spacing(5)}px auto`
   },
   image: {
     width: '100%'
