@@ -16,8 +16,12 @@ const SettingsAccountContainer = ({ user }) => (
   </PrivateRoute>
 );
 
+SettingsAccountContainer.defaultProps = {
+  user: {}
+};
+
 SettingsAccountContainer.propTypes = {
-  user: PropTypes.shape()
+  user: PropTypes.object
 };
 
 export default SettingsAccountContainer;

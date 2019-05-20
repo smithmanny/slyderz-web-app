@@ -37,7 +37,7 @@ const Apply = ({ classes, user }) => {
       <Section>
         <Grid item xs={12}>
           <Text type="h2" align="center" gutterBottom>
-            Become a Slyder
+            Become a Chef
           </Text>
           <Text type="body1" align="center" color="inherit" gutterBottom>
             {successMessage}
@@ -162,9 +162,13 @@ const Apply = ({ classes, user }) => {
   );
 };
 
+Apply.defaultProps = {
+  user: {}
+};
+
 Apply.propTypes = {
-  classes: PropTypes.shape(),
-  user: PropTypes.shape()
+  classes: PropTypes.object,
+  user: PropTypes.object
 };
 
 export default withStyles(styles)(Apply);

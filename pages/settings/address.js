@@ -7,7 +7,7 @@ import AddressSettings from '../../components/settings/AddressSettings';
 import PrivateRoute from '../../components/PrivateRoute';
 
 const SettingsAddressContainer = ({ user }) => (
-  <PrivateRoute>
+  <PrivateRoute user={user}>
     <Layout>
       <Section>
         <AddressSettings user={user} />
@@ -16,8 +16,12 @@ const SettingsAddressContainer = ({ user }) => (
   </PrivateRoute>
 );
 
+SettingsAddressContainer.defaultProps = {
+  user: {}
+};
+
 SettingsAddressContainer.propTypes = {
-  user: PropTypes.shape()
+  user: PropTypes.object
 };
 
 export default SettingsAddressContainer;

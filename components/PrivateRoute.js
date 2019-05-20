@@ -14,12 +14,15 @@ class PrivateRoute extends React.Component {
     if (!this.props.user) {
       this.setState({ authorized: false });
     }
+    if (this.props.user) {
+      this.setState({ authorized: true });
+    }
 
     return this.props.children;
   }
 
   render() {
-    return this.state.authorized ? this.children : 'Not Authorized';
+    return this.state.authorized ? this.props.children : 'Not Authorized';
   }
 }
 
