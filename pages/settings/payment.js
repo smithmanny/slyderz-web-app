@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/styles';
 import Text from '../../components/shared/Text';
 import Section from '../../components/shared/Section';
 import Layout from '../../components/Layout';
+import PrivateRoute from '../../components/PrivateRoute';
 
 const styles = theme => ({
   imageWrapper: {
@@ -17,20 +18,22 @@ const styles = theme => ({
 });
 
 const Payment = ({ classes }) => (
-  <Layout>
-    <Section>
-      <Text type="h5" align="center" color="inherit">
-        You don't have any payments saved.
-      </Text>
-      <div className={classes.imageWrapper}>
-        <img
-          src="https://res.cloudinary.com/slyderz/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1556857856/credit-card_gy6dyg.png"
-          alt="Credit cards"
-          className={classes.image}
-        />
-      </div>
-    </Section>
-  </Layout>
+  <PrivateRoute>
+    <Layout>
+      <Section>
+        <Text type="h5" align="center" color="inherit">
+          You don't have any payments saved.
+        </Text>
+        <div className={classes.imageWrapper}>
+          <img
+            src="https://res.cloudinary.com/slyderz/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1556857856/credit-card_gy6dyg.png"
+            alt="Credit cards"
+            className={classes.image}
+          />
+        </div>
+      </Section>
+    </Layout>
+  </PrivateRoute>
 );
 
 Payment.propTypes = {

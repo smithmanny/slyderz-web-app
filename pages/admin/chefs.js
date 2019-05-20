@@ -17,6 +17,7 @@ import Layout from '../../components/Layout';
 import Section from '../../components/shared/Section';
 import Text from '../../components/shared/Text';
 import pendingChefsQuery from '../../lib/gql/query/chef/pendingChefsQuery.gql';
+import PrivateRoute from '../../components/PrivateRoute';
 
 const styles = theme => ({
   grid: {
@@ -39,58 +40,60 @@ class AdminChefScreen extends React.Component {
   render() {
     const { classes, user } = this.props;
     return (
-      <Layout>
-        <Section>
-          <Grid container>
-            <Grid className={classes.grid} item xs={12}>
-              <Query query={pendingChefsQuery}>
-                {({ data, loading }) => {
-                  if (loading) return 'Loading...';
+      <PrivateRoute user={user}>
+        <Layout>
+          <Section>
+            <Grid container>
+              <Grid className={classes.grid} item xs={12}>
+                <Query query={pendingChefsQuery}>
+                  {({ data, loading }) => {
+                    if (loading) return 'Loading...';
 
-                  if (data.pendingChefs.length === 0) {
-                    return 'No pending chefs.';
-                  }
-                  return (
-                    <Paper className={classes.event}>
-                      <List>
-                        {data.pendingChefs.map(chef => (
-                          <ListItem
-                            key={chef.id}
-                            className={classes.listItem}
-                            divider
-                            disableGutters
-                          >
-                            <ListItemText
-                              primary={chef.firstName}
-                              secondary={`${chef.city}, ${chef.state}`}
-                            />
-                            <ListItemSecondaryAction>
-                              <IconButton
-                                className={classes.fab}
-                                size="small"
-                                aria-label="Add"
-                              >
-                                <CloseIcon />
-                              </IconButton>
-                              <IconButton
-                                className={classes.fab}
-                                size="small"
-                                aria-label="Add"
-                              >
-                                <CheckIcon />
-                              </IconButton>
-                            </ListItemSecondaryAction>
-                          </ListItem>
-                        ))}
-                      </List>
-                    </Paper>
-                  );
-                }}
-              </Query>
+                    if (data.pendingChefs.length === 0) {
+                      return 'No pending chefs.';
+                    }
+                    return (
+                      <Paper className={classes.event}>
+                        <List>
+                          {data.pendingChefs.map(chef => (
+                            <ListItem
+                              key={chef.id}
+                              className={classes.listItem}
+                              divider
+                              disableGutters
+                            >
+                              <ListItemText
+                                primary={chef.firstName}
+                                secondary={`${chef.city}, ${chef.state}`}
+                              />
+                              <ListItemSecondaryAction>
+                                <IconButton
+                                  className={classes.fab}
+                                  size="small"
+                                  aria-label="Add"
+                                >
+                                  <CloseIcon />
+                                </IconButton>
+                                <IconButton
+                                  className={classes.fab}
+                                  size="small"
+                                  aria-label="Add"
+                                >
+                                  <CheckIcon />
+                                </IconButton>
+                              </ListItemSecondaryAction>
+                            </ListItem>
+                          ))}
+                        </List>
+                      </Paper>
+                    );
+                  }}
+                </Query>
+              </Grid>
             </Grid>
-          </Grid>
-        </Section>
-      </Layout>
+          </Section>
+        </Layout>
+      </PrivateRoute>
     );
   }
 }

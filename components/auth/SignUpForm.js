@@ -90,21 +90,19 @@ const SignUpForm = ({ classes, handleClose, openSignInModal }) => (
             }}
           />
 
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <Typography variant="h6">Birthday</Typography>
             <Typography variant="caption">
               To sign up, you must be 18 or older. This is kept personal.
             </Typography>
           </Grid>
-          <Grid item xs={12}>
-            {/* //</Grid>{//</Grid></Grid></Grid>Grid item} */}
-          </Grid>
+          <Grid item xs={12} /> */}
 
           <Grid item xs={12}>
             <Button
               type="submit"
               variant="contained"
-              color="secondary"
+              color="primary"
               disabled={isSubmitting}
               fullWidth
             >
