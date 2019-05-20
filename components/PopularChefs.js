@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/styles';
 
 import Chefs from './Chefs';
@@ -16,9 +15,5 @@ const PopularChefs = props => (
     <Chefs />
   </Section>
 );
-
-PopularChefs.propTypes = {
-  classes: PropTypes.object
-};
 
 export default withStyles(style)(PopularChefs);
