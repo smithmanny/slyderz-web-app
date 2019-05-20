@@ -38,9 +38,9 @@ const styles = theme => ({
 
 class AdminChefScreen extends React.Component {
   render() {
-    const { classes, user } = this.props;
+    const { classes } = this.props;
     return (
-      <PrivateRoute user={user}>
+      <PrivateRoute>
         <Layout>
           <Section>
             <Grid container>
@@ -98,13 +98,8 @@ class AdminChefScreen extends React.Component {
   }
 }
 
-AdminChefScreen.defaultProps = {
-  user: {}
-};
-
 AdminChefScreen.propTypes = {
-  classes: PropTypes.object,
-  user: PropTypes.object
+  classes: PropTypes.object
 };
 
 export default withStyles(styles)(AdminChefScreen);

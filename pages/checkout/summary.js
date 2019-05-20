@@ -27,7 +27,7 @@ function getSteps() {
   return ['Summary', 'Event Address', 'Payment'];
 }
 
-const OrderSummary = ({ classes, user }) => {
+const OrderSummary = ({ classes }) => {
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
 
@@ -72,13 +72,8 @@ const OrderSummary = ({ classes, user }) => {
   );
 };
 
-OrderSummary.defaultProps = {
-  user: {}
-};
-
 OrderSummary.propTypes = {
-  classes: PropTypes.object.isRequired,
-  user: PropTypes.object
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(useStyles)(OrderSummary);

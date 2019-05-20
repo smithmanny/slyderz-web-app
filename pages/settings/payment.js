@@ -17,8 +17,8 @@ const styles = theme => ({
   }
 });
 
-const Payment = ({ classes, user }) => (
-  <PrivateRoute user={user}>
+const Payment = ({ classes }) => (
+  <PrivateRoute>
     <Layout>
       <Section>
         <Text type="h5" align="center" color="inherit">
@@ -36,13 +36,8 @@ const Payment = ({ classes, user }) => (
   </PrivateRoute>
 );
 
-Payment.defaultProps = {
-  user: {}
-};
-
 Payment.propTypes = {
-  classes: PropTypes.shape().isRequired,
-  user: PropTypes.object
+  classes: PropTypes.shape().isRequired
 };
 
 export default withStyles(styles)(Payment);

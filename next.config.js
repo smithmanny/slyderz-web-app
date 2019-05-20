@@ -10,9 +10,4 @@ const { PHASE_PRODUCTION_SERVER } =
 
 const withGraphql = require('next-plugin-graphql');
 
-module.exports = withGraphql({
-  env: {
-    DEV_URL: 'http://localhost:4444',
-    WS_URL: 'wss://us1.prisma.sh/shakhor-smith-d8217c/Slyderz/dev'
-  }
-});
+module.exports = withGraphql();

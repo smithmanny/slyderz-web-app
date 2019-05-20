@@ -1,11 +1,13 @@
 import ApolloClient from 'apollo-boost';
 import withApollo from 'next-with-apollo';
 
+import { config } from '../config';
+
 function createClient({ headers }) {
   return new ApolloClient({
     uri:
       process.env.NODE_ENV === 'development'
-        ? process.env.DEV_URL
+        ? config.DEV_URL
         : process.env.GRAPHQL_URL,
     request: operation => {
       operation.setContext({

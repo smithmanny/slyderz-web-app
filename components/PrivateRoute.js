@@ -1,20 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Query } from 'react-apollo';
+
+import CURRENT_USER_QUERY from '../lib/gql/query/user/currentUserQuery.gql';
 
 class PrivateRoute extends React.Component {
   state = {
     authorized: false
   };
 
-  componentDidMount() {
-    this.handleView();
-  }
-
-  handleView() {
-    if (!this.props.user) {
+  handleView(user) {
+    if (!user) {
       this.setState({ authorized: false });
     }
-    if (this.props.user) {
+    if (user) {
       this.setState({ authorized: true });
     }
 
@@ -22,13 +21,25 @@ class PrivateRoute extends React.Component {
   }
 
   render() {
-    return this.state.authorized ? this.props.children : 'Not Authorized';
+    return (
+      <Query query={CURRENT_USER_QUERY}>
+        {({ data, loading }) => {
+          if (loading) return 'Loading...';
+
+          const user = data;
+          this.handleView(user || {});
+
+          return this.state.authorized
+            ? this.props.children(user)
+            : 'Not Authorized';
+        }}
+      </Query>
+    );
   }
 }
 
 PrivateRoute.propTypes = {
-  children: PropTypes.object,
-  user: PropTypes.object
+  children: PropTypes.object
 };
 
 export default PrivateRoute;

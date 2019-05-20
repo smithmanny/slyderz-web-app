@@ -14,7 +14,6 @@ import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import FolderIcon from '@material-ui/icons/Folder';
 import AddIcon from '@material-ui/icons/Add';
 import ClearIcon from '@material-ui/icons/Clear';
 import { FieldArray } from 'formik';
@@ -107,7 +106,7 @@ class Chef extends React.Component {
   };
 
   render() {
-    const { classes, user } = this.props;
+    const { classes } = this.props;
     return (
       <Layout>
         <Section>
@@ -144,7 +143,6 @@ class Chef extends React.Component {
                         chef: this.props.query.id,
                         dishes: variables.dishes.map(dish => dish.id),
                         eventStatus: 'PENDING',
-                        customer: user.id,
                         eventDate: variables.eventDate,
                         eventTime: variables.eventTime
                       }),
@@ -336,14 +334,9 @@ class Chef extends React.Component {
   }
 }
 
-Chef.defaultProps = {
-  user: {}
-};
-
 Chef.propTypes = {
   classes: PropTypes.shape().isRequired,
-  query: PropTypes.object,
-  user: PropTypes.object
+  query: PropTypes.object
 };
 
 export default withStyles(useStyles)(Chef);

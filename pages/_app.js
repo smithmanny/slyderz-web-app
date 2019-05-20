@@ -29,16 +29,13 @@ class MyApp extends App {
   componentDidMount() {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
-    if (jssStyles && jssStyles.parentNode) {
+    if (jssStyles) {
       jssStyles.parentNode.removeChild(jssStyles);
     }
   }
 
   render() {
     const { apollo, Component, pageProps } = this.props;
-    const generateClassName = createGenerateClassName({
-      productionPrefix: 'sly'
-    });
 
     return (
       <Container>
@@ -47,15 +44,11 @@ class MyApp extends App {
         </Head>
 
         <ApolloProvider client={apollo}>
-          <StylesProvider generateClassName={generateClassName}>
+          <StylesProvider>
             <ThemeProvider theme={theme}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <CssBaseline />
-                <User>
-                  {({ data }) => (
-                    <Component user={(data && data.me) || {}} {...pageProps} />
-                  )}
-                </User>
+                <Component {...pageProps} />
               </MuiPickersUtilsProvider>
             </ThemeProvider>
           </StylesProvider>

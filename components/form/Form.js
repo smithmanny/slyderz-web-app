@@ -39,10 +39,10 @@ const BasicForm = ({
               variables,
               refetchQueries: [{ query: currentUserQuery }]
             })
-            .then(data => {
+            .then(res => {
               setSubmitting(false);
               if (typeof onCompleted === 'function') {
-                onCompleted(data);
+                onCompleted(res);
               }
             })
             .catch(error => {

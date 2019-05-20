@@ -30,7 +30,8 @@ const styles = theme => ({
     borderColor: 'white'
   },
   menuItem: {
-    marginLeft: theme.spacing(3)
+    marginLeft: theme.spacing(3),
+    color: 'white'
   },
   root: {
     flexGrow: 1
