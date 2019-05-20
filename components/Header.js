@@ -12,7 +12,8 @@ const style = theme => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    background: 'url(/static/header.jpg) no-repeat',
+    background:
+      'url(https://res.cloudinary.com/slyderz/image/upload/v1558340969/jason-briscoe-1561473-unsplash_k9bqh3.jpg) no-repeat',
     objectFit: 'contain',
     backgroundPosition: 'center',
     backgroundSize: 'cover'
