@@ -37,6 +37,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
+    "export": "next build && next export",
     "lint": "./node_modules/.bin/eslint --ext .js --ext .js components  --fix"
   },
   "devDependencies": {
