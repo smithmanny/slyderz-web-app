@@ -8,12 +8,11 @@ const { PHASE_PRODUCTION_SERVER } =
     ? require('next/constants') // Get values from `next` package when building locally
     : require('next-server/constants'); // Get values from `next-server` package when building on now v2
 
-module.exports = (phase, { defaultConfig }) => {
-  if (phase === PHASE_PRODUCTION_SERVER) {
-    // Config used to run in production.
-    return {};
-  }
-  const withGraphql = require('next-plugin-graphql');
+const withGraphql = require('next-plugin-graphql');
 
-  return withGraphql();
-};
+module.exports = withGraphql({
+  env: {
+    DEV_URL: 'http://localhost:4444',
+    WS_URL: 'wss://us1.prisma.sh/shakhor-smith-d8217c/Slyderz/dev'
+  }
+});

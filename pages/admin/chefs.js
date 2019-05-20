@@ -98,9 +98,13 @@ class AdminChefScreen extends React.Component {
   }
 }
 
+AdminChefScreen.defaultProps = {
+  user: {}
+};
+
 AdminChefScreen.propTypes = {
   classes: PropTypes.object,
-  user: PropTypes.shape()
+  user: PropTypes.object
 };
 
 export default withStyles(styles)(AdminChefScreen);

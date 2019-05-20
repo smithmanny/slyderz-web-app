@@ -52,8 +52,8 @@ class MyApp extends App {
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <CssBaseline />
                 <User>
-                  {({ data: { me } }) => (
-                    <Component user={me || {}} {...pageProps} />
+                  {({ data }) => (
+                    <Component user={(data && data.me) || {}} {...pageProps} />
                   )}
                 </User>
               </MuiPickersUtilsProvider>
