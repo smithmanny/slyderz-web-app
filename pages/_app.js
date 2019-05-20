@@ -2,18 +2,13 @@ import React from 'react';
 import Head from 'next/head';
 import App, { Container } from 'next/app';
 import { ApolloProvider } from 'react-apollo';
-import {
-  createGenerateClassName,
-  ThemeProvider,
-  StylesProvider
-} from '@material-ui/styles';
+import { ThemeProvider, StylesProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
 import theme from '../utils/theme';
 import withApollo from '../utils/withApollo';
-import User from '../components/shared/User';
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
