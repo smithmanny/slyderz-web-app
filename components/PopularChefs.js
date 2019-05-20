@@ -8,7 +8,7 @@ import Text from './shared/Text';
 
 const style = theme => ({});
 
-const PopularChefs = ({ classes }) => (
+const PopularChefs = props => (
   <Section>
     <Text color="inherit" variant="h3" align="center" gutterBottom>
       Popular Chef's
