@@ -1,6 +1,0 @@
-mutation createCuisine($image: String, $name: String) {
-  createCuisine(name: "First Cuisine", image: "Cuisine Image") {
-    name
-    image
-  }
-}
