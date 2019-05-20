@@ -8,7 +8,7 @@ function createClient({ headers }) {
     uri:
       process.env.NODE_ENV === 'development'
         ? config.DEV_URL
-        : process.env.GRAPHQL_URL,
+        : config.GRAPHQL_URL,
     request: operation => {
       operation.setContext({
         fetchOptions: {

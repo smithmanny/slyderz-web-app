@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 
-import CHEFS_QUERY from '../lib/gql/query/chef/chefsQuery.gql';
+import chefsQuery from '../lib/gql/query/chef/chefsQuery.gql';
 
 const styles = theme => ({
   orderWrapper: {
@@ -52,7 +52,7 @@ class Chefs extends React.Component {
     return (
       <div className={classes.section}>
         <div className={classes.orderWrapper}>
-          <Query query={CHEFS_QUERY}>
+          <Query query={chefsQuery}>
             {({ data, loading }) => {
               if (loading) return 'Loading...';
 
