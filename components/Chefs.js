@@ -30,11 +30,10 @@ const styles = theme => ({
 
 class Chefs extends React.Component {
   static getStartingDishImage(dishes) {
-    let image = '';
+    let image =
+      'https://res.cloudinary.com/slyderz/image/upload/v1558340715/lily-banse-365344-unsplash_t1jsg2.jpg';
     if (dishes[0].dishImage) {
-      image =
-        dishes[0].dishImage ||
-        'https://res.cloudinary.com/slyderz/image/upload/v1558340715/lily-banse-365344-unsplash_t1jsg2.jpg';
+      image = dishes[0].dishImage;
     }
     return image;
   }
