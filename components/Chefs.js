@@ -32,7 +32,9 @@ class Chefs extends React.Component {
   static getStartingDishImage(dishes) {
     let image = '';
     if (dishes[0].dishImage) {
-      image = dishes[0].dishImage;
+      image =
+        dishes[0].dishImage ||
+        'https://res.cloudinary.com/slyderz/image/upload/v1558340715/lily-banse-365344-unsplash_t1jsg2.jpg';
     }
     return image;
   }
