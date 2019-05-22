@@ -30,20 +30,27 @@ const styles = theme => ({
 
 class Chefs extends React.Component {
   static getStartingDishImage(dishes) {
-    let image =
-      'https://res.cloudinary.com/slyderz/image/upload/v1558340715/lily-banse-365344-unsplash_t1jsg2.jpg';
-    if (dishes[0].dishImage) {
-      image = dishes[0].dishImage;
+    if (!dishes) {
+      return 'https://res.cloudinary.com/slyderz/image/upload/v1558340715/lily-banse-365344-unsplash_t1jsg2.jpg';
     }
-    return image;
+
+    return dishes[0].dishImage;
   }
 
   static getStartingDishPrice(dishes) {
+    if (!dishes) {
+      return 'Message for pricing.';
+    }
+
     const price = dishes[0].pricePerPerson;
     return `$${price} per person`;
   }
 
   static getStartingDishType(dishes) {
+    if (!dishes) {
+      return '';
+    }
+
     const type = dishes[0].dishType;
     return type;
   }

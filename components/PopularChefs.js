@@ -10,7 +10,7 @@ const style = theme => ({});
 const PopularChefs = props => (
   <Section>
     <Text color="inherit" variant="h3" align="center" gutterBottom>
-      Popular Chef's
+      Popular Chefs
     </Text>
     <Chefs />
   </Section>
