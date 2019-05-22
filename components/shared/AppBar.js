@@ -167,7 +167,7 @@ const AppBar = ({ classes }) => {
                 Slyderz
               </Typography>
 
-              {!data && (
+              {!data.me && (
                 <React.Fragment>
                   <Button
                     className={classes.slyderButton}
