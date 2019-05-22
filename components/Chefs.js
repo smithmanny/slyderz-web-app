@@ -89,7 +89,8 @@ class Chefs extends React.Component {
                             style={{
                               height: '100%',
                               width: '100%',
-                              objectFit: 'contain'
+                              objectFit: 'cover',
+                              backgroundSize: 'cover'
                             }}
                           />
                         </Paper>
