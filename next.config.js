@@ -5,7 +5,7 @@ module.exports = withGraphql({
     return config;
   },
   target: 'serverless',
-  publicRuntimeConfig: {
+  env: {
     // Will be available on both server and client
     PROD_URL: 'https://slyderz-backend.herokuapp.com/'
   }
