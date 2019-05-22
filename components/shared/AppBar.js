@@ -92,7 +92,7 @@ const AppBar = ({ classes }) => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={() => Route.push('/settings')}>My Account</MenuItem>
+      {/* <MenuItem onClick={() => Route.push('/settings')}>My Account</MenuItem> */}
       {/* {user && user.chef && user.chef.isChef === 'CHEF' && (
         <MenuItem onClick={() => Route.push('/apply')}>Manage Profile</MenuItem>
       )} */}

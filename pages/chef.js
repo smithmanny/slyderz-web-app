@@ -130,7 +130,12 @@ class Chef extends React.Component {
                     }}
                   >
                     <img
-                      style={{ height: '100%', width: '100%' }}
+                      style={{
+                        height: '100%',
+                        width: '100%',
+                        objectFit: 'cover',
+                        backgroundSize: 'cover'
+                      }}
                       src="https://res.cloudinary.com/slyderz/image/upload/v1558340715/lily-banse-365344-unsplash_t1jsg2.jpg"
                       alt="Chef header"
                     />
