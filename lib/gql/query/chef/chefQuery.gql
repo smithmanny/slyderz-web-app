@@ -11,6 +11,7 @@ query chef($id: ID!) {
       dishName
       dishImage
       dishType
+      dishSummary
       pricePerPerson
     }
   }

@@ -1,3 +1,3 @@
 export const config = {
-  DEV_URL: 'https://slyderz-backend.herokuapp.com/'
+  DEV_URL: 'http://localhost:4444'
 };

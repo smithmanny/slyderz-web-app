@@ -93,7 +93,7 @@ class Chef extends React.Component {
           </ListItemAvatar> */}
           <ListItemText
             primary={`${dish.dishName} --- $${dish.pricePerPerson}`}
-            secondary="Short summary"
+            secondary={dish.dishSummary}
           />
           <ListItemSecondaryAction>
             <Fab className={classes.fab} size="small" aria-label="Add">
@@ -146,7 +146,7 @@ class Chef extends React.Component {
                       mutation: bookChefMutation,
                       variables: variables => ({
                         chef: this.props.query.id,
-                        dishes: variables.dishes.map(dish => dish.id),
+                        dishes: (variables.dishes || []).map(dish => dish.id),
                         eventStatus: 'PENDING',
                         eventDate: variables.eventDate,
                         eventTime: variables.eventTime
