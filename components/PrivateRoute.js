@@ -9,16 +9,14 @@ class PrivateRoute extends React.Component {
     authorized: false
   };
 
-  handleView(user) {
+  handleView = user => {
     if (!user) {
       this.setState({ authorized: false });
     }
     if (user) {
       this.setState({ authorized: true });
     }
-
-    return this.props.children;
-  }
+  };
 
   render() {
     return (
