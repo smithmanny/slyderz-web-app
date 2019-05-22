@@ -3,10 +3,10 @@ import React from 'react';
 import Section from '../../components/shared/Section';
 import Layout from '../../components/Layout';
 import AccountSettings from '../../components/settings/AccountSettings';
-import PrivateRoute from '../../components/PrivateRoute';
+import LoggedInRoute from '../../components/LoggedInRoute';
 
 const SettingsAccountContainer = props => (
-  <PrivateRoute>
+  <LoggedInRoute>
     {user => (
       <Layout>
         <Section>
@@ -14,7 +14,7 @@ const SettingsAccountContainer = props => (
         </Section>
       </Layout>
     )}
-  </PrivateRoute>
+  </LoggedInRoute>
 );
 
 export default SettingsAccountContainer;

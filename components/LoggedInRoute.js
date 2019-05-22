@@ -4,7 +4,7 @@ import { Query } from 'react-apollo';
 
 import CURRENT_USER_QUERY from '../lib/gql/query/user/currentUserQuery.gql';
 
-class PrivateRoute extends React.Component {
+class LoggedInRoute extends React.Component {
   state = {
     authorized: false
   };
@@ -27,15 +27,17 @@ class PrivateRoute extends React.Component {
           const user = data;
           this.handleView(user);
 
-          return this.state.authorized ? this.props.children : 'Not Authorized';
+          return this.state.authorized
+            ? this.props.children(user)
+            : 'Not Authorized';
         }}
       </Query>
     );
   }
 }
 
-PrivateRoute.propTypes = {
+LoggedInRoute.propTypes = {
   children: PropTypes.object
 };
 
-export default PrivateRoute;
+export default LoggedInRoute;
