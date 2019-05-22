@@ -14,10 +14,7 @@ function createClient({ headers }) {
         fetchOptions: {
           credentials: 'include'
         },
-        headers: {
-          ...headers,
-          Authorization: 'Bearer GTC8OArCuIy4tRt92u3frGSEAQIXtB8Z'
-        }
+        headers
       });
     }
   });
