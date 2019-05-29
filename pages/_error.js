@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/styles';
 
 import Layout from '../components/Layout';
@@ -17,11 +18,15 @@ const errorStyles = theme => ({
     width: '100%',
     height: '100%'
   }
-})
+});
 
 class Error extends React.Component {
   static getInitialProps({ res, err }) {
-    const statusCode = res ? res.statusCode : err ? err.statusCode : null;
+    const { statusCode } = res;
+
+    if (err) {
+      return err.statusCode;
+    }
     return { statusCode };
   }
 
@@ -31,16 +36,20 @@ class Error extends React.Component {
       <Layout>
         <Section>
           <div className={classes.div}>
-            <img 
+            <img
               className={classes.image}
-              src="/static/error.png" 
+              src="/static/error.png"
               alt="Error"
-              />
+            />
           </div>
         </Section>
       </Layout>
     );
   }
 }
+
+Error.propTypes = {
+  classes: PropTypes.object
+};
 
 export default withStyles(errorStyles)(Error);
