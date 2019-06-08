@@ -28,10 +28,7 @@ const styles = theme => ({
   slyderButton: {
     marginRight: theme.spacing(3),
     color: 'white',
-    borderColor: 'white',
-    [theme.breakpoints.down('xs')]: {
-      display: 'none'
-    }
+    borderColor: 'white'
   },
   menuItem: {
     marginLeft: theme.spacing(3),
@@ -176,7 +173,7 @@ const AppBar = ({ classes }) => {
                   >
                     Become a Chef
                   </Button>
-                  <Button
+                  {/* <Button
                     className={classes.menuItem}
                     onClick={() =>
                       setValues({
@@ -199,7 +196,7 @@ const AppBar = ({ classes }) => {
                     }
                   >
                     Log In
-                  </Button>
+                  </Button> */}
                 </React.Fragment>
               )}
 

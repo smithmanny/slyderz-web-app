@@ -6,9 +6,11 @@ import { ThemeProvider, StylesProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import NextSeo from 'next-seo';
 
 import theme from '../utils/theme';
 import withApollo from '../utils/withApollo';
+import SEO from '../next-seo.config';
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -34,9 +36,7 @@ class MyApp extends App {
 
     return (
       <Container>
-        <Head>
-          <title>Slyderz | Your On-demand Restaurant</title>
-        </Head>
+        <NextSeo config={SEO} />
 
         <ApolloProvider client={apollo}>
           <StylesProvider>

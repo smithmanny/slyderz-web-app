@@ -20,7 +20,7 @@ const Layout = ({ children, classes }) => (
 );
 
 Layout.propTypes = {
-  children: PropTypes.PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired,
   classes: PropTypes.object.isRequired
 };
 

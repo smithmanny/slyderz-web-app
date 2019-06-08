@@ -81,6 +81,23 @@ class Chef extends React.Component {
     );
   }
 
+  static formUrl(chef, dishes) {
+    let url = '';
+    console.log(dishes);
+    if (dishes) {
+      const total = dishes
+        .map(dish => dish.pricePerPerson)
+        .reduce((a, b) => a + b, 0);
+      const chefUrl = `chef=${chef.firstName}`;
+      const eventTotal = `total=${total}`;
+      const orders = dishes.map(d => encodeURI(d.dishName));
+
+      url = `https://airtable.com/shrBpiPOaBszOnUVy?prefill_${chefUrl}&prefill_${eventTotal}&prefill_dishes=${orders}`;
+    }
+
+    return url;
+  }
+
   renderMainDishes = ({ dishes, push }) => {
     const { classes } = this.props;
     return dishes.map(dish => (
@@ -142,21 +159,21 @@ class Chef extends React.Component {
                   </div>
 
                   <Form
-                    mutate={{
-                      mutation: bookChefMutation,
-                      variables: variables => ({
-                        chef: this.props.query.id,
-                        dishes: (variables.dishes || []).map(dish => dish.id),
-                        eventStatus: 'PENDING',
-                        eventDate: variables.eventDate,
-                        eventTime: variables.eventTime
-                      }),
-                      onCompleted: e => {
-                        alert(
-                          "Thanks! Your submission has been sent! We'll contact you with updates and further instructions."
-                        );
-                      }
-                    }}
+                  // mutate={{
+                  //   mutation: bookChefMutation,
+                  //   variables: variables => ({
+                  //     chef: this.props.query.id,
+                  //     dishes: (variables.dishes || []).map(dish => dish.id),
+                  //     eventStatus: 'PENDING',
+                  //     eventDate: variables.eventDate,
+                  //     eventTime: variables.eventTime
+                  //   }),
+                  //   onCompleted: e => {
+                  //     alert(
+                  //       "Thanks! Your submission has been sent! We'll contact you with updates and further instructions."
+                  //     );
+                  //   }
+                  // }}
                   >
                     {({ values }) => (
                       <FieldArray
@@ -204,7 +221,7 @@ class Chef extends React.Component {
                                     Price per person.
                                   </Typography>
                                   {this.renderMainDishes({
-                                    dishes: (chef && chef.dishes) || [],
+                                    dishes: chef && chef.dishes,
                                     push
                                   })}
                                 </Grid>
@@ -267,8 +284,8 @@ class Chef extends React.Component {
                             <Grid item xs={12} md={4}>
                               <Paper className={classes.paper}>
                                 <Text type="h6">Your Order</Text>
-                                <DatePickerField label="Event Date" />
-                                <TimePickerField label="Event Time" />
+                                {/* <DatePickerField label="Event Date" />
+                                <TimePickerField label="Event Time" /> */}
                                 <List>
                                   {values.dishes &&
                                   values.dishes.length >= 1 ? (
@@ -311,7 +328,8 @@ class Chef extends React.Component {
                                   variant="contained"
                                   color="primary"
                                   className={classes.submitButton}
-                                  type="submit"
+                                  href={Chef.formUrl(chef, values.dishes)}
+                                  target="_blank"
                                 >
                                   Book Chef
                                 </Button>

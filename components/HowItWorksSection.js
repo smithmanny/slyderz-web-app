@@ -29,7 +29,7 @@ class HowItWorksSection extends React.PureComponent {
     const { classes } = this.props;
 
     const HIWStep = ({ image, title, content }) => (
-      <Grid item xs={12} md={4}>
+      <Grid item xs={12} lg={4}>
         <div className={classes.imageWrapper}>
           <img
             className={classes.image}
@@ -58,7 +58,7 @@ class HowItWorksSection extends React.PureComponent {
           How It Works
         </Text>
 
-        <Grid container spacing={3}>
+        <Grid container spacing={5}>
           <HIWStep
             image="/static/hiw-party.png"
             title="Plan"

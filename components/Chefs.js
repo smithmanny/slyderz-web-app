@@ -49,7 +49,7 @@ class Chefs extends React.Component {
 }
 
 Chefs.propTypes = {
-  classes: PropTypes.shape().isRequired
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(Chefs);
