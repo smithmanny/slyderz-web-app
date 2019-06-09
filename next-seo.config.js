@@ -1,5 +1,9 @@
 export default {
-  title: 'Slyderz - Your 0n-demand Restaurant',
+  title: 'Slyderz',
+  titleTemplate: '%s - Your 0n-demand Restaurant',
+  description:
+    'Slyderz is your on-demand restaurant connecting you to the best chefs and caterers.',
+  canonical: 'https://slyderz.co',
   openGraph: {
     type: 'website',
     locale: 'en_IE',
