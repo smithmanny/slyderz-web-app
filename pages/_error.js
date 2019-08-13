@@ -2,9 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/styles';
 
-import Layout from '../components/Layout';
-import Section from '../components/shared/Section';
-
 const errorStyles = theme => ({
   div: {
     display: 'flex',
@@ -32,19 +29,7 @@ class Error extends React.Component {
 
   render() {
     const { classes } = this.props;
-    return (
-      <Layout>
-        <Section>
-          <div className={classes.div}>
-            <img
-              className={classes.image}
-              src="/static/error.png"
-              alt="Error"
-            />
-          </div>
-        </Section>
-      </Layout>
-    );
+    return <div>ERROR</div>;
   }
 }
 

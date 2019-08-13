@@ -1,15 +1,14 @@
 import React from 'react';
-import Head from 'next/head';
 import App, { Container } from 'next/app';
 import { ApolloProvider } from 'react-apollo';
 import { ThemeProvider, StylesProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import NextSeo from 'next-seo';
+import { NextSeo } from 'next-seo';
 
-import theme from '../utils/theme';
-import withApollo from '../utils/withApollo';
+import { theme } from '../src/libs/material-ui';
+import withApollo from '../src/utils/withApollo';
 import SEO from '../next-seo.config';
 
 class MyApp extends App {
