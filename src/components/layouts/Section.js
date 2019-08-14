@@ -6,14 +6,16 @@ import sectionLayoutStyles from '../../assets/styles/consumer/sectionLayoutStyle
 
 const SectionLayout = ({ children, classes, title, titleProps, subTitle }) => (
   <section className={classes.root}>
-    <Typography
-      className={classes.title}
-      variant="h5"
-      gutterBottom
-      {...titleProps}
-    >
-      {title}
-    </Typography>
+    {title && (
+      <Typography
+        className={classes.title}
+        variant="h5"
+        gutterBottom
+        {...titleProps}
+      >
+        {title}
+      </Typography>
+    )}
     {children}
   </section>
 );
@@ -21,6 +23,7 @@ const SectionLayout = ({ children, classes, title, titleProps, subTitle }) => (
 SectionLayout.defaultProps = {
   classes: PropTypes.object,
   subTitle: null,
+  title: null,
   titleProps: {}
 };
 
@@ -28,7 +31,7 @@ SectionLayout.propTypes = {
   children: PropTypes.node.isRequired,
   classes: PropTypes.object,
   subTitle: PropTypes.string,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   titleProps: PropTypes.object
 };
 

@@ -30,6 +30,28 @@ const homePageStyles = theme => ({
   iconButton: {
     padding: 10
   },
+  // How It Works Section
+  hiwTitle: {
+    marginBottom: theme.spacing(2)
+  },
+  // Info Section
+  infoImages: {
+    '& div': {
+      maxWidth: 302
+    },
+    '& div img': {
+      width: '100%',
+      marginBottom: theme.spacing(1)
+    }
+  },
+  infoImage: {
+    height: 250,
+    '& img': {
+      objectFit: 'cover',
+      width: '100%',
+      height: '100%'
+    }
+  },
   exploreItem: {
     display: 'flex',
     '& span': {
@@ -44,7 +66,7 @@ const homePageStyles = theme => ({
   cardContent: {
     paddingLeft: 0,
     '& .name': {
-      margin: `${theme.spacing(1)}px 0`
+      margin: theme.spacing(1, 1, 1, 0)
     }
   },
   cardMedia: {
