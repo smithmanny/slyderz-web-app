@@ -35,7 +35,7 @@ class MyApp extends App {
 
     return (
       <Container>
-        <NextSeo config={SEO} />
+        <NextSeo {...SEO} />
 
         <ApolloProvider client={apollo}>
           <StylesProvider>
