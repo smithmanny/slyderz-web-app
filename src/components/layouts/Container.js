@@ -5,18 +5,18 @@ import Container from '@material-ui/core/Container';
 import { AppBar } from '../core';
 
 const AppContainer = ({ children, ...props }) => (
-  <Container maxWidth="lg" {...props}>
+  <React.Fragment>
     <AppBar
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        background: 'transparent',
-        boxShadow: 'none'
+      linkProps={{
+        style: {
+          color: 'black'
+        }
       }}
     />
-    {children}
-  </Container>
+    <Container maxWidth="lg" {...props}>
+      {children}
+    </Container>
+  </React.Fragment>
 );
 
 AppContainer.propTypes = {

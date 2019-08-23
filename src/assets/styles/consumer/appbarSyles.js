@@ -1,6 +1,17 @@
 const appbarStyles = theme => ({
+  root: {
+    background: 'transparent',
+    boxShadow: 'none'
+  },
   logo: {
-    flex: 1
+    flex: 1,
+    '& div': {
+      display: 'inline-block',
+      '& a': {
+        color: 'white',
+        textDecoration: 'none'
+      }
+    }
   },
   linksSection: {
     color: 'white',

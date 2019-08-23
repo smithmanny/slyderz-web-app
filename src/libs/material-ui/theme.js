@@ -12,6 +12,9 @@ const muiTheme = createMuiTheme({
     white: {
       main: '#FFF'
     },
+    content: {
+      main: '#484848'
+    },
     error: red,
     // Used by `getContrastText()` to maximize the contrast between the background and
     // the text.

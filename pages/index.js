@@ -15,7 +15,7 @@ import {
   Typography,
   withStyles
 } from '../src/components/core';
-import { Container, Section } from '../src/components/layouts';
+import { HomeContainer, Section } from '../src/components/layouts';
 
 import homePageStyles from '../src/assets/styles/consumer/homePageStyles';
 
@@ -37,39 +37,7 @@ const Index = ({ classes }) => (
       </div>
     </div>
 
-    <Section>
-      <Typography variant="h4" align="center" className={classes.hiwTitle}>
-        How It Works
-      </Typography>
-      <Grid container className={classes.infoImages} justify="space-around">
-        <Grid item md={4}>
-          <div className={classes.infoImage}>
-            <img src="/static/hiw-party.png" alt="Party" />
-          </div>
-          <Typography variant="h6" align="center">
-            Plan
-          </Typography>
-        </Grid>
-        <Grid item md={4}>
-          <div className={classes.infoImage}>
-            <img src="/static/hiw-chef.png" alt="Party" />
-          </div>
-          <Typography variant="h6" align="center">
-            Search
-          </Typography>
-        </Grid>
-        <Grid item md={4}>
-          <div className={classes.infoImage}>
-            <img src="/static/hiw-party.png" alt="Party" />
-          </div>
-          <Typography variant="h6" align="center">
-            Celebrate
-          </Typography>
-        </Grid>
-      </Grid>
-    </Section>
-
-    <Container>
+    <HomeContainer>
       <Section title="Explore Food Types">
         <div className={classes.exploreItem}>
           <Avatar>V</Avatar>
@@ -82,7 +50,7 @@ const Index = ({ classes }) => (
       <Section title="Chefs near you">
         <Grid container>
           <Grid item xs={12} md={3}>
-            <Link href="/">
+            <Link href="/chef/1">
               <a>
                 <Card
                   classes={{
@@ -102,7 +70,7 @@ const Index = ({ classes }) => (
                       <Typography variant="h6">Chef Shakhor</Typography>
                     </div>
                     <Typography variant="body1">
-                      Starting at $15/person
+                      Starting at $17/person
                     </Typography>
                   </CardContent>
                 </Card>
@@ -111,7 +79,7 @@ const Index = ({ classes }) => (
           </Grid>
         </Grid>
       </Section>
-    </Container>
+    </HomeContainer>
   </div>
 );
 

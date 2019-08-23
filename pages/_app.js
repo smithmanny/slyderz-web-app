@@ -5,7 +5,7 @@ import { ThemeProvider, StylesProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import { NextSeo } from 'next-seo';
+import { DefaultSeo } from 'next-seo';
 
 import { theme } from '../src/libs/material-ui';
 import withApollo from '../src/utils/withApollo';
@@ -35,7 +35,7 @@ class MyApp extends App {
 
     return (
       <Container>
-        <NextSeo {...SEO} />
+        <DefaultSeo {...SEO} />
 
         <ApolloProvider client={apollo}>
           <StylesProvider>

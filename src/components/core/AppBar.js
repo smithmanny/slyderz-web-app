@@ -3,38 +3,53 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { default as MuiAppBar } from '@material-ui/core/AppBar';
+import AppBar from '@material-ui/core/AppBar';
 
-import { withStyles } from './index';
+import { Link, withStyles } from './index';
 import appbarStyles from '../../assets/styles/consumer/appbarSyles';
 
-const AppBar = ({ classes, ...props }) => (
-  <MuiAppBar {...props} position="static" color="default">
+const AppBarComponent = ({ classes, linkProps, ...props }) => (
+  <AppBar className={classes.root} position="static" color="default" {...props}>
     <Toolbar>
       <div className={classes.logo}>
-        <Typography variant="h6" color="inherit">
-          Slyderz
-        </Typography>
+        <div>
+          <Link href="/" prefetch>
+            <a {...linkProps}>
+              <Typography variant="h6">Slyderz</Typography>
+            </a>
+          </Link>
+        </div>
       </div>
       <div className={classes.linksSection}>
         <ul>
           <li>
-            <Typography variant="h6">Help</Typography>
+            <a {...linkProps}>
+              <Typography variant="h6">Help</Typography>
+            </a>
           </li>
           <li>
-            <Typography variant="h6">Sign up</Typography>
+            <a {...linkProps}>
+              <Typography variant="h6">Sign up</Typography>
+            </a>
           </li>
           <li>
-            <Typography variant="h6">Log in</Typography>
+            <a {...linkProps}>
+              <Typography variant="h6">Log in</Typography>
+            </a>
           </li>
         </ul>
       </div>
     </Toolbar>
-  </MuiAppBar>
+  </AppBar>
 );
 
-AppBar.propTypes = {
-  classes: PropTypes.object.isRequired
+AppBarComponent.defaultProps = {
+  linkProps: {}
 };
 
-export default withStyles(appbarStyles)(AppBar);
+AppBarComponent.propTypes = {
+  classes: PropTypes.object.isRequired,
+  linkProps: PropTypes.object
+};
+
+export default withStyles(appbarStyles)(AppBarComponent);

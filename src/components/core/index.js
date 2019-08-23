@@ -1,8 +1,9 @@
+/* eslint-disable import/no-cycle */
 import { withStyles as MuiWithStyles } from '@material-ui/styles';
 
-export { default as AppBar } from './AppBar';
-
 // Material-UI Core
+export { default as Link } from 'next/link';
+export { default as AppBar } from './AppBar';
 export { default as Avatar } from '@material-ui/core/Avatar';
 export { default as Card } from '@material-ui/core/Card';
 export { default as CardContent } from '@material-ui/core/CardContent';
