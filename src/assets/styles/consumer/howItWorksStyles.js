@@ -1,12 +1,25 @@
 const howItWorksStyles = theme => ({
-  // How It Works Section
-  hiwTitle: {
-    marginBottom: theme.spacing(2)
+  container: {
+    padding: theme.spacing(5, 0)
+  },
+  titleWrapper: {
+    textAlign: 'center',
+    marginBottom: theme.spacing(5)
+  },
+  title: {
+    borderBottom: `2px solid ${theme.palette.primary.main}`,
+    display: 'inline-block',
+    fontWeight: 500
+  },
+  text: {
+    color: theme.palette.primary.main,
+    marginTop: theme.spacing(2)
   },
   // Info Section
   infoImages: {
     '& div': {
-      maxWidth: 302
+      maxWidth: 302,
+      marginBottom: theme.spacing(2)
     },
     '& div img': {
       width: '100%',

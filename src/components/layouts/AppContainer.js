@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Container from '@material-ui/core/Container';
 
-import { AppBar } from '../core';
+import { AppBar, Container } from '../core';
 
 const AppContainer = ({ children, ...props }) => (
   <React.Fragment>

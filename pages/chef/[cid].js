@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 
-import { Container } from '../../src/components/layouts';
+import { AppContainer } from '../../src/components/layouts';
 import { Grid, Typography, withStyles } from '../../src/components/core';
 
 import chefDetailStyles from '../../src/assets/styles/consumer/chef/chefDetailStyles';
@@ -12,7 +12,7 @@ const Chef = ({ classes }) => {
   const { cid } = router.query;
 
   return (
-    <Container>
+    <AppContainer>
       <img
         className={classes.header}
         src="/static/detail.jpg"
@@ -41,7 +41,7 @@ const Chef = ({ classes }) => {
           <Typography variant="h6">Right Section</Typography>
         </Grid>
       </Grid>
-    </Container>
+    </AppContainer>
   );
 };
 

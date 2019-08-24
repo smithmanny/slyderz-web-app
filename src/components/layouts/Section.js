@@ -4,17 +4,26 @@ import PropTypes from 'prop-types';
 import { Typography, withStyles } from '../core';
 import sectionLayoutStyles from '../../assets/styles/consumer/sectionLayoutStyles';
 
-const SectionLayout = ({ children, classes, title, titleProps, subTitle }) => (
-  <section className={classes.root}>
+const SectionLayout = ({
+  children,
+  classes,
+  title,
+  titleDivProps,
+  titleProps,
+  sectionProps
+}) => (
+  <section className={classes.root} {...sectionProps}>
     {title && (
-      <Typography
-        className={classes.title}
-        variant="h5"
-        gutterBottom
-        {...titleProps}
-      >
-        {title}
-      </Typography>
+      <div {...titleDivProps}>
+        <Typography
+          className={classes.title}
+          variant="h5"
+          gutterBottom
+          {...titleProps}
+        >
+          {title}
+        </Typography>
+      </div>
     )}
     {children}
   </section>
@@ -22,17 +31,19 @@ const SectionLayout = ({ children, classes, title, titleProps, subTitle }) => (
 
 SectionLayout.defaultProps = {
   classes: PropTypes.object,
-  subTitle: null,
   title: null,
-  titleProps: {}
+  titleDivProps: {},
+  titleProps: {},
+  sectionProps: {}
 };
 
 SectionLayout.propTypes = {
   children: PropTypes.node.isRequired,
   classes: PropTypes.object,
-  subTitle: PropTypes.string,
   title: PropTypes.string,
-  titleProps: PropTypes.object
+  titleDivProps: PropTypes.object,
+  titleProps: PropTypes.object,
+  sectionProps: PropTypes.object
 };
 
 export default withStyles(sectionLayoutStyles)(SectionLayout);

@@ -8,6 +8,7 @@ export { default as Avatar } from '@material-ui/core/Avatar';
 export { default as Card } from '@material-ui/core/Card';
 export { default as CardContent } from '@material-ui/core/CardContent';
 export { default as CardMedia } from '@material-ui/core/CardMedia';
+export { default as Container } from '@material-ui/core/Container';
 export { default as Grid } from '@material-ui/core/Grid';
 export { default as Paper } from '@material-ui/core/Paper';
 export { default as InputBase } from '@material-ui/core/InputBase';
