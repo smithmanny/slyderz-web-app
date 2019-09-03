@@ -94,7 +94,9 @@ const landingPageStyles = theme => ({
   whoWeAreImg: {
     margin: 'auto',
     maxWidth: 400,
+    textAlign: 'center',
     '& img': {
+      maxWidth: 400,
       width: '100%'
     }
   },
@@ -136,7 +138,22 @@ const landingPageStyles = theme => ({
     color: '#FFF',
     '& > div': {
       padding: theme.spacing(5),
-      textAlign: 'center'
+      textAlign: 'center',
+      '& ul': {
+        display: 'flex',
+        listStyle: 'none',
+        justifyContent: 'space-between',
+        width: 350,
+        margin: 'auto',
+        marginTop: theme.spacing(5),
+        paddingLeft: 0,
+        '& li': {
+          maxWidth: 35
+        },
+        '& img': {
+          width: '100%'
+        }
+      }
     }
   }
 });

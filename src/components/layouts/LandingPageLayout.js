@@ -218,6 +218,7 @@ const LandingPageLayout = ({ classes }) => {
         </Section>
 
         <Section
+          id="notify"
           title="Stay Up To Date"
           subTitle="Restaurant Meals • In-home Chef • Best Experience"
           align="center"
@@ -236,7 +237,7 @@ const LandingPageLayout = ({ classes }) => {
             minHeight: 250
           }}
         >
-          <Grid container justify="center" spacing={2} id="notify">
+          <Grid container justify="center" spacing={2}>
             <Grid item xs={12} md={4} align="center">
               <TextField
                 className={classes.emailInput}
