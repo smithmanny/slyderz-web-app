@@ -1,4 +1,7 @@
 const landingPageStyles = theme => ({
+  section: {
+    minHeight: 350
+  },
   appbar: {
     background: 'transparent',
     boxShadow: 'none',
@@ -25,8 +28,12 @@ const landingPageStyles = theme => ({
       listStyle: 'none',
       paddingLeft: 0,
       justifyContent: 'flex-end',
+      alignItems: 'center',
       '& li': {
-        marginLeft: theme.spacing(2)
+        marginLeft: theme.spacing(3),
+        '& a': {
+          textDecoration: 'none'
+        }
       }
     }
   },
@@ -87,6 +94,13 @@ const landingPageStyles = theme => ({
       padding: theme.spacing(5, 0)
     }
   },
+  whoWeAreImg: {
+    margin: 'auto',
+    maxWidth: 400,
+    '& img': {
+      width: '100%'
+    }
+  },
   forWhoSection: {
     marginTop: theme.spacing(3),
     '& ul': {
@@ -99,6 +113,25 @@ const landingPageStyles = theme => ({
       margin: 'auto',
       paddingBottom: theme.spacing(2)
     }
+  },
+  // Newsletter section
+  emailInput: {
+    border: '1px solid #DDD',
+    borderRadius: 4,
+    width: '100%',
+    '& .MuiInputBase-root': {
+      padding: theme.spacing(1),
+      width: '100%'
+    }
+  },
+  emailInputBtn: {
+    padding: theme.spacing(1),
+    height: '100%',
+    backgroundColor: theme.palette.primary.main,
+    color: '#FFF'
+  },
+  emailInputBtnHover: {
+    backgroundColor: `${theme.palette.primary.main}!important`
   },
   footer: {
     minHeight: 250,

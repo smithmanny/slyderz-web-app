@@ -10,21 +10,32 @@ const SectionLayout = ({
   title,
   titleDivProps,
   titleProps,
-  sectionProps
+  subTitle,
+  subTitleProps,
+  ...props
 }) => (
-  <section className={classes.root} {...sectionProps}>
-    {title && (
-      <div {...titleDivProps}>
+  <section className={classes.root} {...props}>
+    <div {...titleDivProps}>
+      <Typography
+        className={classes.title}
+        variant="h5"
+        gutterBottom
+        {...titleProps}
+      >
+        {title}
+      </Typography>
+
+      {subTitle && (
         <Typography
-          className={classes.title}
-          variant="h5"
+          className={classes.subTitle}
+          variant="body2"
           gutterBottom
-          {...titleProps}
+          {...subTitleProps}
         >
-          {title}
+          {subTitle}
         </Typography>
-      </div>
-    )}
+      )}
+    </div>
     {children}
   </section>
 );
@@ -34,7 +45,9 @@ SectionLayout.defaultProps = {
   title: null,
   titleDivProps: {},
   titleProps: {},
-  sectionProps: {}
+  props: {},
+  subTitle: null,
+  subTitleProps: null
 };
 
 SectionLayout.propTypes = {
@@ -43,7 +56,9 @@ SectionLayout.propTypes = {
   title: PropTypes.string,
   titleDivProps: PropTypes.object,
   titleProps: PropTypes.object,
-  sectionProps: PropTypes.object
+  props: PropTypes.object,
+  subTitle: PropTypes.string,
+  subTitleProps: PropTypes.object
 };
 
 export default withStyles(sectionLayoutStyles)(SectionLayout);

@@ -32,17 +32,6 @@ const muiTheme = createMuiTheme({
       root: {
         fontWeight: 'bold'
       }
-    },
-    MuiFab: {
-      root: {
-        backgroundColor: 'transparent',
-        border: '2px solid #E54E44',
-        color: '#E54E44',
-        boxShadow: 'none',
-        '&:hover': {
-          backgroundColor: 'transparent'
-        }
-      }
     }
   }
 });
