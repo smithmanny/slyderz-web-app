@@ -1,7 +1,4 @@
 const landingPageStyles = theme => ({
-  section: {
-    minHeight: 350
-  },
   appbar: {
     background: 'transparent',
     boxShadow: 'none',

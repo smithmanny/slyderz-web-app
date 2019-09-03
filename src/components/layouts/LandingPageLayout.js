@@ -9,7 +9,6 @@ import {
   Container,
   Fab,
   Grid,
-  Icon,
   TextField,
   Typography,
   withStyles
@@ -72,7 +71,7 @@ const LandingPageLayout = ({ classes }) => {
             <img
               className="header-img"
               alt="Couple cooking"
-              src="/static/Header.jpg"
+              src="/static/header.jpg"
             />
           </Grid>
 
