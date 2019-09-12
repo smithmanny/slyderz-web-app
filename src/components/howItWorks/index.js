@@ -6,7 +6,7 @@ import { Section } from '../layouts';
 import howItWorksStyles from '../../assets/styles/consumer/howItWorksStyles';
 
 const HowItWorks = ({ classes, ...props }) => (
-  <Section {...props}>
+  <Section>
     <div className={classes.container}>
       <div className={classes.titleWrapper}>
         <Typography variant="h4" align="center" className={classes.title}>

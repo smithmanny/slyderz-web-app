@@ -1,6 +1,7 @@
 const howItWorksStyles = theme => ({
   container: {
-    padding: theme.spacing(5, 0)
+    padding: theme.spacing(5, 0),
+    backgroundColor: '#FFFAF5'
   },
   titleWrapper: {
     textAlign: 'center',
