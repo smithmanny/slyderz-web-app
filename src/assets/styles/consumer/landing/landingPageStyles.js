@@ -13,6 +13,9 @@ const landingPageStyles = theme => ({
       '& a': {
         color: '#000',
         textDecoration: 'none'
+      },
+      '& a img': {
+        height: 150
       }
     }
   },

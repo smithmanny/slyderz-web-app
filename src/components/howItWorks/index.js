@@ -16,7 +16,7 @@ const HowItWorks = ({ classes, ...props }) => (
       <Grid container className={classes.infoImages} justify="space-around">
         <Grid item md={4}>
           <div className={classes.infoImage}>
-            <img src="/static/hiw-party.png" alt="Party" />
+            <img src="/static/hiw-planning.png" alt="Party" />
           </div>
           <Typography variant="h6" align="center" className={classes.text}>
             Plan

@@ -27,7 +27,7 @@ const LandingPageLayout = ({ classes }) => (
           <div>
             <Link href="/" prefetch>
               <a>
-                <Typography variant="h6">Slyderz</Typography>
+                <img src="/static/logo-white.png" alt="Slyderz" />
               </a>
             </Link>
           </div>
