@@ -19,7 +19,7 @@ const HowItWorks = ({ classes, ...props }) => (
             <img src="/static/hiw-planning.png" alt="Party" />
           </div>
           <Typography variant="h6" align="center" className={classes.text}>
-            Plan
+            Explore
           </Typography>
         </Grid>
         <Grid item md={4}>
@@ -27,7 +27,7 @@ const HowItWorks = ({ classes, ...props }) => (
             <img src="/static/hiw-chef.png" alt="Party" />
           </div>
           <Typography variant="h6" align="center" className={classes.text}>
-            Search
+            Easy Ordering
           </Typography>
         </Grid>
         <Grid item md={4}>

@@ -25,7 +25,7 @@ const LandingPageLayout = ({ classes }) => (
       <Toolbar>
         <div className={classes.logo}>
           <div>
-            <Link href="/" prefetch>
+            <Link href="/">
               <a>
                 <img src="/static/logo-white.png" alt="Slyderz" />
               </a>
@@ -34,16 +34,13 @@ const LandingPageLayout = ({ classes }) => (
         </div>
         <div className={classes.linksSection}>
           <ul>
-            {/* <li>
-              <a>
-                <Typography variant="h6">About</Typography>
-              </a>
-            </li>
             <li>
-              <a>
-                <Typography variant="h6">FAQ</Typography>
-              </a>
-            </li> */}
+              <Link href="/landing/chef" prefetch>
+                <a>
+                  <Typography variant="h6">Become a chef</Typography>
+                </a>
+              </Link>
+            </li>
             <li>
               <a href="#notify">
                 <Fab color="primary" size="medium" variant="extended">
@@ -148,24 +145,24 @@ const LandingPageLayout = ({ classes }) => (
               </li>
               <li>
                 <Typography variant="body1" className={classes.text} paragraph>
-                  Be your own boss
+                  Be in control of your prices and availability
                 </Typography>
               </li>
             </ul>
           </Grid>
           <Grid item md={6} align="center">
             <Typography variant="h6" color="primary">
-              For Consumers
+              For Customers
             </Typography>
             <ul>
               <li>
                 <Typography variant="body1" className={classes.text} paragraph>
-                  Access to our selection of experienced chefs
+                  Choose between our selection of experienced chefs
                 </Typography>
               </li>
               <li>
                 <Typography variant="body1" className={classes.text} paragraph>
-                  Quality top of the line meals without breaking the bank
+                  Get authentic food prepared by in-house chef
                 </Typography>
               </li>
               <li>
@@ -178,10 +175,20 @@ const LandingPageLayout = ({ classes }) => (
         </Grid>
       </Section>
 
+      <Link href="/landing/chef" prefetch>
+        <a>
+          <img
+            src="/static/become-chef-banner.png"
+            alt="Become a chef"
+            style={{ width: '100%' }}
+          />
+        </a>
+      </Link>
+
       <Section
         id="notify"
-        title="Stay Up To Date"
-        subTitle="Restaurant Meals • In-home Chef • Best Experience"
+        title="Sign up for updates"
+        subTitle="News • Special Offers • Information about Slyderz"
         align="center"
         titleDivProps={{
           style: {
@@ -239,9 +246,11 @@ const LandingPageLayout = ({ classes }) => (
     </Container>
     <footer className={classes.footer}>
       <div>
-        <Typography variant="h4" className={classes.title}>
+        <Typography variant="h4" gutterBottom className={classes.title}>
           Follow Us
         </Typography>
+        <br />
+        <Typography variant="h6">#Slyderz</Typography>
 
         <ul>
           <li>
