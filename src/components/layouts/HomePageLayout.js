@@ -22,7 +22,7 @@ import homePageStyles from '../../assets/styles/consumer/homePageStyles';
 const HomePageLayout = ({ classes }) => (
   <div>
     <div className={classes.headerRoot}>
-      <img alt="Couple cooking" src="/static/Header.jpg" />
+      <img alt="Couple cooking" srcSet="/static/Header.jpg" />
       <div className={classes.headerContent}>
         <Paper className={classes.paper}>
           <IconButton className={classes.iconButton} aria-label="menu">

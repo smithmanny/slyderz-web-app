@@ -15,7 +15,7 @@ const Chef = ({ classes }) => {
     <AppContainer>
       <img
         className={classes.header}
-        src="/static/detail.jpg"
+        srcSet="/static/detail.jpg"
         alt="Chef header"
       />
       <Grid container>

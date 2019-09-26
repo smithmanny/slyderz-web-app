@@ -23,6 +23,8 @@
     "isomorphic-unfetch": "^3.0.0",
     "jss": "^9.8.7",
     "next": "^9.0.3",
+    "next-compose-plugins": "^2.2.0",
+    "next-optimized-images": "^2.5.3",
     "next-plugin-graphql": "^0.0.2",
     "next-seo": "^2.0.0",
     "next-with-apollo": "^4.2.0",
@@ -32,6 +34,8 @@
     "react-dom": "16.9.0",
     "react-gtm-module": "^2.0.8",
     "recompose": "^0.30.0",
+    "responsive-loader": "^1.2.0",
+    "sharp": "^0.23.0",
     "styled-jsx": "^3.2.1",
     "subscriptions-transport-ws": "^0.9.16"
   },

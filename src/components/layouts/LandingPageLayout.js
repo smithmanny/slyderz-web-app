@@ -31,7 +31,7 @@ const LandingPageLayout = ({ classes }) => (
           <Grid item md={4}>
             <Link href="/">
               <a className={classes.logo}>
-                <img src="/static/logo-white.png" alt="Slyderz" />
+                <img srcSet="/static/logo-white.png" alt="Slyderz" />
               </a>
             </Link>
           </Grid>
@@ -55,7 +55,7 @@ const LandingPageLayout = ({ classes }) => (
           <img
             className="header-img"
             alt="Couple cooking"
-            src="/static/header.jpg"
+            srcSet="/static/header.jpg"
           />
         </Grid>
 
@@ -98,7 +98,7 @@ const LandingPageLayout = ({ classes }) => (
           </Grid>
           <Grid item md={6}>
             <div className={classes.whoWeAreImg}>
-              <img src="/static/brocolli_transparent.png" alt="Brocolli" />
+              <img srcSet="/static/brocolli_transparent.png" alt="Brocolli" />
             </div>
           </Grid>
         </Grid>
@@ -174,7 +174,7 @@ const LandingPageLayout = ({ classes }) => (
       <Link href="/landing/chef" prefetch>
         <a>
           <img
-            src="/static/become-chef-banner.png"
+            srcSet="/static/become-chef-banner.png"
             alt="Become a chef"
             style={{ width: '100%' }}
           />
@@ -282,7 +282,7 @@ const LandingPageLayout = ({ classes }) => (
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src="/static/instagram.png" alt="Slyderz Instagram" />
+              <img srcSet="/static/instagram.png" alt="Slyderz Instagram" />
             </a>
           </li>
           <li>
@@ -291,7 +291,7 @@ const LandingPageLayout = ({ classes }) => (
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src="/static/twitter.png" alt="Slyderz Twitter" />
+              <img srcSet="/static/twitter.png" alt="Slyderz Twitter" />
             </a>
           </li>
           <li>
@@ -300,7 +300,7 @@ const LandingPageLayout = ({ classes }) => (
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src="/static/facebook.png" alt="Slyderz Facebook" />
+              <img srcSet="/static/facebook.png" alt="Slyderz Facebook" />
             </a>
           </li>
         </ul>
