@@ -20,7 +20,7 @@ const howItWorksStyles = theme => ({
   infoImages: {
     '& div': {
       maxWidth: 302,
-      marginBottom: theme.spacing(2)
+      marginBottom: theme.spacing(4)
     },
     '& div img': {
       width: '100%',

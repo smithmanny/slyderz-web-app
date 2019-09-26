@@ -6,10 +6,15 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { DefaultSeo } from 'next-seo';
+import TagManager from 'react-gtm-module';
 
 import { theme } from '../src/libs/material-ui';
 import withApollo from '../src/utils/withApollo';
 import SEO from '../next-seo.config';
+
+const tagManagerArgs = {
+  gtmId: 'GTM-MRFDR6F'
+};
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -28,6 +33,8 @@ class MyApp extends App {
     if (jssStyles) {
       jssStyles.parentNode.removeChild(jssStyles);
     }
+    // Initialize Google Tag Manager
+    TagManager.initialize(tagManagerArgs);
   }
 
   render() {

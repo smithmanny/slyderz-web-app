@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 import {
   Button,
@@ -23,33 +27,25 @@ const LandingPageLayout = ({ classes }) => (
   <div>
     <AppBar className={classes.appbar} position="static" color="default">
       <Toolbar>
-        <div className={classes.logo}>
-          <div>
+        <Grid container alignItems="center">
+          <Grid item md={4}>
             <Link href="/">
-              <a>
+              <a className={classes.logo}>
                 <img src="/static/logo-white.png" alt="Slyderz" />
               </a>
             </Link>
-          </div>
-        </div>
-        <div className={classes.linksSection}>
-          <ul>
-            <li>
-              <Link href="/landing/chef" prefetch>
-                <a>
-                  <Typography variant="h6">Become a chef</Typography>
-                </a>
-              </Link>
-            </li>
-            <li>
-              <a href="#notify">
+          </Grid>
+
+          <Grid item md={8}>
+            <ul className={classes.linksSection}>
+              <li>
                 <Fab color="primary" size="medium" variant="extended">
-                  Notify Me
+                  Join our beta
                 </Fab>
-              </a>
-            </li>
-          </ul>
-        </div>
+              </li>
+            </ul>
+          </Grid>
+        </Grid>
       </Toolbar>
     </AppBar>
 
@@ -213,33 +209,60 @@ const LandingPageLayout = ({ classes }) => (
           }}
         >
           {({ isSubmitting, handleChange, values }) => (
-            <Grid container justify="center" spacing={2}>
-              <Grid item xs={12} md={4} align="center">
-                <TextField
-                  className={classes.emailInput}
-                  InputProps={{
-                    disableUnderline: true
-                  }}
-                  name="Email"
-                  onChange={handleChange}
-                  type="email"
-                  placeholder="Enter your email"
-                  autoComplete="email"
-                />
+            <div
+              style={{
+                maxWidth: 900,
+                margin: 'auto'
+              }}
+            >
+              <Grid container justify="center" spacing={3}>
+                <Grid item xs={12} md={6} align="center">
+                  <TextField
+                    className={classes.emailInput}
+                    InputProps={{
+                      disableUnderline: true
+                    }}
+                    name="Email"
+                    onChange={handleChange}
+                    type="email"
+                    placeholder="Enter your email"
+                    autoComplete="email"
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel htmlFor="customer-type">
+                      Do you want to cook or find nearby chefs?
+                    </InputLabel>
+                    <Select
+                      value={values.customerType}
+                      onChange={handleChange}
+                      inputProps={{
+                        name: 'customerType',
+                        id: 'customer-type'
+                      }}
+                    >
+                      <MenuItem value="customer">
+                        Show me nearby chefs 👀
+                      </MenuItem>
+                      <MenuItem value="chef">I want to cook 👩🏾‍🍳</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} md={6} align="center">
+                  <Button
+                    disabled={isSubmitting}
+                    className={classes.emailInputBtn}
+                    classes={{
+                      root: classes.emailInputBtnHover
+                    }}
+                    fullWidth
+                  >
+                    Get Early Access
+                  </Button>
+                </Grid>
               </Grid>
-              <Grid item xs={12} md={2} align="center">
-                <Button
-                  disabled={isSubmitting}
-                  className={classes.emailInputBtn}
-                  classes={{
-                    root: classes.emailInputBtnHover
-                  }}
-                  fullWidth
-                >
-                  Get Early Access
-                </Button>
-              </Grid>
-            </Grid>
+            </div>
           )}
         </BasicForm>
       </Section>

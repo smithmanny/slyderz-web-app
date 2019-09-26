@@ -32,7 +32,7 @@ const BecomeChefLandingPage = ({ classes }) => {
             <div>
               <Link href="/" prefetch>
                 <a>
-                  <img src="/static/logo-white.png" alt="Slyderz" />
+                  <img src="/static/logo.png" alt="Slyderz" />
                 </a>
               </Link>
             </div>

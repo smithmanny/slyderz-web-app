@@ -7,33 +7,25 @@ const landingPageStyles = theme => ({
     top: 0
   },
   logo: {
-    flex: 1,
-    '& div': {
-      display: 'inline-block',
-      '& a': {
-        color: '#000',
-        textDecoration: 'none'
-      },
-      '& a img': {
-        height: 150
-      }
+    color: '#000',
+    textDecoration: 'none',
+    '& img': {
+      height: 150
     }
   },
   linksSection: {
     color: '#000',
-    textAlign: 'right',
-    '& ul': {
-      display: 'flex',
-      flex: 1,
-      listStyle: 'none',
-      paddingLeft: 0,
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-      '& li': {
-        marginLeft: theme.spacing(3),
-        '& a': {
-          textDecoration: 'none'
-        }
+    display: 'flex',
+    flex: 1,
+    listStyle: 'none',
+    paddingLeft: 0,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    '& li': {
+      marginLeft: theme.spacing(3),
+      '& a': {
+        textDecoration: 'none',
+        color: 'black'
       }
     }
   },
@@ -135,6 +127,9 @@ const landingPageStyles = theme => ({
   emailInputBtnHover: {
     backgroundColor: `${theme.palette.primary.main}!important`
   },
+  formControl: {
+    width: '100%'
+  },
   footer: {
     minHeight: 250,
     backgroundColor: '#1d1d1d',
@@ -146,7 +141,7 @@ const landingPageStyles = theme => ({
         display: 'flex',
         listStyle: 'none',
         justifyContent: 'space-between',
-        width: 350,
+        maxWidth: 350,
         margin: 'auto',
         marginTop: theme.spacing(5),
         paddingLeft: 0,
