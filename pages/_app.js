@@ -12,10 +12,6 @@ import { theme } from '../src/libs/material-ui';
 import withApollo from '../src/utils/withApollo';
 import SEO from '../next-seo.config';
 
-const tagManagerArgs = {
-  gtmId: 'GTM-MRFDR6F'
-};
-
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
     let pageProps = {};
@@ -34,6 +30,9 @@ class MyApp extends App {
       jssStyles.parentNode.removeChild(jssStyles);
     }
     // Initialize Google Tag Manager
+    const tagManagerArgs = {
+      gtmId: 'GTM-MRFDR6F'
+    };
     TagManager.initialize(tagManagerArgs);
   }
 
