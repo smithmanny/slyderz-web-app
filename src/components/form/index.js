@@ -10,21 +10,15 @@ export { default as TextField } from './TextFieldGroup';
 export { default as SubmitButton } from './SubmitButton';
 // import currentUserQuery from '../../lib/gql/query/user/currentUserQuery.gql';
 
-const BasicForm = ({
-  children,
-  defaultValues,
-  customSubmit,
-  mutate,
-  validation
-}) => (
+const BasicForm = ({ children, defaultValues, mutate, validation }) => (
   <ApolloConsumer>
     {client => {
-      const { onCompleted, mutation } = mutate || {};
+      const { onCompleted, onSubmit, mutation } = mutate || {};
 
       function handleSubmit({ setSubmitting, variables }) {
-        // Handle onSubmit (customSubmit) inside component calling it
-        if (typeof customSubmit === 'function') {
-          customSubmit();
+        // Call custom submit function instead of GraphQL mutation
+        if (typeof onSubmit === 'function') {
+          return onSubmit(variables);
         }
 
         // Handle mutation with GraphQL and refetch currentUser
@@ -62,7 +56,7 @@ const BasicForm = ({
                 e.preventDefault();
 
                 // Pass form values and custom values declared inside component
-                const variables = mutate.variables(values);
+                const variables = mutate.toVariables(values);
                 handleSubmit({ setSubmitting, variables });
               }}
             >
@@ -83,12 +77,12 @@ const BasicForm = ({
 
 BasicForm.propTypes = {
   children: PropTypes.func.isRequired,
-  defaultValues: PropTypes.shape(),
-  customSubmit: PropTypes.func,
+  defaultValues: PropTypes.object,
   mutate: PropTypes.shape({
     mutation: PropTypes.func,
-    variables: PropTypes.func,
-    onCompleted: PropTypes.func
+    onCompleted: PropTypes.func,
+    onSubmit: PropTypes.func,
+    toVariables: PropTypes.func
   }),
   validation: PropTypes.func
 };
