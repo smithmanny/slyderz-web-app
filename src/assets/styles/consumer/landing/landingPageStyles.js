@@ -21,12 +21,12 @@ const landingPageStyles = theme => ({
     paddingLeft: 0,
     justifyContent: 'flex-end',
     alignItems: 'center',
+    '& a': {
+      textDecoration: 'none',
+      color: 'black'
+    },
     '& li': {
-      marginLeft: theme.spacing(3),
-      '& a': {
-        textDecoration: 'none',
-        color: 'black'
-      }
+      marginLeft: theme.spacing(3)
     }
   },
   // End of AppBar styles
@@ -36,7 +36,7 @@ const landingPageStyles = theme => ({
   },
   headerRoot: {
     position: 'relative',
-    height: '100vh',
+    // height: '100vh',
     '& > div': {
       height: '100%'
     },

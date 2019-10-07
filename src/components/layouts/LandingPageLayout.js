@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -24,6 +24,15 @@ import HowItWorks from '../howItWorks';
 import landingPageStyles from '../../assets/styles/consumer/landing/landingPageStyles';
 
 const LandingPageLayout = ({ classes }) => {
+  const [sectionHeight, setSectionHeight] = useState(null);
+  useEffect(() => {
+    setSectionHeight(window.innerHeight);
+  });
+
+  const handleJoinBeta = () => {
+    document.getElementById('notify').scrollIntoView();
+  };
+
   const handleFormSubmit = ({ customerType, email }) => {
     const listType = {
       chef: '691a21c8-30dd-43e9-a98b-0af3534d9ac5',
@@ -57,7 +66,6 @@ const LandingPageLayout = ({ classes }) => {
           }
           return res.json();
         })
-        .then(() => console.log('form submitted'))
         .catch(err => console.error(err));
     }
   };
@@ -67,7 +75,7 @@ const LandingPageLayout = ({ classes }) => {
       <AppBar className={classes.appbar} position="static" color="default">
         <Toolbar>
           <Grid container alignItems="center">
-            <Grid item md={4}>
+            <Grid item style={{ marginRight: 'auto' }}>
               <Link href="/">
                 <a className={classes.logo}>
                   <img srcSet="/static/logo-white.png" alt="Slyderz" />
@@ -77,18 +85,28 @@ const LandingPageLayout = ({ classes }) => {
 
             <Grid item md={8}>
               <ul className={classes.linksSection}>
+                {/* <a href="#notify" onClick={handleJoinBeta}> */}
                 <li>
-                  <Fab color="primary" size="medium" variant="extended">
+                  <Fab
+                    color="primary"
+                    size="medium"
+                    variant="extended"
+                    onClick={handleJoinBeta}
+                  >
                     Join our beta
                   </Fab>
                 </li>
+                {/* </a> */}
               </ul>
             </Grid>
           </Grid>
         </Toolbar>
       </AppBar>
 
-      <div className={classes.headerRoot}>
+      <section
+        className={classes.headerRoot}
+        style={{ height: `${sectionHeight}px` }}
+      >
         <Grid container>
           <Grid item md={6}>
             <img
@@ -112,7 +130,7 @@ const LandingPageLayout = ({ classes }) => {
             </div>
           </Grid>
         </Grid>
-      </div>
+      </section>
 
       <Container maxWidth="xl">
         <Section
@@ -135,7 +153,7 @@ const LandingPageLayout = ({ classes }) => {
                 with friends and family without leaving your home.
               </Typography>
             </Grid>
-            <Grid item md={6}>
+            <Grid item xs={12} md={6}>
               <div className={classes.whoWeAreImg}>
                 <img srcSet="/static/brocolli_transparent.png" alt="Brocolli" />
               </div>
@@ -260,9 +278,6 @@ const LandingPageLayout = ({ classes }) => {
               root: classes.title
             }
           }}
-          style={{
-            minHeight: 250
-          }}
         >
           <BasicForm
             mutate={{
@@ -275,7 +290,7 @@ const LandingPageLayout = ({ classes }) => {
             {({ isSubmitting, handleChange, values }) => (
               <div
                 style={{
-                  maxWidth: 900,
+                  maxWidth: 650,
                   margin: 'auto'
                 }}
               >
