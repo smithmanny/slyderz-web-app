@@ -85,7 +85,6 @@ const LandingPageLayout = ({ classes }) => {
 
             <Grid item md={8}>
               <ul className={classes.linksSection}>
-                {/* <a href="#notify" onClick={handleJoinBeta}> */}
                 <li>
                   <Fab
                     color="primary"
@@ -96,7 +95,6 @@ const LandingPageLayout = ({ classes }) => {
                     Join our beta
                   </Fab>
                 </li>
-                {/* </a> */}
               </ul>
             </Grid>
           </Grid>
