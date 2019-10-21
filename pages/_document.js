@@ -39,7 +39,8 @@ class MyDocument extends Document {
           <meta name="msapplication-TileColor" content={theme.palette.primary.main} />
           <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
           <meta name="theme-color" content={theme.palette.primary.main} />
-          
+          {/* Pinterest */}
+          <meta name="p:domain_verify" content="d9a0531c70e05a526b6dc638bb535a50"/>
         </Head>
         <body>
           <Main />
