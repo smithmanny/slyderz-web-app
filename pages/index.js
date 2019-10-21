@@ -1,17 +1,6 @@
 import React from 'react';
+import { LandingPageLayout } from '../src/components/layouts';
 
-import Layout from '../components/Layout';
-import Header from '../components/Header';
-import PopularChefs from '../components/PopularChefs';
-import HowItWorksSection from '../components/HowItWorksSection';
-
-const Index = props => (
-  <Layout>
-    <Header />
-    <PopularChefs />
-
-    <HowItWorksSection />
-  </Layout>
-);
+const Index = () => <LandingPageLayout />;
 
 export default Index;
