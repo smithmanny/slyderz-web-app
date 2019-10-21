@@ -18,24 +18,33 @@ const HowItWorks = ({ classes, ...props }) => (
           <div className={classes.infoImage}>
             <img srcSet="/static/hiw-planning.png" alt="Party" />
           </div>
-          <Typography variant="h6" align="center" className={classes.text}>
+          <Typography variant="h5" align="center" className={classes.text}>
             Explore
+          </Typography>
+          <Typography variant="h6" align="center" color="primary">
+            Explore private chefs and all the dishes they have to offer
           </Typography>
         </Grid>
         <Grid item md={4}>
           <div className={classes.infoImage}>
             <img srcSet="/static/hiw-chef.png" alt="Party" />
           </div>
-          <Typography variant="h6" align="center" className={classes.text}>
+          <Typography variant="h5" align="center" className={classes.text}>
             Easy Ordering
+          </Typography>
+          <Typography variant="h6" align="center" color="primary">
+            Choose a chef you like, the dishes and book it
           </Typography>
         </Grid>
         <Grid item md={4}>
           <div className={classes.infoImage}>
             <img srcSet="/static/hiw-party.png" alt="Party" />
           </div>
-          <Typography variant="h6" align="center" className={classes.text}>
+          <Typography variant="h5" align="center" className={classes.text}>
             Celebrate
+          </Typography>
+          <Typography variant="h6" align="center" color="primary">
+            Enjoy a home cooked meal from your own private chef
           </Typography>
         </Grid>
       </Grid>

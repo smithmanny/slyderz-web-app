@@ -14,7 +14,8 @@ const howItWorksStyles = theme => ({
   },
   text: {
     color: theme.palette.primary.main,
-    marginTop: theme.spacing(2)
+    margin: theme.spacing(2, 0),
+    fontWeight: 'bold'
   },
   // Info Section
   infoImages: {
