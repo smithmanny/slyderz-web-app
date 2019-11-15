@@ -12,6 +12,7 @@ export { default as CardMedia } from '@material-ui/core/CardMedia';
 export { default as Container } from '@material-ui/core/Container';
 export { default as Fab } from '@material-ui/core/Fab';
 export { default as Grid } from '@material-ui/core/Grid';
+export { default as BasicModal } from './BasicModal';
 export { default as Paper } from '@material-ui/core/Paper';
 export { default as Input } from '@material-ui/core/Input';
 export { default as InputBase } from '@material-ui/core/InputBase';

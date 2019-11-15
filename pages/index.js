@@ -1,6 +1,6 @@
 import React from 'react';
-import { LandingPageLayout } from '../src/components/layouts';
+import { HomePageLayout } from '../src/components/layouts';
 
-const Index = () => <LandingPageLayout />;
+const Index = () => <HomePageLayout />;
 
 export default Index;
