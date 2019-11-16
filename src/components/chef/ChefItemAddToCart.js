@@ -16,11 +16,11 @@ const ChefItemAddToCart = ({ classes }) => {
     >
       <Grid item xs={4}>
         <div className={classes.quantity}>
-          <Fab size="small" color="" aria-label="add">
+          <Fab size="small" color="" aria-label="remove-item">
             <RemoveIcon />
           </Fab>
           <Typography variant="body1">1</Typography>
-          <Fab size="small" color="" aria-label="add">
+          <Fab size="small" color="" aria-label="add-item">
             <AddIcon />
           </Fab>
         </div>

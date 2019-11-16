@@ -5,7 +5,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AppBar from '@material-ui/core/AppBar';
 
-import { Grid, Link, withStyles } from './index';
+import { Badge, Grid, Link, withStyles } from './index';
+import { ShoppingCart, PersonIcon } from '../icons';
 import appbarStyles from '../../assets/styles/consumer/appbarSyles';
 
 const AppBarComponent = ({ classes, ...props }) => (
@@ -18,8 +19,23 @@ const AppBarComponent = ({ classes, ...props }) => (
       </Link>
 
       <div className={classes.linksSection}>
-        <Grid container>
-          <Typography variant="h6">Slyderz</Typography>
+        <Grid container spacing={2} alignItems="center">
+          <Grid item>
+            <Typography variant="h6">Log In</Typography>
+          </Grid>
+          <Grid item>
+            <span className={classes.profile}>
+              <PersonIcon />{' '}
+              <Typography className={classes.name} variant="body1">
+                Slyderz
+              </Typography>
+            </span>
+          </Grid>
+          <Grid item>
+            <Badge className={classes.margin} badgeContent={4} color="primary">
+              <ShoppingCart />
+            </Badge>
+          </Grid>
         </Grid>
       </div>
     </Toolbar>

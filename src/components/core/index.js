@@ -5,6 +5,7 @@ import { withStyles as MuiWithStyles } from '@material-ui/styles';
 export { default as Link } from 'next/link';
 export { default as AppBar } from './AppBar';
 export { default as Avatar } from '@material-ui/core/Avatar';
+export { default as Badge } from '@material-ui/core/Badge';
 export { default as Button } from '@material-ui/core/Button';
 export { default as Card } from '@material-ui/core/Card';
 export { default as CardContent } from '@material-ui/core/CardContent';

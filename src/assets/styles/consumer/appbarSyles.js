@@ -1,4 +1,8 @@
 const appbarStyles = theme => ({
+  profile: {
+    display: 'flex',
+    alignItems: 'center'
+  },
   root: {
     position: 'relative',
     background: 'transparent',
@@ -20,6 +24,10 @@ const appbarStyles = theme => ({
   },
   toolbar: {
     padding: 0
+  },
+  name: {
+    marginLeft: theme.spacing(1),
+    fontWeight: '550'
   }
 });
 
