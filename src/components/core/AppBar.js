@@ -25,15 +25,15 @@ const AppBarComponent = ({ classes, ...props }) => (
           </Grid>
           <Grid item>
             <span className={classes.profile}>
-              <PersonIcon />{' '}
+              <PersonIcon fontSize="large" />{' '}
               <Typography className={classes.name} variant="body1">
-                Slyderz
+                Shakhor
               </Typography>
             </span>
           </Grid>
           <Grid item>
             <Badge className={classes.margin} badgeContent={4} color="primary">
-              <ShoppingCart />
+              <ShoppingCart fontSize="large" />
             </Badge>
           </Grid>
         </Grid>

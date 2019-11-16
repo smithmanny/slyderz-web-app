@@ -21,21 +21,11 @@ const ChefItemCard = ({ classes }) => {
         <img src="/static/food.jpg" alt="Food" />
       </span>
       <section className={classes.content}>
-        <Typography
-          className={classes.title}
-          variant="body1"
-          align="center"
-          gutterBottom
-        >
+        <Typography className={classes.title} variant="body1" gutterBottom>
           The Ultimate Dish
         </Typography>
         {/* Description */}
-        <Typography
-          className={classes.description}
-          gutterBottom
-          paragraph
-          align="center"
-        >
+        <Typography className={classes.description} gutterBottom paragraph>
           Sauted Salmon, green peas, and mashed potatoes.
         </Typography>
         <Typography className={classes.price}>$10</Typography>

@@ -20,11 +20,10 @@ const ChefItemCardStyles = theme => ({
     flexDirection: 'column'
   },
   description: {
-    margin: 'auto'
+    margin: 'auto 0'
   },
   title: {
-    fontWeight: 'bold',
-    fontVariant: 'small-caps'
+    fontWeight: 'bold'
   },
   price: {
     justifyContent: 'flex-end'
