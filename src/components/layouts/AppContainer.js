@@ -4,18 +4,10 @@ import PropTypes from 'prop-types';
 import { AppBar, Container } from '../core';
 
 const AppContainer = ({ children, ...props }) => (
-  <React.Fragment>
-    <AppBar
-      linkProps={{
-        style: {
-          color: 'black'
-        }
-      }}
-    />
-    <Container maxWidth="lg" {...props}>
-      {children}
-    </Container>
-  </React.Fragment>
+  <Container maxWidth="xl" style={{ maxWidth: '1800px' }} {...props}>
+    <AppBar />
+    {children}
+  </Container>
 );
 
 AppContainer.propTypes = {

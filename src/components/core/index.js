@@ -10,6 +10,7 @@ export { default as Card } from '@material-ui/core/Card';
 export { default as CardContent } from '@material-ui/core/CardContent';
 export { default as CardMedia } from '@material-ui/core/CardMedia';
 export { default as Container } from '@material-ui/core/Container';
+export { default as Divider } from '@material-ui/core/Divider';
 export { default as Fab } from '@material-ui/core/Fab';
 export { default as Grid } from '@material-ui/core/Grid';
 export { default as BasicModal } from './BasicModal';

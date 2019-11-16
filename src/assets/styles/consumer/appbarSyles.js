@@ -1,31 +1,25 @@
 const appbarStyles = theme => ({
   root: {
+    position: 'relative',
     background: 'transparent',
-    boxShadow: 'none'
+    boxShadow: 'none',
+    padding: 0,
+    marginTop: theme.spacing(2)
   },
   logo: {
-    flex: 1,
-    '& div': {
-      display: 'inline-block',
-      '& a': {
-        color: 'white',
-        textDecoration: 'none'
-      }
+    color: theme.palette.primary.main,
+    textDecoration: 'none',
+    '& h5': {
+      fontWeight: '700'
     }
   },
   linksSection: {
-    color: 'white',
-    textAlign: 'right',
-    '& ul': {
-      display: 'flex',
-      flex: 1,
-      listStyle: 'none',
-      paddingLeft: 0,
-      justifyContent: 'flex-end',
-      '& li': {
-        marginLeft: theme.spacing(2)
-      }
-    }
+    display: 'inline-block',
+    color: 'black',
+    marginLeft: 'auto'
+  },
+  toolbar: {
+    padding: 0
   }
 });
 

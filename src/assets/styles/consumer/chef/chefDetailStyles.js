@@ -1,6 +1,7 @@
 const chefDetailStyles = theme => ({
   header: {
     height: '400px',
+    marginTop: theme.spacing(2),
     '& img': {
       width: '100%',
       height: '100%',
@@ -17,6 +18,7 @@ const chefDetailStyles = theme => ({
     '& .title': {
       fontSize: 32,
       fontWeight: 800,
+      marginLeft: theme.spacing(1),
       color: theme.palette.content.main
     },
     '& .city': {

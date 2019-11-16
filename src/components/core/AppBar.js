@@ -5,47 +5,26 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AppBar from '@material-ui/core/AppBar';
 
-import { Link, withStyles } from './index';
+import { Grid, Link, withStyles } from './index';
 import appbarStyles from '../../assets/styles/consumer/appbarSyles';
 
-const AppBarComponent = ({ classes, linkProps, ...props }) => (
+const AppBarComponent = ({ classes, ...props }) => (
   <AppBar className={classes.root} position="static" color="default" {...props}>
-    <Toolbar>
-      <div className={classes.logo}>
-        <div>
-          <Link href="/" prefetch>
-            <a {...linkProps}>
-              <Typography variant="h6">Slyderz</Typography>
-            </a>
-          </Link>
-        </div>
-      </div>
+    <Toolbar className={classes.toolbar}>
+      <Link href="/" prefetch>
+        <a className={classes.logo}>
+          <Typography variant="h5">Slyderz</Typography>
+        </a>
+      </Link>
+
       <div className={classes.linksSection}>
-        <ul>
-          <li>
-            <a {...linkProps}>
-              <Typography variant="h6">Help</Typography>
-            </a>
-          </li>
-          <li>
-            <a {...linkProps}>
-              <Typography variant="h6">Sign up</Typography>
-            </a>
-          </li>
-          <li>
-            <a {...linkProps}>
-              <Typography variant="h6">Log in</Typography>
-            </a>
-          </li>
-        </ul>
+        <Grid container>
+          <Typography variant="h6">Slyderz</Typography>
+        </Grid>
       </div>
     </Toolbar>
   </AppBar>
 );
-
-AppBarComponent.defaultProps = {
-  linkProps: {}
-};
 
 AppBarComponent.propTypes = {
   classes: PropTypes.object.isRequired,
