@@ -2,6 +2,9 @@ const ChefItemCardModalStyles = theme => ({
   content: {
     padding: theme.spacing(2)
   },
+  instructions: {
+    padding: theme.spacing(2)
+  },
   image: {
     width: '100%',
     height: '300px'

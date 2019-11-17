@@ -2,11 +2,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import AppBar from '@material-ui/core/AppBar';
 
-import { Badge, Grid, Link, withStyles } from './index';
+import { Badge, IconButton, Grid, Link, Typography, withStyles } from './index';
 import { ShoppingCart, PersonIcon } from '../icons';
+import CheckoutCartModal from '../checkoutModal';
 import appbarStyles from '../../assets/styles/consumer/appbarSyles';
 
 const AppBarComponent = ({ classes, ...props }) => (
@@ -32,11 +32,22 @@ const AppBarComponent = ({ classes, ...props }) => (
             </span>
           </Grid>
           <Grid item>
-            <Badge className={classes.margin} badgeContent={4} color="primary">
-              <ShoppingCart fontSize="large" />
-            </Badge>
+            <IconButton
+              className={classes.iconButton}
+              aria-label="cart"
+              disableRipple
+            >
+              <Badge
+                className={classes.margin}
+                badgeContent={4}
+                color="primary"
+              >
+                <ShoppingCart fontSize="large" />
+              </Badge>
+            </IconButton>
           </Grid>
         </Grid>
+        <CheckoutCartModal classes={classes} />
       </div>
     </Toolbar>
   </AppBar>

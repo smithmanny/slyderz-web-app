@@ -1,4 +1,18 @@
 const appbarStyles = theme => ({
+  checkoutBtn: {
+    borderRadius: 0,
+    color: 'white',
+    marginTop: theme.spacing(2),
+    width: '100%'
+  },
+  orderTotal: {
+    position: 'absolute',
+    right: 0,
+    marginRight: theme.spacing(1)
+  },
+  iconButton: {
+    color: '#000'
+  },
   profile: {
     display: 'flex',
     alignItems: 'center'
@@ -18,6 +32,7 @@ const appbarStyles = theme => ({
     }
   },
   linksSection: {
+    position: 'relative',
     display: 'inline-block',
     color: 'black',
     marginLeft: 'auto'
@@ -25,9 +40,28 @@ const appbarStyles = theme => ({
   toolbar: {
     padding: 0
   },
+  modal: {
+    position: 'absolute',
+    padding: theme.spacing(2),
+    borderRadius: 0,
+    right: 0,
+    width: '325px',
+    '& .chef': {
+      fontWeight: '500'
+    }
+  },
   name: {
     marginLeft: theme.spacing(1),
     fontWeight: '550'
+  },
+  orderContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    margin: theme.spacing(2, 0),
+    '& .dishName': {
+      flex: 1,
+      paddingLeft: theme.spacing(2)
+    }
   }
 });
 

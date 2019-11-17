@@ -1,14 +1,16 @@
 const chefItemAddToCart = theme => ({
   button: {
+    border: 0,
     height: '50px',
-    width: '100%',
-    paddingLeft: theme.spacing(10)
+    width: '100%'
   },
   container: {
     padding: theme.spacing(2)
   },
   price: {
-    marginLeft: 'auto'
+    position: 'absolute',
+    right: 0,
+    marginRight: theme.spacing(2)
   },
   quantity: {
     display: 'flex',
