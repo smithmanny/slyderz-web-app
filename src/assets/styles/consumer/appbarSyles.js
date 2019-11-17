@@ -1,4 +1,7 @@
 const appbarStyles = theme => ({
+  close: {
+    marginBottom: theme.spacing(2)
+  },
   checkoutBtn: {
     borderRadius: 0,
     color: 'white',

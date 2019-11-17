@@ -8,6 +8,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { DefaultSeo } from 'next-seo';
 import TagManager from 'react-gtm-module';
 
+import { CheckoutCartProvider } from '../src/context/checkoutCartContext';
 import { theme } from '../src/libs/material-ui';
 import withApollo from '../src/utils/withApollo';
 import SEO from '../next-seo.config';
@@ -23,6 +24,15 @@ class MyApp extends App {
     return { pageProps };
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      showCart: false
+    };
+
+    this.handleCart = this.handleCart.bind(this);
+  }
+
   componentDidMount() {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
@@ -36,6 +46,10 @@ class MyApp extends App {
     TagManager.initialize(tagManagerArgs);
   }
 
+  handleCart(val) {
+    this.setState({ showCart: val });
+  }
+
   render() {
     const { apollo, Component, pageProps } = this.props;
 
@@ -47,8 +61,12 @@ class MyApp extends App {
           <StylesProvider>
             <ThemeProvider theme={theme}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <CssBaseline />
-                <Component {...pageProps} />
+                <CheckoutCartProvider
+                  value={[this.state.showCart, this.handleCart]}
+                >
+                  <CssBaseline />
+                  <Component {...pageProps} />
+                </CheckoutCartProvider>
               </MuiPickersUtilsProvider>
             </ThemeProvider>
           </StylesProvider>

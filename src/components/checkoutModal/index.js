@@ -2,10 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Button, Paper, Typography } from '../core';
+import { CloseIcon } from '../icons';
 import Orders from './Orders';
 
-const CheckoutCartModal = ({ classes }) => (
+const CheckoutCartModal = ({ classes, handleCart }) => (
   <Paper className={classes.modal}>
+    <CloseIcon
+      aria-label="Close checkout cart"
+      className={classes.close}
+      fontSize="small"
+      onClick={() => handleCart(false)}
+    />
     <Typography variant="h4" gutterBottom>
       Your Order
     </Typography>
@@ -25,7 +32,8 @@ const CheckoutCartModal = ({ classes }) => (
 );
 
 CheckoutCartModal.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  handleCart: PropTypes.func.isRequired
 };
 
 export default CheckoutCartModal;

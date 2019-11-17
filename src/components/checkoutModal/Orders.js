@@ -12,7 +12,7 @@ const Orders = ({ classes }) => {
   return (
     <div className={classes.orderContainer}>
       <Select
-        labelId="demo-simple-select-label"
+        label-id="demo-simple-select-label"
         id="demo-simple-select"
         value={quantity}
         onChange={handleChange}
