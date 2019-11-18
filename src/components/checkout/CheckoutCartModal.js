@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Button, Paper, Typography } from '../core';
-import { CloseIcon } from '../icons';
+import { CloseIcon } from '../../assets/icons';
 import Orders from './Orders';
 
 const CheckoutCartModal = ({ classes, handleCart }) => (
@@ -11,7 +11,7 @@ const CheckoutCartModal = ({ classes, handleCart }) => (
       aria-label="Close checkout cart"
       className={classes.close}
       fontSize="small"
-      onClick={() => handleCart(false)}
+      onClick={handleCart}
     />
     <Typography variant="h4" gutterBottom>
       Your Order

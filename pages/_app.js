@@ -46,8 +46,10 @@ class MyApp extends App {
     TagManager.initialize(tagManagerArgs);
   }
 
-  handleCart(val) {
-    this.setState({ showCart: val });
+  handleCart() {
+    this.setState(prev => ({
+      showCart: prev.showCart === false
+    }));
   }
 
   render() {

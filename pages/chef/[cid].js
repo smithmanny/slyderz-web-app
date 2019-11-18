@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
-import StarRateIcon from '@material-ui/icons/StarRate';
 
 import { AppContainer } from '../../src/components/layouts';
 import {
@@ -11,6 +10,7 @@ import {
   Typography,
   withStyles
 } from '../../src/components/core';
+import { StarRateIcon } from '../../src/assets/icons';
 import ChefItemCard from '../../src/components/chef/ChefItemCard';
 
 import chefDetailStyles from '../../src/assets/styles/consumer/chef/chefDetailStyles';

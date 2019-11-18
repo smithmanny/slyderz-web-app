@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Button, Fab, Grid, Typography, withStyles } from '../core';
-import { AddIcon, RemoveIcon } from '../icons';
+import { AddIcon, RemoveIcon } from '../../assets/icons';
 import chefItemAddToCartStyles from '../../assets/styles/consumer/chef/chefItemAddToCartStyles';
 
 const ChefItemAddToCart = ({ classes }) => {

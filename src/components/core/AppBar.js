@@ -5,8 +5,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 
 import { Badge, IconButton, Grid, Link, Typography, withStyles } from './index';
-import { ShoppingCart, PersonIcon } from '../icons';
-import CheckoutCartModal from '../checkoutModal';
+import { ShoppingCart, PersonIcon } from '../../assets/icons';
+import CheckoutCartModal from '../checkout/CheckoutCartModal';
 import appbarStyles from '../../assets/styles/consumer/appbarSyles';
 import CheckoutCartContext from '../../context/checkoutCartContext';
 
@@ -41,11 +41,7 @@ const AppBarComponent = ({ classes, ...props }) => {
               </span>
             </Grid>
             <Grid item>
-              <IconButton
-                aria-label="cart"
-                disableRipple
-                onClick={() => handleCart(true)}
-              >
+              <IconButton aria-label="cart" disableRipple onClick={handleCart}>
                 <Badge
                   className={classes.margin}
                   badgeContent={4}
