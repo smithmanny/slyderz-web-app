@@ -27,10 +27,11 @@ class MyApp extends App {
   constructor(props) {
     super(props);
     this.state = {
-      showCart: false
+      showCartModal: false
     };
 
-    this.handleCart = this.handleCart.bind(this);
+    this.handleCartModal = this.handleCartModal.bind(this);
+    this.closeCartModal = this.closeCartModal.bind(this);
   }
 
   componentDidMount() {
@@ -46,14 +47,22 @@ class MyApp extends App {
     TagManager.initialize(tagManagerArgs);
   }
 
-  handleCart() {
+  handleCartModal() {
     this.setState(prev => ({
-      showCart: prev.showCart === false
+      showCartModal: prev.showCartModal === false
     }));
+  }
+
+  closeCartModal() {
+    this.setState({ showCartModal: false });
   }
 
   render() {
     const { apollo, Component, pageProps } = this.props;
+    const functions = {
+      handleCartModal: this.handleCartModal,
+      closeCartModal: this.closeCartModal
+    };
 
     return (
       <Container>
@@ -64,7 +73,7 @@ class MyApp extends App {
             <ThemeProvider theme={theme}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <CheckoutCartProvider
-                  value={[this.state.showCart, this.handleCart]}
+                  value={[this.state.showCartModal, functions]}
                 >
                   <CssBaseline />
                   <Component {...pageProps} />
