@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Select, MenuItem, Typography } from '../core';
+import { Select, MenuItem, Typography, withStyles } from '../core';
+import ordersStyles from '../../assets/styles/consumer/ordersStyles';
 
 const Orders = ({ classes }) => {
   const [quantity, setQuantity] = useState(1);
@@ -32,4 +33,4 @@ Orders.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default Orders;
+export default withStyles(ordersStyles)(Orders);

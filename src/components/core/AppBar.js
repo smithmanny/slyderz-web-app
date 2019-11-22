@@ -1,5 +1,5 @@
 /* eslint-disable import/no-named-default */
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
@@ -11,7 +11,21 @@ import appbarStyles from '../../assets/styles/consumer/appbarSyles';
 import CheckoutCartContext from '../../context/checkoutCartContext';
 
 const AppBarComponent = ({ classes, ...props }) => {
-  const [showCart, handleCart] = useContext(CheckoutCartContext);
+  const [showCartModal, { closeCartModal, handleCartModal }] = useContext(
+    CheckoutCartContext
+  );
+  const [showCartLogo, setCartLogo] = useState(true);
+
+  useEffect(() => {
+    const isWindow = typeof window !== 'undefined';
+    // Hide cart logo on checkout screen
+    if (isWindow) {
+      if (window.location.pathname === '/checkout') {
+        closeCartModal();
+        setCartLogo(false);
+      }
+    }
+  });
 
   return (
     <AppBar
@@ -40,23 +54,32 @@ const AppBarComponent = ({ classes, ...props }) => {
                 </Typography>
               </span>
             </Grid>
-            <Grid item>
-              <IconButton aria-label="cart" disableRipple onClick={handleCart}>
-                <Badge
-                  className={classes.margin}
-                  badgeContent={4}
-                  color="primary"
+            {showCartLogo && (
+              <Grid item>
+                <IconButton
+                  aria-label="cart"
+                  disableRipple
+                  onClick={handleCartModal}
                 >
-                  <ShoppingCart
-                    className={classes.iconButton}
-                    fontSize="large"
-                  />
-                </Badge>
-              </IconButton>
-            </Grid>
+                  <Badge
+                    className={classes.margin}
+                    badgeContent={4}
+                    color="primary"
+                  >
+                    <ShoppingCart
+                      className={classes.iconButton}
+                      fontSize="large"
+                    />
+                  </Badge>
+                </IconButton>
+              </Grid>
+            )}
           </Grid>
-          {showCart && (
-            <CheckoutCartModal classes={classes} handleCart={handleCart} />
+          {showCartModal && (
+            <CheckoutCartModal
+              classes={classes}
+              handleCartModal={handleCartModal}
+            />
           )}
         </div>
       </Toolbar>

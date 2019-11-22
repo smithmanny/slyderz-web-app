@@ -49,6 +49,9 @@ const appbarStyles = theme => ({
     borderRadius: 0,
     right: 0,
     width: '325px',
+    '& a': {
+      textDecoration: 'none'
+    },
     '& .chef': {
       fontWeight: '500'
     }
@@ -56,15 +59,6 @@ const appbarStyles = theme => ({
   name: {
     marginLeft: theme.spacing(1),
     fontWeight: '550'
-  },
-  orderContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    margin: theme.spacing(2, 0),
-    '& .dishName': {
-      flex: 1,
-      paddingLeft: theme.spacing(2)
-    }
   }
 });
 

@@ -30,7 +30,14 @@ const muiTheme = createMuiTheme({
   overrides: {
     MuiButton: {
       root: {
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        borderRadius: 0,
+        boxShadhow: 'none'
+      }
+    },
+    MuiFab: {
+      root: {
+        boxShadow: 'none'
       }
     }
   }
