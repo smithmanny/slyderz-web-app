@@ -29,9 +29,11 @@ const ChefItemAddToCart = () => {
           variant="contained"
           color="primary"
           size="large"
+          classes={{ endIcon: classes.price }}
           className={classes.button}
+          endIcon="$10.99"
         >
-          Add 1 to Order <span className={classes.price}>$10.99</span>
+          Add 1 to Order
         </Button>
       </Grid>
     </Grid>

@@ -26,9 +26,11 @@ const CheckoutCartModal = ({ classes, handleCartModal }) => (
           variant="contained"
           color="primary"
           size="large"
+          classes={{ endIcon: classes.orderTotal }}
           className={classes.checkoutBtn}
+          endIcon="10.99"
         >
-          Next: Reserve <span className={classes.orderTotal}>$10.99</span>
+          Next: Reserve
         </Button>
       </a>
     </Link>

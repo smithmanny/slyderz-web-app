@@ -12,9 +12,7 @@ export default makeStyles(theme =>
       width: '100%'
     },
     orderTotal: {
-      position: 'absolute',
-      right: 0,
-      marginRight: theme.spacing(1)
+      marginLeft: 'auto'
     },
     iconButton: {
       color: '#000'

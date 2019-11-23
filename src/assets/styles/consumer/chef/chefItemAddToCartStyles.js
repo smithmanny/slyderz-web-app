@@ -11,9 +11,7 @@ export default makeStyles(theme =>
       padding: theme.spacing(2)
     },
     price: {
-      position: 'absolute',
-      right: 0,
-      marginRight: theme.spacing(2)
+      marginLeft: 'auto'
     },
     quantity: {
       display: 'flex',
