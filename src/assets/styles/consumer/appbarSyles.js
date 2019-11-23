@@ -44,7 +44,7 @@ export default makeStyles(theme =>
       marginLeft: 'auto'
     },
     toolbar: {
-      padding: 0
+      padding: theme.spacing(0, 1)
     },
     modal: {
       position: 'absolute',

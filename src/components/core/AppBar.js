@@ -8,6 +8,7 @@ import { Badge, IconButton, Grid, Link, Typography } from './index';
 import { ShoppingCart, PersonIcon } from '../../assets/icons';
 import CheckoutCartModal from '../checkout/CheckoutCartModal';
 import appbarStyles from '../../assets/styles/consumer/appbarSyles';
+
 import CheckoutCartContext from '../../context/checkoutCartContext';
 
 const AppBarComponent = ({ ...props }) => {

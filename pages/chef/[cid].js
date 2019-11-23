@@ -72,16 +72,16 @@ const Chef = () => {
           </div>
 
           <Grid container spacing={3}>
-            <Grid item xs={6} lg={4}>
+            <Grid item xs={12} lg={4}>
               <ChefItemCard />
             </Grid>
-            <Grid item xs={6} lg={4}>
+            <Grid item xs={12} lg={4}>
               <ChefItemCard />
             </Grid>
-            <Grid item xs={6} lg={4}>
+            <Grid item xs={12} lg={4}>
               <ChefItemCard />
             </Grid>
-            <Grid item xs={6} lg={4}>
+            <Grid item xs={12} lg={4}>
               <ChefItemCard />
             </Grid>
           </Grid>
