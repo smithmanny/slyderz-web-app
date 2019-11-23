@@ -1,5 +1,5 @@
 /* eslint-disable import/no-cycle */
-import { withStyles as MuiWithStyles } from '@material-ui/styles';
+import { withStyles as MuiWithStyles } from '@material-ui/core/styles';
 
 // Material-UI Core
 export { default as Link } from 'next/link';
@@ -25,5 +25,3 @@ export { default as TextField } from '@material-ui/core/TextField';
 export { default as Typography } from '@material-ui/core/Typography';
 // Material-UI Styles
 export { MuiWithStyles as withStyles };
-// Material-UI Icons
-export { default as SearchIcon } from '@material-ui/icons/Search';

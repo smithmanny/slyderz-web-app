@@ -1,21 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 
 import { AppContainer } from '../../src/components/layouts';
-import {
-  Avatar,
-  Button,
-  Grid,
-  Typography,
-  withStyles
-} from '../../src/components/core';
+import { Avatar, Button, Grid, Typography } from '../../src/components/core';
 import { StarRateIcon } from '../../src/assets/icons';
 import ChefItemCard from '../../src/components/chef/ChefItemCard';
 
 import chefDetailStyles from '../../src/assets/styles/consumer/chef/chefDetailStyles';
 
-const Chef = ({ classes }) => {
+const Chef = () => {
+  const classes = chefDetailStyles();
   const router = useRouter();
   const { cid } = router.query;
 
@@ -97,8 +91,4 @@ const Chef = ({ classes }) => {
   );
 };
 
-Chef.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(chefDetailStyles)(Chef);
+export default Chef;

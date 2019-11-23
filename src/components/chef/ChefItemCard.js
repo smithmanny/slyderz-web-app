@@ -1,11 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-import { BasicModal, Typography, withStyles } from '../core';
+import { BasicModal, Typography } from '../core';
 import ChefItemCardModal from './ChefItemCardModal';
 import ChefItemCardStyles from '../../assets/styles/consumer/chef/chefItemCardStyles';
 
-const ChefItemCard = ({ classes }) => {
+const ChefItemCard = () => {
+  const classes = ChefItemCardStyles();
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => {
@@ -50,8 +50,4 @@ const ChefItemCard = ({ classes }) => {
   );
 };
 
-ChefItemCard.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(ChefItemCardStyles)(ChefItemCard);
+export default ChefItemCard;

@@ -1,8 +1,8 @@
 export default {
   title: 'Slyderz - Book Personal Chefs',
-  titleTemplate: '%s - Your 0n-demand Restaurant',
+  titleTemplate: '%s - Book Personal Chefs',
   description:
-    'Slyderz is your on-demand restaurant connecting you to the best chefs.',
+    'Slyderz is an on-demand platform for consumers to hire professional chefs for in-home experiences.',
   canonical: 'https://slyderz.co',
   openGraph: {
     type: 'website',

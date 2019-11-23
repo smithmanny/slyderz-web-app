@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import Link from 'next/link';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 
-import { Container, Fab, Grid, withStyles } from '../../src/components/core';
+import { Container, Grid } from '../../src/components/core';
 import { Section } from '../../src/components/layouts/index';
 
 import landingPageStyles from '../../src/assets/styles/consumer/landing/landingPageStyles';
 
-const BecomeChefLandingPage = ({ classes }) => {
+const BecomeChefLandingPage = () => {
+  const classes = landingPageStyles();
   const [isAirtableLoaded, setAirtableStatus] = useState(false);
   useEffect(() => {
     const src = 'https://static.airtable.com/js/embed/embed_snippet_v1.js';
@@ -30,7 +30,7 @@ const BecomeChefLandingPage = ({ classes }) => {
         <Toolbar>
           <div className={classes.logo}>
             <div>
-              <Link href="/" prefetch>
+              <Link href="/">
                 <a>
                   <img srcSet="/static/logo.png" alt="Slyderz" />
                 </a>
@@ -60,8 +60,4 @@ const BecomeChefLandingPage = ({ classes }) => {
   );
 };
 
-BecomeChefLandingPage.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(landingPageStyles)(BecomeChefLandingPage);
+export default BecomeChefLandingPage;

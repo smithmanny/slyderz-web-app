@@ -2,21 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/styles';
 
-const useStyles = theme => ({
-  textField: {
-    // width: '100%'
-  }
-});
-
-const TextFieldGroup = ({ xs, md, lg, classes, ...props }) => (
+const TextFieldGroup = ({ xs, md, lg, ...props }) => (
   <Grid item xs={xs} md={md} lg={lg}>
     <Button
       type="submit"
       variant="contained"
       color="primary"
-      className={classes.textField}
       fullWidth
       {...props}
     />
@@ -31,4 +23,4 @@ TextFieldGroup.propTypes = {
   props: PropTypes.shape()
 };
 
-export default withStyles(useStyles)(TextFieldGroup);
+export default TextFieldGroup;

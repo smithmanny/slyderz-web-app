@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 
-import { Select, MenuItem, Typography, withStyles } from '../core';
+import { Select, MenuItem, Typography } from '../core';
 import ordersStyles from '../../assets/styles/consumer/ordersStyles';
 
-const Orders = ({ classes }) => {
+const Orders = () => {
+  const classes = ordersStyles();
   const [quantity, setQuantity] = useState(1);
 
   const handleChange = event => {
@@ -29,8 +29,4 @@ const Orders = ({ classes }) => {
   );
 };
 
-Orders.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(ordersStyles)(Orders);
+export default Orders;

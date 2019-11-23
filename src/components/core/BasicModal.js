@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Modal from '@material-ui/core/Modal';
 
-import { withStyles } from './index';
 import basicModalStyles from '../../assets/styles/shared/basicModalStyles';
 
 function getModalStyle() {
@@ -13,7 +12,8 @@ function getModalStyle() {
   };
 }
 
-const BasicModal = ({ classes, children, open, onClose, ...props }) => {
+const BasicModal = ({ children, open, onClose, ...props }) => {
+  const classes = basicModalStyles();
   const [modalStyle] = React.useState(getModalStyle);
 
   return (
@@ -33,9 +33,8 @@ const BasicModal = ({ classes, children, open, onClose, ...props }) => {
 
 BasicModal.propTypes = {
   children: PropTypes.arrayOf.isRequired,
-  classes: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired
 };
 
-export default withStyles(basicModalStyles)(BasicModal);
+export default BasicModal;

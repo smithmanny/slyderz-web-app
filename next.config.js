@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 const withPlugins = require('next-compose-plugins');
 const withGraphql = require('next-plugin-graphql');
 const withOptimizedImages = require('next-optimized-images');

@@ -1,12 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-import { Button, Fab, Grid, Typography, withStyles } from '../core';
+import { Button, Fab, Grid, Typography } from '../core';
 import { AddIcon, RemoveIcon } from '../../assets/icons';
 import chefItemAddToCartStyles from '../../assets/styles/consumer/chef/chefItemAddToCartStyles';
 
-const ChefItemAddToCart = ({ classes }) => {
-  const l = null;
+const ChefItemAddToCart = () => {
+  const classes = chefItemAddToCartStyles();
   return (
     <Grid
       container
@@ -39,8 +38,4 @@ const ChefItemAddToCart = ({ classes }) => {
   );
 };
 
-ChefItemAddToCart.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(chefItemAddToCartStyles)(ChefItemAddToCart);
+export default ChefItemAddToCart;

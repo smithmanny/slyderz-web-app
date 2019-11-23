@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import Link from 'next/link';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
@@ -8,22 +7,15 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
-import {
-  Button,
-  Container,
-  Fab,
-  Grid,
-  TextField,
-  Typography,
-  withStyles
-} from '../core';
+import { Button, Container, Fab, Grid, TextField, Typography } from '../core';
 import BasicForm from '../form';
 import { Section } from './index';
 import HowItWorks from '../howItWorks';
 
 import landingPageStyles from '../../assets/styles/consumer/landing/landingPageStyles';
 
-const LandingPageLayout = ({ classes }) => {
+const LandingPageLayout = () => {
+  const classes = landingPageStyles();
   const [sectionHeight, setSectionHeight] = useState(null);
   useEffect(() => {
     setSectionHeight(window.innerHeight);
@@ -250,7 +242,7 @@ const LandingPageLayout = ({ classes }) => {
           </Grid>
         </Section>
 
-        <Link href="/landing/chef" prefetch>
+        <Link href="/landing/chef">
           <a>
             <img
               srcSet="/static/become-chef-banner.png"
@@ -389,8 +381,4 @@ const LandingPageLayout = ({ classes }) => {
   );
 };
 
-LandingPageLayout.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(landingPageStyles)(LandingPageLayout);
+export default LandingPageLayout;

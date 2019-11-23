@@ -1,7 +1,9 @@
-const styles = theme => ({
-  textField: {
-    width: '100%'
-  }
-});
+import { makeStyles, createStyles } from '../../../components/shared/theme';
 
-export default styles;
+export default makeStyles(theme =>
+  createStyles({
+    textField: {
+      width: '100%'
+    }
+  })
+);

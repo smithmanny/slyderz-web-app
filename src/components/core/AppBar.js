@@ -4,13 +4,14 @@ import PropTypes from 'prop-types';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 
-import { Badge, IconButton, Grid, Link, Typography, withStyles } from './index';
+import { Badge, IconButton, Grid, Link, Typography } from './index';
 import { ShoppingCart, PersonIcon } from '../../assets/icons';
 import CheckoutCartModal from '../checkout/CheckoutCartModal';
 import appbarStyles from '../../assets/styles/consumer/appbarSyles';
 import CheckoutCartContext from '../../context/checkoutCartContext';
 
-const AppBarComponent = ({ classes, ...props }) => {
+const AppBarComponent = ({ ...props }) => {
+  const classes = appbarStyles();
   const [showCartModal, { closeCartModal, handleCartModal }] = useContext(
     CheckoutCartContext
   );
@@ -35,7 +36,7 @@ const AppBarComponent = ({ classes, ...props }) => {
       {...props}
     >
       <Toolbar className={classes.toolbar}>
-        <Link href="/" prefetch>
+        <Link href="/">
           <a className={classes.logo}>
             <Typography variant="h5">Slyderz</Typography>
           </a>
@@ -88,8 +89,7 @@ const AppBarComponent = ({ classes, ...props }) => {
 };
 
 AppBarComponent.propTypes = {
-  classes: PropTypes.object.isRequired,
   linkProps: PropTypes.object
 };
 
-export default withStyles(appbarStyles)(AppBarComponent);
+export default AppBarComponent;

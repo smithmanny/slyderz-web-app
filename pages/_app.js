@@ -1,7 +1,7 @@
 import React from 'react';
-import App, { Container } from 'next/app';
+import App from 'next/app';
 import { ApolloProvider } from 'react-apollo';
-import { ThemeProvider, StylesProvider } from '@material-ui/styles';
+import { ThemeProvider, StylesProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
@@ -65,24 +65,21 @@ class MyApp extends App {
     };
 
     return (
-      <Container>
-        <DefaultSeo {...SEO} />
-
-        <ApolloProvider client={apollo}>
-          <StylesProvider>
-            <ThemeProvider theme={theme}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <CheckoutCartProvider
-                  value={[this.state.showCartModal, functions]}
-                >
-                  <CssBaseline />
-                  <Component {...pageProps} />
-                </CheckoutCartProvider>
-              </MuiPickersUtilsProvider>
-            </ThemeProvider>
-          </StylesProvider>
-        </ApolloProvider>
-      </Container>
+      <ApolloProvider client={apollo}>
+        <StylesProvider>
+          <ThemeProvider theme={theme}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <CheckoutCartProvider
+                value={[this.state.showCartModal, functions]}
+              >
+                <DefaultSeo {...SEO} />
+                <CssBaseline />
+                <Component {...pageProps} />
+              </CheckoutCartProvider>
+            </MuiPickersUtilsProvider>
+          </ThemeProvider>
+        </StylesProvider>
+      </ApolloProvider>
     );
   }
 }

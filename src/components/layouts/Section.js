@@ -1,47 +1,48 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Typography, withStyles } from '../core';
+import { Typography } from '../core';
 import sectionLayoutStyles from '../../assets/styles/consumer/sectionLayoutStyles';
 
 const SectionLayout = ({
   children,
-  classes,
   title,
   titleDivProps,
   titleProps,
   subTitle,
   subTitleProps,
   ...props
-}) => (
-  <section className={classes.root} {...props}>
-    <div {...titleDivProps}>
-      <Typography
-        className={classes.title}
-        variant="h5"
-        gutterBottom
-        {...titleProps}
-      >
-        {title}
-      </Typography>
-
-      {subTitle && (
+}) => {
+  const classes = sectionLayoutStyles();
+  return (
+    <section className={classes.root} {...props}>
+      <div {...titleDivProps}>
         <Typography
-          className={classes.subTitle}
-          variant="body2"
+          className={classes.title}
+          variant="h5"
           gutterBottom
-          {...subTitleProps}
+          {...titleProps}
         >
-          {subTitle}
+          {title}
         </Typography>
-      )}
-    </div>
-    {children}
-  </section>
-);
+
+        {subTitle && (
+          <Typography
+            className={classes.subTitle}
+            variant="body2"
+            gutterBottom
+            {...subTitleProps}
+          >
+            {subTitle}
+          </Typography>
+        )}
+      </div>
+      {children}
+    </section>
+  );
+};
 
 SectionLayout.defaultProps = {
-  classes: PropTypes.object,
   title: null,
   titleDivProps: {},
   titleProps: {},
@@ -51,8 +52,7 @@ SectionLayout.defaultProps = {
 };
 
 SectionLayout.propTypes = {
-  children: PropTypes.node.isRequired,
-  classes: PropTypes.object,
+  children: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   title: PropTypes.string,
   titleDivProps: PropTypes.object,
   titleProps: PropTypes.object,
@@ -61,4 +61,4 @@ SectionLayout.propTypes = {
   subTitleProps: PropTypes.object
 };
 
-export default withStyles(sectionLayoutStyles)(SectionLayout);
+export default SectionLayout;
