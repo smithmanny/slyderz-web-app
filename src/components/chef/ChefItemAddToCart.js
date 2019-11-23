@@ -13,7 +13,7 @@ const ChefItemAddToCart = () => {
       className={classes.container}
       spacing={2}
     >
-      <Grid item xs={4}>
+      <Grid item xs={12} md={4}>
         <div className={classes.quantity}>
           <Fab size="small" aria-label="remove-item">
             <RemoveIcon />
@@ -24,7 +24,7 @@ const ChefItemAddToCart = () => {
           </Fab>
         </div>
       </Grid>
-      <Grid item xs={8}>
+      <Grid item xs={12} md={8}>
         <Button
           variant="contained"
           color="primary"

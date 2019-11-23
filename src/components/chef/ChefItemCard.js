@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { BasicModal, Typography } from '../core';
+import { Typography } from '../core';
 import ChefItemCardModal from './ChefItemCardModal';
 import ChefItemCardStyles from '../../assets/styles/consumer/chef/chefItemCardStyles';
 
@@ -38,14 +38,12 @@ const ChefItemCard = () => {
         onClick={handleOpen}
         className={classes.link}
       />
-      <BasicModal
+      <ChefItemCardModal
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
         open={open}
         onClose={handleClose}
-      >
-        <ChefItemCardModal />
-      </BasicModal>
+      />
     </article>
   );
 };

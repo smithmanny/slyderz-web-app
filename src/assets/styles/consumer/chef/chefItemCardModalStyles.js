@@ -2,6 +2,18 @@ import { makeStyles, createStyles } from '../../../../components/shared/theme';
 
 export default makeStyles(theme =>
   createStyles({
+    dialog: {
+      margin: theme.spacing(1)
+    },
+    dialogContent: {
+      padding: 0,
+      '&:first-child': {
+        paddingTop: 0
+      },
+      '& img': {
+        objectFit: 'cover'
+      }
+    },
     content: {
       padding: theme.spacing(2)
     },

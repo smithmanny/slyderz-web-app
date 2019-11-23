@@ -31,7 +31,7 @@ export default makeStyles(theme =>
         marginTop: theme.spacing(4)
       },
       '& .bigAvatar': {
-        margin: 10,
+        margin: 0,
         width: 60,
         height: 60
       }
