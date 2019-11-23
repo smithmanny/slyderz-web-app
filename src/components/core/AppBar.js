@@ -43,47 +43,45 @@ const AppBarComponent = ({ ...props }) => {
           </a>
         </Link>
 
-        <div className={classes.linksSection}>
-          <Grid container spacing={2} alignItems="center">
-            <Grid item>
-              <Typography variant="h6">Log In</Typography>
-            </Grid>
-            <Grid item>
-              <span className={classes.profile}>
-                <PersonIcon fontSize="large" />{' '}
-                <Typography className={classes.name} variant="body1">
-                  Shakhor
-                </Typography>
-              </span>
-            </Grid>
-            {showCartLogo && (
-              <Grid item>
-                <IconButton
-                  aria-label="cart"
-                  disableRipple
-                  onClick={handleCartModal}
-                >
-                  <Badge
-                    className={classes.margin}
-                    badgeContent={4}
-                    color="primary"
-                  >
-                    <ShoppingCart
-                      className={classes.iconButton}
-                      fontSize="large"
-                    />
-                  </Badge>
-                </IconButton>
-              </Grid>
-            )}
+        <Grid container className={classes.linksSection} spacing={1}>
+          <Grid item>
+            <Typography variant="h6">Log In</Typography>
           </Grid>
-          {showCartModal && (
-            <CheckoutCartModal
-              classes={classes}
-              handleCartModal={handleCartModal}
-            />
+          <Grid item>
+            <span className={classes.profile}>
+              <PersonIcon fontSize="large" />{' '}
+              <Typography className={classes.name} variant="body1">
+                Shakhor
+              </Typography>
+            </span>
+          </Grid>
+          {showCartLogo && (
+            <Grid item>
+              <IconButton
+                aria-label="cart"
+                disableRipple
+                onClick={handleCartModal}
+              >
+                <Badge
+                  className={classes.margin}
+                  badgeContent={4}
+                  color="primary"
+                >
+                  <ShoppingCart
+                    className={classes.iconButton}
+                    fontSize="large"
+                  />
+                </Badge>
+              </IconButton>
+            </Grid>
           )}
-        </div>
+        </Grid>
+        {showCartModal && (
+          <CheckoutCartModal
+            classes={classes}
+            handleCartModal={handleCartModal}
+          />
+        )}
       </Toolbar>
     </AppBar>
   );

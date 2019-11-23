@@ -37,9 +37,8 @@ export default makeStyles(theme =>
     },
     linksSection: {
       position: 'relative',
-      display: 'inline-block',
-      color: 'black',
-      marginLeft: 'auto'
+      alignItems: 'center',
+      justifyContent: 'flex-end'
     },
     toolbar: {
       padding: theme.spacing(0, 1)
@@ -48,8 +47,11 @@ export default makeStyles(theme =>
       position: 'absolute',
       padding: theme.spacing(2),
       borderRadius: 0,
-      right: 0,
-      width: '325px',
+      right: theme.spacing(1),
+      top: theme.spacing(8),
+      zIndex: 999,
+      maxWidth: '325px',
+      width: '100%',
       '& a': {
         textDecoration: 'none'
       },
