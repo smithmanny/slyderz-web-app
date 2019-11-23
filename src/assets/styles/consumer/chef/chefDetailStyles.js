@@ -43,7 +43,7 @@ export default makeStyles(theme =>
     metaWrapper: {
       display: 'flex',
       justifyContent: 'space-around',
-      marginTop: theme.spacing(1)
+      marginTop: theme.spacing(2)
     },
     sectionTitle: {
       display: 'flex',

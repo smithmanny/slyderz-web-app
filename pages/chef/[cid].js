@@ -56,7 +56,7 @@ const Chef = () => {
             </span>
           </div>
 
-          <Typography className="summary" variant="h6">
+          <Typography className="summary" variant="h6" align="center">
             There was a feature request in my current company, product team
             requested a table component which should order columns in ascending
             or descending way when clicking the column’s title. At the end of

@@ -12,7 +12,7 @@ const Checkout = () => {
   const classes = checkoutStyles();
   return (
     <AppContainer>
-      <Grid className={classes.container} container spacing={4}>
+      <Grid className={classes.container} container>
         <Grid item xs={12} md={7}>
           <div className={classes.leftContainer}>
             <CheckoutSection title="Choose Address">

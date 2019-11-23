@@ -25,6 +25,12 @@ export default makeStyles(theme =>
     cardMedia: {
       borderRadius: 10,
       height: 205
+    },
+    cardMediaRoot: {
+      paddingTop: theme.spacing(1)
+    },
+    homeContainer: {
+      padding: theme.spacing(0, 2)
     }
   })
 );

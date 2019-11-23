@@ -15,12 +15,18 @@ export default makeStyles(theme =>
       }
     },
     content: {
+      [theme.breakpoints.down('sm')]: {
+        padding: theme.spacing(1)
+      },
       padding: theme.spacing(2)
     },
     instructions: {
       padding: theme.spacing(2)
     },
     image: {
+      [theme.breakpoints.down('sm')]: {
+        height: '250px'
+      },
       width: '100%',
       height: '300px'
     },

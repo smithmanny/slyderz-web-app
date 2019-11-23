@@ -3,7 +3,12 @@ import { makeStyles, createStyles } from '../../../../components/shared/theme';
 export default makeStyles(theme =>
   createStyles({
     container: {
-      marginTop: theme.spacing(4)
+      [theme.breakpoints.down('sm')]: {
+        marginTop: 0,
+        padding: theme.spacing(1)
+      },
+      marginTop: theme.spacing(4),
+      padding: theme.spacing(2)
     },
     checkoutItem: {
       display: 'flex',
