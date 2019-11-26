@@ -35,13 +35,20 @@ export default makeStyles(theme =>
         fontWeight: '700'
       }
     },
+    login: {
+      color: '#000',
+      textDecoration: 'none'
+    },
     linksSection: {
       position: 'relative',
       alignItems: 'center',
       justifyContent: 'flex-end'
     },
     toolbar: {
-      padding: theme.spacing(0, 1)
+      [theme.breakpoints.down('sm')]: {
+        padding: theme.spacing(0, 1)
+      },
+      padding: theme.spacing(0, 2)
     },
     modal: {
       position: 'absolute',
@@ -59,9 +66,13 @@ export default makeStyles(theme =>
         fontWeight: '500'
       }
     },
-    name: {
+    profileName: {
       marginLeft: theme.spacing(1),
-      fontWeight: '550'
+      fontWeight: '550',
+      '& a': {
+        color: '#000',
+        textDecoration: 'none'
+      }
     }
   })
 );

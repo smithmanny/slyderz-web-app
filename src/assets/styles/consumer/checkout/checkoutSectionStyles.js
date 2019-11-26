@@ -16,6 +16,9 @@ export default makeStyles(theme =>
     title: {
       fontWeight: 'bold',
       marginRight: 'auto'
+    },
+    modalTitle: {
+      marginTop: theme.spacing(2)
     }
   })
 );

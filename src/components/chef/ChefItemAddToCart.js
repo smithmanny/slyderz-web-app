@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Button, Fab, Grid, Typography } from '../core';
 import { AddIcon, RemoveIcon } from '../../assets/icons';
@@ -6,6 +6,15 @@ import chefItemAddToCartStyles from '../../assets/styles/consumer/chef/chefItemA
 
 const ChefItemAddToCart = () => {
   const classes = chefItemAddToCartStyles();
+  const [itemTotal, setItemTotal] = useState(1);
+
+  const decrement = () => {
+    if (itemTotal === 1) {
+      return setItemTotal(1);
+    }
+    setItemTotal(prevTotal => prevTotal - 1);
+  };
+
   return (
     <Grid
       container
@@ -15,11 +24,15 @@ const ChefItemAddToCart = () => {
     >
       <Grid item xs={12} md={4}>
         <div className={classes.quantity}>
-          <Fab size="small" aria-label="remove-item">
+          <Fab size="small" aria-label="remove-item" onClick={decrement}>
             <RemoveIcon />
           </Fab>
-          <Typography variant="body1">1</Typography>
-          <Fab size="small" aria-label="add-item">
+          <Typography variant="body1">{itemTotal}</Typography>
+          <Fab
+            size="small"
+            aria-label="add-item"
+            onClick={() => setItemTotal(prevTotal => prevTotal + 1)}
+          >
             <AddIcon />
           </Fab>
         </div>

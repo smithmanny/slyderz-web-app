@@ -1,6 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '../src/components/core';
 
 const errorStyles = theme => ({
   div: {
@@ -33,8 +31,4 @@ class Error extends React.Component {
   }
 }
 
-Error.propTypes = {
-  classes: PropTypes.object
-};
-
-export default withStyles(errorStyles)(Error);
+export default Error;

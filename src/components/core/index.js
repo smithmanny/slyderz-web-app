@@ -1,6 +1,4 @@
 /* eslint-disable import/no-cycle */
-import { withStyles as MuiWithStyles } from '@material-ui/core/styles';
-
 // Material-UI Core
 export { default as Link } from 'next/link';
 export { default as AppBar } from './AppBar';
@@ -14,7 +12,6 @@ export { default as Container } from '@material-ui/core/Container';
 export { default as Divider } from '@material-ui/core/Divider';
 export { default as Fab } from '@material-ui/core/Fab';
 export { default as Grid } from '@material-ui/core/Grid';
-export { default as BasicModal } from './BasicModal';
 export { default as MenuItem } from '@material-ui/core/MenuItem';
 export { default as Paper } from '@material-ui/core/Paper';
 export { default as Input } from '@material-ui/core/Input';
@@ -23,5 +20,3 @@ export { default as IconButton } from '@material-ui/core/IconButton';
 export { default as Select } from '@material-ui/core/Select';
 export { default as TextField } from '@material-ui/core/TextField';
 export { default as Typography } from '@material-ui/core/Typography';
-// Material-UI Styles
-export { MuiWithStyles as withStyles };

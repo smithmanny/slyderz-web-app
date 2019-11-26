@@ -27,7 +27,7 @@ const AppBarComponent = ({ ...props }) => {
         setCartLogo(false);
       }
     }
-  });
+  }, []);
 
   return (
     <AppBar
@@ -45,13 +45,19 @@ const AppBarComponent = ({ ...props }) => {
 
         <Grid container className={classes.linksSection} spacing={1}>
           <Grid item>
-            <Typography variant="h6">Log In</Typography>
+            <Link href="/auth/login">
+              <a className={classes.login}>
+                <Typography variant="h6">Log In</Typography>
+              </a>
+            </Link>
           </Grid>
           <Grid item>
             <span className={classes.profile}>
-              <PersonIcon fontSize="large" />{' '}
-              <Typography className={classes.name} variant="body1">
-                Shakhor
+              <PersonIcon fontSize="large" />
+              <Typography className={classes.profileName} variant="body1">
+                <Link href="/settings">
+                  <a>Shakhor</a>
+                </Link>
               </Typography>
             </span>
           </Grid>
