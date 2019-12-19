@@ -2,10 +2,11 @@ import React from 'react';
 import { useRouter } from 'next/router';
 
 import { AppContainer } from '../../src/components/layouts';
-import { Avatar, Button, Grid, Typography } from '../../src/components/core';
+import { Avatar, Button } from '../../src/components/core';
+import Typography from '../../src/components/core/Typography';
+import Grid from '../../src/components/core/Grid';
 import { StarRateIcon } from '../../src/assets/icons';
 import ChefItemCard from '../../src/components/chef/ChefItemCard';
-
 import chefDetailStyles from '../../src/assets/styles/consumer/chef/chefDetailStyles';
 
 const Chef = () => {
@@ -16,18 +17,14 @@ const Chef = () => {
   return (
     <AppContainer>
       <Grid container className={classes.header}>
-        <img srcSet="/static/detail.jpg" alt="Chef header" />
+        <img srcSet="/detail.jpg" alt="Chef header" />
       </Grid>
 
       <Grid container>
         <Grid item className={classes.container} xs={12}>
           <Grid container alignItems="center">
             <Grid item>
-              <Avatar
-                alt="Remy Sharp"
-                src="/static/food.jpg"
-                className="bigAvatar"
-              />
+              <Avatar alt="Remy Sharp" src="/food.jpg" className="bigAvatar" />
             </Grid>
             <Grid item>
               <Typography variant="h1" className="title" gutterBottom>

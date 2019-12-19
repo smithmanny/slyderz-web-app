@@ -2,7 +2,8 @@ import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 
-import { Divider, Typography } from '../core';
+import Divider from '../core/Divider';
+import Typography from '../core/Typography';
 import ChefItemAddToCart from './ChefItemAddToCart';
 import ChefItemCardModalStyles from '../../assets/styles/consumer/chef/chefItemCardModalStyles';
 
@@ -11,7 +12,7 @@ const ChefItemCardModal = ({ ...props }) => {
   return (
     <Dialog classes={{ paper: classes.dialog }} {...props}>
       <MuiDialogContent className={classes.dialogContent}>
-        <img src="/static/food.jpg" alt="Food" className={classes.image} />
+        <img src="/food.jpg" alt="Food" className={classes.image} />
         <div className={classes.content}>
           <Typography className={classes.title} variant="h5" gutterBottom>
             Dish Title Here

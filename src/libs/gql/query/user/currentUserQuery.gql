@@ -1,22 +1,15 @@
 query currentUser {
-  me {
+  user {
     __typename
     id
-    email
-    firstName
-    lastName
     address1
     address2
     city
-    state
-    permissions
+    firstName
+    email
+    lastName
     postalCode
-    chef {
-      __typename
-      id
-      isChef
-      city
-      state
-    }
+    roles
+    state
   }
 }

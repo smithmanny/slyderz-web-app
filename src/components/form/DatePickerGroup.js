@@ -1,45 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'formik';
-import { DatePicker } from '@material-ui/pickers';
-import FormControl from '@material-ui/core/FormControl';
-import Typography from '@material-ui/core/Typography';
+import { KeyboardDatePicker } from '@material-ui/pickers';
 
-const DatePickerField = ({ field, form, ...other }) => {
-  const currentError = form.errors[field.name];
-  return (
-    <DatePicker
-      disablePast
-      name={field.name}
-      value={field.value}
-      format="MM/dd/yyyy"
-      onError={(_, error) => form.setFieldError(field.name, error)}
-      onChange={date => form.setFieldValue(field.name, date, true)}
-      {...other}
-    />
-  );
-};
-
-DatePickerField.propTypes = {
-  field: PropTypes.object.isRequired,
-  form: PropTypes.object.isRequired
-};
-
-const DatePickerGroup = ({ label }) => (
-  <FormControl fullWidth margin="normal">
-    <Typography variant="body1" gutterBottom>
-      {label}
-    </Typography>
-    <Field name="eventDate" component={DatePickerField} />
-  </FormControl>
+const DatePickerInput = ({ field, form, ...props }) => (
+  <KeyboardDatePicker
+    {...field}
+    id={field.name}
+    disablePast
+    disableToolbar
+    variant="inline"
+    format="MM/dd/yyyy"
+    margin="normal"
+    onChange={(_, date) => form.setFieldValue(field.name, date, false)}
+    KeyboardButtonProps={{
+      'aria-label': 'Date picker'
+    }}
+    {...props}
+  />
 );
 
-DatePickerGroup.defaultProps = {
-  label: null
+DatePickerInput.propTypes = {
+  field: PropTypes.shape({
+    name: PropTypes.string,
+    onChange: PropTypes.func,
+    value: PropTypes.string
+  }).isRequired,
+  form: PropTypes.shape({
+    setFieldValue: PropTypes.func
+  }).isRequired
 };
 
+const DatePickerGroup = ({ ...props }) => (
+  <Field component={DatePickerInput} {...props} />
+);
+
 DatePickerGroup.propTypes = {
-  label: PropTypes.string
+  name: PropTypes.string.isRequired
 };
 
 export default DatePickerGroup;

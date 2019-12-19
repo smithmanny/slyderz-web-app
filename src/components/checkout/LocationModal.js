@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Button, Grid, Typography } from '../core';
+import { Button } from '../core';
+import Typography from '../core/Typography';
+import Grid from '../core/Grid';
 import { BasicModal } from '../shared';
 import BasicForm, { TextField } from '../form';
 

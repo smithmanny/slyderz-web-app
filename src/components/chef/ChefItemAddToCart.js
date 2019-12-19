@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
-import { Button, Fab, Grid, Typography } from '../core';
+import { Button, Fab } from '../core';
+import Typography from '../core/Typography';
+import Grid from '../core/Grid';
 import { AddIcon, RemoveIcon } from '../../assets/icons';
 import chefItemAddToCartStyles from '../../assets/styles/consumer/chef/chefItemAddToCartStyles';
 

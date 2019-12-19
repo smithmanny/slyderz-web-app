@@ -1,8 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-import { Typography } from '../../src/components/core';
-
+import Typography from '../../src/components/core/Typography';
 import authStyles from '../../src/assets/styles/consumer/authStyles';
 
 const Settings = () => {
@@ -11,7 +10,7 @@ const Settings = () => {
     <section className={classes.container}>
       <Link href="/">
         <a>
-          <img className={classes.logo} src="/static/logo.png" alt="Slyderz" />
+          <img className={classes.logo} src="/logo.png" alt="Slyderz" />
         </a>
       </Link>
       <Typography className={classes.welcome} variant="h3">

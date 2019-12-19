@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { AppBar, Container } from '../core';
+import AppBar from '../core/AppBar';
+import Container from '../core/Container';
 import appContainerStyles from '../../assets/styles/consumer/appContainerStyles';
 
 const AppContainer = ({ children, ...props }) => {

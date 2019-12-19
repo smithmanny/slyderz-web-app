@@ -1,16 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
 
-import {
-  Avatar,
-  Card,
-  CardContent,
-  CardMedia,
-  Grid,
-  Typography
-} from '../core';
+import { Avatar, Card, CardContent, CardMedia } from '../core';
+import Typography from '../core/Typography';
+import Grid from '../core/Grid';
 import { AppContainer, Section } from './index';
-
 import homePageStyles from '../../assets/styles/consumer/homePageStyles';
 
 const HomePageLayout = () => {
@@ -41,7 +35,7 @@ const HomePageLayout = () => {
                       classes={{
                         root: classes.cardMedia
                       }}
-                      image="/static/food.jpg"
+                      image="/food.jpg"
                       title="Chef dish"
                     />
                     <CardContent

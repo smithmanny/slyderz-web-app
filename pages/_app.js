@@ -1,9 +1,9 @@
 import React from 'react';
 import App from 'next/app';
-import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider } from '@apollo/react-hooks';
 import { ThemeProvider, StylesProvider } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import DateFnsUtils from '@date-io/date-fns';
 import { DefaultSeo } from 'next-seo';
 import TagManager from 'react-gtm-module';
@@ -63,6 +63,7 @@ class MyApp extends App {
       handleCartModal: this.handleCartModal,
       closeCartModal: this.closeCartModal
     };
+    console.log({ pageProps });
 
     return (
       <ApolloProvider client={apollo}>

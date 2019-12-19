@@ -4,7 +4,10 @@ import PropTypes from 'prop-types';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 
-import { Badge, IconButton, Grid, Link, Typography } from './index';
+import { Badge, Link } from './index';
+import IconButton from './IconButton';
+import Grid from './Grid';
+import Typography from './Typography';
 import { ShoppingCart, PersonIcon } from '../../assets/icons';
 import CheckoutCartModal from '../checkout/CheckoutCartModal';
 import appbarStyles from '../../assets/styles/consumer/appbarSyles';

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
-import { Select, MenuItem, Typography } from '../core';
+import { MenuItem } from '../core';
+import Typography from '../core/Typography';
+import { Select } from '../form';
 import ordersStyles from '../../assets/styles/consumer/ordersStyles';
 
 const Orders = () => {

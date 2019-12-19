@@ -5,13 +5,14 @@ import AppBar from '@material-ui/core/AppBar';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 
-import { Button, Container, Fab, Grid, TextField, Typography } from '../core';
-import BasicForm from '../form';
+import BasicForm, { Select, TextField } from '../form';
+import { Button, Fab } from '../core';
+import Container from '../core/Container';
+import Grid from '../core/Grid';
+import Typography from '../core/Typography';
 import { Section } from './index';
 import HowItWorks from '../howItWorks';
-
 import landingPageStyles from '../../assets/styles/consumer/landing/landingPageStyles';
 
 const LandingPageLayout = () => {
@@ -70,7 +71,7 @@ const LandingPageLayout = () => {
             <Grid item style={{ marginRight: 'auto' }}>
               <Link href="/">
                 <a className={classes.logo}>
-                  <img srcSet="/static/logo-white.png" alt="Slyderz" />
+                  <img srcSet="/logo-white.png" alt="Slyderz" />
                 </a>
               </Link>
             </Grid>
@@ -102,7 +103,7 @@ const LandingPageLayout = () => {
             <img
               className="header-img"
               alt="Couple cooking"
-              srcSet="/static/header.jpg"
+              srcSet="/header.jpg"
             />
           </Grid>
 
@@ -145,7 +146,7 @@ const LandingPageLayout = () => {
             </Grid>
             <Grid item xs={12} md={6}>
               <div className={classes.whoWeAreImg}>
-                <img srcSet="/static/brocolli_transparent.png" alt="Brocolli" />
+                <img srcSet="/brocolli_transparent.png" alt="Brocolli" />
               </div>
             </Grid>
           </Grid>
@@ -245,7 +246,7 @@ const LandingPageLayout = () => {
         <Link href="/landing/chef">
           <a>
             <img
-              srcSet="/static/become-chef-banner.png"
+              srcSet="/become-chef-banner.png"
               alt="Become a chef"
               style={{ width: '100%' }}
             />
@@ -353,7 +354,7 @@ const LandingPageLayout = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <img srcSet="/static/instagram.png" alt="Slyderz Instagram" />
+                <img srcSet="/instagram.png" alt="Slyderz Instagram" />
               </a>
             </li>
             <li>
@@ -362,7 +363,7 @@ const LandingPageLayout = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <img srcSet="/static/twitter.png" alt="Slyderz Twitter" />
+                <img srcSet="/twitter.png" alt="Slyderz Twitter" />
               </a>
             </li>
             <li>
@@ -371,7 +372,7 @@ const LandingPageLayout = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <img srcSet="/static/facebook.png" alt="Slyderz Facebook" />
+                <img srcSet="/facebook.png" alt="Slyderz Facebook" />
               </a>
             </li>
           </ul>

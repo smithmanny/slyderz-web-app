@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Grid, Typography } from '../core';
+import Grid from '../core/Grid';
+import Typography from '../core/Typography';
 import { Section } from '../layouts';
 import howItWorksStyles from '../../assets/styles/consumer/howItWorksStyles';
 
@@ -17,7 +18,7 @@ const HowItWorks = ({ ...props }) => {
         <Grid container className={classes.infoImages} justify="space-around">
           <Grid item md={4}>
             <div className={classes.infoImage}>
-              <img srcSet="/static/hiw-planning.png" alt="Party" />
+              <img srcSet="/hiw-planning.png" alt="Party" />
             </div>
             <Typography variant="h5" align="center" className={classes.text}>
               Explore
@@ -28,7 +29,7 @@ const HowItWorks = ({ ...props }) => {
           </Grid>
           <Grid item md={4}>
             <div className={classes.infoImage}>
-              <img srcSet="/static/hiw-chef.png" alt="Party" />
+              <img srcSet="/hiw-chef.png" alt="Party" />
             </div>
             <Typography variant="h5" align="center" className={classes.text}>
               Easy Ordering
@@ -39,7 +40,7 @@ const HowItWorks = ({ ...props }) => {
           </Grid>
           <Grid item md={4}>
             <div className={classes.infoImage}>
-              <img srcSet="/static/hiw-party.png" alt="Party" />
+              <img srcSet="/hiw-party.png" alt="Party" />
             </div>
             <Typography variant="h5" align="center" className={classes.text}>
               Celebrate

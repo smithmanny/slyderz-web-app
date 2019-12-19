@@ -1,81 +1,71 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ApolloConsumer } from 'react-apollo';
+import { useApolloClient } from '@apollo/react-hooks';
 import { Formik, Form } from 'formik';
 
 export { default as DatePickerField } from './DatePickerGroup';
 export { default as TimePickerField } from './TimePickerGroup';
-export { default as SelectField } from './SelectGroup';
 export { default as TextField } from './TextFieldGroup';
-// import currentUserQuery from '../../lib/gql/query/user/currentUserQuery.gql';
+export { default as Select } from '@material-ui/core/Select';
 
-const BasicForm = ({ children, defaultValues, mutate, validation }) => (
-  <ApolloConsumer>
-    {client => {
-      const { onCompleted, onSubmit, mutation } = mutate || {};
+const BasicForm = ({
+  children,
+  defaultValues,
+  refetchQueries,
+  mutate,
+  validate
+}) => {
+  const client = useApolloClient();
 
-      function handleSubmit({ setSubmitting, variables }) {
-        // Call custom submit function instead of GraphQL mutation
-        if (typeof onSubmit === 'function') {
-          return onSubmit(variables);
+  function handleFormSubmit({ values, setSubmitting }) {
+    const { toVariables, onCompleted, onSubmit, mutation } = mutate || {};
+    const variables = toVariables(values);
+
+    // Call custom submit function instead of GraphQL mutation
+    if (typeof onSubmit === 'function') {
+      return onSubmit(variables);
+    }
+    // Handle mutation with GraphQL
+    client
+      .mutate({
+        mutation,
+        variables,
+        refetchQueries: [{ query: [...refetchQueries] }]
+      })
+      .then(res => {
+        setSubmitting(false);
+        if (typeof onCompleted === 'function') {
+          onCompleted(res);
         }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
 
-        // Handle mutation with GraphQL and refetch currentUser
-        client
-          .mutate({
-            mutation,
-            variables
-            // refetchQueries: [{ query: currentUserQuery }]
-          })
-          .then(res => {
-            setSubmitting(false);
-            if (typeof onCompleted === 'function') {
-              onCompleted(res);
-            }
-          })
-          .catch(error => {
-            // setServerError(error);
-            console.log(error);
-          });
-      }
+  return (
+    <Formik initialValues={defaultValues} validate={validate}>
+      {({ values, handleChange, handleSubmit, setSubmitting }) => (
+        <Form
+          onSubmit={async e => {
+            e.stopPropagation();
+            e.preventDefault();
+            await handleFormSubmit({ values, setSubmitting });
+          }}
+        >
+          {children({ values, handleChange, handleSubmit })}
+        </Form>
+      )}
+    </Formik>
+  );
+};
 
-      return (
-        <Formik initialValues={defaultValues} validationSchema={validation}>
-          {({
-            values,
-            errors,
-            isSubmitting,
-            handleBlur,
-            handleChange,
-            setSubmitting
-          }) => (
-            <Form
-              onSubmit={e => {
-                e.stopPropagation();
-                e.preventDefault();
-
-                // Pass form values and custom values declared inside component
-                const variables = mutate.toVariables(values);
-                handleSubmit({ setSubmitting, variables });
-              }}
-            >
-              {children({
-                values,
-                errors,
-                isSubmitting,
-                handleBlur,
-                handleChange
-              })}
-            </Form>
-          )}
-        </Formik>
-      );
-    }}
-  </ApolloConsumer>
-);
+BasicForm.defaultProps = {
+  refetchQueries: []
+};
 
 BasicForm.propTypes = {
-  children: PropTypes.func.isRequired,
+  children: PropTypes.object.isRequired,
   defaultValues: PropTypes.object,
   mutate: PropTypes.shape({
     mutation: PropTypes.func,
@@ -83,7 +73,8 @@ BasicForm.propTypes = {
     onSubmit: PropTypes.func,
     toVariables: PropTypes.func
   }),
-  validation: PropTypes.func
+  refetchQueries: PropTypes.arrayOf(PropTypes.string),
+  validate: PropTypes.func
 };
 
 export default BasicForm;

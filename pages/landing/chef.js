@@ -3,7 +3,8 @@ import Link from 'next/link';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 
-import { Container, Grid } from '../../src/components/core';
+import Grid from '../../src/components/core/Grid';
+import Container from '../../src/components/core/Container';
 import { Section } from '../../src/components/layouts/index';
 
 import landingPageStyles from '../../src/assets/styles/consumer/landing/landingPageStyles';
@@ -32,7 +33,7 @@ const BecomeChefLandingPage = () => {
             <div>
               <Link href="/">
                 <a>
-                  <img srcSet="/static/logo.png" alt="Slyderz" />
+                  <img srcSet="/logo.png" alt="Slyderz" />
                 </a>
               </Link>
             </div>

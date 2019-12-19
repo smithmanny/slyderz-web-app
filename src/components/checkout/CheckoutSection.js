@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Divider, Fab, Typography } from '../core';
+import { Fab } from '../core';
+import Divider from '../core/Divider';
+import Typography from '../core/Typography';
 import checkoutSectionStyles from '../../assets/styles/consumer/checkout/checkoutSectionStyles';
 import LocationModal from './LocationModal';
 import PaymentModal from './PaymentModal';

@@ -1,3 +1,3 @@
 export const config = {
-  DEV_URL: 'https://hasura-slyderz.herokuapp.com/v1/graphql'
+  DEV_URL: 'http://localhost:4000'
 };
