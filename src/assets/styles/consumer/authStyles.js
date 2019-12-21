@@ -9,7 +9,13 @@ export default makeStyles(theme =>
       marginTop: theme.spacing(4)
     },
     formContent: {
-      maxWidth: '500px'
+      maxWidth: '500px',
+      '& .firstName': {
+        paddingRight: theme.spacing(1)
+      },
+      '& .lastName': {
+        paddingLeft: theme.spacing(1)
+      }
     },
     logo: {
       maxWidth: '250px'

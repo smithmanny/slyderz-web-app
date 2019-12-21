@@ -8,7 +8,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { DefaultSeo } from 'next-seo';
 import TagManager from 'react-gtm-module';
 
-import { CheckoutCartProvider } from '../src/context/checkoutCartContext';
+import { UserProvider } from '../src/context/userContext';
 import { theme } from '../src/libs/material-ui';
 import withApollo from '../src/utils/withApollo';
 import SEO from '../next-seo.config';
@@ -16,22 +16,27 @@ import SEO from '../next-seo.config';
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
     let pageProps = {};
+    let userId = null;
+
+    // Get userId from cookie and set global user
+    if (ctx.req) {
+      const slyderzCookie = ctx.req.headers.cookie
+        .split(';')
+        .find(t => t.trim().includes('io'));
+      /* eslint-disable prefer-destructuring */
+      if (slyderzCookie) {
+        userId = slyderzCookie.split('=')[1];
+        pageProps.user = userId;
+      }
+      /* eslint-enable prefer-destructuring */
+    }
+
     if (Component.getInitialProps) {
       pageProps = await Component.getInitialProps(ctx);
     }
     // this exposes the query to the user
     pageProps.query = ctx.query;
     return { pageProps };
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      showCartModal: false
-    };
-
-    this.handleCartModal = this.handleCartModal.bind(this);
-    this.closeCartModal = this.closeCartModal.bind(this);
   }
 
   componentDidMount() {
@@ -47,36 +52,18 @@ class MyApp extends App {
     TagManager.initialize(tagManagerArgs);
   }
 
-  handleCartModal() {
-    this.setState(prev => ({
-      showCartModal: prev.showCartModal === false
-    }));
-  }
-
-  closeCartModal() {
-    this.setState({ showCartModal: false });
-  }
-
   render() {
     const { apollo, Component, pageProps } = this.props;
-    const functions = {
-      handleCartModal: this.handleCartModal,
-      closeCartModal: this.closeCartModal
-    };
-    console.log({ pageProps });
-
     return (
       <ApolloProvider client={apollo}>
         <StylesProvider>
           <ThemeProvider theme={theme}>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <CheckoutCartProvider
-                value={[this.state.showCartModal, functions]}
-              >
+              <UserProvider value={pageProps.user}>
                 <DefaultSeo {...SEO} />
                 <CssBaseline />
                 <Component {...pageProps} />
-              </CheckoutCartProvider>
+              </UserProvider>
             </MuiPickersUtilsProvider>
           </ThemeProvider>
         </StylesProvider>

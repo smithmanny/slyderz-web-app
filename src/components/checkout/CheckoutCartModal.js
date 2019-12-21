@@ -6,13 +6,13 @@ import Typography from '../core/Typography';
 import { CloseIcon } from '../../assets/icons';
 import Orders from './Orders';
 
-const CheckoutCartModal = ({ classes, handleCartModal }) => (
+const CheckoutCartModal = ({ classes, closeCartModal }) => (
   <Paper className={classes.modal}>
     <CloseIcon
       aria-label="Close checkout cart"
       className={classes.close}
       fontSize="small"
-      onClick={handleCartModal}
+      onClick={closeCartModal}
     />
     <Typography variant="h4" gutterBottom>
       Your Order
@@ -40,7 +40,7 @@ const CheckoutCartModal = ({ classes, handleCartModal }) => (
 
 CheckoutCartModal.propTypes = {
   classes: PropTypes.object.isRequired,
-  handleCartModal: PropTypes.func.isRequired
+  closeCartModal: PropTypes.func.isRequired
 };
 
 export default CheckoutCartModal;

@@ -16,9 +16,7 @@ import CheckoutCartContext from '../../context/checkoutCartContext';
 
 const AppBarComponent = ({ ...props }) => {
   const classes = appbarStyles();
-  const [showCartModal, { closeCartModal, handleCartModal }] = useContext(
-    CheckoutCartContext
-  );
+  const [showCartModal, setShowCartModal] = useContext(CheckoutCartContext);
   const [showCartLogo, setCartLogo] = useState(true);
 
   useEffect(() => {
@@ -26,7 +24,7 @@ const AppBarComponent = ({ ...props }) => {
     // Hide cart logo on checkout screen
     if (isWindow) {
       if (window.location.pathname === '/checkout') {
-        closeCartModal();
+        setShowCartModal(false);
         setCartLogo(false);
       }
     }
@@ -69,7 +67,7 @@ const AppBarComponent = ({ ...props }) => {
               <IconButton
                 aria-label="cart"
                 disableRipple
-                onClick={handleCartModal}
+                onClick={() => setShowCartModal(!showCartModal)}
               >
                 <Badge
                   className={classes.margin}
@@ -88,7 +86,7 @@ const AppBarComponent = ({ ...props }) => {
         {showCartModal && (
           <CheckoutCartModal
             classes={classes}
-            handleCartModal={handleCartModal}
+            closeCartModal={() => setShowCartModal(false)}
           />
         )}
       </Toolbar>

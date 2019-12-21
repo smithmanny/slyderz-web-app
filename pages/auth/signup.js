@@ -21,15 +21,15 @@ const Signup = () => {
       </Typography>
       <BasicForm>
         {({ values }) => (
-          <Grid className={classes.formContent} container spacing={2}>
-            <Grid item xs={12} sm={6}>
+          <Grid className={classes.formContent} container spacing={0}>
+            <Grid item xs={12} sm={6} className="firstName">
               <TextField
                 name="firstName"
                 variant="outlined"
                 label="First Name"
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={6} className="lastName">
               <TextField name="lastName" variant="outlined" label="Last Name" />
             </Grid>
             <Grid item xs={12}>

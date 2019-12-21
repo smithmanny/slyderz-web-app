@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CheckoutCartContext = React.createContext([{}, () => {}]);
+const CheckoutCartContext = React.createContext([]);
 
 export const CheckoutCartProvider = CheckoutCartContext.Provider;
 export const CheckoutCartConsumer = CheckoutCartContext.Consumer;
