@@ -7,7 +7,7 @@ const nextConfig = {
   target: 'serverless',
   env: {
     // Will be available on both server and client
-    PROD_URL: 'https://hasura-slyderz.herokuapp.com/v1/graphql'
+    DEV_URL: 'http://localhost:4000'
   }
 };
 

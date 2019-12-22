@@ -8,16 +8,10 @@ export { default as TimePickerField } from './TimePickerGroup';
 export { default as TextField } from './TextFieldGroup';
 export { default as Select } from '@material-ui/core/Select';
 
-const BasicForm = ({
-  children,
-  defaultValues,
-  refetchQueries,
-  mutate,
-  validate
-}) => {
+const BasicForm = ({ children, defaultValues, refetchQueries, mutate }) => {
   const client = useApolloClient();
 
-  function handleFormSubmit({ values, setSubmitting }) {
+  async function handleFormSubmit({ values, setSubmitting, validateForm }) {
     const { toVariables, onCompleted, onSubmit, mutation } = mutate || {};
     const variables = toVariables(values);
 
@@ -25,35 +19,42 @@ const BasicForm = ({
     if (typeof onSubmit === 'function') {
       return onSubmit(variables);
     }
-    // Handle mutation with GraphQL
-    client
-      .mutate({
-        mutation,
-        variables,
-        refetchQueries: [{ query: [...refetchQueries] }]
-      })
-      .then(res => {
-        setSubmitting(false);
-        if (typeof onCompleted === 'function') {
-          onCompleted(res);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    // Handle form request with GraphQL
+    console.log({ values });
+    await validateForm();
+    try {
+      client
+        .mutate({
+          mutation,
+          variables,
+          refetchQueries: [{ query: [...refetchQueries] }]
+        })
+        .then(res => {
+          setSubmitting(false);
+          if (typeof onCompleted === 'function') {
+            onCompleted(res);
+          }
+        });
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   return (
-    <Formik initialValues={defaultValues} validate={validate}>
-      {({ values, handleChange, handleSubmit, setSubmitting }) => (
+    <Formik initialValues={defaultValues} validationSchema={mutate.validation}>
+      {({ errors, values, handleChange, setSubmitting, validateForm }) => (
         <Form
           onSubmit={async e => {
             e.stopPropagation();
             e.preventDefault();
-            await handleFormSubmit({ values, setSubmitting });
+            await handleFormSubmit({
+              values,
+              setSubmitting,
+              validateForm
+            });
           }}
         >
-          {children({ values, handleChange, handleSubmit })}
+          {children({ errors, values, handleChange })}
         </Form>
       )}
     </Formik>
@@ -65,16 +66,16 @@ BasicForm.defaultProps = {
 };
 
 BasicForm.propTypes = {
-  children: PropTypes.object.isRequired,
+  children: PropTypes.func.isRequired,
   defaultValues: PropTypes.object,
   mutate: PropTypes.shape({
-    mutation: PropTypes.func,
+    mutation: PropTypes.object,
     onCompleted: PropTypes.func,
     onSubmit: PropTypes.func,
-    toVariables: PropTypes.func
+    toVariables: PropTypes.func,
+    validation: PropTypes.object
   }),
-  refetchQueries: PropTypes.arrayOf(PropTypes.string),
-  validate: PropTypes.func
+  refetchQueries: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default BasicForm;

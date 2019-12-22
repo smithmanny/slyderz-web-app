@@ -5,6 +5,9 @@ import { Button } from '../../src/components/core';
 import BasicForm, { TextField } from '../../src/components/form';
 import Typography from '../../src/components/core/Typography';
 import Grid from '../../src/components/core/Grid';
+
+import CREATE_USER_MUTATION from '../../src/libs/gql/mutation/auth/signUpUserMutation.gql';
+import SIGNUP_VALIDATION from '../../src/libs/yup/signupValidation';
 import authStyles from '../../src/assets/styles/consumer/authStyles';
 
 const Signup = () => {
@@ -19,8 +22,17 @@ const Signup = () => {
       <Typography className={classes.welcome} variant="h3">
         Welcome To Slyderz
       </Typography>
-      <BasicForm>
-        {({ values }) => (
+      <BasicForm
+        defaultValues={{ firstName: '' }}
+        mutate={{
+          mutation: CREATE_USER_MUTATION,
+          toVariables: values => ({
+            ...values
+          }),
+          validation: SIGNUP_VALIDATION
+        }}
+      >
+        {({ errors }) => (
           <Grid className={classes.formContent} container spacing={0}>
             <Grid item xs={12} sm={6} className="firstName">
               <TextField
@@ -45,6 +57,7 @@ const Signup = () => {
                 size="large"
                 variant="contained"
                 color="primary"
+                type="submit"
               >
                 Sign up
               </Button>
