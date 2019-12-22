@@ -16,17 +16,17 @@ import SEO from '../next-seo.config';
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
     let pageProps = {};
-    let userId = null;
+    let user = null;
 
-    // Get userId from cookie and set global user
-    if (ctx.req) {
+    // Get user from cookie and set global user
+    if (ctx.req && ctx.req.headers.cookie) {
       const slyderzCookie = ctx.req.headers.cookie
         .split(';')
-        .find(t => t.trim().includes('io'));
+        .find(t => t.trim().includes('_slyderz'));
       /* eslint-disable prefer-destructuring */
       if (slyderzCookie) {
-        userId = slyderzCookie.split('=')[1];
-        pageProps.user = userId;
+        user = slyderzCookie.split('=')[1];
+        pageProps.user = user;
       }
       /* eslint-enable prefer-destructuring */
     }

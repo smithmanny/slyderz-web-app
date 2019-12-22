@@ -12,13 +12,13 @@ const TextFieldGroup = ({ name, ...props }) => {
       {({ field, form, meta }) => (
         <TextField
           {...field}
-          error={meta.error}
+          error={meta.touched && meta.error}
           className={classes.textField}
           margin="normal"
           onChange={event => {
             form.setFieldValue(name, event.target.value);
           }}
-          helperText={meta.error}
+          helperText={meta.touched && meta.error}
           {...props}
         />
       )}
@@ -27,7 +27,6 @@ const TextFieldGroup = ({ name, ...props }) => {
 };
 
 TextFieldGroup.propTypes = {
-  errors: PropTypes.object,
   props: PropTypes.object,
   name: PropTypes.string.isRequired
 };

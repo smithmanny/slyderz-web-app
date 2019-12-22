@@ -11,7 +11,7 @@ function createClient({ headers, initialState }) {
     request: operation => {
       operation.setContext({
         fetchOptions: {
-          // credentials: 'include'
+          credentials: 'include'
         },
         headers
       });

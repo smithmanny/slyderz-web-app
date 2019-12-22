@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Router from 'next/router';
 
 import { Button } from '../../src/components/core';
 import BasicForm, { TextField } from '../../src/components/form';
@@ -29,10 +30,13 @@ const Signup = () => {
           toVariables: values => ({
             ...values
           }),
+          onCompleted: () => {
+            Router.push('/');
+          },
           validation: SIGNUP_VALIDATION
         }}
       >
-        {({ errors }) => (
+        {({ isSubmitting }) => (
           <Grid className={classes.formContent} container spacing={0}>
             <Grid item xs={12} sm={6} className="firstName">
               <TextField
@@ -58,6 +62,7 @@ const Signup = () => {
                 variant="contained"
                 color="primary"
                 type="submit"
+                disabled={isSubmitting}
               >
                 Sign up
               </Button>
