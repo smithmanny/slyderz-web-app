@@ -30,7 +30,7 @@ const Signup = () => {
           toVariables: values => ({
             ...values
           }),
-          onCompleted: () => {
+          onCompleted: res => {
             Router.push('/');
           },
           validation: SIGNUP_VALIDATION

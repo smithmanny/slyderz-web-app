@@ -30,7 +30,7 @@ const BasicForm = ({ children, defaultValues, refetchQueries, mutate }) => {
       .then(res => {
         setSubmitting(false);
         if (typeof onCompleted === 'function') {
-          onCompleted(res);
+          onCompleted(res.data);
         }
       })
       .catch(err => {
