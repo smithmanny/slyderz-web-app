@@ -1,6 +1,4 @@
 /* eslint-disable import/no-cycle */
-// Material-UI Core
-export { default as Link } from 'next/link';
 export { default as Avatar } from '@material-ui/core/Avatar';
 export { default as Badge } from '@material-ui/core/Badge';
 export { default as Button } from '@material-ui/core/Button';

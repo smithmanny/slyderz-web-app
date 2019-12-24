@@ -2,6 +2,9 @@ import { makeStyles, createStyles } from '../../../components/shared/theme';
 
 export default makeStyles(theme =>
   createStyles({
+    accountFab: {
+      backgroundColor: 'transparent'
+    },
     close: {
       marginBottom: theme.spacing(2)
     },
@@ -16,10 +19,6 @@ export default makeStyles(theme =>
     },
     iconButton: {
       color: '#000'
-    },
-    profile: {
-      display: 'flex',
-      alignItems: 'center'
     },
     root: {
       position: 'relative',

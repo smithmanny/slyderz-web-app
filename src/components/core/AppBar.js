@@ -1,17 +1,19 @@
 /* eslint-disable import/no-named-default */
 import React, { useContext, useEffect, useState } from 'react';
+import Link from 'next/link';
 import PropTypes from 'prop-types';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 
-import { Badge, Link } from './index';
+import { Badge, Fab } from './index';
 import IconButton from './IconButton';
 import Grid from './Grid';
 import Typography from './Typography';
 import { ShoppingCart, PersonIcon } from '../../assets/icons';
 import CheckoutCartModal from '../checkout/CheckoutCartModal';
-import appbarStyles from '../../assets/styles/consumer/appbarSyles';
+import AccountPopover from '../shared/AccountPopover';
 
+import appbarStyles from '../../assets/styles/consumer/appbarSyles';
 import CheckoutCartContext from '../../context/checkoutCartContext';
 import { getUser } from '../../context/userContext';
 
@@ -19,7 +21,16 @@ const AppBarComponent = ({ ...props }) => {
   const classes = appbarStyles();
   const [showCartModal, setShowCartModal] = useContext(CheckoutCartContext);
   const [showCartLogo, setCartLogo] = useState(true);
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const user = getUser();
+
+  const closeAccountModal = () => {
+    setAnchorEl(null);
+  };
+
+  const handleAccountModalClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
 
   useEffect(() => {
     const isWindow = typeof window !== 'undefined';
@@ -31,6 +42,9 @@ const AppBarComponent = ({ ...props }) => {
       }
     }
   }, [user]);
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'account-popover' : null;
 
   return (
     <AppBar
@@ -58,14 +72,17 @@ const AppBarComponent = ({ ...props }) => {
           )}
           {user && (
             <Grid item>
-              <span className={classes.profile}>
+              <Fab
+                aria-label="account-fab"
+                variant="extended"
+                className={classes.accountFab}
+                onClick={handleAccountModalClick}
+              >
                 <PersonIcon fontSize="large" />
                 <Typography className={classes.profileName} variant="body1">
-                  <Link href="/settings">
-                    <a>Shakhor</a>
-                  </Link>
+                  Shakhor
                 </Typography>
-              </span>
+              </Fab>
             </Grid>
           )}
           {showCartLogo && user && (
@@ -95,6 +112,16 @@ const AppBarComponent = ({ ...props }) => {
             closeCartModal={() => setShowCartModal(false)}
           />
         )}
+        <AccountPopover
+          id={id}
+          open={open}
+          onClose={closeAccountModal}
+          anchorEl={anchorEl}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left'
+          }}
+        />
       </Toolbar>
     </AppBar>
   );

@@ -1,7 +1,8 @@
 import React from 'react';
+import Link from 'next/link';
 import PropTypes from 'prop-types';
 
-import { Button, Paper, Link } from '../core';
+import { Button, Paper } from '../core';
 import Typography from '../core/Typography';
 import { CloseIcon } from '../../assets/icons';
 import Orders from './Orders';

@@ -12,7 +12,7 @@ export const UserProvider = ({ children }) => {
     return null;
   }
 
-  const [user, setCurrentUser] = useState(data.me);
+  const [user, setCurrentUser] = useState(data.me || null);
   return (
     <UserStateContext.Provider value={user}>
       {children}
