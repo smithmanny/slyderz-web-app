@@ -13,11 +13,13 @@ import CheckoutCartModal from '../checkout/CheckoutCartModal';
 import appbarStyles from '../../assets/styles/consumer/appbarSyles';
 
 import CheckoutCartContext from '../../context/checkoutCartContext';
+import { getUser } from '../../context/userContext';
 
 const AppBarComponent = ({ ...props }) => {
   const classes = appbarStyles();
   const [showCartModal, setShowCartModal] = useContext(CheckoutCartContext);
   const [showCartLogo, setCartLogo] = useState(true);
+  const user = getUser();
 
   useEffect(() => {
     const isWindow = typeof window !== 'undefined';
@@ -28,7 +30,7 @@ const AppBarComponent = ({ ...props }) => {
         setCartLogo(false);
       }
     }
-  }, []);
+  }, [user]);
 
   return (
     <AppBar
@@ -45,24 +47,28 @@ const AppBarComponent = ({ ...props }) => {
         </Link>
 
         <Grid container className={classes.linksSection} spacing={1}>
-          <Grid item>
-            <Link href="/auth/login">
-              <a className={classes.login}>
-                <Typography variant="h6">Log In</Typography>
-              </a>
-            </Link>
-          </Grid>
-          <Grid item>
-            <span className={classes.profile}>
-              <PersonIcon fontSize="large" />
-              <Typography className={classes.profileName} variant="body1">
-                <Link href="/settings">
-                  <a>Shakhor</a>
-                </Link>
-              </Typography>
-            </span>
-          </Grid>
-          {showCartLogo && (
+          {!user && (
+            <Grid item>
+              <Link href="/auth/login">
+                <a className={classes.login}>
+                  <Typography variant="h6">Log In</Typography>
+                </a>
+              </Link>
+            </Grid>
+          )}
+          {user && (
+            <Grid item>
+              <span className={classes.profile}>
+                <PersonIcon fontSize="large" />
+                <Typography className={classes.profileName} variant="body1">
+                  <Link href="/settings">
+                    <a>Shakhor</a>
+                  </Link>
+                </Typography>
+              </span>
+            </Grid>
+          )}
+          {showCartLogo && user && (
             <Grid item>
               <IconButton
                 aria-label="cart"

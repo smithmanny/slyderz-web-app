@@ -16,20 +16,6 @@ import SEO from '../next-seo.config';
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
     let pageProps = {};
-    let user = null;
-
-    // Get user from cookie and set global user
-    if (ctx.req && ctx.req.headers.cookie) {
-      const slyderzCookie = ctx.req.headers.cookie
-        .split(';')
-        .find(t => t.trim().includes('_slyderz'));
-      /* eslint-disable prefer-destructuring */
-      if (slyderzCookie) {
-        user = slyderzCookie.split('=')[1];
-        pageProps.user = user;
-      }
-      /* eslint-enable prefer-destructuring */
-    }
 
     if (Component.getInitialProps) {
       pageProps = await Component.getInitialProps(ctx);
@@ -59,7 +45,7 @@ class MyApp extends App {
         <StylesProvider>
           <ThemeProvider theme={theme}>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <UserProvider value={pageProps.user}>
+              <UserProvider>
                 <DefaultSeo {...SEO} />
                 <CssBaseline />
                 <Component {...pageProps} />
