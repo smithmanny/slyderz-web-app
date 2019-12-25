@@ -9,10 +9,12 @@ import Grid from '../../src/components/core/Grid';
 
 import CREATE_USER_MUTATION from '../../src/libs/gql/mutation/auth/signUpUserMutation.gql';
 import SIGNUP_VALIDATION from '../../src/libs/yup/signupValidation';
+import { useUserDispatch } from '../../src/context/userContext';
 import authStyles from '../../src/assets/styles/consumer/authStyles';
 
 const Signup = () => {
   const classes = authStyles();
+  const dispatch = useUserDispatch();
   return (
     <section className={classes.container}>
       <Link href="/">
@@ -31,7 +33,8 @@ const Signup = () => {
             ...values
           }),
           onCompleted: res => {
-            Router.push('/');
+            console.log({ res });
+            dispatch({ type: 'SIGNUP', payload: res.signup });
           },
           validation: SIGNUP_VALIDATION
         }}

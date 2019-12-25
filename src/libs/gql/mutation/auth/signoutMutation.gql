@@ -1,4 +1,4 @@
-mutation signUserOut {
+mutation signout {
   signout {
     message
   }

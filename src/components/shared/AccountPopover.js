@@ -1,7 +1,6 @@
 import React from 'react';
+import { useMutation } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import Avatar from '@material-ui/core/Avatar';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -9,39 +8,45 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Popover from '@material-ui/core/Popover';
 import PersonIcon from '@material-ui/icons/Person';
 import AddIcon from '@material-ui/icons/Add';
-import { blue } from '@material-ui/core/colors';
 
-const emails = ['username@gmail.com', 'user02@gmail.com'];
-const useStyles = makeStyles({
-  avatar: {
-    backgroundColor: blue[100],
-    color: blue[600]
+import accountPopoverStyles from '../../assets/styles/consumer/accountPopoverStyles';
+import { useUserDispatch } from '../../context/userContext';
+import SIGNOUT_MUTATION from '../../libs/gql/mutation/auth/signoutMutation.gql';
+
+const routes = [
+  {
+    icon: AddIcon,
+    name: 'Account',
+    route: '/settings'
   }
-});
+];
 
 function AccountPopover({ ...props }) {
-  const classes = useStyles();
+  const classes = accountPopoverStyles();
+  const dispatch = useUserDispatch();
+  const [signout] = useMutation(SIGNOUT_MUTATION);
+
   return (
-    <Popover {...props} aria-labelledby="simple-popover">
+    <Popover {...props} aria-labelledby="account-popover">
       <List>
-        {emails.map(email => (
-          <ListItem button key={email}>
+        {routes.map(link => (
+          <ListItem button key={link}>
             <ListItemAvatar>
-              <Avatar className={classes.avatar}>
-                <PersonIcon />
-              </Avatar>
+              <PersonIcon fontSize="large" />
             </ListItemAvatar>
-            <ListItemText primary={email} />
+            <ListItemText primary={link.name} className={classes.text} />
           </ListItem>
         ))}
-
-        <ListItem autoFocus button>
-          <ListItemAvatar>
-            <Avatar>
-              <AddIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="add account" />
+        <ListItem
+          button
+          onClick={e => {
+            e.preventDefault();
+            signout();
+            dispatch({ type: 'SIGNOUT' });
+            props.onClose();
+          }}
+        >
+          <ListItemText primary="Sign out" className={classes.text} />
         </ListItem>
       </List>
     </Popover>

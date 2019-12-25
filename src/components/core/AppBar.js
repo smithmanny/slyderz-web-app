@@ -22,6 +22,8 @@ const AppBarComponent = ({ ...props }) => {
   const [showCartModal, setShowCartModal] = useContext(CheckoutCartContext);
   const [showCartLogo, setCartLogo] = useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const id = open ? 'account-popover' : null;
   const user = getUser();
 
   const closeAccountModal = () => {
@@ -42,9 +44,6 @@ const AppBarComponent = ({ ...props }) => {
       }
     }
   }, [user]);
-
-  const open = Boolean(anchorEl);
-  const id = open ? 'account-popover' : null;
 
   return (
     <AppBar
@@ -112,16 +111,18 @@ const AppBarComponent = ({ ...props }) => {
             closeCartModal={() => setShowCartModal(false)}
           />
         )}
-        <AccountPopover
-          id={id}
-          open={open}
-          onClose={closeAccountModal}
-          anchorEl={anchorEl}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left'
-          }}
-        />
+        {user && (
+          <AccountPopover
+            id={id}
+            open={open}
+            onClose={closeAccountModal}
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left'
+            }}
+          />
+        )}
       </Toolbar>
     </AppBar>
   );
