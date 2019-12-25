@@ -13,6 +13,8 @@ const reducer = (state, action) => {
       return { ...state, user: null };
     case 'SIGNUP':
       return { ...state, user: action.payload };
+    case 'LOGIN':
+      return { ...state, user: action.payload };
     default:
       return new Error(`Action not found: ${action.type}`);
   }

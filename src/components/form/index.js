@@ -35,7 +35,8 @@ const BasicForm = ({ children, defaultValues, refetchQueries, mutate }) => {
       })
       .catch(err => {
         console.error(err);
-        setFieldError('email', 'Account with email already exists');
+        setFieldError('email', err.message);
+        setSubmitting(false);
       });
   }
 

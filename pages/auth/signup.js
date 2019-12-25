@@ -7,7 +7,7 @@ import BasicForm, { TextField } from '../../src/components/form';
 import Typography from '../../src/components/core/Typography';
 import Grid from '../../src/components/core/Grid';
 
-import CREATE_USER_MUTATION from '../../src/libs/gql/mutation/auth/signUpUserMutation.gql';
+import CREATE_USER_MUTATION from '../../src/libs/gql/mutation/auth/signupMutation.gql';
 import SIGNUP_VALIDATION from '../../src/libs/yup/signupValidation';
 import { useUserDispatch } from '../../src/context/userContext';
 import authStyles from '../../src/assets/styles/consumer/authStyles';
@@ -33,8 +33,8 @@ const Signup = () => {
             ...values
           }),
           onCompleted: res => {
-            console.log({ res });
             dispatch({ type: 'SIGNUP', payload: res.signup });
+            Router.replace('/');
           },
           validation: SIGNUP_VALIDATION
         }}

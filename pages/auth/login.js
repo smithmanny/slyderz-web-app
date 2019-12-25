@@ -1,13 +1,19 @@
 import React from 'react';
 import Link from 'next/link';
+import Router from 'next/router';
 
 import { Button } from '../../src/components/core';
 import BasicForm, { TextField } from '../../src/components/form';
 import Typography from '../../src/components/core/Typography';
+
+import SIGNIN_MUTATION from '../../src/libs/gql/mutation/auth/signinMutation.gql';
+import SIGNIN_VALIDATION from '../../src/libs/yup/signinValidation';
+import { useUserDispatch } from '../../src/context/userContext';
 import authStyles from '../../src/assets/styles/consumer/authStyles';
 
 const Login = () => {
   const classes = authStyles();
+  const dispatch = useUserDispatch();
   return (
     <section className={classes.container}>
       <Link href="/">
@@ -18,8 +24,21 @@ const Login = () => {
       <Typography className={classes.welcome} variant="h3">
         Welcome Back
       </Typography>
-      <BasicForm>
-        {({ values }) => (
+      <BasicForm
+        defaultValues={{ email: '' }}
+        mutate={{
+          mutation: SIGNIN_MUTATION,
+          toVariables: values => ({
+            ...values
+          }),
+          onCompleted: res => {
+            dispatch({ type: 'LOGIN', payload: res.signin });
+            Router.replace('/');
+          },
+          validation: SIGNIN_VALIDATION
+        }}
+      >
+        {({ isSubmitting }) => (
           <div className={classes.formContent}>
             <TextField
               name="email"
@@ -33,6 +52,8 @@ const Login = () => {
               size="large"
               variant="contained"
               color="primary"
+              type="submit"
+              disabled={isSubmitting}
             >
               Login
             </Button>
