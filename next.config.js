@@ -7,7 +7,8 @@ const nextConfig = {
   target: 'serverless',
   env: {
     // Will be available on both server and client
-    DEV_URL: 'http://localhost:4000'
+    DEV_URL: 'http://localhost:4000',
+    PROD_URL: 'https://slyderz-prisma.herokuapp.com/'
   }
 };
 
