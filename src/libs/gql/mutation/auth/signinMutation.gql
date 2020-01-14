@@ -1,9 +1,0 @@
-mutation signin($email: String!, $password: String!) {
-  signin(email: $email, password: $password) {
-   __typename
-   id
-   email
-   firstName
-   lastName
-  }
-}
