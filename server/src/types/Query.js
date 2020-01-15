@@ -1,5 +1,4 @@
 const { idArg, queryType, stringArg } = require('nexus')
-const { sign } = require('jsonwebtoken')
 
 const Query = queryType({
   definition(t) {
@@ -9,11 +8,10 @@ const Query = queryType({
       resolve: (parent, args, ctx) => {
         const user = ctx.photon.users.findOne({
           where: {
-            id: ctx.request.userId
+            id: ctx.request.user.id
           }
         })
         return {
-          token: sign({ userId: user.id }, process.env.APP_SECRET),
           user
         }
       }
@@ -25,7 +23,7 @@ const Query = queryType({
       resolve: (parent, args, ctx) => {
         return ctx.photon.users.findOne({
           where: {
-            id: ctx.request.userId,
+            id: ctx.request.user.id,
           },
         })
       },

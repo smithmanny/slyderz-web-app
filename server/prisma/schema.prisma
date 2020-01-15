@@ -32,6 +32,7 @@ model User {
   postalCode Int?
   resetToken String?
   resetTokenExpiry  Float?
+  tokenCount int
 }
 
 enum Role {

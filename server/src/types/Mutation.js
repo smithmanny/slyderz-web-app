@@ -1,6 +1,7 @@
 const { compare, hash } = require('bcryptjs')
-const { sign } = require('jsonwebtoken')
 const { idArg, mutationType, stringArg } = require('nexus')
+
+const { setTokens, tokenCookies } = require('../utils/auth')
 
 const Mutation = mutationType({
   definition(t) {
@@ -22,14 +23,12 @@ const Mutation = mutationType({
             password: hashedPassword,
           },
         })
-        const token = sign({ userId: user.id }, process.env.APP_SECRET)
-        // Set the jwt user token as a cookie on the response
-        ctx.response.cookie('_slyderz', token, {
-          httpOnly: true,
-          maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie
-        });
+        const tokens = setTokens(user)
+        const cookies = tokenCookies(tokens)
+
+        ctx.response.cookie(...cookies.access)
+        ctx.response.cookie(...cookies.refresh)
         return {
-          token,
           user,
         }
       },
@@ -54,11 +53,29 @@ const Mutation = mutationType({
         if (!passwordValid) {
           throw new Error('Invalid password')
         }
+
+        const tokens = setTokens(user)
+        const cookies = tokenCookies(tokens)
+
+        ctx.response.cookie(...cookies.access)
+        ctx.response.cookie(...cookies.refresh)
         return {
-          token: sign({ userId: user.id }, process.env.APP_SECRET),
           user,
         }
       },
+    })
+
+    t.field('logout', {
+      type: 'MessagePayload',
+      resolve: (parent, args, ctx) => {
+        ctx.response.clearCookie('access')
+        ctx.response.clearCookie('refresh')
+        
+        const message = 'User has been logged out.'
+        return {
+          message
+        }
+      }
     })
 
     t.field('createDraft', {
@@ -73,7 +90,7 @@ const Mutation = mutationType({
             title,
             content,
             published: false,
-            author: { connect: { id: ctx.request.userId } },
+            author: { connect: { id: ctx.request.user.id } },
           },
         })
       },
