@@ -5,7 +5,6 @@ import { useQuery } from '@apollo/react-hooks';
 import CURRENT_SESSION_QUERY from '../libs/gql/query/session/currentSessionQuery.gql';
 
 const INITIAL_SESSION_STATE = {
-  token: null,
   user: null
 };
 const CurrentSessionContext = createContext({ ...INITIAL_SESSION_STATE });

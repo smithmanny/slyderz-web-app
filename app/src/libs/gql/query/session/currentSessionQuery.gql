@@ -1,7 +1,6 @@
 query currentSession {
   currentSession {
     __typename
-    token
     user {
       __typename
       avatarUrl
