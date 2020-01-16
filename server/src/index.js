@@ -2,7 +2,7 @@ require('dotenv').config();
 const cookieParser = require('cookie-parser')
 
 const createServer = require('./server')
-const validateTokensMiddleware = require('./middlewares')
+const validateTokensMiddleware = require('./middlewares/validateTokensMiddleware')
 
 const server = createServer()
 server.express.use(cookieParser(process.env.COOKIE_SECRET))

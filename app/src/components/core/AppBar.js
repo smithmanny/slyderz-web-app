@@ -43,7 +43,6 @@ const AppBarComponent = ({ currentUser, ...props }) => {
       }
     }
   }, [currentUser]);
-  console.log({ currentUser })
   return (
     <AppBar
       className={classes.root}

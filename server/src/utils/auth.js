@@ -4,7 +4,7 @@ function setTokens(user) {
   const accessUser = {
     id: user.id
   };
-  const accessToken = sign({ user: accessUser }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1m' })
+  const accessToken = sign({ user: accessUser }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' })
   const refreshUser = {
     id: user.id,
     count: user.tokenCount
@@ -17,7 +17,7 @@ function setTokens(user) {
 function tokenCookies({ accessToken, refreshToken }) {
   const cookieOptions = {
     httpOnly: true,
-    maxAge: 1000 * 60 * 60 * 24 * 365
+    maxAge: 1000 * 60 * 60 * 24 * 30
     // secure: true, //for HTTPS only
     // domain: "your-website.com",
     // SameSite: None

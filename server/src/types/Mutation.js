@@ -57,21 +57,21 @@ const Mutation = mutationType({
         const tokens = setTokens(user)
         const cookies = tokenCookies(tokens)
 
-        ctx.response.cookie(...cookies.access)
-        ctx.response.cookie(...cookies.refresh)
+        context.response.cookie(...cookies.access)
+        context.response.cookie(...cookies.refresh)
         return {
           user,
         }
       },
     })
 
-    t.field('logout', {
+    t.field('signout', {
       type: 'MessagePayload',
       resolve: (parent, args, ctx) => {
         ctx.response.clearCookie('access')
         ctx.response.clearCookie('refresh')
         
-        const message = 'User has been logged out.'
+        const message = 'You have been logged out.'
         return {
           message
         }

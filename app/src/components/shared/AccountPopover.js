@@ -1,6 +1,7 @@
 import React from 'react';
-import { useMutation } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
+import Router from 'next/router';
+import { useMutation } from '@apollo/react-hooks';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -22,7 +23,15 @@ const routes = [
 
 function AccountPopover({ ...props }) {
   const classes = accountPopoverStyles();
-  const [signout] = useMutation(SIGNOUT_MUTATION);
+  const [signout] = useMutation(
+    SIGNOUT_MUTATION,
+    {
+      onCompleted: () => {
+        props.onClose();
+        Router.replace('/')
+      }
+    }
+    );
 
   return (
     <Popover {...props} aria-labelledby="account-popover">
@@ -40,7 +49,6 @@ function AccountPopover({ ...props }) {
           onClick={e => {
             e.preventDefault();
             signout();
-            props.onClose();
           }}
         >
           <ListItemText primary="Sign out" className={classes.text} />

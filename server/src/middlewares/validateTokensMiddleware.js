@@ -17,7 +17,9 @@ async function validateTokensMiddleware(req, res, next) {
 
   const decodedRefreshToken = validateRefreshToken(refreshToken);
   if (decodedRefreshToken && decodedRefreshToken.user) {
+    await photon.connect()
     const user = await photon.users.findOne({ where: { id: decodedRefreshToken.user.id } })
+    await photon.disconnect()
     if (!user || user.tokenCount !== decodedRefreshToken.user.count) {
       // remove cookies if token not valid
       res.clearCookie("access");

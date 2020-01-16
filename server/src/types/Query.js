@@ -5,8 +5,8 @@ const Query = queryType({
     t.field('currentSession', {
       type: 'CurrentSessionPayload',
       nullable: true,
-      resolve: (parent, args, ctx) => {
-        const user = ctx.photon.users.findOne({
+      resolve: async (parent, args, ctx) => {
+        const user = await ctx.photon.users.findOne({
           where: {
             id: ctx.request.user.id
           }

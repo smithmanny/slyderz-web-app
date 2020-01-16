@@ -27,12 +27,13 @@ export interface NexusGenEnums {
 
 export interface NexusGenRootTypes {
   AuthPayload: { // root type
-    token: string; // String!
     user: NexusGenRootTypes['User']; // User!
   }
   CurrentSessionPayload: { // root type
-    token: string; // String!
     user: NexusGenRootTypes['User']; // User!
+  }
+  MessagePayload: { // root type
+    message: string; // String!
   }
   Mutation: {};
   Post: { // root type
@@ -73,18 +74,20 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
 
 export interface NexusGenFieldTypes {
   AuthPayload: { // field return type
-    token: string; // String!
     user: NexusGenRootTypes['User']; // User!
   }
   CurrentSessionPayload: { // field return type
-    token: string; // String!
     user: NexusGenRootTypes['User']; // User!
+  }
+  MessagePayload: { // field return type
+    message: string; // String!
   }
   Mutation: { // field return type
     createDraft: NexusGenRootTypes['Post']; // Post!
     deletePost: NexusGenRootTypes['Post'] | null; // Post
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     publish: NexusGenRootTypes['Post'] | null; // Post
+    signout: NexusGenRootTypes['MessagePayload']; // MessagePayload!
     signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
   }
   Post: { // field return type
@@ -158,7 +161,7 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "AuthPayload" | "CurrentSessionPayload" | "Mutation" | "Post" | "Query" | "User";
+export type NexusGenObjectNames = "AuthPayload" | "CurrentSessionPayload" | "MessagePayload" | "Mutation" | "Post" | "Query" | "User";
 
 export type NexusGenInputNames = never;
 

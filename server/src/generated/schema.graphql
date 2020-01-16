@@ -3,22 +3,25 @@
 
 
 type AuthPayload {
-  token: String!
   user: User!
 }
 
 type CurrentSessionPayload {
-  token: String!
   user: User!
 }
 
 scalar DateTime
+
+type MessagePayload {
+  message: String!
+}
 
 type Mutation {
   createDraft(content: String, title: String): Post!
   deletePost(id: ID): Post
   login(email: String, password: String): AuthPayload!
   publish(id: ID): Post
+  signout: MessagePayload!
   signup(email: String, firstName: String!, lastName: String!, password: String): AuthPayload!
 }
 

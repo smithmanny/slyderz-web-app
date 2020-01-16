@@ -4,7 +4,7 @@ generator photon {
 
 datasource db {
   provider = "postgresql"
-  url      = env("POSTGRESQL_URL")
+  url = "***"
 }
 
 model Post {
@@ -32,7 +32,7 @@ model User {
   postalCode Int?
   resetToken String?
   resetTokenExpiry  Float?
-  tokenCount Int @default(0)
+  tokenCount Int
 }
 
 enum Role {
