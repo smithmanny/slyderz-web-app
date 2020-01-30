@@ -2,6 +2,11 @@ import { makeStyles, createStyles } from '../../../../components/shared/theme';
 
 export default makeStyles(theme =>
   createStyles({
+    bookingInfo: {
+      display: 'flex',
+      flexDirection: 'column',
+      maxWidth: 300
+    },
     container: {
       [theme.breakpoints.down('sm')]: {
         marginTop: 0,

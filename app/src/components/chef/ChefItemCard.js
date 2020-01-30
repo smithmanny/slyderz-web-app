@@ -4,7 +4,7 @@ import Typography from '../core/Typography';
 import ChefItemCardModal from './ChefItemCardModal';
 import ChefItemCardStyles from '../../assets/styles/consumer/chef/chefItemCardStyles';
 
-const ChefItemCard = () => {
+const ChefItemCard = ({ description, name, }) => {
   const classes = ChefItemCardStyles();
   const [open, setOpen] = React.useState(false);
 
@@ -22,11 +22,11 @@ const ChefItemCard = () => {
       </span>
       <section className={classes.content}>
         <Typography className={classes.title} variant="body1" gutterBottom>
-          The Ultimate Dish
+          {name}
         </Typography>
         {/* Description */}
         <Typography className={classes.description} gutterBottom paragraph>
-          Sauted Salmon, green peas, and mashed potatoes.
+          {description}
         </Typography>
         <Typography className={classes.price}>$10</Typography>
       </section>

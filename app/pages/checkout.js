@@ -8,17 +8,19 @@ import { Button } from '../src/components/core';
 import Divider from '../src/components/core/Divider';
 import Grid from '../src/components/core/Grid';
 import Typography from '../src/components/core/Typography';
-import BasicForm, { DatePickerField } from '../src/components/form';
+import BasicForm, { DatePickerField, TimePickerField } from '../src/components/form';
 import CheckoutSection from '../src/components/checkout/CheckoutSection';
 import Orders from '../src/components/checkout/Orders';
 
 const Checkout = () => {
   const classes = checkoutStyles();
+  const today = new Date();
   return (
     <AppContainer>
       <BasicForm
         defaultValues={{
-          eventDate: new Date()
+          eventDate: today,
+          eventTime: today,
         }}
         mutate={{
           toVariables: variables => ({
@@ -31,17 +33,17 @@ const Checkout = () => {
             <Grid item xs={12} md={7}>
               <div className={classes.leftContainer}>
                 <CheckoutSection title="Choose Address">
-                  <Typography variant="subtitle1">4288</Typography>
+                  <Typography variant="subtitle1">4288 Leola Road, Douglasville, GA, 30135</Typography>
                 </CheckoutSection>
-                <CheckoutSection title="Date & Time">
-                  <DatePickerField name="eventDate" label="Event date" />
+                <CheckoutSection title="Event Date and Time">
+                  <div className={classes.bookingInfo}>
+                    <DatePickerField name="eventDate" label="Event Date" />
+                    <TimePickerField name="eventTime" label="Event time" />
+                  </div>
                 </CheckoutSection>
-                {/* <CheckoutSection title="Date & Time">
-                  <DatePickerField name="eventDate" label="Event date" />
-                </CheckoutSection> */}
-                <CheckoutSection title="Payment">
+                {/* <CheckoutSection title="Payment">
                   <Typography variant="subtitle1">••••7106</Typography>
-                </CheckoutSection>
+                </CheckoutSection> */}
                 <CheckoutSection title="Items">
                   <Orders />
                 </CheckoutSection>

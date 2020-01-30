@@ -13,16 +13,6 @@ const CheckoutSection = ({ buttonText, children, title }) => {
   const [openLocationModal, showLocationModal] = useState(false);
   const [openPaymentModal, showPaymentModal] = useState(false);
 
-  const openModal = () => {
-    switch (title) {
-      case 'Choose Address':
-        return showLocationModal(true);
-      case 'Payment':
-        return showPaymentModal(true);
-      default:
-        return null;
-    }
-  };
   return (
     <>
       <section className={classes.section}>
@@ -30,14 +20,6 @@ const CheckoutSection = ({ buttonText, children, title }) => {
           <Typography variant="h5" className={classes.title}>
             {title}
           </Typography>
-          <Fab
-            onClick={openModal}
-            variant="extended"
-            size="medium"
-            aria-label="edit"
-          >
-            {buttonText || 'Edit'}
-          </Fab>
         </span>
         <Divider className={classes.divider} />
         {children}

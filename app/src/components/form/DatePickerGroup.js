@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'formik';
-import { KeyboardDatePicker } from '@material-ui/pickers';
+import { DatePicker } from '@material-ui/pickers';
 
 const DatePickerInput = ({ field, form, ...props }) => (
-  <KeyboardDatePicker
+  <DatePicker
     {...field}
+    autoOk
+    clearable
     id={field.name}
     disablePast
-    disableToolbar
     variant="inline"
     format="MM/dd/yyyy"
     margin="normal"
-    onChange={(_, date) => form.setFieldValue(field.name, date, false)}
-    KeyboardButtonProps={{
-      'aria-label': 'Date picker'
-    }}
+    initialFocusedDate={new Date()}
+    onChange={date => form.setFieldValue(field.name, date, false)}
+    value={field.value}
     {...props}
   />
 );

@@ -14,6 +14,44 @@ const Chef = () => {
   const router = useRouter();
   const { cid } = router.query;
 
+  const items = [
+    {
+      description: 'Sauted Salmon, green peas, and mashed potatoes',
+      name: 'The Ultimate Dish',
+      picture: null,
+      pricePerPerson: 10,
+    },
+    {
+      description: 'Sauted Salmon, green peas, and mashed potatoes',
+      name: 'The Ultimate Dish',
+      picture: null,
+      pricePerPerson: 10,
+    },
+    {
+      description: 'Sauted Salmon, green peas, and mashed potatoes',
+      name: 'The Ultimate Dish',
+      picture: null,
+      pricePerPerson: 10,
+    },
+    {
+      description: 'Sauted Salmon, green peas, and mashed potatoes',
+      name: 'The Ultimate Dish',
+      picture: null,
+      pricePerPerson: 10,
+    },
+    {
+      description: 'Sauted Salmon, green peas, and mashed potatoes',
+      name: 'The Ultimate Dish',
+      picture: null,
+      pricePerPerson: 10,
+    },
+    {
+      description: 'Sauted Salmon, green peas, and mashed potatoes',
+      name: 'The Ultimate Dish',
+      picture: null,
+      pricePerPerson: 10,
+    }
+  ]
   return (
     <AppContainer>
       <Grid container className={classes.header}>
@@ -69,18 +107,11 @@ const Chef = () => {
           </div>
 
           <Grid container spacing={3}>
-            <Grid item xs={12} lg={4}>
-              <ChefItemCard />
-            </Grid>
-            <Grid item xs={12} lg={4}>
-              <ChefItemCard />
-            </Grid>
-            <Grid item xs={12} lg={4}>
-              <ChefItemCard />
-            </Grid>
-            <Grid item xs={12} lg={4}>
-              <ChefItemCard />
-            </Grid>
+            {items.map((item, i) => (
+              <Grid key={i} item xs={12} lg={4}>
+                <ChefItemCard name={item.name} description={item.description} />
+              </Grid>
+            ))}
           </Grid>
         </Grid>
       </Grid>
