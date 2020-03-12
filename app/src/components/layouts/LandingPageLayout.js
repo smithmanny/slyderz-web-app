@@ -278,64 +278,62 @@ const LandingPageLayout = () => {
               onSubmit: values => handleFormSubmit(values)
             }}
           >
-            {({ isSubmitting, handleChange, values }) => (
-              <div
-                style={{
-                  maxWidth: 650,
-                  margin: 'auto'
-                }}
-              >
-                <Grid container justify="center" spacing={3}>
-                  <Grid item xs={12} md={6} align="center">
-                    <TextField
-                      className={classes.emailInput}
-                      InputProps={{
-                        disableUnderline: true
-                      }}
-                      name="email"
-                      onChange={handleChange}
-                      type="email"
-                      placeholder="Enter your email"
-                      autoComplete="email"
-                      required
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <FormControl className={classes.formControl}>
-                      <InputLabel htmlFor="customer-type">
-                        Do you want to cook or find nearby chefs?
-                      </InputLabel>
-                      <Select
-                        value={values.customerType}
-                        onChange={handleChange}
-                        inputProps={{
-                          name: 'customerType',
-                          id: 'customer-type'
-                        }}
-                      >
-                        <MenuItem value="customer">
-                          Show me nearby chefs 👀
-                        </MenuItem>
-                        <MenuItem value="chef">I want to cook 👩🏾‍🍳</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12} md={6} align="center">
-                    <Button
-                      disabled={isSubmitting}
-                      className={classes.emailInputBtn}
-                      classes={{
-                        root: classes.emailInputBtnHover
-                      }}
-                      type="submit"
-                      fullWidth
-                    >
-                      Get Early Access
-                    </Button>
-                  </Grid>
+            <div
+              style={{
+                maxWidth: 650,
+                margin: 'auto'
+              }}
+            >
+              <Grid container justify="center" spacing={3}>
+                <Grid item xs={12} md={6} align="center">
+                  <TextField
+                    className={classes.emailInput}
+                    InputProps={{
+                      disableUnderline: true
+                    }}
+                    name="email"
+                    onChange={handleChange}
+                    type="email"
+                    placeholder="Enter your email"
+                    autoComplete="email"
+                    required
+                  />
                 </Grid>
-              </div>
-            )}
+                <Grid item xs={12} md={6}>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel htmlFor="customer-type">
+                      Do you want to cook or find nearby chefs?
+                    </InputLabel>
+                    <Select
+                      value={values.customerType}
+                      onChange={handleChange}
+                      inputProps={{
+                        name: 'customerType',
+                        id: 'customer-type'
+                      }}
+                    >
+                      <MenuItem value="customer">
+                        Show me nearby chefs 👀
+                      </MenuItem>
+                      <MenuItem value="chef">I want to cook 👩🏾‍🍳</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} md={6} align="center">
+                  <Button
+                    disabled={isSubmitting}
+                    className={classes.emailInputBtn}
+                    classes={{
+                      root: classes.emailInputBtnHover
+                    }}
+                    type="submit"
+                    fullWidth
+                  >
+                    Get Early Access
+                  </Button>
+                </Grid>
+              </Grid>
+            </div>
           </BasicForm>
         </Section>
       </Container>

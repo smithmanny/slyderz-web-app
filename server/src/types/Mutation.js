@@ -15,7 +15,7 @@ const Mutation = mutationType({
       },
       resolve: async (parent, { firstName, lastName, email, password }, ctx) => {
         const hashedPassword = await hash(password, 10)
-        const user = await ctx.photon.users.create({
+        const user = await ctx.prisma.user.create({
           data: {
             firstName,
             lastName,
@@ -41,7 +41,7 @@ const Mutation = mutationType({
         password: stringArg(),
       },
       resolve: async (parent, { email, password }, context) => {
-        const user = await context.photon.users.findOne({
+        const user = await context.prisma.user.findOne({
           where: {
             email: email.toLowerCase(),
           },
@@ -70,11 +70,7 @@ const Mutation = mutationType({
       resolve: (parent, args, ctx) => {
         ctx.response.clearCookie('access')
         ctx.response.clearCookie('refresh')
-        
-        const message = 'You have been logged out.'
-        return {
-          message
-        }
+        ctx.response.redirect('/')
       }
     })
 
@@ -85,7 +81,7 @@ const Mutation = mutationType({
         content: stringArg({ nullable: true }),
       },
       resolve: (parent, { title, content }, ctx) => {
-        return ctx.photon.posts.create({
+        return ctx.prisma.posts.create({
           data: {
             title,
             content,
@@ -101,7 +97,7 @@ const Mutation = mutationType({
       nullable: true,
       args: { id: idArg() },
       resolve: (parent, { id }, ctx) => {
-        return ctx.photon.posts.delete({
+        return ctx.prisma.posts.delete({
           where: {
             id,
           },
@@ -114,7 +110,7 @@ const Mutation = mutationType({
       nullable: true,
       args: { id: idArg() },
       resolve: (parent, { id }, ctx) => {
-        return ctx.photon.posts.update({
+        return ctx.prisma.posts.update({
           where: { id },
           data: { published: true },
         })

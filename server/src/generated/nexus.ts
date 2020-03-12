@@ -22,7 +22,6 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
-  Role: "ADMIN" | "USER"
 }
 
 export interface NexusGenRootTypes {
@@ -30,7 +29,7 @@ export interface NexusGenRootTypes {
     user: NexusGenRootTypes['User']; // User!
   }
   CurrentSessionPayload: { // root type
-    user: NexusGenRootTypes['User']; // User!
+    user?: NexusGenRootTypes['User'] | null; // User
   }
   MessagePayload: { // root type
     message: string; // String!
@@ -39,7 +38,7 @@ export interface NexusGenRootTypes {
   Post: { // root type
     content?: string | null; // String
     createdAt: any; // DateTime!
-    id: string; // ID!
+    id: string; // String!
     published: boolean; // Boolean!
     title: string; // String!
     updatedAt: any; // DateTime!
@@ -52,12 +51,12 @@ export interface NexusGenRootTypes {
     city?: string | null; // String
     email: string; // String!
     firstName: string; // String!
-    id: string; // ID!
+    id: string; // String!
     lastName: string; // String!
     postalCode?: number | null; // Int
     resetToken?: string | null; // String
     resetTokenExpiry?: number | null; // Float
-    role: NexusGenEnums['Role']; // Role!
+    role: string; // String!
     state?: string | null; // String
   }
   String: string;
@@ -69,7 +68,6 @@ export interface NexusGenRootTypes {
 }
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
-  Role: NexusGenEnums['Role'];
 }
 
 export interface NexusGenFieldTypes {
@@ -77,7 +75,7 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User']; // User!
   }
   CurrentSessionPayload: { // field return type
-    user: NexusGenRootTypes['User']; // User!
+    user: NexusGenRootTypes['User'] | null; // User
   }
   MessagePayload: { // field return type
     message: string; // String!
@@ -94,7 +92,7 @@ export interface NexusGenFieldTypes {
     author: NexusGenRootTypes['User'] | null; // User
     content: string | null; // String
     createdAt: any; // DateTime!
-    id: string; // ID!
+    id: string; // String!
     published: boolean; // Boolean!
     title: string; // String!
     updatedAt: any; // DateTime!
@@ -113,12 +111,12 @@ export interface NexusGenFieldTypes {
     city: string | null; // String
     email: string; // String!
     firstName: string; // String!
-    id: string; // ID!
+    id: string; // String!
     lastName: string; // String!
     postalCode: number | null; // Int
     resetToken: string | null; // String
     resetTokenExpiry: number | null; // Float
-    role: NexusGenEnums['Role']; // Role!
+    role: string; // String!
     state: string | null; // String
   }
 }
@@ -165,7 +163,7 @@ export type NexusGenObjectNames = "AuthPayload" | "CurrentSessionPayload" | "Mes
 
 export type NexusGenInputNames = never;
 
-export type NexusGenEnumNames = "Role";
+export type NexusGenEnumNames = never;
 
 export type NexusGenInterfaceNames = never;
 

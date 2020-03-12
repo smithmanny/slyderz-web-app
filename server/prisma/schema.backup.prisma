@@ -1,10 +1,10 @@
 generator photon {
-  provider = "photonjs"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
-  url = "***"
+  url      = env("POSTGRESQL_URL")
 }
 
 model Post {

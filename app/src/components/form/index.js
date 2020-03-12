@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useForm, FormContext  } from 'react-hook-form'
 import { useApolloClient } from '@apollo/react-hooks';
-import { Formik, Form } from 'formik';
 
 export { default as DatePickerField } from './DatePickerGroup';
 export { default as TimePickerField } from './TimePickerGroup';
@@ -10,12 +10,13 @@ export { default as Select } from '@material-ui/core/Select';
 
 const BasicForm = ({ children, defaultValues, refetchQueries, mutate }) => {
   const client = useApolloClient();
+  const methods = useForm({ defaultValues, validationSchema: mutate.validation });
+  const { handleSubmit, reset } = methods
 
-  function handleFormSubmit({ setFieldError, setSubmitting, values }) {
-    const { toVariables, onCompleted, onSubmit, mutation } = mutate || {};
+  function handleFormSubmit(values) {
+    const { toVariables, onCompleted, onSubmit, mutation } = mutate;
     const variables = toVariables(values);
 
-    setSubmitting(true);
     // Call custom submit function instead of GraphQL mutation
     if (typeof onSubmit === 'function') {
       return onSubmit(variables);
@@ -28,49 +29,34 @@ const BasicForm = ({ children, defaultValues, refetchQueries, mutate }) => {
         refetchQueries
       })
       .then(res => {
-        setSubmitting(false);
+        reset();
         if (typeof onCompleted === 'function') {
           onCompleted(res.data);
         }
       })
       .catch(err => {
-        console.error(err.message);
-        // TODO: Graphql3Error handling
-        // setFieldError('email', err.message);
-        setSubmitting(false);
+        const errorMessage = err.message.replace('GraphQL error: ', '')
+        console.warn(errorMessage)
       });
   }
-
   return (
-    <Formik
-      initialValues={defaultValues}
-      validationSchema={mutate && mutate.validation}
-    >
-      {({
-        errors,
-        handleChange,
-        isSubmitting,
-        setFieldError,
-        setSubmitting,
-        values,
-        validateForm
-      }) => (
-        <Form
-          onSubmit={async e => {
-            e.stopPropagation();
-            e.preventDefault();
-            validateForm();
-            await handleFormSubmit({
-              setFieldError,
-              setSubmitting,
-              values
-            });
-          }}
-        >
-          {children({ errors, isSubmitting, values, handleChange })}
-        </Form>
-      )}
-    </Formik>
+    <FormContext {...methods}>
+      <form onSubmit={handleSubmit(handleFormSubmit)}>
+        {Array.isArray(children)
+          ? children.map(child => {
+              return child.props.name
+                ? React.createElement(child.type, {
+                    ...{
+                      ...child.props,
+                      register: methods.register,
+                      key: child.props.name
+                    }
+                  })
+                : child;
+            })
+          : children}
+      </form>
+    </FormContext>
   );
 };
 
@@ -79,7 +65,7 @@ BasicForm.defaultProps = {
 };
 
 BasicForm.propTypes = {
-  children: PropTypes.func.isRequired,
+  children: PropTypes.object.isRequired,
   defaultValues: PropTypes.object,
   mutate: PropTypes.shape({
     mutation: PropTypes.object,

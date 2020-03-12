@@ -7,7 +7,7 @@ type AuthPayload {
 }
 
 type CurrentSessionPayload {
-  user: User!
+  user: User
 }
 
 scalar DateTime
@@ -29,7 +29,7 @@ type Post {
   author: User
   content: String
   createdAt: DateTime!
-  id: ID!
+  id: String!
   published: Boolean!
   title: String!
   updatedAt: DateTime!
@@ -43,11 +43,6 @@ type Query {
   post(id: ID): Post
 }
 
-enum Role {
-  ADMIN
-  USER
-}
-
 type User {
   address1: String
   address2: String
@@ -55,11 +50,11 @@ type User {
   city: String
   email: String!
   firstName: String!
-  id: ID!
+  id: String!
   lastName: String!
   postalCode: Int
   resetToken: String
   resetTokenExpiry: Float
-  role: Role!
+  role: String!
   state: String
 }

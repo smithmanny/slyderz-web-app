@@ -1,28 +1,23 @@
 import React from 'react';
-import { Field } from 'formik';
 import PropTypes from 'prop-types';
+import { useFormContext } from "react-hook-form"
 import TextField from '@material-ui/core/TextField';
 
 import textFieldStyles from '../../assets/styles/consumer/textFieldGroupStyles';
 
 const TextFieldGroup = ({ name, ...props }) => {
+  const { errors, register } = useFormContext()
   const classes = textFieldStyles();
   return (
-    <Field name={name}>
-      {({ field, form, meta }) => (
-        <TextField
-          {...field}
-          error={meta.touched && meta.error}
-          className={classes.textField}
-          margin="normal"
-          onChange={event => {
-            form.setFieldValue(name, event.target.value);
-          }}
-          helperText={meta.touched && meta.error}
-          {...props}
-        />
-      )}
-    </Field>
+    <TextField
+      name={name}
+      error={errors[name] && errors[name].message}
+      className={classes.textField}
+      margin="normal"
+      inputRef={register}
+      helperText={errors[name] && errors[name].message}
+      {...props}
+    />
   );
 };
 

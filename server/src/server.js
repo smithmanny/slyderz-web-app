@@ -1,11 +1,11 @@
 const { GraphQLServer } = require('graphql-yoga')
 const { nexusPrismaPlugin } = require('nexus-prisma')
 const { makeSchema } = require('nexus')
-const { Photon } = require('@prisma/photon')
+const { PrismaClient } = require('@prisma/client')
 const { permissions } = require('./permissions')
 const types = require('./types')
 
-const photon = new Photon()
+const prisma = new PrismaClient()
 
 function createServer() {
   return new GraphQLServer({
@@ -21,7 +21,7 @@ function createServer() {
     context: request => {
       return {
         ...request,
-        photon,
+        prisma,
       }
     },
   })

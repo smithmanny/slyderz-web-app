@@ -5,8 +5,8 @@ const signinValidation = Yup.object().shape({
     .email()
     .trim()
     .lowercase()
-    .required('Email Is Required'),
-  password: Yup.string().required('Password is Required')
+    .required('Email is required'),
+  password: Yup.string().required('Password is required')
 });
 
 export default signinValidation;

@@ -23,7 +23,6 @@ const Login = () => {
         Welcome Back
       </Typography>
       <BasicForm
-        defaultValues={{ email: '' }}
         mutate={{
           mutation: SIGNIN_MUTATION,
           toVariables: values => ({
@@ -35,33 +34,31 @@ const Login = () => {
           validation: SIGNIN_VALIDATION
         }}
       >
-        {({ isSubmitting }) => (
-          <div className={classes.formContent}>
-            <TextField
-              name="email"
-              variant="outlined"
-              label="Enter your email"
-            />
-            <TextField name="password" variant="outlined" label="Password" />
-            <Button
-              className={classes.submit}
-              fullWidth
-              size="large"
-              variant="contained"
-              color="primary"
-              type="submit"
-              disabled={isSubmitting}
-            >
-              Login
-            </Button>
-            <Typography variant="body1">
-              Don't have an account?{' '}
-              <Link href="/auth/signup">
-                <a className={classes.signup}>Create Account</a>
-              </Link>
-            </Typography>
-          </div>
-        )}
+        <div className={classes.formContent}>
+          <TextField
+            name="email"
+            variant="outlined"
+            label="Enter your email"
+          />
+          <TextField name="password" variant="outlined" label="Password" />
+          <Button
+            className={classes.submit}
+            fullWidth
+            size="large"
+            variant="contained"
+            color="primary"
+            type="submit"
+            // disabled={isSubmitting}
+          >
+            Login
+          </Button>
+          <Typography variant="body1">
+            Don't have an account?{' '}
+            <Link href="/auth/signup">
+              <a className={classes.signup}>Create Account</a>
+            </Link>
+          </Typography>
+        </div>
       </BasicForm>
     </section>
   );

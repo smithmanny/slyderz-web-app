@@ -6,7 +6,7 @@ const Query = queryType({
       type: 'CurrentSessionPayload',
       nullable: true,
       resolve: async (parent, args, ctx) => {
-        const user = await ctx.photon.users.findOne({
+        const user = await ctx.prisma.user.findOne({
           where: {
             id: ctx.request.user.id
           }
@@ -21,7 +21,7 @@ const Query = queryType({
       type: 'User',
       nullable: true,
       resolve: (parent, args, ctx) => {
-        return ctx.photon.users.findOne({
+        return ctx.prisma.user.findOne({
           where: {
             id: ctx.request.user.id,
           },
@@ -32,7 +32,7 @@ const Query = queryType({
     t.list.field('feed', {
       type: 'Post',
       resolve: (parent, args, ctx) => {
-        return ctx.photon.posts.findMany({
+        return ctx.prisma.posts.findMany({
           where: { published: true },
         })
       },
@@ -44,7 +44,7 @@ const Query = queryType({
         searchString: stringArg({ nullable: true }),
       },
       resolve: (parent, { searchString }, ctx) => {
-        return ctx.photon.posts.findMany({
+        return ctx.prisma.posts.findMany({
           where: {
             OR: [
               {
@@ -68,7 +68,7 @@ const Query = queryType({
       nullable: true,
       args: { id: idArg() },
       resolve: (parent, { id }, ctx) => {
-        return ctx.photon.posts.findOne({
+        return ctx.prisma.posts.findOne({
           where: {
             id,
           },

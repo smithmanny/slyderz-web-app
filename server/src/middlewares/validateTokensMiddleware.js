@@ -1,7 +1,7 @@
-const { Photon } = require('@prisma/photon')
+const { PrismaClient } = require('@prisma/client')
 const { setTokens, tokenCookies, validateAccessToken, validateRefreshToken } = require('../utils/auth')
 
-const photon = new Photon()
+const prisma = new PrismaClient()
 
 async function validateTokensMiddleware(req, res, next) {
   const refreshToken = req.cookies["refresh"];
@@ -17,14 +17,14 @@ async function validateTokensMiddleware(req, res, next) {
 
   const decodedRefreshToken = validateRefreshToken(refreshToken);
   if (decodedRefreshToken && decodedRefreshToken.user) {
-    await photon.connect()
+    await prisma.connect()
     let user;
     try {
-      user = await photon.users.findOne({ where: { id: decodedRefreshToken.user.id } })
+      user = await prisma.users.findOne({ where: { id: decodedRefreshToken.user.id } })
     } catch(e) {
-      console.error(e.message)
+      console.warn(e.message)
     }
-    await photon.disconnect()
+    await prisma.disconnect()
     if (!user || user.tokenCount !== decodedRefreshToken.user.count) {
       // remove cookies if token not valid
       res.clearCookie("access");

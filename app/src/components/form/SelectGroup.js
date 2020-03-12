@@ -1,25 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field } from 'formik';
-import FormControl from '@material-ui/core/FormControl';
-import MenuItem from '@material-ui/core/MenuItem';
-import { Select } from '@material-ui/core/Select';
+import { Controller, useForm } from "react-hook-form";
+import Select from 'react-select';
 
-const SelectGroup = ({ name }) => (
-  <FormControl fullWidth>
-    <Field
+
+const SelectGroup = ({ name }) => {
+  const { control } = useForm();
+  return (
+    <Controller
+      as={<Select />}
       name={name}
-      render={({ field }) => (
-        <Select {...field}>
-          <MenuItem value={1}>1</MenuItem>
-          <MenuItem value={2}>2</MenuItem>
-          <MenuItem value={3}>3</MenuItem>
-          <MenuItem value={4}>4</MenuItem>
-        </Select>
-      )}
+      control={control}
+      onChange={([selected]) => {
+        // React Select return object instead of value for selection
+        return { value: selected };
+      }}
+      defaultValue={{}}
     />
-  </FormControl>
-);
+  )
+};
 
 SelectGroup.propTypes = {
   name: PropTypes.string,

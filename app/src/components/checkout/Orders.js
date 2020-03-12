@@ -14,7 +14,7 @@ const Orders = () => {
   };
   return (
     <div className={classes.orderContainer}>
-      <Select
+      {/* <Select
         label-id="demo-simple-select-label"
         id="demo-simple-select"
         value={quantity}
@@ -22,7 +22,7 @@ const Orders = () => {
       >
         <MenuItem value={0}>Remove</MenuItem>
         <MenuItem value={1}>1</MenuItem>
-      </Select>
+      </Select> */}
       <Typography className="dishName" variant="body1">
         The Ultimate Salad
       </Typography>
