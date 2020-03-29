@@ -17,14 +17,12 @@ const DatePickerGroup = ({ name }) => {
         variant="inline"
         format="MM/dd/yyyy"
         margin="normal"
-        initialFocusedDate={new Date()}
-        {...props}
       />
     }
       name={name}
       control={control}
       onChange={date => handleDateChange(date)}
-      defaultValue={{}}
+      defaultValue={selectedDate}
     />
   )
 };

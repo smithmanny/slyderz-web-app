@@ -3,8 +3,8 @@ import Link from 'next/link';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 
-import Grid from '../../src/components/core/Grid';
-import Container from '../../src/components/core/Container';
+import Grid from '../../src/components/shared/Grid';
+import Container from '../../src/components/shared/container';
 import { Section } from '../../src/components/layouts/index';
 
 import landingPageStyles from '../../src/assets/styles/consumer/landing/landingPageStyles';

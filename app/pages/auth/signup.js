@@ -2,10 +2,10 @@ import React from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 
-import { Button } from '../../src/components/core';
+import { Button } from '../../src/components/shared';
 import BasicForm, { TextField } from '../../src/components/form';
-import Typography from '../../src/components/core/Typography';
-import Grid from '../../src/components/core/Grid';
+import Typography from '../../src/components/shared/Typography';
+import Grid from '../../src/components/shared/Grid';
 
 import CREATE_USER_MUTATION from '../../src/libs/gql/mutation/auth/signupMutation.gql';
 import SIGNUP_VALIDATION from '../../src/libs/yup/signupValidation';

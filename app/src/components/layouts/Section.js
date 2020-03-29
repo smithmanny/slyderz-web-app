@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Typography from '../core/Typography';
+import Typography from '../shared/Typography';
 import sectionLayoutStyles from '../../assets/styles/consumer/sectionLayoutStyles';
 
 const SectionLayout = ({

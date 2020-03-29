@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import AppBar from '../core/AppBar';
-import Container from '../core/Container';
+import AppBar from '../consumer/appbar';
+import Container from '../shared/container';
 
 import { CheckoutCartProvider } from '../../context/checkoutCartContext';
-import appContainerStyles from '../../assets/styles/consumer/appContainerStyles';
+import appContainerStyles from '../shared/container/styles';
 
 const AppContainer = ({ children, ...props }) => {
   const classes = appContainerStyles();

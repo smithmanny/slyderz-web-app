@@ -12,13 +12,12 @@ const TimePickerGroup = ({ name }) => {
         autoOk
         clearable
         margin="normal"
-        initialFocusedDate={new Date()}
       />
     }
       name={name}
       control={control}
       onChange={date => handleDateChange(date)}
-      defaultValue={{}}
+      defaultValue={selectedDate}
     />
   )
 };

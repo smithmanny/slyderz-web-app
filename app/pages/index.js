@@ -1,9 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
 
-import { Avatar, Card, CardContent, CardMedia } from '../src/components/core';
-import Typography from '../src/components/core/Typography';
-import Grid from '../src/components/core/Grid';
+import { Avatar, Card, CardContent, CardMedia } from '../src/components/shared';
+import Typography from '../src/components/shared/Typography';
+import Grid from '../src/components/shared/Grid';
 import { AppContainer, Section } from '../src/components/layouts/index';
 
 import homePageStyles from '../src/assets/styles/consumer/homePageStyles';

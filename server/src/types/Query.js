@@ -8,7 +8,7 @@ const Query = queryType({
       resolve: async (parent, args, ctx) => {
         const user = await ctx.prisma.user.findOne({
           where: {
-            id: ctx.request.user.id
+            id: ctx.request.user ? ctx.request.user.id : null
           }
         })
         return {

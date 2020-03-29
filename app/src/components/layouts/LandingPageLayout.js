@@ -7,12 +7,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 
 import BasicForm, { Select, TextField } from '../form';
-import { Button, Fab } from '../core';
-import Container from '../core/Container';
-import Grid from '../core/Grid';
-import Typography from '../core/Typography';
+import { Button, Fab } from '../shared';
+import Container from '../shared/container';
+import Grid from '../shared/Grid';
+import Typography from '../shared/Typography';
 import { Section } from './index';
-import HowItWorks from '../howItWorks';
+import HowItWorks from '../consumer/howItWorks';
 import landingPageStyles from '../../assets/styles/consumer/landing/landingPageStyles';
 
 const LandingPageLayout = () => {

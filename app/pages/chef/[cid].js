@@ -2,12 +2,12 @@ import React from 'react';
 import { useRouter } from 'next/router';
 
 import { AppContainer } from '../../src/components/layouts';
-import { Avatar, Button } from '../../src/components/core';
-import Typography from '../../src/components/core/Typography';
-import Grid from '../../src/components/core/Grid';
+import { Avatar, Button } from '../../src/components/shared';
+import Typography from '../../src/components/shared/Typography';
+import Grid from '../../src/components/shared/Grid';
 import { StarRateIcon } from '../../src/assets/icons';
-import ChefItemCard from '../../src/components/chef/ChefItemCard';
-import chefDetailStyles from '../../src/assets/styles/consumer/chef/chefDetailStyles';
+import ChefItemCard from '../../src/components/consumer/chef/item_card';
+import chefDetailStyles from './styles';
 
 const Chef = () => {
   const classes = chefDetailStyles();

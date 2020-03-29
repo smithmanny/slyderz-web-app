@@ -2,9 +2,9 @@ import React from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 
-import { Button } from '../../src/components/core';
+import { Button } from '../../src/components/shared';
 import BasicForm, { TextField } from '../../src/components/form';
-import Typography from '../../src/components/core/Typography';
+import Typography from '../../src/components/shared/Typography';
 
 import SIGNIN_MUTATION from '../../src/libs/gql/mutation/auth/signinMutation.gql';
 import SIGNIN_VALIDATION from '../../src/libs/yup/signinValidation';
