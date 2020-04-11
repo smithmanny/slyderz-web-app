@@ -22,6 +22,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  Role: "ADMIN" | "CHEF" | "USER"
 }
 
 export interface NexusGenRootTypes {
@@ -35,14 +36,6 @@ export interface NexusGenRootTypes {
     message: string; // String!
   }
   Mutation: {};
-  Post: { // root type
-    content?: string | null; // String
-    createdAt: any; // DateTime!
-    id: string; // String!
-    published: boolean; // Boolean!
-    title: string; // String!
-    updatedAt: any; // DateTime!
-  }
   Query: {};
   User: { // root type
     address1?: string | null; // String
@@ -51,12 +44,12 @@ export interface NexusGenRootTypes {
     city?: string | null; // String
     email: string; // String!
     firstName: string; // String!
-    id: string; // String!
+    id: number; // Int!
     lastName: string; // String!
     postalCode?: number | null; // Int
     resetToken?: string | null; // String
     resetTokenExpiry?: number | null; // Float
-    role: string; // String!
+    role: NexusGenEnums['Role']; // Role!
     state?: string | null; // String
   }
   String: string;
@@ -64,10 +57,10 @@ export interface NexusGenRootTypes {
   Float: number;
   Boolean: boolean;
   ID: string;
-  DateTime: any;
 }
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
+  Role: NexusGenEnums['Role'];
 }
 
 export interface NexusGenFieldTypes {
@@ -81,28 +74,13 @@ export interface NexusGenFieldTypes {
     message: string; // String!
   }
   Mutation: { // field return type
-    createDraft: NexusGenRootTypes['Post']; // Post!
-    deletePost: NexusGenRootTypes['Post'] | null; // Post
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
-    publish: NexusGenRootTypes['Post'] | null; // Post
     signout: NexusGenRootTypes['MessagePayload']; // MessagePayload!
     signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
   }
-  Post: { // field return type
-    author: NexusGenRootTypes['User'] | null; // User
-    content: string | null; // String
-    createdAt: any; // DateTime!
-    id: string; // String!
-    published: boolean; // Boolean!
-    title: string; // String!
-    updatedAt: any; // DateTime!
-  }
   Query: { // field return type
     currentSession: NexusGenRootTypes['CurrentSessionPayload'] | null; // CurrentSessionPayload
-    feed: NexusGenRootTypes['Post'][]; // [Post!]!
-    filterPosts: NexusGenRootTypes['Post'][]; // [Post!]!
     me: NexusGenRootTypes['User'] | null; // User
-    post: NexusGenRootTypes['Post'] | null; // Post
   }
   User: { // field return type
     address1: string | null; // String
@@ -111,45 +89,27 @@ export interface NexusGenFieldTypes {
     city: string | null; // String
     email: string; // String!
     firstName: string; // String!
-    id: string; // String!
+    id: number; // Int!
     lastName: string; // String!
     postalCode: number | null; // Int
     resetToken: string | null; // String
     resetTokenExpiry: number | null; // Float
-    role: string; // String!
+    role: NexusGenEnums['Role']; // Role!
     state: string | null; // String
   }
 }
 
 export interface NexusGenArgTypes {
   Mutation: {
-    createDraft: { // args
-      content?: string | null; // String
-      title?: string | null; // String
-    }
-    deletePost: { // args
-      id?: string | null; // ID
-    }
     login: { // args
       email?: string | null; // String
       password?: string | null; // String
-    }
-    publish: { // args
-      id?: string | null; // ID
     }
     signup: { // args
       email?: string | null; // String
       firstName: string; // String!
       lastName: string; // String!
       password?: string | null; // String
-    }
-  }
-  Query: {
-    filterPosts: { // args
-      searchString?: string | null; // String
-    }
-    post: { // args
-      id?: string | null; // ID
     }
   }
 }
@@ -163,11 +123,11 @@ export type NexusGenObjectNames = "AuthPayload" | "CurrentSessionPayload" | "Mes
 
 export type NexusGenInputNames = never;
 
-export type NexusGenEnumNames = never;
+export type NexusGenEnumNames = "Role";
 
 export type NexusGenInterfaceNames = never;
 
-export type NexusGenScalarNames = "Boolean" | "DateTime" | "Float" | "ID" | "Int" | "String";
+export type NexusGenScalarNames = "Boolean" | "Float" | "ID" | "Int" | "String";
 
 export type NexusGenUnionNames = never;
 

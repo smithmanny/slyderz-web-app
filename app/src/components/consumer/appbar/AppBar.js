@@ -9,39 +9,37 @@ import { Badge, Fab, IconButton } from '../../shared';
 import Grid from '../../shared/Grid';
 import Typography from '../../shared/Typography';
 import { ShoppingCart, PersonIcon } from '../../../assets/icons';
-import CheckoutCartModal from '../checkout/CheckoutCartModal';
 import AccountPopover from '../accountPopover';
+import CartPopover from '../CartPopover';
 
 import appbarStyles from './styles';
-import CheckoutCartContext from '../../../context/checkoutCartContext';
 import { withCurrentUser } from '../../../context/currentSessionContext';
 
 const AppBarComponent = ({ currentUser, ...props }) => {
   const classes = appbarStyles();
-  const [showCartModal, setShowCartModal] = useContext(CheckoutCartContext);
-  const [showCartLogo, setCartLogo] = useState(true);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const id = open ? 'account-popover' : null;
+  const [cartAnchorEl, setCartAnchorEl] = useState(null);
+  const [accountAnchorEl, setAccountAnchorEl] = useState(null);
+  const isAccountOpen = Boolean(accountAnchorEl);
+  const isCartOpen = Boolean(cartAnchorEl);
+  const accountId = isAccountOpen ? 'account-popover' : null;
+  const cartId = isCartOpen ? 'cart-popover' : null;
 
   const closeAccountModal = () => {
-    setAnchorEl(null);
+    setAccountAnchorEl(null);
+  };
+
+  const closeCartModal = () => {
+    setCartAnchorEl(null);
   };
 
   const handleAccountModalClick = event => {
-    setAnchorEl(event.currentTarget);
+    setAccountAnchorEl(event.currentTarget);
   };
 
-  useEffect(() => {
-    const isWindow = typeof window !== 'undefined';
-    // Hide cart logo on checkout screen
-    if (isWindow) {
-      if (window.location.pathname === '/checkout') {
-        setShowCartModal(false);
-        setCartLogo(false);
-      }
-    }
-  }, [currentUser]);
+  const handleCartModalClick = event => {
+    setCartAnchorEl(event.currentTarget);
+  };
+
   return (
     <AppBar
       className={classes.root}
@@ -81,43 +79,38 @@ const AppBarComponent = ({ currentUser, ...props }) => {
               </Fab>
             </Grid>
           )}
-          {showCartLogo && currentUser && (
-            <Grid item>
-              <IconButton
-                aria-label="cart"
-                disableRipple
-                onClick={() => setShowCartModal(!showCartModal)}
+          <Grid item>
+            <IconButton
+              aria-label="cart"
+              disableRipple
+              onClick={handleCartModalClick}
+            >
+              <Badge
+                className={classes.margin}
+                badgeContent={4}
+                color="primary"
               >
-                <Badge
-                  className={classes.margin}
-                  badgeContent={4}
-                  color="primary"
-                >
-                  <ShoppingCart
-                    className={classes.iconButton}
-                    fontSize="large"
-                  />
-                </Badge>
-              </IconButton>
-            </Grid>
-          )}
+                <ShoppingCart
+                  className={classes.iconButton}
+                  fontSize="large"
+                />
+              </Badge>
+            </IconButton>
+          </Grid>
         </Grid>
-        {showCartModal && (
-          <CheckoutCartModal
-            classes={classes}
-            closeCartModal={() => setShowCartModal(false)}
-          />
-        )}
+
+        <CartPopover 
+          id={cartId}
+          open={isCartOpen}
+          onClose={closeCartModal}
+          anchorEl={cartAnchorEl}
+        />
         {currentUser && (
           <AccountPopover
-            id={id}
-            open={open}
+            id={accountId}
+            open={isAccountOpen}
             onClose={closeAccountModal}
-            anchorEl={anchorEl}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left'
-            }}
+            anchorEl={accountAnchorEl}
           />
         )}
       </Toolbar>

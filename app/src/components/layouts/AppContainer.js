@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import AppBar from '../consumer/appbar';
@@ -9,14 +9,13 @@ import appContainerStyles from '../shared/container/styles';
 
 const AppContainer = ({ children, ...props }) => {
   const classes = appContainerStyles();
-  const [showCartModal, setCartModal] = useState(false);
   return (
-    <Container className={classes.container} maxWidth="xl" {...props}>
-      <CheckoutCartProvider value={[showCartModal, setCartModal]}>
+    <CheckoutCartProvider>
+      <Container className={classes.container} maxWidth="xl" {...props}>
         <AppBar />
         {children}
-      </CheckoutCartProvider>
-    </Container>
+      </Container>
+    </CheckoutCartProvider>
   );
 };
 

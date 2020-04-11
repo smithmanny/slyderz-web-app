@@ -2,7 +2,7 @@
   "name": "slyderz-backend",
   "version": "1.0.0",
   "dependencies": {
-    "@prisma/client": "2.0.0-preview022",
+    "@prisma/client": "^2.0.0-beta.2",
     "bcryptjs": "2.4.3",
     "cookie-parser": "^1.4.4",
     "dotenv": "^8.2.0",
@@ -20,12 +20,12 @@
   },
   "scripts": {
     "dev": "nodemon src",
-    "generate:migrations": "prisma2 lift save && prisma2 lift up",
-    "postinstall": "prisma2 generate",
+    "migrate": "prisma migrate save --experimental && prisma migrate up --experimental",
+    "postinstall": "prisma generate",
     "seed": "node prisma/seed"
   },
   "devDependencies": {
-    "prisma2": "2.0.0-preview022"
+    "@prisma/cli": "^2.0.0-beta.2"
   },
   "prettier": {
     "singleQuote": true,

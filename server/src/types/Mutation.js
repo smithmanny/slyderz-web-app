@@ -73,49 +73,6 @@ const Mutation = mutationType({
         ctx.response.redirect('/')
       }
     })
-
-    t.field('createDraft', {
-      type: 'Post',
-      args: {
-        title: stringArg(),
-        content: stringArg({ nullable: true }),
-      },
-      resolve: (parent, { title, content }, ctx) => {
-        return ctx.prisma.posts.create({
-          data: {
-            title,
-            content,
-            published: false,
-            author: { connect: { id: ctx.request.user.id } },
-          },
-        })
-      },
-    })
-
-    t.field('deletePost', {
-      type: 'Post',
-      nullable: true,
-      args: { id: idArg() },
-      resolve: (parent, { id }, ctx) => {
-        return ctx.prisma.posts.delete({
-          where: {
-            id,
-          },
-        })
-      },
-    })
-
-    t.field('publish', {
-      type: 'Post',
-      nullable: true,
-      args: { id: idArg() },
-      resolve: (parent, { id }, ctx) => {
-        return ctx.prisma.posts.update({
-          where: { id },
-          data: { published: true },
-        })
-      },
-    })
   },
 })
 

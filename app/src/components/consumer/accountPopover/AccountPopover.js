@@ -1,15 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Router from 'next/router';
+import Link from 'next/link'
 import { useMutation } from '@apollo/react-hooks';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
-import Popover from '@material-ui/core/Popover';
 import PersonIcon from '@material-ui/icons/Person';
 import AddIcon from '@material-ui/icons/Add';
 
+import Popover from '../../shared/Popover';
 import accountPopoverStyles from './styles';
 import SIGNOUT_MUTATION from '../../../libs/gql/mutation/auth/signoutMutation.gql';
 
@@ -21,28 +22,21 @@ const routes = [
   }
 ];
 
-function AccountPopover({ ...props }) {
+const AccountPopover = ({ ...props }) => {
   const classes = accountPopoverStyles();
-  const [signout] = useMutation(
-    SIGNOUT_MUTATION,
-    {
-      onCompleted: () => {
-        props.onClose();
-        Router.replace('/')
-      }
-    }
-    );
-
+  const [signout] = useMutation(SIGNOUT_MUTATION);
   return (
-    <Popover {...props} aria-labelledby="account-popover">
+    <Popover {...props}>
       <List>
         {routes.map(link => (
+          <Link href='/settings'>
           <ListItem button key={link}>
             <ListItemAvatar>
               <PersonIcon fontSize="large" />
             </ListItemAvatar>
             <ListItemText primary={link.name} className={classes.text} />
           </ListItem>
+          </Link>
         ))}
         <ListItem
           button

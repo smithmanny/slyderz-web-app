@@ -7,14 +7,10 @@ datasource db {
   url      = env("POSTGRESQL_URL")
 }
 
-model Post {
-  content   String?
-  createdAt DateTime
-  id        String   @id
-  published Boolean  @default(false)
-  title     String   @default("")
-  updatedAt DateTime
-  author    User?
+enum Role {
+  ADMIN
+  CHEF
+  USER
 }
 
 model User {
@@ -24,14 +20,13 @@ model User {
   city             String?
   email            String  @default("") @unique
   firstName        String  @default("")
-  id               String  @id
+  id               Int     @default(autoincrement()) @id
   lastName         String  @default("")
   password         String  @default("")
   postalCode       Int?
   resetToken       String?
   resetTokenExpiry Float?
-  role             String  @default("USER")
+  role             Role    @default(USER)
   state            String?
   tokenCount       Int     @default(0)
-  post             Post[]
 }
