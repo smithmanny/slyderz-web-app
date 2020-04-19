@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
 
 import Typography from '../Typography';
 import sectionLayoutStyles from './styles';
@@ -19,27 +20,17 @@ const Section = ({
 
   if (!title) {
     return (
-      <section
-        style={{
-          margin: theme.spacing(0, 30)
-        }}
-        {...props}
-      >
+      <Container {...props}>
         {children}
-      </section>
+      </Container>
     )
   }
   return (
-    <section
-      style={{
-        margin: theme.spacing(0, 20)
-      }}
-      {...props}
-    >
-      <div {...titleDivProps}>
+    <Container {...props}>
+      <span {...titleDivProps}>
         <Typography
           className={classes.title}
-          variant="h5"
+          variant="h2"
           gutterBottom
           {...titleProps}
         >
@@ -49,16 +40,16 @@ const Section = ({
         {subTitle && (
           <Typography
             className={classes.subTitle}
-            variant="body2"
+            variant="h6"
             gutterBottom
             {...subTitleProps}
           >
             {subTitle}
           </Typography>
         )}
-      </div>
+      </span>
       {children}
-    </section>
+    </Container>
   );
 };
 
