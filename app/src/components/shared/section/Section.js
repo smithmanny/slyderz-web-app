@@ -16,18 +16,37 @@ const Section = ({
   ...props
 }) => {
   const classes = sectionLayoutStyles();
-  const theme = useTheme();
 
-  if (!title) {
+  if (title && subTitle) {
     return (
       <Container {...props}>
+        <span {...titleDivProps}>
+          <Typography
+            className={classes.title}
+            variant="h2"
+            gutterBottom
+            {...titleProps}
+          >
+            {title}
+          </Typography>
+
+          {subTitle && (
+            <Typography
+              className={classes.subTitle}
+              variant="h6"
+              gutterBottom
+              {...subTitleProps}
+            >
+              {subTitle}
+            </Typography>
+          )}
+        </span>
         {children}
       </Container>
     )
-  }
-  return (
-    <Container {...props}>
-      <span {...titleDivProps}>
+  } else if (title) {
+    return (
+      <Container {...props}>
         <Typography
           className={classes.title}
           variant="h2"
@@ -36,21 +55,15 @@ const Section = ({
         >
           {title}
         </Typography>
-
-        {subTitle && (
-          <Typography
-            className={classes.subTitle}
-            variant="h6"
-            gutterBottom
-            {...subTitleProps}
-          >
-            {subTitle}
-          </Typography>
-        )}
-      </span>
+        {children}
+      </Container>
+    )
+  }
+  return (
+    <Container {...props}>
       {children}
     </Container>
-  );
+  )
 };
 
 Section.defaultProps = {

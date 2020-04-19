@@ -8,3 +8,6 @@ export { default as PersonIcon } from '@material-ui/icons/Person';
 export { default as ShoppingCart } from '@material-ui/icons/ShoppingCart';
 export { default as StarRateIcon } from '@material-ui/icons/StarRate';
 export { default as SearchIcon } from '@material-ui/icons/Search';
+export { default as BowlIcon } from './svg/bowl.svg';
+export { default as ChefIcon } from './svg/chef.svg';
+export { default as MenuIcon } from './svg/menu.svg';

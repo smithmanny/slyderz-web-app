@@ -5,10 +5,66 @@ export default makeStyles(theme =>
     addressPaper: {
       display: 'flex',
       marginTop: theme.spacing(6),
+      maxWidth: '600px',
       padding: theme.spacing(3)
     },
+    addressPaperFooter: {
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
+    becomeAChef: {
+      color: theme.palette.primary.main,
+      fontSize: '20px',
+      fontWeight: 500,
+      textAlign: 'center',
+      marginBottom: theme.spacing(2)
+    },
+    becomeAChefButton: {
+      [theme.breakpoints.up('md')]: {
+        marginTop: 0
+      },
+      textAlign: 'center',
+      marginTop: theme.spacing(2)
+    },
+    becomeAChefContainer: {
+      padding: theme.spacing(6, 0)
+    },
+    becomeAChefSubText: {
+      fontSize: '18px',
+      textAlign: 'center'
+    },
     container: {
-      backgroundColor: theme.palette.primary.light,
+      backgroundColor: 'rgba(234, 113, 105, 0.81)',
+    },
+    foodSafety: {
+      margin: theme.spacing(2, 0)
+    },
+    foodSafetyContainer: {
+      [theme.breakpoints.up('md')]: {
+        paddingTop: theme.spacing(10)
+      },
+      backgroundColor: 'rgba(234, 113, 105, 0.3)',
+      marginTop: theme.spacing(10),
+      padding: theme.spacing(6, 0)
+    },
+    foodSafetyContent: {
+      fontSize: '20px',
+      color: theme.palette.text.secondary,
+      margin: theme.spacing('auto', 0)
+    },
+    foodSafetyContentContainer: {
+      [theme.breakpoints.up('md')]: {
+        paddingTop: theme.spacing(20)
+      },
+    },
+    foodSafetyPic: {
+      [theme.breakpoints.up('md')]: {
+        height: '630px',
+        width: '460px',
+      },
+      borderRadius: '32px 0',
+      imageRendering: '-webkit-optimize-contrast',
+      width: '100%'
     },
     headerSection: {
       '@media only screen and (min-width: 858px)': {
@@ -25,21 +81,54 @@ export default makeStyles(theme =>
       maxWidth: '400px'
     },
     howSlyderzWorks: {
-      marginTop: theme.spacing(20)
+      '@media only screen and (min-width: 858px)': {
+        '& span > h6': {
+          marginBottom: theme.spacing(8),
+        },
+        marginTop: theme.spacing(40),
+        textAlign: 'center'
+      },
+      marginTop: theme.spacing(6)
+    },
+    howSlyderzWorksCard: {
+      [theme.breakpoints.up('md')]: {
+        flexDirection: 'column',
+        '& svg': {
+          marginBottom: theme.spacing(3)
+        }
+      },
+      '& h5': {
+        fontWeight: 500,
+        marginBottom: theme.spacing(1)
+      },
+      '& h6': {
+        color: theme.palette.text.secondary
+      },
+      '& svg': {
+        height: '76px',
+        marginRight: theme.spacing(2),
+        width: '87px',
+      },
+      alignItems: 'center',
+      display: 'flex',
     },
     personalChef: {
       '@media only screen and (min-width: 858px)': {
         position: 'absolute',
-        height: '530px',
-        maxWidth: '363px',
+        height: '630px',
         right: theme.spacing(2),
         top: theme.spacing(10),
+        width: '460px'
       },
       borderRadius: '32px 0',
       height: '330px',
       margin: theme.spacing(4, 0),
       width: '100%',
       imageRendering: '-webkit-optimize-contrast'
+    },
+    readyToOrderContainer: {
+      backgroundColor: 'rgba(234, 113, 105, 0.81)',
+      padding: theme.spacing(6, 0)
     },
     section: {
       // marginTop: theme.spacing(2),
@@ -50,6 +139,6 @@ export default makeStyles(theme =>
     userAddress: {
       flex: 1,
       margin: theme.spacing(0, 2, 0, 0)
-    }
+    },
   })
 );

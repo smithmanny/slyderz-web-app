@@ -31,7 +31,8 @@ const muiTheme = createMuiTheme({
       fontWeight: 500
     },
     h2: {
-      fontSize: '40px'
+      fontSize: '40px',
+      fontWeight: 500
     }
   },
   overrides: {

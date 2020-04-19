@@ -4,12 +4,12 @@ export default makeStyles(theme =>
   createStyles({
     title: {
       fontWeight: 500,
-      marginBottom: theme.spacing(2)
     },
     titleDivProps: {
       display: 'inline-block'
     },
     subTitle: {
+      color: theme.palette.text.secondary,
       marginBottom: theme.spacing(5)
     }
   })
