@@ -9,7 +9,7 @@ import Grid from '../../src/components/shared/Grid';
 
 import CREATE_USER_MUTATION from '../../src/libs/gql/mutation/auth/signupMutation.gql';
 import SIGNUP_VALIDATION from '../../src/libs/yup/signupValidation';
-import authStyles from '../../src/assets/styles/consumer/authStyles';
+import authStyles from '../../src/assets/styles/authStyles';
 
 const Signup = () => {
   const classes = authStyles();
@@ -60,7 +60,7 @@ const Signup = () => {
               variant="contained"
               color="primary"
               type="submit"
-              // disabled={isSubmitting}
+            // disabled={isSubmitting}
             >
               Sign up
             </Button>

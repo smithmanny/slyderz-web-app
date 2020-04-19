@@ -6,7 +6,7 @@ import { Avatar, Button } from '../../src/components/shared';
 import Typography from '../../src/components/shared/Typography';
 import Grid from '../../src/components/shared/Grid';
 import { StarRateIcon } from '../../src/assets/icons';
-import ChefItemCard from '../../src/components/consumer/chef/item_card';
+import ChefItemCard from '../../src/components/chef/item_card';
 import chefDetailStyles from './styles';
 
 const Chef = () => {

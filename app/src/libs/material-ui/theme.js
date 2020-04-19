@@ -25,13 +25,15 @@ const muiTheme = createMuiTheme({
     tonalOffset: 0.2
   },
   typography: {
-    fontSize: 12
+    fontSize: 12,
+    h1: {
+      fontSize: '50px',
+      fontWeight: 500
+    }
   },
   overrides: {
     MuiButton: {
       root: {
-        fontWeight: 'bold',
-        borderRadius: 0,
         boxShadhow: 'none'
       }
     },

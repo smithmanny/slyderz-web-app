@@ -9,8 +9,8 @@ import Divider from '../../src/components/shared/Divider';
 import Grid from '../../src/components/shared/Grid';
 import Typography from '../../src/components/shared/Typography';
 import BasicForm, { DatePickerField, TimePickerField } from '../../src/components/form';
-import CheckoutSection from '../../src/components/consumer/checkout/checkout_section';
-import Order from '../../src/components/consumer/checkout/order';
+import CheckoutSection from '../../src/components/checkout/checkout_section';
+import Order from '../../src/components/checkout/order';
 
 const Checkout = () => {
   const classes = checkoutStyles();

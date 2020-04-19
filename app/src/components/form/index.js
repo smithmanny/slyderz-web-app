@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useForm, FormContext  } from 'react-hook-form'
+import { useForm, FormContext } from 'react-hook-form'
 import { useApolloClient } from '@apollo/react-hooks';
 
 export { default as DatePickerField } from './DatePickerGroup';
@@ -10,7 +10,7 @@ export { default as Select } from '@material-ui/core/Select';
 
 const BasicForm = ({ children, defaultValues, refetchQueries, mutate }) => {
   const client = useApolloClient();
-  const methods = useForm({ defaultValues, validationSchema: mutate.validation });
+  const methods = useForm({ defaultValues, validationSchema: (mutate && mutate.validation) ? mutate.validation : null });
   const { handleSubmit, reset } = methods
 
   function handleFormSubmit(values) {
@@ -44,16 +44,16 @@ const BasicForm = ({ children, defaultValues, refetchQueries, mutate }) => {
       <form onSubmit={handleSubmit(handleFormSubmit)}>
         {Array.isArray(children)
           ? children.map(child => {
-              return child.props.name
-                ? React.createElement(child.type, {
-                    ...{
-                      ...child.props,
-                      register: methods.register,
-                      key: child.props.name
-                    }
-                  })
-                : child;
-            })
+            return child.props.name
+              ? React.createElement(child.type, {
+                ...{
+                  ...child.props,
+                  register: methods.register,
+                  key: child.props.name
+                }
+              })
+              : child;
+          })
           : children}
       </form>
     </FormContext>

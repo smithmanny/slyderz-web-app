@@ -20,8 +20,6 @@ type Mutation {
   signup(email: String, firstName: String!, lastName: String!, password: String): AuthPayload!
 }
 
-type Post
-
 type Query {
   currentSession: CurrentSessionPayload
   me: User

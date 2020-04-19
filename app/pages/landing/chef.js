@@ -7,7 +7,7 @@ import Grid from '../../src/components/shared/Grid';
 import Container from '../../src/components/shared/container';
 import { Section } from '../../src/components/layouts/index';
 
-import landingPageStyles from '../../src/assets/styles/consumer/landing/landingPageStyles';
+import landingPageStyles from '../../src/assets/styles/landing/landingPageStyles';
 
 const BecomeChefLandingPage = () => {
   const classes = landingPageStyles();

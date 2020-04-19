@@ -8,7 +8,8 @@ import DateFnsUtils from '@date-io/date-fns';
 import { DefaultSeo } from 'next-seo';
 import TagManager from 'react-gtm-module';
 
-import { CurrentSessionProviver } from '../src/context/currentSessionContext';
+import { CheckoutCartProvider } from '../src/utils/checkoutCartContext';
+import CurrentSessionProviver from '../src/utils/currentSessionContext';
 import { theme } from '../src/libs/material-ui';
 import withApollo from '../src/utils/withApollo';
 import SEO from '../next-seo.config';
@@ -34,9 +35,11 @@ class MyApp extends App {
           <ThemeProvider theme={theme}>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <CurrentSessionProviver>
-                <DefaultSeo {...SEO} />
-                <CssBaseline />
-                <Component {...pageProps} />
+                <CheckoutCartProvider>
+                  <DefaultSeo {...SEO} />
+                  <CssBaseline />
+                  <Component {...pageProps} />
+                </CheckoutCartProvider>
               </CurrentSessionProviver>
             </MuiPickersUtilsProvider>
           </ThemeProvider>

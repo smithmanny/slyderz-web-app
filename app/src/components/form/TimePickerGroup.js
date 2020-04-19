@@ -8,12 +8,12 @@ const TimePickerGroup = ({ name }) => {
   return (
     <Controller
       as={
-      <KeyboardTimePicker
-        autoOk
-        clearable
-        margin="normal"
-      />
-    }
+        <KeyboardTimePicker
+          autoOk
+          clearable
+          margin="normal"
+        />
+      }
       name={name}
       control={control}
       onChange={date => handleDateChange(date)}

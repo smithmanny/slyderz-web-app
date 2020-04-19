@@ -6,14 +6,14 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 
-import BasicForm, { Select, TextField } from '../form';
+import BasicForm, { Select, TextField } from '../Form';
 import { Button, Fab } from '../shared';
-import Container from '../shared/container';
+import Container from '../shared/consumerContainer';
 import Grid from '../shared/Grid';
 import Typography from '../shared/Typography';
 import { Section } from './index';
-import HowItWorks from '../consumer/howItWorks';
-import landingPageStyles from '../../assets/styles/consumer/landing/landingPageStyles';
+import HowItWorks from '../howItWorks';
+import landingPageStyles from '../../assets/styles/landing/landingPageStyles';
 
 const LandingPageLayout = () => {
   const classes = landingPageStyles();

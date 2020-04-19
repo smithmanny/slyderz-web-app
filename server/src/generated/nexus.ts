@@ -119,7 +119,7 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "AuthPayload" | "CurrentSessionPayload" | "MessagePayload" | "Mutation" | "Post" | "Query" | "User";
+export type NexusGenObjectNames = "AuthPayload" | "CurrentSessionPayload" | "MessagePayload" | "Mutation" | "Query" | "User";
 
 export type NexusGenInputNames = never;
 

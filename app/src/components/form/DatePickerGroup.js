@@ -9,16 +9,16 @@ const DatePickerGroup = ({ name }) => {
   return (
     <Controller
       as={
-      <KeyboardDatePicker
-        autoOk
-        clearable
-        id={name}
-        disablePast
-        variant="inline"
-        format="MM/dd/yyyy"
-        margin="normal"
-      />
-    }
+        <KeyboardDatePicker
+          autoOk
+          clearable
+          id={name}
+          disablePast
+          variant="inline"
+          format="MM/dd/yyyy"
+          margin="normal"
+        />
+      }
       name={name}
       control={control}
       onChange={date => handleDateChange(date)}
