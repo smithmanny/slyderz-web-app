@@ -5,7 +5,7 @@ import { Button } from '../shared';
 import Typography from '../shared/Typography';
 import Grid from '../shared/Grid';
 import BasicModal from '../shared/BasicModal';
-import BasicForm, { TextField } from '../Form';
+import BasicForm, { TextField } from '../form';
 
 const LocationModal = ({ classes, ...props }) => (
   <BasicModal {...props}>

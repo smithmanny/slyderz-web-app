@@ -11,7 +11,7 @@ import Section from '../shared/section'
 import { Button } from '../shared'
 import Grid from '../shared/Grid'
 import Paper from '../shared/Paper'
-import BasicForm, { TextField } from '../Form'
+import BasicForm, { TextField } from '../form'
 import { BowlIcon } from '../../assets/icons'
 import { ChefIcon } from '../../assets/icons'
 import { MenuIcon } from '../../assets/icons'
@@ -74,22 +74,28 @@ const LoggedOutContainer = () => {
           <Grid item xs={12} md={4}>
             <div className={classes.howSlyderzWorksCard}>
               <ChefIcon />
-              <Typography variant="h5">Choose Your Chef</Typography>
-              <Typography variant="h6">All Slyderz chefs have undergone extensive training and food safety handling</Typography>
+              <span className={classes.howSlyderzWorksCardText}>
+                <Typography variant="h5">Choose Your Chef</Typography>
+                <Typography variant="h6">All Slyderz chefs have undergone extensive training and food safety handling</Typography>
+              </span>
             </div>
           </Grid>
           <Grid item xs={12} md={4}>
             <div className={classes.howSlyderzWorksCard}>
               <MenuIcon />
-              <Typography variant="h5">Pick Your Dishes</Typography>
-              <Typography variant="h6">Order in advance so chefs can be fresh ingredients</Typography>
+              <span className={classes.howSlyderzWorksCardText}>
+                <Typography variant="h5">Pick Your Dishes</Typography>
+                <Typography variant="h6">Order in advance so chefs can buy fresh ingredients</Typography>
+              </span>
             </div>
           </Grid>
           <Grid item xs={12} md={4}>
             <div className={classes.howSlyderzWorksCard}>
               <BowlIcon />
-              <Typography variant="h5">Enjoy in-home Experience</Typography>
-              <Typography variant="h6">Affordable private chef at your home </Typography>
+              <span className={classes.howSlyderzWorksCardText}>
+                <Typography variant="h5">Enjoy in-home Experience</Typography>
+                <Typography variant="h6">Affordable private chef at your home </Typography>
+              </span>
             </div>
           </Grid>
         </Grid>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { MenuItem } from '../../shared';
 import Typography from '../../shared/Typography';
-import { Select } from '../../Form';
+import { Select } from '../../form';
 import ordersStyles from './styles';
 
 const Order = () => {

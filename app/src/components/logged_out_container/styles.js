@@ -31,7 +31,8 @@ export default makeStyles(theme =>
     },
     becomeAChefSubText: {
       fontSize: '18px',
-      textAlign: 'center'
+      textAlign: 'center',
+      marginBottom: 0
     },
     container: {
       backgroundColor: 'rgba(234, 113, 105, 0.81)',
@@ -62,6 +63,7 @@ export default makeStyles(theme =>
         height: '630px',
         width: '460px',
       },
+      maxHeight: '800px',
       borderRadius: '32px 0',
       imageRendering: '-webkit-optimize-contrast',
       width: '100%'
@@ -91,7 +93,7 @@ export default makeStyles(theme =>
       marginTop: theme.spacing(6)
     },
     howSlyderzWorksCard: {
-      [theme.breakpoints.up('md')]: {
+      [theme.breakpoints.up('sm')]: {
         flexDirection: 'column',
         '& svg': {
           marginBottom: theme.spacing(3)
@@ -111,6 +113,11 @@ export default makeStyles(theme =>
       },
       alignItems: 'center',
       display: 'flex',
+    },
+    howSlyderzWorksCardText: {
+      [theme.breakpoints.up('sm')]: {
+        textAlign: 'center'
+      }
     },
     personalChef: {
       '@media only screen and (min-width: 858px)': {

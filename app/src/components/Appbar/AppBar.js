@@ -9,7 +9,7 @@ import { Badge, Button, Fab, IconButton } from '../shared';
 import Grid from '../shared/Grid';
 import Typography from '../shared/Typography';
 import { ShoppingCart, PersonIcon } from '../../assets/icons';
-import AccountPopover from '../AccountPopover';
+import AccountPopover from '../account_popover';
 import CartPopover from '../CartPopover';
 
 import appbarStyles from './styles';
