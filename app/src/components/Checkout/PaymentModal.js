@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Button } from '../../shared';
-import Typography from '../../shared/Typography';
-import Grid from '../../shared/Grid';
-import BasicModal from '../../shared/BasicModal';
-import BasicForm, { TextField } from '../../form';
+import { Button } from '../shared';
+import Typography from '../shared/Typography';
+import Grid from '../shared/Grid';
+import BasicModal from '../shared/BasicModal';
+import BasicForm, { TextField } from '../form';
 
 const PaymentModal = ({ classes, ...props }) => (
   <BasicModal {...props}>

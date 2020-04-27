@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 
-import { AppContainer } from '../../src/components/layouts';
+import ConsumerContainer from '../../src/components/shared/consumerContainer';
 import { Avatar, Button } from '../../src/components/shared';
 import Typography from '../../src/components/shared/Typography';
 import Grid from '../../src/components/shared/Grid';
@@ -53,7 +53,7 @@ const Chef = () => {
     }
   ]
   return (
-    <AppContainer>
+    <ConsumerContainer>
       <Grid container className={classes.header}>
         <img srcSet="/detail.jpg" alt="Chef header" />
       </Grid>
@@ -115,7 +115,7 @@ const Chef = () => {
           </Grid>
         </Grid>
       </Grid>
-    </AppContainer>
+    </ConsumerContainer>
   );
 };
 

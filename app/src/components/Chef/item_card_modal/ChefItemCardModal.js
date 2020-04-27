@@ -2,8 +2,8 @@ import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 
-import Divider from '../../../shared/Divider';
-import Typography from '../../../shared/Typography';
+import Divider from '../../shared/Divider';
+import Typography from '../../shared/Typography';
 import ChefItemAddToCart from '../add_to_cart';
 import ChefItemCardModalStyles from './styles';
 

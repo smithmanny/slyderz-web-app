@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Typography from '../../../shared/Typography';
+import Typography from '../../shared/Typography';
 import ChefItemCardModal from '../item_card_modal';
 import ChefItemCardStyles from './styles';
 

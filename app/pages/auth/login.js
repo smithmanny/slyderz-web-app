@@ -8,7 +8,7 @@ import Typography from '../../src/components/shared/Typography';
 
 import SIGNIN_MUTATION from '../../src/libs/gql/mutation/auth/signinMutation.gql';
 import SIGNIN_VALIDATION from '../../src/libs/yup/signinValidation';
-import authStyles from '../../src/assets/styles/authStyles';
+import authStyles from '../../src/assets/styles/consumer/authStyles';
 
 const Login = () => {
   const classes = authStyles();

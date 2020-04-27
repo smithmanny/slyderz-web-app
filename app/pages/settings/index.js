@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 
 import Typography from '../../src/components/shared/Typography';
-import authStyles from '../../src/assets/styles/authStyles';
+import authStyles from '../../src/assets/styles/consumer/authStyles';
 
 const Settings = () => {
   const classes = authStyles();
