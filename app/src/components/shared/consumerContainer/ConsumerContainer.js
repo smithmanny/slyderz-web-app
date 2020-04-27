@@ -5,7 +5,7 @@ import Container from '@material-ui/core/Container';
 import AppBar from '../../appbar';
 import consumerContainerStyles from './styles';
 
-const AppContainer = ({ children, ...props }) => {
+const ConsumerContainer = ({ children, ...props }) => {
   const classes = consumerContainerStyles();
   return (
     <Container className={classes.container} maxWidth="xl" {...props}>
@@ -15,8 +15,8 @@ const AppContainer = ({ children, ...props }) => {
   );
 };
 
-AppContainer.propTypes = {
+ConsumerContainer.propTypes = {
   children: PropTypes.node.isRequired
 };
 
-export default AppContainer;
+export default ConsumerContainer;
