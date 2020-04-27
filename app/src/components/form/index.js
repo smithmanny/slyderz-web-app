@@ -8,7 +8,7 @@ export { default as TimePickerField } from './TimePickerGroup';
 export { default as TextField } from './TextFieldGroup';
 export { default as Select } from '@material-ui/core/Select';
 
-const BasicForm = ({ children, defaultValues, refetchQueries, mutate }) => {
+const BasicForm = ({ children, defaultValues, refetchQueries, mutate, ...props }) => {
   const client = useApolloClient();
   const methods = useForm({ defaultValues, validationSchema: (mutate && mutate.validation) ? mutate.validation : null });
   const { handleSubmit, reset } = methods
@@ -41,7 +41,10 @@ const BasicForm = ({ children, defaultValues, refetchQueries, mutate }) => {
   }
   return (
     <FormContext {...methods}>
-      <form onSubmit={handleSubmit(handleFormSubmit)}>
+      <form
+        onSubmit={handleSubmit(handleFormSubmit)}
+        {...props}
+      >
         {Array.isArray(children)
           ? children.map(child => {
             return child.props.name

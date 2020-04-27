@@ -2,7 +2,7 @@
 import React, { createContext } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 
-import CURRENT_SESSION_QUERY from '../libs/gql/query/session/currentSessionQuery.gql';
+import CURRENT_SESSION_QUERY from '../../libs/gql/query/session/currentSessionQuery.gql';
 
 const INITIAL_SESSION_STATE = {
   user: null

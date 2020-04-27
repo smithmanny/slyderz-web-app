@@ -1,5 +1,5 @@
 import React from 'react'
-import { CurrentSessionContext } from './currentSessionContext'
+import { CurrentSessionContext } from '../components/shared/CurrentSessionProvider'
 
 const withCurrentUser = Component =>
   function ComponentWithCurrentUser(props) {

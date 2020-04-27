@@ -12,6 +12,12 @@ export default makeStyles(theme =>
       flex: 1,
       margin: theme.spacing(0, 2, 0, 0)
     },
+    form: {
+      [theme.breakpoints.up('md')]: {
+        display: 'flex',
+        justifyContent: 'flex-end'
+      },
+    },
     footer: {
       backgroundColor: theme.palette.primary.dark,
       padding: theme.spacing(6, 0)
@@ -23,6 +29,29 @@ export default makeStyles(theme =>
     signup: {
       display: 'flex',
       alignItems: 'center'
+    },
+    socialContainer: {
+      '& span': {
+        marginLeft: 'auto'
+      },
+      '& h6': {
+        fontSize: '16px'
+      },
+      alignItems: 'center',
+      display: 'flex',
+      color: 'white',
+      marginTop: theme.spacing(2)
+    },
+    socialList: {
+      '& li': {
+        '& svg': {
+          fontSize: '32px',
+        },
+        marginRight: theme.spacing(3)
+      },
+      display: 'flex',
+      color: 'rgba(255, 255, 255, 0.2)',
+      listStyle: 'none',
     },
     table: {
       '& th': {

@@ -13,7 +13,7 @@ const INITIAL_STATE = {
 }
 
 function reducer(state, action) {
-  switch(action.type) {
+  switch (action.type) {
     case CLOSE_CART:
       return { ...INITIAL_STATE, showCart: false }
     case OPEN_CART:
@@ -23,9 +23,9 @@ function reducer(state, action) {
   }
 }
 
-const CheckoutCartContext = React.createContext();
+export const CheckoutCartContext = React.createContext();
 
-export const CheckoutCartProvider = ({ children }) => {
+const CheckoutCartProvider = ({ children }) => {
   const cartValue = useReducer(reducer, INITIAL_STATE)
   return (
     <CheckoutCartContext.Provider value={cartValue}>
@@ -33,4 +33,4 @@ export const CheckoutCartProvider = ({ children }) => {
     </CheckoutCartContext.Provider>
   )
 }
-export default CheckoutCartContext;
+export default CheckoutCartProvider;
