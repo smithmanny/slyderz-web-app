@@ -956,17 +956,17 @@
   resolved "https://registry.yarnpkg.com/@date-io/core/-/core-1.3.13.tgz#90c71da493f20204b7a972929cc5c482d078b3fa"
   integrity sha512-AlEKV7TxjeK+jxWVKcCFrfYAk8spX9aCyiToFIiLPtfQbsjmRGLIhb5VZgptQcJdHtLXo7+m0DuurwFgUToQuA==
 
-"@date-io/core@^2.5.0":
+"@date-io/core@^2.6.0":
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/@date-io/core/-/core-2.6.0.tgz#01efa47b225d1a94d3138583588b919442149ee8"
   integrity sha512-GkM3jTlh9r3MfZEuFKV4g1JSbxz1G0Or1CBKkhPcw7UCJRjjsk5mLVYZYtUQEsOY8rCSFUTdCOm63ulWzAC/pw==
 
-"@date-io/date-fns@2.5.0":
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/@date-io/date-fns/-/date-fns-2.5.0.tgz#10ff3b2220f1814e1d4d835dbfb9fb6f497e83aa"
-  integrity sha512-HiQqjVLFUPsOYtW3damMw5jsY5Yk2KG3LcI7s2eioce+jgxZ6XjhGiyWur14btgTVihhkVjfdzmd5XMfpRXH1Q==
+"@date-io/date-fns@2.6.1":
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/@date-io/date-fns/-/date-fns-2.6.1.tgz#f0879f161203804ae5314401fcf0bc7133596eca"
+  integrity sha512-N8NwnUB9cs794aCmEW+TZv8uFFAPii/AzyEKJ6K2v+eZ4QbLuOuDcyX0BIQ98XH0YsBbZcTHggnFKHSX2bNaEw==
   dependencies:
-    "@date-io/core" "^2.5.0"
+    "@date-io/core" "^2.6.0"
 
 "@emotion/hash@^0.8.0":
   version "0.8.0"
@@ -3339,10 +3339,10 @@ eslint-plugin-prettier@^3.1.2:
   dependencies:
     prettier-linter-helpers "^1.0.0"
 
-eslint-plugin-react-hooks@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-3.0.0.tgz#9e80c71846eb68dd29c3b21d832728aa66e5bd35"
-  integrity sha512-EjxTHxjLKIBWFgDJdhKKzLh5q+vjTFrqNZX36uIxWS4OfyXe5DawqPj3U5qeJ1ngLwatjzQnmR0Lz0J0YH3kxw==
+eslint-plugin-react-hooks@4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-4.0.0.tgz#81196b990043cde339e25c6662aeebe32ac52d01"
+  integrity sha512-YKBY+kilK5wrwIdQnCF395Ya6nDro3EAMoe+2xFkmyklyhF16fH83TrQOo9zbZIDxBsXFgBbywta/0JKRNFDkw==
 
 eslint-plugin-react@^7.19.0:
   version "7.19.0"
@@ -5537,14 +5537,14 @@ next-tick@~1.0.0:
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
   integrity sha1-yobR/ogoFpsBICCOPchCS524NCw=
 
-next-with-apollo@5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/next-with-apollo/-/next-with-apollo-5.0.0.tgz#022e58c1a5c2117a6190534271e297a7fa039319"
-  integrity sha512-JcMecKv6XtzsLf1hPKrbxM6g9sygnGdQugglmCDkfWhHZt1yziPa+g515qtw7in8A7Ed5W9PdaaaUn7CWWQ71w==
+next-with-apollo@5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/next-with-apollo/-/next-with-apollo-5.0.1.tgz#11055d834e98ad6dbdeb9c853afcfe421b5d4730"
+  integrity sha512-pLNUWYNwY36u/L0Sco9PqML+gbCtyzE85ZysEGOzKfxdWbmazo5cUTGYDqwbHWS3xE7Mh79A26k1WJsIshJurQ==
   dependencies:
     isomorphic-unfetch "^3.0.0"
 
-next@^9.1.7:
+next@^9.3.6:
   version "9.3.6"
   resolved "https://registry.yarnpkg.com/next/-/next-9.3.6.tgz#2bfd76f835606db3840adf07b51b052514ef3709"
   integrity sha512-b46i+qw2SYMVTOObc7GqUizt1zH1fB3T5qcOiCpl9utD7/LcWZkSxSPe7ZJtpAdFnl8V/7A58ADSvU1oxDDWug==
@@ -6606,10 +6606,10 @@ prettier-linter-helpers@^1.0.0:
   dependencies:
     fast-diff "^1.1.2"
 
-prettier@2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.0.4.tgz#2d1bae173e355996ee355ec9830a7a1ee05457ef"
-  integrity sha512-SVJIQ51spzFDvh4fIbCLvciiDMCrRhlN3mbZvv/+ycjvmF5E73bKdGfU8QDLNmjYJf+lsGnDBC4UUnvTe5OO0w==
+prettier@2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.0.5.tgz#d6d56282455243f2f92cc1716692c08aa31522d4"
+  integrity sha512-7PtVymN48hGcO4fGjybyBSIWDsLU4H4XlvOHfq91pz9kkGlonzwTfYkaIEwiRg/dAJF9YlbsduBAgtYLi+8cFg==
 
 private@^0.1.8:
   version "0.1.8"
@@ -6798,7 +6798,7 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-dom@^16.12.0:
+react-dom@^16.13.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.13.1.tgz#c1bd37331a0486c078ee54c4740720993b2e0e7f"
   integrity sha512-81PIMmVLnCNLO/fFOQxdQkvEq/+Hfpv24XNJfpyZhTRfO0QcmQIF/PgCa1zCOj2w1hrn12MFLyaJ/G0+Mxtfag==
@@ -6813,10 +6813,10 @@ react-gtm-module@^2.0.8:
   resolved "https://registry.yarnpkg.com/react-gtm-module/-/react-gtm-module-2.0.8.tgz#0d37c4f2a4e3a8efa40c76c8b2aa1b7cacc16c6f"
   integrity sha512-OU5FwAHC3gWnnxJ+MLwBMLZO1Pmn1DiVCGHqptwDnNojE3QRrNxjqozkW5cNS4Zp+C6HZ8a4ZIt0QPNlpzua4Q==
 
-react-hook-form@5.4.0:
-  version "5.4.0"
-  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-5.4.0.tgz#35177105c4ce4a01584579ab7edc14c6fe764a36"
-  integrity sha512-2m8BpiuFpNkfcAfFHGBWi/pVEsRbkhmH2yPuM7RSmeuXrEnH8Ohk50SnScDWUNwflN4v2x2FAHy4w64ct+SLrA==
+react-hook-form@5.6.1:
+  version "5.6.1"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-5.6.1.tgz#8b6017ec01731bde4f6a6bcd94955ff5e69e28cc"
+  integrity sha512-pqlAiWyZqngdEVUinxPSmhs9k2L/ETsTf8LU7wfwrE1bXJnslRsb4aKlYiL2z0bgGrCuksN8el5bxFbnR1/qEA==
 
 react-is@16.8.6:
   version "16.8.6"
@@ -6848,7 +6848,7 @@ react-transition-group@^4.0.0, react-transition-group@^4.3.0:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-react@^16.12.0:
+react@^16.13.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react/-/react-16.13.1.tgz#2e818822f1a9743122c063d6410d85c1e3afe48e"
   integrity sha512-YMZQQq32xHLX0bz5Mnibv1/LHb3Sqzngu7xstSM+vrkE5Kzr9xE0yMByK5kMoTK30YVJE61WfbxIFFvfeDKT1w==
