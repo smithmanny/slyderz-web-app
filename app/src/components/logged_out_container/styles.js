@@ -63,7 +63,8 @@ export default makeStyles(theme =>
         height: '630px',
         width: '460px',
       },
-      maxHeight: '800px',
+      maxWidth: '460px',
+      maxHeight: '630px',
       borderRadius: '32px 0',
       imageRendering: '-webkit-optimize-contrast',
       width: '100%'
@@ -129,9 +130,11 @@ export default makeStyles(theme =>
         width: '460px'
       },
       borderRadius: '32px 0',
-      height: '330px',
+      height: 'auto',
       margin: theme.spacing(4, 0),
       width: '100%',
+      maxWidth: '460px',
+      maxHeight: '630px',
       imageRendering: '-webkit-optimize-contrast'
     },
     readyToOrderContainer: {

@@ -60,7 +60,7 @@ const LoggedOutContainer = () => {
                 </Paper>
               </BasicForm>
             </div>
-            <img src="/chef.jpg" alt="Personal chef cooking" className={classes.personalChef} />
+            <img srcSet="/chef.jpg" alt="Personal chef cooking" className={classes.personalChef} />
           </Section>
         </Grid>
       </Grid>
@@ -104,7 +104,7 @@ const LoggedOutContainer = () => {
         <Section>
           <Grid container>
             <Grid item xs={12} md={6}>
-              <img src="/food-safety.jpg" alt="Personal chef cooking" className={classes.foodSafetyPic} />
+              <img srcSet="/food-safety.jpg" alt="Personal chef cooking" className={classes.foodSafetyPic} />
             </Grid>
             <Grid item xs={12} md={6} className={classes.foodSafetyContentContainer}>
               <Typography variant="h2" className={classes.foodSafety}>Food Safety</Typography>
