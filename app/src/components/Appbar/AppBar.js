@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import Toolbar from '@material-ui/core/Toolbar';
-import AppBar from '@material-ui/core/AppBar';
+import { default as AppBarMui } from '@material-ui/core/AppBar';
 
 import { Badge, Button, Fab, IconButton } from '../shared';
 import Grid from '../shared/Grid';
@@ -15,7 +15,7 @@ import CartPopover from '../CartPopover';
 import appbarStyles from './styles';
 import withCurrentUser from '../../utils/withCurrentUser';
 
-const AppBarComponent = ({ currentUser, ...props }) => {
+const AppBar = ({ currentUser, ...props }) => {
   const classes = appbarStyles();
   const [cartAnchorEl, setCartAnchorEl] = useState(null);
   const [accountAnchorEl, setAccountAnchorEl] = useState(null);
@@ -101,7 +101,7 @@ const AppBarComponent = ({ currentUser, ...props }) => {
   )
 
   return (
-    <AppBar
+    <AppBarMui
       className={classes.root}
       position="static"
       color="default"
@@ -134,12 +134,12 @@ const AppBarComponent = ({ currentUser, ...props }) => {
           />
         )}
       </Toolbar>
-    </AppBar>
+    </AppBarMui>
   );
 };
 
-AppBarComponent.propTypes = {
+AppBar.propTypes = {
   linkProps: PropTypes.object
 };
 
-export default withCurrentUser(AppBarComponent);
+export default withCurrentUser(AppBar);
