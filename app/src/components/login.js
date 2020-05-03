@@ -2,13 +2,13 @@ import React from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 
-import { Button } from '../../src/components/shared';
-import BasicForm, { TextField } from '../../src/components/form';
-import Typography from '../../src/components/shared/Typography';
+import { Button } from './shared';
+import BasicForm, { TextField } from './form';
+import Typography from './shared/Typography';
 
 import SIGNIN_MUTATION from '../../src/libs/gql/mutation/auth/signinMutation.gql';
-import SIGNIN_VALIDATION from '../../src/libs/yup/signinValidation';
-import authStyles from '../../src/assets/styles/consumer/authStyles';
+import SIGNIN_VALIDATION from '../libs/yup/signinValidation';
+import authStyles from '../assets/styles/consumer/authStyles';
 
 const Login = () => {
   const classes = authStyles();

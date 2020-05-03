@@ -1,11 +1,12 @@
 import React from 'react';
+import dynamic from 'next/dynamic'
 
 import withCurrentUser from '../src/utils/withCurrentUser'
-import homePageStyles from '../src/components/logged_in_container/styles';
 
+import homePageStyles from '../src/components/logged_in_container/styles';
 import Footer from '../src/components/shared/footer'
-import LoggedInContainer from '../src/components/logged_in_container';
-import LoggedOutContainer from '../src/components/logged_out_container';
+const LoggedInContainer = dynamic(() => import('../src/components/logged_in_container'))
+const LoggedOutContainer = dynamic(() => import('../src/components/logged_out_container'))
 
 const Index = ({ currentUser }) => {
   const classes = homePageStyles();

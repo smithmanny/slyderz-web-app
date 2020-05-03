@@ -2,14 +2,14 @@ import React from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 
-import { Button } from '../../src/components/shared';
-import BasicForm, { TextField } from '../../src/components/form';
-import Typography from '../../src/components/shared/Typography';
-import Grid from '../../src/components/shared/Grid';
+import { Button } from './shared';
+import BasicForm, { TextField } from './form';
+import Typography from './shared/Typography';
+import Grid from './shared/Grid';
 
 import CREATE_USER_MUTATION from '../../src/libs/gql/mutation/auth/signupMutation.gql';
-import SIGNUP_VALIDATION from '../../src/libs/yup/signupValidation';
-import authStyles from '../../src/assets/styles/consumer/authStyles';
+import SIGNUP_VALIDATION from '../libs/yup/signupValidation';
+import authStyles from '../assets/styles/consumer/authStyles';
 
 const Signup = () => {
   const classes = authStyles();
