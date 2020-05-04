@@ -9,7 +9,6 @@ import { DefaultSeo } from 'next-seo';
 import TagManager from 'react-gtm-module';
 
 import CheckoutCartProvider from '../src/components/shared/CheckoutCartProvider';
-import CurrentSessionProviver from '../src/components/shared/CurrentSessionProvider';
 import WindowProvider from '../src/components/shared/WindowProvider';
 import { theme } from '../src/libs/material-ui';
 import withApollo from '../src/utils/withApollo';
@@ -35,15 +34,13 @@ class MyApp extends App {
         <StylesProvider>
           <ThemeProvider theme={theme}>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <CurrentSessionProviver>
-                <CheckoutCartProvider>
-                  <WindowProvider>
-                    <DefaultSeo {...SEO} />
-                    <CssBaseline />
-                    <Component {...pageProps} />
-                  </WindowProvider>
-                </CheckoutCartProvider>
-              </CurrentSessionProviver>
+              <CheckoutCartProvider>
+                <WindowProvider>
+                  <DefaultSeo {...SEO} />
+                  <CssBaseline />
+                  <Component {...pageProps} />
+                </WindowProvider>
+              </CheckoutCartProvider>
             </MuiPickersUtilsProvider>
           </ThemeProvider>
         </StylesProvider>

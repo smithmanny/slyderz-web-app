@@ -1,26 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import dynamic from 'next/dynamic'
+import { useQuery } from '@apollo/react-hooks';
 
-import withCurrentUser from '../src/utils/withCurrentUser'
+import CurrentSessionProvider from '../src/components/shared/CurrentSessionProvider';
+import CURRENT_SESSION_QUERY from '../src/libs/gql/query/session/currentSessionQuery.gql';
 
-import homePageStyles from '../src/components/logged_in_container/styles';
 import Footer from '../src/components/shared/footer'
 const LoggedInContainer = dynamic(() => import('../src/components/logged_in_container'))
 const LoggedOutContainer = dynamic(() => import('../src/components/logged_out_container'))
 
-const Index = ({ currentUser }) => {
-  const classes = homePageStyles();
+const Index = () => {
+  const { data, loading } = useQuery(CURRENT_SESSION_QUERY);
+
+  if (loading) return 'loading'
 
   let content = <LoggedOutContainer />
-  if (currentUser) {
+  if (data?.currentSession.user) {
     content = <LoggedInContainer />
   }
   return (
-    <main>
-      {content}
-      <Footer />
-    </main>
+    <CurrentSessionProvider value={data?.currentSession}>
+      <main>
+        {content}
+        <Footer />
+      </main>
+    </CurrentSessionProvider>
   );
 };
 
-export default withCurrentUser(Index);
+export default Index;

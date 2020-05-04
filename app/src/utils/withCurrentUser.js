@@ -8,7 +8,7 @@ const withCurrentUser = Component =>
         {currentSession => (
           <Component
             {...props}
-            currentUser={currentSession && currentSession.user}
+            currentUser={currentSession?.user || null}
           />
         )}
       </CurrentSessionContext.Consumer>

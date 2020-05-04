@@ -1,4 +1,4 @@
-import { makeStyles, createStyles } from '../../src/components/shared/theme';
+import { makeStyles, createStyles } from '../../../components/shared/theme';
 
 export default makeStyles(theme =>
   createStyles({

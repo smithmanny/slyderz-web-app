@@ -7,7 +7,7 @@ import Typography from '../../src/components/shared/Typography';
 import Grid from '../../src/components/shared/Grid';
 import { StarRateIcon } from '../../src/assets/icons';
 import ChefItemCard from '../../src/components/chef/item_card';
-import chefDetailStyles from './styles';
+import chefDetailStyles from '../../src/assets/styles/consumer/chefStyles';
 
 const Chef = () => {
   const classes = chefDetailStyles();
