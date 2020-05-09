@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Container from '@material-ui/core/Container';
 
-import AppBar from '../../appbar';
+// import AppBar from '../../appbar';
 import consumerContainerStyles from './styles';
 
 const ConsumerContainer = ({ children, ...props }) => {
