@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import dynamic from 'next/dynamic'
 import { useQuery } from '@apollo/react-hooks';
 
+import withApollo from '../src/utils/withApollo'
 import CurrentSessionProvider from '../src/components/shared/CurrentSessionProvider';
 import CURRENT_SESSION_QUERY from '../src/libs/gql/query/session/currentSessionQuery.gql';
 
@@ -28,4 +29,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default withApollo(Index);
