@@ -9,7 +9,7 @@ const ConsumerContainer = ({ children, ...props }) => {
   const classes = consumerContainerStyles();
   return (
     <Container className={classes.container} maxWidth="xl" {...props}>
-      <AppBar />
+      {/* <AppBar /> */}
       {children}
     </Container>
   );
