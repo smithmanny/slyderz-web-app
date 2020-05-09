@@ -10,7 +10,6 @@ import TagManager from "react-gtm-module";
 import CheckoutCartProvider from "../src/components/shared/CheckoutCartProvider";
 import WindowProvider from "../src/components/shared/WindowProvider";
 import { theme } from "../src/libs/material-ui";
-import withApollo from "../src/utils/withApollo";
 import SEO from "../next-seo.config";
 
 class MyApp extends App {
@@ -47,4 +46,4 @@ class MyApp extends App {
   }
 }
 
-export default withApollo(MyApp);
+export default MyApp;
