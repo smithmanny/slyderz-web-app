@@ -28,7 +28,6 @@ export default makeStyles(theme =>
     },
     signup: {
       display: 'flex',
-      alignItems: 'center'
     },
     socialContainer: {
       '& span': {
