@@ -10,7 +10,7 @@ export default makeStyles(theme =>
     },
     emailAddress: {
       flex: 1,
-      margin: theme.spacing(0, 2, 0, 0)
+      margin: `${theme.spacing(0, 2, 0, 0)} !important`
     },
     form: {
       [theme.breakpoints.up('md')]: {

@@ -23,7 +23,6 @@ const Footer = ({ isMobile }) => {
       <Section>
         <Grid container direction={isMobile ? 'row' : 'row-reverse'}>
           <Grid item xs={12} md={6}>
-            <BasicForm className={classes.form}>
               <Paper className={classes.newsletterPaper}>
                 <Typography
                   className={classes.text}
@@ -34,30 +33,31 @@ const Footer = ({ isMobile }) => {
                 <br />
                 Sign up to find out more.
               </Typography>
-                <span className={classes.signup}>
-                  <TextField
-                    name="address"
-                    variant="outlined"
-                    className={classes.emailAddress}
-                    placeholder="Email"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <EmailOutline />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                  <Button
-                    color="primary"
-                    className={classes.button}
-                    variant="contained"
-                  >
-                    Find a Chef
-                </Button>
-                </span>
+                <BasicForm className={classes.form}>
+                  <span className={classes.signup}>
+                    <TextField
+                      name="address"
+                      variant="outlined"
+                      className={classes.emailAddress}
+                      placeholder="Email"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <EmailOutline />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                    <Button
+                      color="primary"
+                      className={classes.button}
+                      variant="contained"
+                    >
+                      Find a Chef
+                  </Button>
+                  </span>
+                </BasicForm>
               </Paper>
-            </BasicForm>
           </Grid>
           <Grid item xs={12} md={6}>
             <table className={classes.table}>
