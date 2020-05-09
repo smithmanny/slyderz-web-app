@@ -23,6 +23,9 @@ export default makeStyles(theme =>
       padding: theme.spacing(6, 0)
     },
     newsletterPaper: {
+      [theme.breakpoints.up('md')]: {
+        marginLeft: 'auto'
+      },
       maxWidth: '365px',
       padding: theme.spacing(3)
     },

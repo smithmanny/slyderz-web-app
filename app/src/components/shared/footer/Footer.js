@@ -33,10 +33,20 @@ const Footer = ({ isMobile }) => {
                 <br />
                 Sign up to find out more.
               </Typography>
-                <BasicForm className={classes.form}>
+                <BasicForm 
+                  className={classes.form}
+                  mutate={{
+                    onSubmit: (variables) => {
+                      fetch('/api/sendgrid', { method: 'POST', body: variables.email })
+                    },
+                    toVariables: values => ({
+                      ...values
+                    })
+                  }}
+                >
                   <span className={classes.signup}>
                     <TextField
-                      name="address"
+                      name="email"
                       variant="outlined"
                       className={classes.emailAddress}
                       placeholder="Email"
@@ -52,6 +62,7 @@ const Footer = ({ isMobile }) => {
                       color="primary"
                       className={classes.button}
                       variant="contained"
+                      type="submit"
                     >
                       Find a Chef
                   </Button>

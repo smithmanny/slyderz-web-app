@@ -6,7 +6,6 @@ import AppBar from '../../appbar';
 import consumerContainerStyles from './styles';
 
 const ConsumerContainer = ({ children, ...props }) => {
-  console.log(props)
   const classes = consumerContainerStyles();
   return (
     <Container className={classes.container} maxWidth="xl" {...props}>

@@ -37,8 +37,8 @@ const Mutation = mutationType({
     t.field('login', {
       type: 'AuthPayload',
       args: {
-        email: stringArg(),
-        password: stringArg(),
+        email: stringArg({ nullable: false }),
+        password: stringArg({ nullable: false }),
       },
       resolve: async (parent, { email, password }, context) => {
         const user = await context.prisma.user.findOne({
