@@ -6,7 +6,6 @@ import withApollo from '../src/utils/withApollo'
 import CurrentSessionProvider from '../src/components/shared/CurrentSessionProvider';
 import CURRENT_SESSION_QUERY from '../src/libs/gql/query/session/currentSessionQuery.gql';
 
-import Footer from '../src/components/shared/footer'
 const LoggedInContainer = dynamic(() => import('../src/components/logged_in_container'))
 const LoggedOutContainer = dynamic(() => import('../src/components/logged_out_container'))
 
@@ -23,7 +22,6 @@ const Index = () => {
     <CurrentSessionProvider value={data?.currentSession}>
       <main>
         {content}
-        <Footer />
       </main>
     </CurrentSessionProvider>
   );

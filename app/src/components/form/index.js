@@ -9,19 +9,19 @@ export { default as TextField } from './TextFieldGroup';
 export { default as Select } from '@material-ui/core/Select';
 
 const BasicForm = ({ children, defaultValues, refetchQueries, mutate, ...props }) => {
-  const client = useApolloClient();
   const methods = useForm({ defaultValues, validationSchema: (mutate && mutate.validation) ? mutate.validation : null });
   const { handleSubmit, reset } = methods
-
+  
   function handleFormSubmit(values) {
     const { toVariables, onCompleted, onSubmit, mutation } = mutate;
     const variables = toVariables(values);
-
+    
     // Call custom submit function instead of GraphQL mutation
     if (typeof onSubmit === 'function') {
       return onSubmit(variables);
     }
     // Handle form request with GraphQL
+    const client = useApolloClient();
     return client
       .mutate({
         mutation,

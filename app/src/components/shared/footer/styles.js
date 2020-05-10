@@ -56,6 +56,10 @@ export default makeStyles(theme =>
       listStyle: 'none',
     },
     table: {
+      '& a:hover': {
+        cursor: 'pointer',
+        textDecoration: 'underline'
+      },
       '& th': {
         textTransform: 'uppercase',
         '& h6': {

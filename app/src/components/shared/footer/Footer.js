@@ -1,9 +1,7 @@
 import React from 'react'
+import Link from 'next/link'
 import InputAdornment from '@material-ui/core/InputAdornment'
-import { EmailOutline } from 'mdi-material-ui'
-import { Facebook } from 'mdi-material-ui'
-import { Twitter } from 'mdi-material-ui'
-import { Instagram } from 'mdi-material-ui'
+import { EmailOutline, Facebook, Twitter, Instagram } from 'mdi-material-ui'
 
 import footerStyles from './styles'
 import { withWindowContext } from '../WindowProvider'
@@ -92,7 +90,9 @@ const Footer = ({ isMobile }) => {
                     <Typography variant="body1">About</Typography>
                   </td>
                   <td>
-                    <Typography variant="body1">Join Slyderz</Typography>
+                    <Link href='/become-a-chef'>
+                      <Typography variant="body1" component="a" target="__blank">Join Slyderz</Typography>
+                    </Link>
                   </td>
                   <td>
                     <Typography variant="body1">Consumer Help</Typography>
