@@ -9,11 +9,13 @@ import consumerContainerStyles from './styles';
 const ConsumerContainer = ({ children, ...props }) => {
   const classes = consumerContainerStyles();
   return (
-    <Container className={classes.container} maxWidth="xl" {...props}>
-      <AppBar />
-      {children}
+    <React.Fragment>
+      <Container className={classes.container} maxWidth="xl" {...props}>
+        <AppBar />
+        {children}
+      </Container>
       <Footer />
-    </Container>
+    </React.Fragment>
   );
 };
 

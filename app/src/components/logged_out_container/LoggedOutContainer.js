@@ -1,5 +1,6 @@
 import react from 'react'
 import classNames from 'classnames'
+import Link from 'next/link'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import { MapMarker } from 'mdi-material-ui'
 
@@ -155,13 +156,16 @@ const LoggedOutContainer = () => {
             <Typography className={classes.becomeAChefSubText} paragraph>Launching your private chef career has never been easier</Typography>
           </Grid>
           <Grid item xs={12} md className={classes.becomeAChefButton}>
-            <Button
-              variant="outlined"
-              color="primary"
-              size="large"
-            >
-              Get Started
-            </Button>
+            <Link href="/become-a-chef">
+              <Button
+                variant="outlined"
+                color="primary"
+                size="large"
+                component="a"
+                >
+                Get Started
+              </Button>
+            </Link>
           </Grid>
         </Grid>
       </Section>

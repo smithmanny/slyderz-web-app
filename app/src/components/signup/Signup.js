@@ -2,14 +2,14 @@ import React from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 
-import { Button } from './shared';
-import BasicForm, { TextField } from './form';
-import Typography from './shared/Typography';
-import Grid from './shared/Grid';
+import { Button } from '../shared';
+import BasicForm, { TextField } from '../form';
+import Typography from '../shared/Typography';
+import Grid from '../shared/Grid';
 
 import CREATE_USER_MUTATION from '../../src/libs/gql/mutation/auth/signupMutation.gql';
-import SIGNUP_VALIDATION from '../libs/yup/signupValidation';
-import authStyles from '../assets/styles/consumer/authStyles';
+import SIGNUP_VALIDATION from '../../libs/yup/signupValidation';
+import authStyles from '../../assets/styles/consumer/authStyles';
 
 const Signup = () => {
   const classes = authStyles();
@@ -35,16 +35,22 @@ const Signup = () => {
           validation: SIGNUP_VALIDATION
         }}
       >
-        <Grid className={classes.formContent} container spacing={0}>
-          <Grid item xs={12} sm={6} className="firstName">
+        <Grid container className={classes.formContent} spacing={2}>
+          <Grid item xs={12} sm={6}>
             <TextField
+              className="firstName"
               name="firstName"
               variant="outlined"
               label="First Name"
             />
           </Grid>
-          <Grid item xs={12} sm={6} className="lastName">
-            <TextField name="lastName" variant="outlined" label="Last Name" />
+          <Grid item xs={12} sm={6}>
+            <TextField
+              className="lastName"
+              name="lastName" 
+              variant="outlined" 
+              label="Last Name" 
+            />
           </Grid>
           <Grid item xs={12}>
             <TextField name="email" variant="outlined" label="Email" />

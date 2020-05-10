@@ -87,11 +87,13 @@ const Footer = ({ isMobile }) => {
                 </tr>
                 <tr>
                   <td>
-                    <Typography variant="body1">About</Typography>
+                    <Link href="/about">
+                      <Typography variant="body1" component="a">About</Typography>
+                    </Link>
                   </td>
                   <td>
                     <Link href='/become-a-chef'>
-                      <Typography variant="body1" component="a" target="__blank">Join Slyderz</Typography>
+                      <Typography variant="body1" component="a">Join Slyderz</Typography>
                     </Link>
                   </td>
                   <td>
@@ -103,7 +105,9 @@ const Footer = ({ isMobile }) => {
                 </tr>
                 <tr>
                   <td>
-                    <Typography variant="body1">Contact</Typography>
+                    <Link href="/contact">
+                      <Typography variant="body1" component="a">Contact</Typography>
+                    </Link>
                   </td>
                 </tr>
                 <tr>
@@ -132,9 +136,21 @@ const Footer = ({ isMobile }) => {
               <Typography variant="h6">&#169; 2020 Slyderz LLC</Typography>
               <span>
                 <ul className={classes.socialList}>
-                  <li><Facebook /></li>
-                  <li><Twitter /></li>
-                  <li><Instagram /></li>
+                  <li>
+                    <a href="https://www.facebook.com/slyderz" target="__blank">
+                      <Facebook />
+                    </a>
+                    </li>
+                  <li>
+                    <a href="https://twitter.com/SlyderzApp" target="__blank">
+                      <Twitter />
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.instagram.com/slyderz_app/" target="__blank">
+                      <Instagram />
+                    </a>
+                  </li>
                 </ul>
               </span>
             </div>

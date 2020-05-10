@@ -45,6 +45,13 @@ export default makeStyles(theme =>
       marginTop: theme.spacing(2)
     },
     socialList: {
+      '& a': {
+        color: 'rgba(255, 255, 255, 0.2)',
+      },
+      '& a:hover': {
+        color: 'rgba(255, 255, 255, 0.7)',
+        cursor: 'pointer'
+      },
       '& li': {
         '& svg': {
           fontSize: '32px',
@@ -52,7 +59,6 @@ export default makeStyles(theme =>
         marginRight: theme.spacing(3)
       },
       display: 'flex',
-      color: 'rgba(255, 255, 255, 0.2)',
       listStyle: 'none',
     },
     table: {

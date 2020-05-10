@@ -12,6 +12,7 @@ const TextFieldGroup = ({ name, ...props }) => {
       margin="normal"
       inputRef={register}
       helperText={errors[name] && errors[name].message}
+      fullWidth
       {...props}
     />
   );
