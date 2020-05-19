@@ -1,4 +1,4 @@
-import { rule } from 'nexus-plugin-shield'
+import { rule, shield } from 'nexus-plugin-shield'
 import { getUserId } from '../utils'
 
 const isAuthenticated = rule({ cache: 'contextual' })(
@@ -8,12 +8,14 @@ const isAuthenticated = rule({ cache: 'contextual' })(
   }
 )
 
-const rules = {
-  Query: {
-    me: isAuthenticated,
-  },
-  Mutation: {},
-}
+const permissions = shield({
+  rules: {
+    Query: {
+      me: isAuthenticated,
+    },
+    Mutation: {},
+  }
+})
 
-export { rules }
+export { permissions }
 
