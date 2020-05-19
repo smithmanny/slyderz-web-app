@@ -23,10 +23,14 @@ module.exports = {
     'consistent-return': 'error',
 
     // specify curly brace conventions for all control statements
-    curly: ['error', 'multi-line'],
+    curly: ['error', 'multi-line'], // multiline
 
     // require default case in switch statements
     'default-case': ['error', { commentPattern: '^no default$' }],
+
+    // https://eslint.org/docs/rules/default-param-last
+    // TODO: enable, semver-minor, when eslint v6.4 is required (which is a major)
+    'default-param-last': 'off',
 
     // encourages use of dot notation whenever possible
     'dot-notation': ['error', { allowKeywords: true }],
@@ -39,13 +43,17 @@ module.exports = {
     // https://eslint.org/docs/rules/eqeqeq
     eqeqeq: ['error', 'always', { null: 'ignore' }],
 
+    // Require grouped accessor pairs in object literals and classes
+    // https://eslint.org/docs/rules/grouped-accessor-pairs
+    // TODO: enable in next major, altho the guide forbids getters/setters anyways
+    'grouped-accessor-pairs': 'off',
+
     // make sure for-in loops have an if statement
     'guard-for-in': 'error',
 
     // enforce a maximum number of classes per file
     // https://eslint.org/docs/rules/max-classes-per-file
-    // TODO: semver-major (eslint 5): enable
-    'max-classes-per-file': ['off', 1],
+    'max-classes-per-file': ['error', 1],
 
     // disallow the use of alert, confirm, and prompt
     'no-alert': 'warn',
@@ -56,6 +64,11 @@ module.exports = {
     // disallow lexical declarations in case/default clauses
     // https://eslint.org/docs/rules/no-case-declarations.html
     'no-case-declarations': 'error',
+
+    // Disallow returning value in constructor
+    // https://eslint.org/docs/rules/no-constructor-return
+    // TODO: enable, semver-major
+    'no-constructor-return': 'off',
 
     // disallow division operators explicitly at beginning of regular expression
     // https://eslint.org/docs/rules/no-div-regex
@@ -249,9 +262,8 @@ module.exports = {
 
     // disallow self assignment
     // https://eslint.org/docs/rules/no-self-assign
-    // TODO: semver-major: props -> true
     'no-self-assign': ['error', {
-      props: false,
+      props: true,
     }],
 
     // disallow comparisons where both sides are exactly the same
@@ -283,8 +295,7 @@ module.exports = {
 
     // Disallow unnecessary catch clauses
     // https://eslint.org/docs/rules/no-useless-catch
-    // TODO: enable, semver-major
-    'no-useless-catch': 'off',
+    'no-useless-catch': 'error',
 
     // disallow useless string concatenation
     // https://eslint.org/docs/rules/no-useless-concat
@@ -315,6 +326,10 @@ module.exports = {
     // Suggest using named capture group in regular expression
     // https://eslint.org/docs/rules/prefer-named-capture-group
     'prefer-named-capture-group': 'off',
+
+    // https://eslint.org/docs/rules/prefer-regex-literals
+    // TODO; enable, semver-minor, once eslint v6.4 is required (which is a major)
+    'prefer-regex-literals': 'off',
 
     // require use of the second argument for parseInt()
     radix: 'error',
