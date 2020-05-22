@@ -6,16 +6,14 @@ import { MapMarker } from 'mdi-material-ui'
 
 import loggedOutContainerStyles from './styles'
 
-import ConsumerContainer from '../shared/consumerContainer'
+import ConsumerContainer from '../shared/consumer_container'
 import Typography from '../shared/Typography'
 import Section from '../shared/section'
-import { Button } from '../shared'
+import Button from '../shared/Button'
 import Grid from '../shared/Grid'
 import Paper from '../shared/Paper'
 import BasicForm, { TextField } from '../form'
-import { BowlIcon } from '../../assets/icons'
-import { ChefIcon } from '../../assets/icons'
-import { MenuIcon } from '../../assets/icons'
+import { ChefIcon, BowlIcon, MenuIcon } from '../../assets/icons'
 
 const LoggedOutContainer = () => {
   const classes = loggedOutContainerStyles()

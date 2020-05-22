@@ -1,13 +1,15 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 
-import ConsumerContainer from '../../src/components/shared/consumerContainer';
-import { Avatar, Button } from '../../src/components/shared';
+import chefDetailStyles from '../../src/assets/styles/consumer/chefStyles';
+
+import ConsumerContainer from '../../src/components/shared/consumer_container';
+import Button from '../../src/components/shared/Button';
+import { Avatar } from '../../src/components/shared';
 import Typography from '../../src/components/shared/Typography';
 import Grid from '../../src/components/shared/Grid';
 import { StarRateIcon } from '../../src/assets/icons';
 import ChefItemCard from '../../src/components/chef/item_card';
-import chefDetailStyles from '../../src/assets/styles/consumer/chefStyles';
 
 const Chef = () => {
   const classes = chefDetailStyles();

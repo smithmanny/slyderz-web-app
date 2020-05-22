@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import ConsumerContainer from '../src/components/shared/consumerContainer'
+import ConsumerContainer from '../src/components/shared/consumer_container'
 
 const BecomeAChef = () => {
   const [isAirtableLoaded, setAirtableStatus] = useState(false);

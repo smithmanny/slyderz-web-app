@@ -11,7 +11,7 @@ import Grid from '../Grid'
 import Section from '../section'
 import Paper from '../Paper'
 import Typography from '../Typography'
-import { Button } from '../index'
+import Button from '../Button'
 import BasicForm, { TextField } from '../../form'
 
 const Footer = ({ isMobile }) => {

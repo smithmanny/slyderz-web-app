@@ -2,17 +2,17 @@ import React from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 
-import { Button } from '../shared';
+import Button from '../shared/Button';
 import BasicForm, { TextField } from '../form';
 import Typography from '../shared/Typography';
 import Grid from '../shared/Grid';
 
 import CREATE_USER_MUTATION from '../../libs/gql/mutation/auth/signupMutation.gql';
 import SIGNUP_VALIDATION from '../../libs/yup/signupValidation';
-import authStyles from '../../assets/styles/consumer/authStyles';
+import loginStyles from './styles';
 
-const Signup = () => {
-  const classes = authStyles();
+const LoginModalForm = ({ closeModal, openSignupModal }) => {
+  const classes = loginStyles();
   return (
     <section className={classes.container}>
       <Link href="/">
@@ -21,7 +21,7 @@ const Signup = () => {
         </a>
       </Link>
       <Typography className={classes.welcome} variant="h3">
-        Welcome To Slyderz
+        Welcome Back
       </Typography>
       <BasicForm
         mutate={{
@@ -36,22 +36,6 @@ const Signup = () => {
         }}
       >
         <Grid container className={classes.formContent} spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              className="firstName"
-              name="firstName"
-              variant="outlined"
-              label="First Name"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              className="lastName"
-              name="lastName" 
-              variant="outlined" 
-              label="Last Name" 
-            />
-          </Grid>
           <Grid item xs={12}>
             <TextField name="email" variant="outlined" label="Email" />
           </Grid>
@@ -71,10 +55,16 @@ const Signup = () => {
               Sign up
             </Button>
             <Typography variant="body1">
-              Already have an account?{' '}
-              <Link href="/auth/login">
-                <a className={classes.signup}>Sign In</a>
-              </Link>
+              Don't have an account?{' '}
+              <Button 
+                className={classes.login}
+                onClick={() => {
+                  closeModal()
+                  openSignupModal()
+                }}
+              >
+                Sign Up
+              </Button>
             </Typography>
           </Grid>
         </Grid>
@@ -83,4 +73,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default LoginModalForm;

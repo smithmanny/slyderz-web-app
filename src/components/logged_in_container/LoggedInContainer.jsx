@@ -5,7 +5,7 @@ import { Avatar, Card, CardContent, CardMedia } from '../shared';
 import Typography from '../shared/Typography';
 import Grid from '../shared/Grid';
 import Section from '../shared/section';
-import ConsumerContainer from '../shared/consumerContainer'
+import ConsumerContainer from '../shared/consumer_container'
 
 import homePageStyles from './styles';
 

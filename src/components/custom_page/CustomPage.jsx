@@ -2,7 +2,7 @@ import React from 'react'
 
 import customPageStyles from './styles'
 
-import ConsumerContainer from '../shared/consumerContainer'
+import ConsumerContainer from '../shared/consumer_container'
 import Typography from '../shared/Typography'
 
 const CustomPage = ({ children, title }) => {

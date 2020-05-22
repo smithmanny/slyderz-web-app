@@ -5,21 +5,23 @@ import PropTypes from 'prop-types';
 import Toolbar from '@material-ui/core/Toolbar';
 import { default as AppBarMui } from '@material-ui/core/AppBar';
 
-import { Badge, Button, Fab, IconButton } from '../shared';
-import Grid from '../shared/Grid';
-import BasicModal from '../shared/BasicModal';
-import Typography from '../shared/Typography';
 import { ShoppingCart, PersonIcon } from '../../assets/icons';
+import Button from '../shared/Button';
+import { Badge, Fab, IconButton } from '../shared';
+import Grid from '../shared/Grid';
+import Typography from '../shared/Typography';
 import AccountPopover from '../account_popover';
 import CartPopover from '../CartPopover';
-import Signup from '../signup'
+import SignupModal from '../signup';
+import LoginModal from '../login';
 
 import appbarStyles from './styles';
 import withCurrentUser from '../../utils/withCurrentUser';
 
 const AppBar = ({ currentUser, ...props }) => {
   const classes = appbarStyles();
-  const [signupModal, showSignupModal] = useState(false);
+  const [isSignupModalOpen, showSignupModal] = useState(false);
+  const [isLoginModalOpen, showLoginModal] = useState(false);
   const [cartAnchorEl, setCartAnchorEl] = useState(null);
   const [accountAnchorEl, setAccountAnchorEl] = useState(null);
   const isAccountOpen = Boolean(accountAnchorEl);
@@ -35,12 +37,20 @@ const AppBar = ({ currentUser, ...props }) => {
     showSignupModal(false);
   };
 
+  const closeLoginModal = () => {
+    showLoginModal(false);
+  };
+
   const closeCartModal = () => {
     setCartAnchorEl(null);
   };
 
   const openSignupModal = () => {
     showSignupModal(true)
+  }
+
+  const openLoginModal = () => {
+    showLoginModal(true)
   }
 
   const handleAccountModalClick = event => {
@@ -70,6 +80,7 @@ const AppBar = ({ currentUser, ...props }) => {
           className={classes.login}
           variant="outlined"
           color="primary"
+          onClick={openLoginModal}
         >
           Log in
         </Button>
@@ -147,12 +158,16 @@ const AppBar = ({ currentUser, ...props }) => {
           />
         )}
       </Toolbar>
-      <BasicModal 
-        open={signupModal}
+      <SignupModal 
+        open={isSignupModalOpen}
         onClose={closeSignupModal}
-      >
-        <Signup />
-      </BasicModal>
+        openLoginModal={openLoginModal}
+      />
+      <LoginModal 
+        open={isLoginModalOpen}
+        onClose={closeLoginModal}
+        openSignupModal={openSignupModal}
+      />
     </AppBarMui>
   );
 };

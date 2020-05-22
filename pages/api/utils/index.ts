@@ -1,4 +1,4 @@
-function getUserId(token) {
+function getUserId(token: any | null | undefined) {
   const userId = token.userId
 
   if (!userId) {

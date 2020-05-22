@@ -9,20 +9,18 @@ const User = schema.objectType({
   name: 'User',
   definition(t) {
     t.model.id()
-    t.string('avatarUrl')
-    t.string('firstName')
-    t.string('lastName')
-    t.string('email')
-    t.string('address1')
-    t.string('address2')
-    t.string('city')
-    t.string('state')
-    t.field('role', {
-      type: 'Role'
-    })
-    t.int('postalCode')
-    t.string('resetToken')
-    t.string('resetTokenExpiry')
+    t.model.avatarUrl()
+    t.model.firstName()
+    t.model.lastName()
+    t.model.email()
+    t.model.address1()
+    t.model.address2()
+    t.model.city()
+    t.model.state()
+    t.model.role()
+    t.model.postalCode()
+    t.model.resetToken()
+    t.model.resetTokenExpiry()
   },
 })
 

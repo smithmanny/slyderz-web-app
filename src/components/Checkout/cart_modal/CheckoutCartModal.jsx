@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 
-import { Button } from '../../shared';
+import Button from '../../shared/Button';
 import Paper from '../../shared/Paper';
 import Typography from '../../shared/Typography';
 import { CloseIcon } from '../../../assets/icons';

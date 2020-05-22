@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
-import { Button, Fab } from '../../shared';
+import Button from '../../shared/Button';
+import { Fab } from '../../shared';
 import Typography from '../../shared/Typography';
 import Grid from '../../shared/Grid';
 import { AddIcon, RemoveIcon } from '../../../assets/icons';

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Button } from '../shared';
+import Button from '../shared/Button';
 import Typography from '../shared/Typography';
 import Grid from '../shared/Grid';
 import BasicModal from '../shared/BasicModal';
