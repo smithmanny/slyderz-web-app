@@ -14,7 +14,8 @@ const Index = () => {
 
   if (loading) return 'loading'
 
-  let content = <LoggedOutContainer />
+  // TODO: Check user status
+  let content = <LoggedInContainer />
   if (data?.currentSession.user) {
     content = <LoggedInContainer />
   }

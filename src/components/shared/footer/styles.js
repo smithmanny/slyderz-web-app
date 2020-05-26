@@ -20,6 +20,7 @@ export default makeStyles(theme =>
     },
     footer: {
       backgroundColor: theme.palette.primary.dark,
+      marginTop: theme.spacing(4),
       padding: theme.spacing(6, 0)
     },
     newsletterPaper: {

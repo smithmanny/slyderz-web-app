@@ -1,56 +1,57 @@
-import { makeStyles, createStyles } from '../../../components/shared/theme';
+import { makeStyles } from '../../../components/shared/theme';
 
-export default makeStyles(theme =>
-  createStyles({
-    header: {
-      height: '400px',
-      marginTop: theme.spacing(2),
-      '& img': {
-        width: '100%',
-        height: '100%',
-        objectFit: 'cover'
-      }
-    },
-    container: {
-      [theme.breakpoints.down('sm')]: {
-        padding: theme.spacing(1),
-        width: '100%'
+export default makeStyles(theme => ({
+    chefAvatar: {
+      [theme.breakpoints.up('md')]: {
+        position: 'relative',
+        left: 'auto',
+        top: 'auto',
+        transform: 'inherit'
       },
-      border: '1px solid rgba(167, 167, 167, 0.32)',
+      height: `${theme.spacing(10)}px !important`,
+      position: 'absolute',
+      top: 0,
+      transform: 'translate(-50%, -50%)',
+      left: '50%',
+      width: `${theme.spacing(10)}px !important`,
+    },
+    chefAvatarContainer: {
+      [theme.breakpoints.up('md')]: {
+        height: 'auto'
+      },
+      height: theme.spacing(8)
+    },
+    chefIntro: {
+      [theme.breakpoints.up('md')]: {
+        padding: theme.spacing(3)
+      },
+      height: '100%',
+      textAlign: 'center',
       padding: theme.spacing(2),
-      '& .title': {
-        fontSize: 32,
-        fontWeight: 800,
-        marginLeft: theme.spacing(1),
-        color: theme.palette.content.main
-      },
-      '& .city': {
-        fontSize: 16
-      },
-      '& .summary': {
-        marginTop: theme.spacing(4)
-      },
-      '& .bigAvatar': {
-        margin: 0,
-        width: 60,
-        height: 60
-      }
+      position: 'relative',
     },
-    meta: {
+    chefMainDish: {
+      height: '100%',
+      width: '100%',
+    },
+    chefName: {
+      [theme.breakpoints.up('md')]: {
+        marginTop: theme.spacing(0),
+        textAlign: 'left',
+      },
+    },
+    chefRating: {
+      [theme.breakpoints.up('md')]: {
+        justifyContent: 'flex-start'
+      },
       alignItems: 'center',
-      display: 'flex'
-    },
-    metaWrapper: {
-      display: 'flex',
-      justifyContent: 'space-around',
-      marginTop: theme.spacing(2)
-    },
-    sectionTitle: {
       display: 'flex',
       justifyContent: 'center',
-      '& .btn': {
-        margin: theme.spacing(4, 2)
-      }
-    }
+      margin: theme.spacing(1, 0),
+    },
+    chefRatingContainer: {
+      display: 'flex',
+      margin: theme.spacing(1, 0 , 1, 4.5)
+    },
   })
 );

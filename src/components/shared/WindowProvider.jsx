@@ -9,7 +9,7 @@ export const WindowContext = createContext({
   ...INITIAL_WINDOW_STATE
 });
 
-export const withWindowContext = Component => (
+export const withWindow = Component => (
   function ComponentWithWindowContext(props) {
     return (
       <WindowContext.Consumer>
@@ -25,7 +25,7 @@ const WindowProvider = ({ children }) => {
     setWindowState({
       isMobile: window.innerWidth < 600
     })
-  }, 250)
+  }, 2000)
 
   useEffect(() => {
     window.addEventListener('resize', handleResize)

@@ -4,7 +4,7 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import { EmailOutline, Facebook, Twitter, Instagram } from 'mdi-material-ui'
 
 import footerStyles from './styles'
-import { withWindowContext } from '../WindowProvider'
+import { withWindow } from '../WindowProvider'
 
 import Divider from '../Divider'
 import Grid from '../Grid'
@@ -161,4 +161,4 @@ const Footer = ({ isMobile }) => {
   )
 }
 
-export default withWindowContext(Footer)
+export default withWindow(Footer)
