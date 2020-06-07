@@ -117,7 +117,9 @@ const Footer = ({ isMobile }) => {
                 </tr>
                 <tr>
                   <td>
-                    <Typography variant="body1">Terms</Typography>
+                    <Link href="/terms-and-conditions">
+                      <Typography variant="body1" component="a">Terms</Typography>
+                    </Link>
                   </td>
                 </tr>
                 <tr>

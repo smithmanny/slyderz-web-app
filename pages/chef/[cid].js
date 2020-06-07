@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 
 import chefDetailStyles from '../../src/assets/styles/consumer/chefStyles';
 import { withWindow } from '../../src/components/shared/WindowProvider';
 
-import ConsumerContainer from '../../src/components/shared/consumer_container';
 import Button from '../../src/components/shared/Button';
+import CheckoutSection from '../../src/components/checkout/checkout_section'
+import ConsumerContainer from '../../src/components/shared/consumer_container';
+import LocationModal from '../../src/components/checkout/LocationModal';
+import PaymentModal from '../../src/components/checkout/PaymentModal';
 import Paper from '../../src/components/shared/Paper';
 import { Avatar } from '../../src/components/shared';
 import Typography from '../../src/components/shared/Typography';
@@ -17,9 +20,9 @@ const Chef = ({ isMobile }) => {
   const classes = chefDetailStyles();
   const router = useRouter();
   const { cid } = router.query;
-  console.log({ isMobile})
-
-  const items = [
+  const [openLocationModal, showLocationModal] = useState(false);
+  const [openPaymentModal, showPaymentModal] = useState(false);
+  const dishes = [
     {
       description: 'Sauted Salmon, green peas, and mashed potatoes',
       name: 'The Ultimate Dish',
@@ -59,7 +62,7 @@ const Chef = ({ isMobile }) => {
   ]
   return (
     <ConsumerContainer disableGutters={isMobile ? true : false}>
-      <Grid container direction={isMobile ? 'row' : 'row-reverse'}>
+      <Grid container className={classes.container}>
         <Grid item xs={12} md={4}>
           <img
             alt="Chef header"
@@ -110,12 +113,26 @@ const Chef = ({ isMobile }) => {
       </Grid>
       <Grid container direction={isMobile ? 'row' : 'row-reverse'}>
         <Grid item xs={12} md={5}>
-          Order summary
+          <CheckoutSection />
         </Grid>
         <Grid item xs={12} md={7}>
-          <ChefDishCard dishes={items} />
+          <ChefDishCard dishes={dishes} />
         </Grid>
       </Grid>
+      <LocationModal
+        classes={classes}
+        aria-labelledby="User Location Modal"
+        aria-describedby="Modal to add location"
+        open={openLocationModal}
+        onClose={() => showLocationModal(false)}
+      />
+      <PaymentModal
+        classes={classes}
+        aria-labelledby="User Payment Modal"
+        aria-describedby="Modal to add payment information"
+        open={openPaymentModal}
+        onClose={() => showPaymentModal(false)}
+      />
     </ConsumerContainer>
   );
 };

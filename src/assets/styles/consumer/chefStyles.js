@@ -53,5 +53,11 @@ export default makeStyles(theme => ({
       display: 'flex',
       margin: theme.spacing(1, 0 , 1, 4.5)
     },
+    container: {
+      [theme.breakpoints.up('md')]: {
+        flexDirection: 'row-reverse'
+      },
+      flexDirection: 'row'
+    },
   })
 );

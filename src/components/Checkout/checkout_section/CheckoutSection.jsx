@@ -1,43 +1,70 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import InputAdornment from '@material-ui/core/InputAdornment'
+import { Calendar, Clock, MapMarker } from 'mdi-material-ui'
 
-import Divider from '../../shared/Divider';
-import Typography from '../../shared/Typography';
 import checkoutSectionStyles from './styles';
-import LocationModal from '../LocationModal';
-import PaymentModal from '../PaymentModal';
+
+import BasicForm, { DatePickerField, TextField, TimePickerField } from '../../form'
+import Grid from '../../shared/Grid';
+import Typography from '../../shared/Typography';
 
 const CheckoutSection = ({ buttonText, children, title }) => {
   const classes = checkoutSectionStyles();
-  const [openLocationModal, showLocationModal] = useState(false);
-  const [openPaymentModal, showPaymentModal] = useState(false);
-
   return (
-    <>
-      <section className={classes.section}>
-        <span className={classes.heading}>
-          <Typography variant="h5" className={classes.title}>
-            {title}
-          </Typography>
-        </span>
-        <Divider className={classes.divider} />
-        {children}
-      </section>
-      <LocationModal
-        classes={classes}
-        aria-labelledby="User Location Modal"
-        aria-describedby="Modal to add location"
-        open={openLocationModal}
-        onClose={() => showLocationModal(false)}
-      />
-      <PaymentModal
-        classes={classes}
-        aria-labelledby="User Payment Modal"
-        aria-describedby="Modal to add payment information"
-        open={openPaymentModal}
-        onClose={() => showPaymentModal(false)}
-      />
-    </>
+    <div className={classes.orderTotal}>
+      <BasicForm>
+        <Grid container spacing={1}>
+          <Grid item xs={12} md={6}>
+            <Typography variant="body1">Serving Address</Typography>
+            <TextField 
+              InputProps={{
+              startAdornment: (
+                  <InputAdornment position="start">
+                    <MapMarker />
+                  </InputAdornment>
+                ),
+              }}
+              name="address"
+              placeholder="123 Olive Street ..."
+              variant="outlined" 
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Typography variant="body1">Date</Typography>
+            <DatePickerField 
+              name="date"
+              textFieldProps={{
+                InputProps: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Calendar />
+                    </InputAdornment>
+                  ),
+                }
+              }}
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Typography variant="body1">Time</Typography>
+            <TimePickerField 
+              name="time"
+              textFieldProps={{
+                InputProps: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Clock />
+                    </InputAdornment>
+                  ),
+                }
+              }}
+              variant="outlined"
+            />
+          </Grid>
+        </Grid>
+      </BasicForm>
+    </div>
   );
 };
 

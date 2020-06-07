@@ -10,16 +10,22 @@ export default makeStyles(theme => ({
       padding: theme.spacing(2)
     },
     description: {
-      margin: 'auto 0'
+      margin: theme.spacing(1, 0)
     },
     dishPhoto: {
+      borderRadius: theme.spacing(1),
+      objectFit: 'cover',
       width: '100%',
       height: '100%',
     },
     title: {
-      fontWeight: 'bold'
+      fontWeight: 500
     },
     price: {
+      '& span': {
+        color: theme.palette.text.secondary
+      },
+      fontWeight: 400,
       justifyContent: 'flex-end'
     },
     link: {

@@ -5,6 +5,7 @@ export default makeStyles(theme =>
    header: {
      backgroundColor: theme.palette.error.light,
      height: '450px',
+     margin: theme.spacing(3, 0),
      position: 'relative'
    },
    title: {

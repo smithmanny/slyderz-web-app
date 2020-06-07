@@ -1,9 +1,9 @@
 import React from "react";
 import App from "next/app";
 import { ThemeProvider, StylesProvider } from "@material-ui/core/styles";
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { LocalizationProvider } from "@material-ui/pickers";
+import DateFnsUtils from '@material-ui/pickers/adapter/date-fns';
 import CssBaseline from "@material-ui/core/CssBaseline";
-import DateFnsUtils from "@date-io/date-fns";
 import { DefaultSeo } from "next-seo";
 import TagManager from "react-gtm-module";
 
@@ -31,7 +31,7 @@ class MyApp extends App {
     return (
       <StylesProvider>
         <ThemeProvider theme={theme}>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <LocalizationProvider dateAdapter={DateFnsUtils}>
             <CheckoutCartProvider>
               <WindowProvider>
                 <DefaultSeo {...SEO} />
@@ -39,7 +39,7 @@ class MyApp extends App {
                 <Component {...pageProps} />
               </WindowProvider>
             </CheckoutCartProvider>
-          </MuiPickersUtilsProvider>
+          </LocalizationProvider>
         </ThemeProvider>
       </StylesProvider>
     );

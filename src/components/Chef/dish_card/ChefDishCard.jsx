@@ -25,25 +25,23 @@ const ChefDishCard = ({ dishes }) => {
             <Typography 
               className={classes.title} 
               variant="body1" 
-              gutterBottom
             >
               {dish.name}
             </Typography>
             {/* Description */}
             <Typography 
               className={classes.description} 
-              gutterBottom 
               paragraph
             >
               {dish.description}
             </Typography>
-            <Typography className={classes.price}>$10</Typography>
+            <Typography className={classes.price}>{`$${dish.pricePerPerson} / `}<span>serving</span></Typography>
           </Grid>
           <Grid item xs={3}>
             <img
               alt="Food"
               className={classes.dishPhoto}
-              src="/food.jpg"
+              srcSet="/food.jpg"
             />
           </Grid>
         </Grid>

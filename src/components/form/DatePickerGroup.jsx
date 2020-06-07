@@ -1,28 +1,31 @@
 import React, { useState } from 'react';
+import { TextField } from "@material-ui/core";
 import { Controller, useForm } from "react-hook-form";
-import { KeyboardDatePicker } from '@material-ui/pickers';
+import { DatePicker } from '@material-ui/pickers';
 
-
-const DatePickerGroup = ({ name }) => {
+const DatePickerGroup = ({ name, textFieldProps, ...datePickerProps }) => {
   const [selectedDate, handleDateChange] = useState(new Date());
   const { control } = useForm();
+  const datePickerTextFieldProps = {
+    fullWidth: true,
+    margin: 'normal',
+    variant: 'outlined',
+    ...textFieldProps,
+  }
   return (
     <Controller
       as={
-        <KeyboardDatePicker
-          autoOk
-          clearable
-          id={name}
-          disablePast
-          variant="inline"
-          format="MM/dd/yyyy"
-          margin="normal"
-        />
+        <DatePicker />
       }
+      clearable
+      disablePast
+      renderInput={props => <TextField {...props} {...datePickerTextFieldProps} />}
+      value={selectedDate}
+      views={['month', 'date']}
       name={name}
       control={control}
       onChange={date => handleDateChange(date)}
-      defaultValue={selectedDate}
+      {...datePickerProps}
     />
   )
 };
