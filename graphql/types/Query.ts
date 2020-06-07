@@ -23,7 +23,7 @@ const Query = schema.queryType({
       resolve: (parent, args, ctx) => {
         return ctx.db.user.findOne({
           where: {
-            id: ctx.request.user.id,
+            id: ctx.request?.user.id,
           },
         })
       },
