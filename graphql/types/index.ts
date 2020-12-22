@@ -1,6 +1,0 @@
-export { default as AuthPayLoad } from './AuthPayload'
-export { default as CurrentSessionPayload } from './CurrentSessionPayload'
-export { default as MessagePayload } from './MessagePayload'
-export { default as User } from './User'
-export { default as Mutation } from './Mutation'
-export { default as Query } from './Query'

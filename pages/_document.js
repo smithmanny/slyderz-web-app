@@ -1,20 +1,14 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import { ServerStyleSheets } from '@material-ui/core/styles';
-import Document, { Head, Main, NextScript } from 'next/document';
+import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { theme } from '../src/libs/material-ui';
 
 class MyDocument extends Document {
   render() {
     return (
-      <html lang="en" dir="ltr">
+      <Html lang="en" dir="ltr">
         <Head>
-          <meta charSet="utf-8" />
-          {/* Use minimum-scale=1 to enable GPU rasterization */}
-          <meta
-            name="viewport"
-            content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
-          />
           {/* Google Fonts */}
           <link
             rel="stylesheet"
@@ -30,7 +24,7 @@ class MyDocument extends Document {
           <link rel="apple-touch-icon" sizes="144x144" href="/favicon/apple-icon-144x144.png" />
           <link rel="apple-touch-icon" sizes="152x152" href="/favicon/apple-icon-152x152.png" />
           <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-icon-180x180.png" />
-          <link rel="icon" type="image/png" sizes="192x192"  href="/favicon/android-icon-192x192.png" />
+          <link rel="icon" type="image/png" sizes="192x192" href="/favicon/android-icon-192x192.png" />
           <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
           <link rel="icon" type="image/png" sizes="96x96" href="/favicon/favicon-96x96.png" />
           <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
@@ -39,13 +33,13 @@ class MyDocument extends Document {
           <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
           <meta name="theme-color" content={theme.palette.primary.main} />
           {/* Pinterest */}
-          <meta name="p:domain_verify" content="d9a0531c70e05a526b6dc638bb535a50"/>
+          <meta name="p:domain_verify" content="d9a0531c70e05a526b6dc638bb535a50" />
         </Head>
         <body>
           <Main />
           <NextScript />
         </body>
-      </html>
+      </Html>
     );
   }
 }

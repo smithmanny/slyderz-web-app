@@ -1,23 +1,32 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { useForm, FormContext } from 'react-hook-form'
-import { useApolloClient } from '@apollo/react-hooks';
+import React from "react";
+import PropTypes from "prop-types";
+import { useForm, FormProvider } from "react-hook-form";
+import { useApolloClient } from "@apollo/client";
 
-export { default as DatePickerField } from './DatePickerGroup';
-export { default as TimePickerField } from './TimePickerGroup';
-export { default as TextField } from './TextFieldGroup';
-export { default as Select } from '@material-ui/core/Select';
+export { default as DatePickerField } from "./DatePickerGroup";
+export { default as TimePickerField } from "./TimePickerGroup";
+export { default as TextField } from "./TextFieldGroup";
+export { default as Select } from "@material-ui/core/Select";
 
-const BasicForm = ({ children, defaultValues, refetchQueries, mutate, ...props }) => {
-  const methods = useForm({ defaultValues, validationSchema: (mutate && mutate.validation) ? mutate.validation : null });
-  const { handleSubmit, reset } = methods
-  
+const BasicForm = ({
+  children,
+  defaultValues,
+  refetchQueries,
+  mutate,
+  ...props
+}) => {
+  const methods = useForm({
+    defaultValues,
+    validationSchema: mutate?.validation ? mutate.validation : null,
+  });
+  const { handleSubmit, reset } = methods;
+
   function handleFormSubmit(values) {
     const { toVariables, onCompleted, onSubmit, mutation } = mutate;
     const variables = toVariables(values);
-    
+
     // Call custom submit function instead of GraphQL mutation
-    if (typeof onSubmit === 'function') {
+    if (typeof onSubmit === "function") {
       return onSubmit(variables);
     }
     // Handle form request with GraphQL
@@ -26,45 +35,42 @@ const BasicForm = ({ children, defaultValues, refetchQueries, mutate, ...props }
       .mutate({
         mutation,
         variables,
-        refetchQueries
+        refetchQueries,
       })
-      .then(res => {
+      .then((res) => {
         reset();
-        if (typeof onCompleted === 'function') {
+        if (typeof onCompleted === "function") {
           onCompleted(res.data);
         }
       })
-      .catch(err => {
-        const errorMessage = err.message.replace('GraphQL error: ', '')
-        console.warn(errorMessage)
+      .catch((err) => {
+        const errorMessage = err.message.replace("GraphQL error: ", "");
+        console.warn(errorMessage);
       });
   }
   return (
-    <FormContext {...methods}>
-      <form
-        onSubmit={handleSubmit(handleFormSubmit)}
-        {...props}
-      >
+    <FormProvider {...methods}>
+      <form onSubmit={handleSubmit(handleFormSubmit)} {...props}>
         {Array.isArray(children)
-          ? children.map(child => {
-            return child.props.name
-              ? React.createElement(child.type, {
-                ...{
-                  ...child.props,
-                  register: methods.register,
-                  key: child.props.name
-                }
-              })
-              : child;
-          })
+          ? children.map((child) => {
+              return child.props?.name
+                ? React.createElement(child.type, {
+                    ...{
+                      ...child.props,
+                      register: methods.register,
+                      key: child.props.name,
+                    },
+                  })
+                : child;
+            })
           : children}
       </form>
-    </FormContext>
+    </FormProvider>
   );
 };
 
 BasicForm.defaultProps = {
-  refetchQueries: []
+  refetchQueries: [],
 };
 
 BasicForm.propTypes = {
@@ -75,9 +81,9 @@ BasicForm.propTypes = {
     onCompleted: PropTypes.func,
     onSubmit: PropTypes.func,
     toVariables: PropTypes.func,
-    validation: PropTypes.object
+    validation: PropTypes.object,
   }),
-  refetchQueries: PropTypes.arrayOf(PropTypes.string)
+  refetchQueries: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default BasicForm;

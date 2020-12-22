@@ -1,26 +1,27 @@
 /* eslint-disable global-require */
-const withPlugins = require('next-compose-plugins');
-const withGraphql = require('next-plugin-graphql');
-const withOptimizedImages = require('next-optimized-images');
-const sharp = require('sharp');
+const withPlugins = require("next-compose-plugins");
+const withGraphql = require("next-plugin-graphql");
+const optimizedImages = require("next-optimized-images");
+const sharp = require("sharp");
 
 const nextConfig = {
-  target: 'serverless',
+  target: "serverless",
 };
 
 module.exports = withPlugins(
   [
     [withGraphql],
     [
-      withOptimizedImages,
+      optimizedImages,
       {
-        defaultImageLoader: 'responsive-loader',
-        imagesName: '[name]-[hash].[ext]',
+        defaultImageLoader: "responsive-loader",
+        imagesName: "[name]-[hash].[ext]",
         responsive: {
-          adapter: sharp
-        }
-      }
-    ]
+          adapter: sharp,
+        },
+        optimizeImagesInDev: true,
+      },
+    ],
   ],
   nextConfig
 );

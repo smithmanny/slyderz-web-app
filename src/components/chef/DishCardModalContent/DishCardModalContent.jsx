@@ -1,0 +1,60 @@
+import React, { useState } from "react";
+
+import dishCardModalContentStyles from "./styles";
+
+import Button from "../../shared/Button";
+import { Fab } from "../../shared";
+import Typography from "../../shared/Typography";
+import Grid from "../../shared/Grid";
+import { AddIcon, RemoveIcon } from "../../../assets/icons";
+
+const DishCardModalContent = () => {
+  const classes = dishCardModalContentStyles();
+  const [itemTotal, setItemTotal] = useState(1);
+
+  const decrement = () => {
+    if (itemTotal === 1) {
+      return setItemTotal(1);
+    }
+    return setItemTotal((prevTotal) => prevTotal - 1);
+  };
+
+  return (
+    <Grid
+      container
+      alignItems="center"
+      className={classes.container}
+      spacing={2}
+    >
+      <Grid item xs={12} md={4}>
+        <div className={classes.quantity}>
+          <Fab size="small" aria-label="remove-item" onClick={decrement}>
+            <RemoveIcon />
+          </Fab>
+          <Typography variant="body1">{itemTotal}</Typography>
+          <Fab
+            size="small"
+            aria-label="add-item"
+            onClick={() => setItemTotal((prevTotal) => prevTotal + 1)}
+          >
+            <AddIcon />
+          </Fab>
+        </div>
+      </Grid>
+      <Grid item xs={12} md={8}>
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          classes={{ endIcon: classes.price }}
+          className={classes.button}
+          endIcon={`$${itemTotal * 10}`}
+        >
+          Add To Cart
+        </Button>
+      </Grid>
+    </Grid>
+  );
+};
+
+export default DishCardModalContent;

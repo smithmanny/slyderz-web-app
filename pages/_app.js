@@ -1,19 +1,18 @@
-import React from "react";
-import App from "next/app";
-import { ThemeProvider, StylesProvider } from "@material-ui/core/styles";
-import { LocalizationProvider } from "@material-ui/pickers";
-import DateFnsUtils from '@material-ui/pickers/adapter/date-fns';
-import CssBaseline from "@material-ui/core/CssBaseline";
+import React, { useEffect } from "react";
 import { DefaultSeo } from "next-seo";
 import TagManager from "react-gtm-module";
+import { Provider } from "react-redux";
+import { ThemeProvider, StylesProvider } from "@material-ui/core/styles";
+import { LocalizationProvider } from "@material-ui/pickers";
+import DateFnsUtils from "@material-ui/pickers/adapter/date-fns";
+import CssBaseline from "@material-ui/core/CssBaseline";
 
-import CheckoutCartProvider from "../src/components/shared/CheckoutCartProvider";
-import WindowProvider from "../src/components/shared/WindowProvider";
 import { theme } from "../src/libs/material-ui";
 import SEO from "../next-seo.config";
+import store from "../src/libs/redux";
 
-class MyApp extends App {
-  componentDidMount() {
+function MyApp({ Component, pageProps }) {
+  useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector("#jss-server-side");
     if (jssStyles) {
@@ -24,26 +23,20 @@ class MyApp extends App {
       gtmId: "GTM-MRFDR6F",
     };
     TagManager.initialize(tagManagerArgs);
-  }
-
-  render() {
-    const { Component, pageProps } = this.props;
-    return (
-      <StylesProvider>
-        <ThemeProvider theme={theme}>
-          <LocalizationProvider dateAdapter={DateFnsUtils}>
-            <CheckoutCartProvider>
-              <WindowProvider>
-                <DefaultSeo {...SEO} />
-                <CssBaseline />
-                <Component {...pageProps} />
-              </WindowProvider>
-            </CheckoutCartProvider>
-          </LocalizationProvider>
-        </ThemeProvider>
-      </StylesProvider>
-    );
-  }
+  });
+  return (
+    <StylesProvider>
+      <ThemeProvider theme={theme}>
+        <LocalizationProvider dateAdapter={DateFnsUtils}>
+          <Provider store={store}>
+            <DefaultSeo {...SEO} />
+            <CssBaseline />
+            <Component {...pageProps} />
+          </Provider>
+        </LocalizationProvider>
+      </ThemeProvider>
+    </StylesProvider>
+  );
 }
 
 export default MyApp;
