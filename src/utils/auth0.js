@@ -1,6 +1,7 @@
 import { initAuth0 } from "@auth0/nextjs-auth0";
 
 export default initAuth0({
+  audience: "localhost:3000/api/hasura",
   domain: process.env.NEXT_AUTH0_DOMAIN,
   clientId: process.env.NEXT_AUTH0_CLIENT_ID,
   clientSecret: process.env.NEXT_AUTH0_CLIENT_SECRET,

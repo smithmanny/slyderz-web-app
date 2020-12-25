@@ -28,8 +28,6 @@ const AppBar = ({ currentUser, ...props }) => {
     setAccountAnchorEl(event.currentTarget);
   };
 
-  console.log({ currentUser });
-
   const renderLoggedOutLinks = () => (
     <>
       <Grid item>

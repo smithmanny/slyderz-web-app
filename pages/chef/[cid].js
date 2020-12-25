@@ -120,7 +120,7 @@ const Chef = (props) => {
   const { data, error } = useSWR(FETCH_ALL_DISHES, fetcher, {
     initialData: props.dishes,
   });
-  const dishes = data?.dish || [];
+  const dishes = data?.dishes || [];
   return (
     <ConsumerContainer>
       <Grid container className={classes.container}>

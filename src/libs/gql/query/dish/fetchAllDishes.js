@@ -1,5 +1,5 @@
 export default `{
-  dish {
+  dishes {
     __typename
     id
     description
