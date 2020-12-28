@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { ApolloProvider } from "@apollo/client";
 import { DefaultSeo } from "next-seo";
 import TagManager from "react-gtm-module";
 import { Provider } from "react-redux";
@@ -7,11 +8,12 @@ import { LocalizationProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@material-ui/pickers/adapter/date-fns";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
+import withApollo from "../src/utils/withApollo";
 import { theme } from "../src/libs/material-ui";
 import SEO from "../next-seo.config";
 import store from "../src/libs/redux";
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps, apollo }) {
   useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector("#jss-server-side");
@@ -28,15 +30,17 @@ function MyApp({ Component, pageProps }) {
     <StylesProvider>
       <ThemeProvider theme={theme}>
         <LocalizationProvider dateAdapter={DateFnsUtils}>
-          <Provider store={store}>
-            <DefaultSeo {...SEO} />
-            <CssBaseline />
-            <Component {...pageProps} />
-          </Provider>
+          <ApolloProvider client={apollo}>
+            <Provider store={store}>
+              <DefaultSeo {...SEO} />
+              <CssBaseline />
+              <Component {...pageProps} />
+            </Provider>
+          </ApolloProvider>
         </LocalizationProvider>
       </ThemeProvider>
     </StylesProvider>
   );
 }
 
-export default MyApp;
+export default withApollo(MyApp);

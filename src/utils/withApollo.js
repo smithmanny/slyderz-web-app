@@ -7,7 +7,7 @@ export default withApollo(
       connectToDevTools: process.browser,
       ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
       cache: new InMemoryCache().restore(initialState || {}),
-      uri: process.env.GRAPHQL_URL,
+      uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
       request: (operation) => {
         operation.setContext({
           fetchOptions: {

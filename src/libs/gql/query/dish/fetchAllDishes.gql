@@ -1,4 +1,4 @@
-export default `{
+query {
   dishes {
     __typename
     id
@@ -6,4 +6,4 @@ export default `{
     price
     name
   }
-}`;
+}

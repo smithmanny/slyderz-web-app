@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import Card, { CardContent } from "../../shared/Card";
 import DishCardContainerStyles from "./styles";
 import DishCardModal from "../DishCardModal";
-import { addItem as addItemToCart } from "../../../libs/redux/reducers/cartReducer";
+import { addDishToCart } from "../../../libs/redux/reducers/cartReducer";
 
 import Button from "../../shared/Button";
 import Grid from "../../shared/Grid";
@@ -43,12 +43,9 @@ const DishCardContainer = ({ dishes }) => {
                     onClick={(e) => {
                       e.stopPropagation();
                       dispatch(
-                        addItemToCart({
-                          chef: "Shakhor",
-                          selectedCartItem: {
-                            ...dish,
-                            quantity: 1,
-                          },
+                        addDishToCart("Shakhor", {
+                          ...dish,
+                          quantity: 1,
                         })
                       );
                     }}

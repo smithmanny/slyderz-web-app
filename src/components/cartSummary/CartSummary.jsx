@@ -15,10 +15,7 @@ const CartSummary = () => {
   const selectedCartItems = useSelector(
     (state) => state.cart.selectedCartItems
   );
-  let cartSum = 0;
-  selectedCartItems.forEach((cart) => {
-    cartSum += cart.price;
-  });
+  const cartTotal = useSelector((state) => state.cart.cartTotal);
   return (
     <div className={classes.root}>
       <BasicForm>
@@ -36,7 +33,7 @@ const CartSummary = () => {
               <Typography variant="h5">Total: </Typography>
             </Grid>
             <Grid item>
-              <Typography variant="h5">&nbsp;${cartSum}</Typography>
+              <Typography variant="h5">&nbsp;${cartTotal}</Typography>
             </Grid>
             <Grid className={classes.checkout} item xs={12}>
               <Button variant="contained" color="primary" size="large">

@@ -1,10 +1,11 @@
 import React from "react";
 import { useRouter } from "next/router";
+import { useQuery } from "@apollo/client";
 import useSWR from "swr";
 
 import { fetcher } from "../../src/utils/utils";
 import { makeStyles } from "../../src/components/shared/theme";
-import FETCH_ALL_DISHES from "../../src/libs/gql/query/dish/fetchAllDishes";
+import FETCH_ALL_DISHES from "../../src/libs/gql/query/dish/fetchAllDishes.gql";
 
 import ConsumerContainer from "../../src/components/consumerContainer";
 import CartSummary from "../../src/components/cartSummary/CartSummary";
@@ -103,24 +104,13 @@ const styles = makeStyles((theme) => ({
   },
 }));
 
-export async function getStaticPaths() {
-  const paths = [{ params: { cid: "1" } }];
-  return { paths, fallback: false };
-}
-
-export async function getStaticProps() {
-  const dishes = await fetcher(FETCH_ALL_DISHES);
-  return { props: { dishes } };
-}
-
 const Chef = (props) => {
   const classes = styles();
   const router = useRouter();
   const { cid } = router.query;
-  const { data, error } = useSWR(FETCH_ALL_DISHES, fetcher, {
-    initialData: props.dishes,
-  });
-  const dishes = data?.dishes || [];
+  const { loading, error, data } = useQuery(FETCH_ALL_DISHES);
+  if (loading) return "LOADING";
+  const { dishes } = data;
   return (
     <ConsumerContainer>
       <Grid container className={classes.container}>
