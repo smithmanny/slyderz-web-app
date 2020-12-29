@@ -47,7 +47,10 @@ const cartSlice = createSlice({
       state.selectedCartItems[dishIndex].quantity += dish.quantity;
     },
     removeDish: (state, action) => {
-      state.selectedCartItems.filter((item) => item.id !== action.payload.id);
+      state.dishIds = state.dishIds.filter((id) => id !== action.payload);
+      state.selectedCartItems = state.selectedCartItems.filter(
+        (item) => item.id !== action.payload
+      );
     },
   },
 });
@@ -81,8 +84,8 @@ export const addDishToCart = (orderChef, selectedCartItem) => async (
   }
   // Update dishes in cart
   if (dishIds.includes(selectedCartItem.id)) {
-    dispatch(increaseDishQuantity(selectedCartItem));
-    dispatch(
+    await dispatch(increaseDishQuantity(selectedCartItem));
+    await dispatch(
       increaseCartTotal({
         price: selectedCartItem.price,
         quantity: selectedCartItem.quantity,
@@ -90,8 +93,8 @@ export const addDishToCart = (orderChef, selectedCartItem) => async (
     );
   } else {
     // Add dishes to cart
-    dispatch(addDish(selectedCartItem));
-    dispatch(
+    await dispatch(addDish(selectedCartItem));
+    await dispatch(
       increaseCartTotal({
         price: selectedCartItem.price,
         quantity: selectedCartItem.quantity,
@@ -101,8 +104,8 @@ export const addDishToCart = (orderChef, selectedCartItem) => async (
 };
 
 export const increaseQuantity = (selectedCartItem) => async (dispatch) => {
-  dispatch(increaseDishQuantity(selectedCartItem));
-  dispatch(
+  await dispatch(increaseDishQuantity(selectedCartItem));
+  await dispatch(
     increaseCartTotal({
       price: selectedCartItem.price,
       quantity: selectedCartItem.quantity,
@@ -125,12 +128,12 @@ export const decreaseQuantity = (selectedCartItem) => async (
 
   // If quantity is 1 remove item
   if (dish.quantity === 1) {
-    dispatch(removeDish(dish));
+    dispatch(removeDish(dish.id));
     return;
   }
 
-  dispatch(decreaseDishQuantity(selectedCartItem));
-  dispatch(
+  await dispatch(decreaseDishQuantity(selectedCartItem));
+  await dispatch(
     decreaseCartTotal({
       price: selectedCartItem.price,
       quantity: selectedCartItem.quantity,
