@@ -1,4 +1,4 @@
-import { makeStyles, createStyles } from "../theme";
+import { makeStyles, createStyles } from "../../../libs/material-ui";
 
 export default makeStyles((theme) =>
   createStyles({

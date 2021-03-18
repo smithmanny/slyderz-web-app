@@ -4,7 +4,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
 
-import { makeStyles, createStyles } from "./shared/theme";
+import { makeStyles, createStyles } from "../libs/material-ui";
 
 const styles = makeStyles((theme) =>
   createStyles({

@@ -17,6 +17,10 @@ const cartSlice = createSlice({
 
       state.dishIds.push(action.payload.id);
       state.selectedCartItems.push(item);
+
+      // Increase cart total
+      const amount = item.quantity * item.price;
+      state.cartTotal += amount;
     },
     decreaseDishQuantity: (state, action) => {
       const dish = action.payload;
@@ -25,18 +29,10 @@ const cartSlice = createSlice({
         .indexOf(dish.id);
 
       state.selectedCartItems[dishIndex].quantity -= 1;
-    },
-    decreaseCartTotal: (state, action) => {
-      const { price, quantity } = action.payload;
-      const amount = quantity * price;
 
+      // Decrease cart total
+      const amount = dish.quantity * dish.price;
       state.cartTotal -= amount;
-    },
-    increaseCartTotal: (state, action) => {
-      const { price, quantity } = action.payload;
-      const amount = quantity * price;
-
-      state.cartTotal += amount;
     },
     increaseDishQuantity: (state, action) => {
       const dish = action.payload;
@@ -45,12 +41,20 @@ const cartSlice = createSlice({
         .indexOf(dish.id);
 
       state.selectedCartItems[dishIndex].quantity += dish.quantity;
+
+      // Increase cart total
+      const amount = dish.quantity * dish.price;
+      state.cartTotal += amount;
     },
     removeDish: (state, action) => {
-      state.dishIds = state.dishIds.filter((id) => id !== action.payload);
+      const dish = action.payload;
+      state.dishIds = state.dishIds.filter((id) => id !== dish.id);
       state.selectedCartItems = state.selectedCartItems.filter(
-        (item) => item.id !== action.payload
+        (item) => item.id !== dish.id
       );
+
+      // Decrease cart total
+      state.cartTotal -= dish.price;
     },
   },
 });
@@ -62,9 +66,7 @@ export const {
   addChef,
   addDish,
   decreaseDishQuantity,
-  decreaseCartTotal,
   increaseDishQuantity,
-  increaseCartTotal,
   removeDish,
 } = actions;
 // Export the reducer, either as a default or named export
@@ -85,32 +87,14 @@ export const addDishToCart = (orderChef, selectedCartItem) => async (
   // Update dishes in cart
   if (dishIds.includes(selectedCartItem.id)) {
     await dispatch(increaseDishQuantity(selectedCartItem));
-    await dispatch(
-      increaseCartTotal({
-        price: selectedCartItem.price,
-        quantity: selectedCartItem.quantity,
-      })
-    );
   } else {
     // Add dishes to cart
     await dispatch(addDish(selectedCartItem));
-    await dispatch(
-      increaseCartTotal({
-        price: selectedCartItem.price,
-        quantity: selectedCartItem.quantity,
-      })
-    );
   }
 };
 
 export const increaseQuantity = (selectedCartItem) => async (dispatch) => {
   await dispatch(increaseDishQuantity(selectedCartItem));
-  await dispatch(
-    increaseCartTotal({
-      price: selectedCartItem.price,
-      quantity: selectedCartItem.quantity,
-    })
-  );
 };
 
 export const decreaseQuantity = (selectedCartItem) => async (
@@ -128,15 +112,9 @@ export const decreaseQuantity = (selectedCartItem) => async (
 
   // If quantity is 1 remove item
   if (dish.quantity === 1) {
-    dispatch(removeDish(dish.id));
+    dispatch(removeDish(dish));
     return;
   }
 
   await dispatch(decreaseDishQuantity(selectedCartItem));
-  await dispatch(
-    decreaseCartTotal({
-      price: selectedCartItem.price,
-      quantity: selectedCartItem.quantity,
-    })
-  );
 };

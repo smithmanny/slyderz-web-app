@@ -6,13 +6,13 @@ import { MapMarker } from "mdi-material-ui";
 
 import loggedOutContainerStyles from "./styles";
 
-import ConsumerContainer from "../consumerContainer";
-import Typography from "../shared/Typography";
-import Section from "../shared/section";
-import Button from "../shared/Button";
-import Grid from "../shared/Grid";
-import Paper from "../shared/Paper";
-import BasicForm, { TextField } from "../form";
+import ConsumerContainer from "../../components/consumerContainer";
+import Typography from "../../components/shared/Typography";
+import Section from "../../components/shared/section";
+import Button from "../../components/shared/Button";
+import Grid from "../../components/shared/Grid";
+import Paper from "../../components/shared/Paper";
+import BasicForm, { TextField } from "../../components/form";
 import ChefIcon from "../../assets/icons/svg/chef.svg";
 import BowlIcon from "../../assets/icons/svg/bowl.svg";
 import MenuIcon from "../../assets/icons/svg/menu.svg";

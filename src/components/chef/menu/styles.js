@@ -1,4 +1,4 @@
-import { makeStyles } from "../../shared/theme";
+import { makeStyles } from "../../../libs/material-ui";
 
 export default makeStyles((theme) => ({
   addToCartSection: {

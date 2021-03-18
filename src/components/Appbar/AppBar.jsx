@@ -1,12 +1,10 @@
 /* eslint-disable import/no-named-default */
 import React, { useState } from "react";
 import Link from "next/link";
-import PropTypes from "prop-types";
 import Toolbar from "@material-ui/core/Toolbar";
 import { default as AppBarMui } from "@material-ui/core/AppBar";
 
 import appbarStyles from "./styles";
-import withCurrentUser from "../../utils/withCurrentUser";
 
 import { ShoppingCart, PersonIcon } from "../../assets/icons";
 import Button from "../shared/Button";
@@ -15,11 +13,12 @@ import Grid from "../shared/Grid";
 import Typography from "../shared/Typography";
 import AccountPopover from "../accountPopover";
 
-const AppBar = ({ currentUser, ...props }) => {
+const AppBar = (props) => {
   const classes = appbarStyles();
   const [accountAnchorEl, setAccountAnchorEl] = useState(null);
   const isAccountOpen = Boolean(accountAnchorEl);
   const accountId = isAccountOpen ? "account-popover" : null;
+  const session = false;
 
   const closeAccountModal = () => {
     setAccountAnchorEl(null);
@@ -43,7 +42,7 @@ const AppBar = ({ currentUser, ...props }) => {
           variant="outlined"
           color="primary"
           component="a"
-          href="/api/login"
+          href="/api/auth/signin"
         >
           Log in
         </Button>
@@ -73,7 +72,7 @@ const AppBar = ({ currentUser, ...props }) => {
         >
           <PersonIcon fontSize="large" />
           <Typography className={classes.profileName} variant="body1">
-            {currentUser.nickname}
+            {session.user.name}
           </Typography>
         </Fab>
       </Grid>
@@ -96,10 +95,10 @@ const AppBar = ({ currentUser, ...props }) => {
           </Link>
 
           <Grid container className={classes.linksSection} spacing={1}>
-            {currentUser ? renderLoggedInLinks() : renderLoggedOutLinks()}
+            {session ? renderLoggedInLinks() : renderLoggedOutLinks()}
           </Grid>
 
-          {currentUser && (
+          {session && (
             <AccountPopover
               id={accountId}
               open={isAccountOpen}
@@ -113,14 +112,4 @@ const AppBar = ({ currentUser, ...props }) => {
   );
 };
 
-AppBar.defaultProps = {
-  currentUser: null,
-};
-
-AppBar.propTypes = {
-  currentUser: PropTypes.shape({
-    id: PropTypes.number,
-  }),
-};
-
-export default withCurrentUser(AppBar);
+export default AppBar;

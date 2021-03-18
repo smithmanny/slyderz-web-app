@@ -5,10 +5,10 @@ import { useQuery } from "@apollo/client";
 import CURRENT_SESSION_QUERY from "../src/libs/gql/query/session/currentSessionQuery.gql";
 
 const LoggedInContainer = dynamic(() =>
-  import("../src/components/loggedInContainer")
+  import("../src/layouts/loggedInContainer")
 );
 const LoggedOutContainer = dynamic(() =>
-  import("../src/components/loggedOutContainer")
+  import("../src/layouts/loggedOutContainer")
 );
 
 const Index = () => {

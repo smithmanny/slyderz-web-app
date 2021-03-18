@@ -1,10 +1,8 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
-import useSWR from "swr";
 
-import { fetcher } from "../../src/utils/utils";
-import { makeStyles } from "../../src/components/shared/theme";
+import { makeStyles } from "../../src/libs/material-ui";
 import FETCH_ALL_DISHES from "../../src/libs/gql/query/dish/fetchAllDishes.gql";
 
 import ConsumerContainer from "../../src/components/consumerContainer";
@@ -108,9 +106,9 @@ const Chef = (props) => {
   const classes = styles();
   const router = useRouter();
   const { cid } = router.query;
-  const { loading, error, data } = useQuery(FETCH_ALL_DISHES);
-  if (loading) return "LOADING";
-  const { dishes } = data;
+  // const { loading, error, data } = useQuery(FETCH_ALL_DISHES);
+  // if (loading) return "LOADING";
+  // const { dishes } = data;
   return (
     <ConsumerContainer>
       <Grid container className={classes.container}>
@@ -166,7 +164,7 @@ const Chef = (props) => {
           </Paper>
         </Grid>
         <Grid item xs={12} md={8}>
-          <Menu dishes={dishes} />
+          {/* <Menu dishes={dishes} /> */}
         </Grid>
       </Grid>
     </ConsumerContainer>

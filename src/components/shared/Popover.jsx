@@ -1,5 +1,5 @@
-import { default as PopoverMUI } from '@material-ui/core/Popover';
-import PropTypes from 'prop-types'
+import { default as PopoverMUI } from "@material-ui/core/Popover";
+import PropTypes from "prop-types";
 
 const Popover = ({ anchorEl, children, handleClose, name, ...props }) => {
   const open = Boolean(anchorEl);
@@ -12,27 +12,27 @@ const Popover = ({ anchorEl, children, handleClose, name, ...props }) => {
       anchorEl={anchorEl}
       onClose={handleClose}
       anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
+        vertical: "bottom",
+        horizontal: "left",
+      }}
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "left",
+      }}
       {...props}
     >
       {children}
     </PopoverMUI>
-  )
-}
+  );
+};
 
 Popover.defaultProps = {
-  name: 'Popover',
-}
+  name: "Popover",
+};
 
 Popover.propTypes = {
   handleClose: PropTypes.func.isRequired,
   name: PropTypes.string,
-}
+};
 
-export default Popover
+export default Popover;

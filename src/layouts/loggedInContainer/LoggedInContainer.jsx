@@ -1,11 +1,11 @@
 import React from "react";
 import Link from "next/link";
 
-import { Avatar } from "../shared";
-import Card, { CardContent, CardMedia } from "../shared/Card";
-import Typography from "../shared/Typography";
-import Grid from "../shared/Grid";
-import ConsumerContainer from "../consumerContainer";
+import { Avatar } from "../../components/shared";
+import Card, { CardContent, CardMedia } from "../../components/shared/Card";
+import Typography from "../../components/shared/Typography";
+import Grid from "../../components/shared/Grid";
+import ConsumerContainer from "../../components/consumerContainer";
 
 import homePageStyles from "./styles";
 
