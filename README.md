@@ -1,90 +1,165 @@
-This example shows how to add a Nexus api endpoint to a nextjs project. You can try out the deployed version right now [here](https://with-nextjs-and-vercel-and-plugins-prisma.now.sh).
+[![Blitz.js](https://raw.githubusercontent.com/blitz-js/art/master/github-cover-photo.png)](https://blitzjs.com)
 
-#### Setting up for development
+This is a [Blitz.js](https://github.com/blitz-js/blitz) app.
 
-1. Start a postgres database
+# **name**
 
-   ```
-   db:start
-   ```
+## Getting Started
 
-1. Initialize your db schema
+Run your app in the development mode.
 
-   ```
-   db:migrate
-   ```
+```
+blitz dev
+```
 
-1. Source development environment variables (we use [direnv](https://direnv.net/))
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-   ```
-   direnv
-   ```
+## Environment Variables
 
-1. Start nextjs dev mode
+Ensure the `.env.local` file has required environment variables:
 
-   ```
-   npm run dev
-   ```
+```
+DATABASE_URL=postgresql://<YOUR_DB_USERNAME>@localhost:5432/blitz-slyderz
+```
 
-1. In another terminal start Nexus reflection to benefit from the type safety that Nexus can give you.
+Ensure the `.env.test.local` file has required environment variables:
 
-   ```
-   npm run nexus:reflection
-   ```
+```
+DATABASE_URL=postgresql://<YOUR_DB_USERNAME>@localhost:5432/blitz-slyderz_test
+```
 
-#### Setting up for deployment
+## Tests
 
-1. Setup an account with [Vercel](https://vercel.com/)
+Runs your tests using Jest.
 
-1. Provision a free postgres database with heroku
+```
+blitz test
+or
+yarn test
+```
 
-   ```
-   heroku create
-   heroku addons:create heroku-postgresql
-   ```
+Blitz comes with a test setup using [Jest](https://jestjs.io/) and [react-testing-library](https://testing-library.com/).
 
-1. Copy the connection URL
+## Commands
 
-   ```
-   heroku pg:credentials:url
-   ```
+Blitz comes with a powerful CLI that is designed to make development easy and fast. You can install it with `npm i -g blitz`
 
-1. Setup `DATABASE_URL` environment variable (add to all stages)
+```
+  blitz [COMMAND]
 
-   ```
-   now env add DATABASE_URL
-   ```
+  dev       Start a development server
+  build     Create a production build
+  start     Start a production server
+  prisma    Run prisma commands
+  generate  Generate new files for your Blitz project
+  console   Run the Blitz console REPL
+  help      display help for blitz
+  test      Run project tests
+```
 
-1. From now on you can just deploy
+You can read more about it on the [CLI Overview](https://blitzjs.com/docs/cli-overview) documentation.
 
-   ```
-   npm run deploy:preview
-   ```
+## What's included?
 
-#### Migrations
+Here is the starting structure of your app.
 
-1. When you are running Nexus' dev mode then Nexus will take care of migrating your development databse
+```
+blitz-slyderz
+├── app/
+│   ├── api/
+│   ├── auth/
+│   │   ├── components/
+│   │   │   ├── LoginForm.tsx
+│   │   │   └── SignupForm.tsx
+│   │   ├── mutations/
+│   │   │   ├── changePassword.ts
+│   │   │   ├── forgotPassword.test.ts
+│   │   │   ├── forgotPassword.ts
+│   │   │   ├── login.ts
+│   │   │   ├── logout.ts
+│   │   │   ├── resetPassword.test.ts
+│   │   │   ├── resetPassword.ts
+│   │   │   └── signup.ts
+│   │   ├── pages/
+│   │   │   ├── forgot-password.tsx
+│   │   │   ├── login.tsx
+│   │   │   ├── reset-password.tsx
+│   │   │   └── signup.tsx
+│   │   └── validations.ts
+│   ├── core/
+│   │   ├── components/
+│   │   │   ├── Form.tsx
+│   │   │   └── LabeledTextField.tsx
+│   │   ├── hooks/
+│   │   │   └── useCurrentUser.ts
+│   │   └── layouts/
+│   │       └── Layout.tsx
+│   ├── pages/
+│   │   ├── 404.tsx
+│   │   ├── _app.tsx
+│   │   ├── _document.tsx
+│   │   ├── index.test.tsx
+│   │   └── index.tsx
+│   └── users/
+│       └── queries/
+│           └── getCurrentUser.ts
+├── db/
+│   ├── index.ts
+│   ├── schema.prisma
+│   └── seeds.ts
+├── integrations/
+├── mailers/
+│   └── forgotPasswordMailer.ts
+├── public/
+│   ├── favicon.ico*
+│   └── logo.png
+├── test/
+│   ├── setup.ts
+│   └── utils.tsx
+├── README.md
+├── babel.config.js
+├── blitz.config.js
+├── jest.config.js
+├── package.json
+├── tsconfig.json
+├── types.d.ts
+├── types.ts
+└── yarn.lock
+```
 
-1. To migrate the production database
+These files are:
 
-   ```
-   now env pull
-   ```
+- The `app/` folder is a container for most of your project. This is where you’ll put any pages or API routes.
 
-   Export the `DATABASE_URL` into your shell.
+- `db/` is where your database configuration goes. If you’re writing models or checking migrations, this is where to go.
 
-   ```
-   npm run db:migrate
-   ```
+- `public/` is a folder where you will put any static assets. If you have images, files, or videos which you want to use in your app, this is where to put them.
 
-#### Notes
+- `integrations/` is a folder to put all third-party integrations like with Stripe, Sentry, etc.
 
-1. With `compilerOptions.noEmit` set to `true` in tsconfig, treat `nexus build` as a check step to run in your tests.
+- `test/` is a folder where you can put test utilities and integration tests.
 
-1. The following are some minor limitations that you won't find in a "normal" Nexus project.
+- `package.json` contains information about your dependencies and devDependencies. If you’re using a tool like `npm` or `yarn`, you won’t have to worry about this much.
 
-   1. Make sure nextjs nexus api modules are symmetrical with regard to graphql schema imports. This means do not put graphql schema code into them. The reason for this is in nextjs dev mode state is shraed between them and that breaks the fragile Nexus assembly system.
+- `tsconfig.json` is our recommended setup for TypeScript.
 
-      Note: This is low-level stuff that we hope to make go away sooner than later. So don't invest too much in trying to understand the internals here.
+- `.babelrc.js`, `.env`, etc. ("dotfiles") are configuration files for various bits of JavaScript tooling.
 
-   1. Run `app.assenble()` before accessing the server handlers.
+- `blitz.config.js` is for advanced custom configuration of Blitz. It extends [`next.config.js`](https://nextjs.org/docs/api-reference/next.config.js/introduction).
+
+- `jest.config.js` contains config for Jest tests. You can [customize it if needed](https://jestjs.io/docs/en/configuration).
+
+You can read more about it in the [File Structure](https://blitzjs.com/docs/file-structure) section of the documentation.
+
+## Learn more
+
+Read the [Blitz.js Documentation](https://blitzjs.com/docs/getting-started) to learn more.
+
+The Blitz community is warm, safe, diverse, inclusive, and fun! Feel free to reach out to us in any of our communication channels.
+
+- [Website](https://blitzjs.com/)
+- [Discord](https://discord.blitzjs.com/)
+- [Report an issue](https://github.com/blitz-js/blitz/issues/new/choose)
+- [Forum discussions](https://github.com/blitz-js/blitz/discussions)
+- [How to Contribute](https://blitzjs.com/docs/contributing)
+- [Sponsor or donate](https://github.com/blitz-js/blitz#sponsors-and-donations)
