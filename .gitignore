@@ -1,37 +1,52 @@
-sendgrid.env
-.vercel
-
-# Prisma
-failed-inferMigrationSteps*
-
 # dependencies
-/node_modules
-/.pnp
-.pnp.js
+node_modules
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.pnp.*
+.npm
+web_modules/
 
-# testing
-/coverage
-
-# next.js
+# blitz
+/.blitz/
 /.next/
-/out/
-
-# production
-/build
+*.sqlite
+.now
+.blitz-console-history
+blitz-log.log
 
 # misc
 .DS_Store
 
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
 # local env files
-.envrc
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*.local
+.envrc
 
-.now
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Testing
+.coverage
+*.lcov
+.nyc_output
+lib-cov
+
+# Caches
+*.tsbuildinfo
+.eslintcache
+.node_repl_history
+.yarn-integrity
+
+# Serverless directories
+.serverless/
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
