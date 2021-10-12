@@ -16,7 +16,7 @@ export const ConfirmationPage = (props) => {
   return (
     <ConsumerContainer>
       <Paper>
-
+    Confirmation page
       </Paper>
     </ConsumerContainer>
   );

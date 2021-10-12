@@ -1,5 +1,6 @@
 import { getSession, BlitzApiRequest, BlitzApiResponse } from "blitz"
-const stripe = require("stripe")("sk_test_PHGdRXFISHoYwFqSlVPfTEh7");
+// const stripe = require("stripe")("sk_test_PHGdRXFISHoYwFqSlVPfTEh7");
+const stripe = require("stripe")(process.env.BLITZ_PUBLIC_STRIPE_SECRET_KEY);
 
 const handler = async(req: BlitzApiRequest, res: BlitzApiResponse) => {
   const items = req.body.items;

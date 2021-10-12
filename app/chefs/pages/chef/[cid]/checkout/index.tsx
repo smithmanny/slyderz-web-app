@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BlitzPage, Link, getSession, Routes } from "blitz";
+import { BlitzPage, Link, getSession, Routes, useMutation } from "blitz";
 import { loadStripe } from "@stripe/stripe-js";
 import {
   CardElement,
@@ -10,8 +10,10 @@ import {
 import ArrowBack from '@material-ui/icons/ArrowBack';
 
 import { makeStyles } from "integrations/material-ui";
-import Form, { DatePicker, Select } from 'app/core/components/form';
+import orderRequestMailer from "app/api/mailers/send-order-request";
+import orderRequestMutation from "app/confirmation/mutations/sendOrderRequest";
 
+import Form, { DatePicker, Select } from 'app/core/components/form';
 import Button from "app/core/components/shared/Button"
 import Paper from "app/core/components/shared/Paper"
 import Layout from "app/core/layouts/Layout";
@@ -135,7 +137,7 @@ interface DataType {
   clientSecret: string
 }
 
-const Checkout: BlitzPage | any = ({ cartItems }) => {
+const Checkout: BlitzPage | any = ({ cartItems, ...props }) => {
   const classes = checkoutFormStyles();
   const [succeeded, setSucceeded] = useState(false);
   const [error, setError]: any | String = useState(null);
@@ -144,6 +146,7 @@ const Checkout: BlitzPage | any = ({ cartItems }) => {
   const [clientSecret, setClientSecret] = useState('');
   const stripe = useStripe();
   const elements = useElements();
+  const [createOrderRequest] = useMutation(orderRequestMutation, { onSuccess: () => sendEmailOnSuccess() })
   const cardStyle = {
     style: {
       base: {
@@ -161,6 +164,23 @@ const Checkout: BlitzPage | any = ({ cartItems }) => {
       }
     }
   };
+
+  function sendEmailOnSuccess() {
+    const orderRequestData = {
+      to: 'shakhorsmith@gmail.com',
+      templateData: {
+        location: '4288 Leola Rd, Douglasville, Ga, 30135',
+        orderNumber: 'JTY12SA5'
+      }
+    };
+    return fetch("/api/mailers/send-order-request", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(orderRequestData)
+    });
+  }
 
   useEffect(() => {
     // Create PaymentIntent as soon as the page loads
@@ -213,6 +233,12 @@ const Checkout: BlitzPage | any = ({ cartItems }) => {
       setError(null);
       setProcessing(false);
       setSucceeded(true);
+      // Send confirmation email
+      try {
+        await createOrderRequest();
+      } catch (err) {
+        console.error(err)
+      }
     }
   };
   const timesMockup = [
