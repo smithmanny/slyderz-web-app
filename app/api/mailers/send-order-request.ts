@@ -8,7 +8,7 @@ type OrderRequestMailerProps = {
 }
 
 const handler = (req: BlitzApiRequest, res: BlitzApiResponse) => {
-  const { confirmationNumber, to, templateData }: OrderRequestMailerProps = req.body;
+  const { to, templateData }: OrderRequestMailerProps = req.body;
   const msg = {
     from: 'shakhor@slyderz.co',
     templateId: 'd-2098a0532be343408f1cf09da4cf4fe1',

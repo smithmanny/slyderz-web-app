@@ -11,7 +11,7 @@ import ArrowBack from '@material-ui/icons/ArrowBack';
 
 import { makeStyles } from "integrations/material-ui";
 import orderRequestMailer from "app/api/mailers/send-order-request";
-import orderRequestMutation from "app/confirmation/mutations/sendOrderRequest";
+import createOrderRequest from "app/confirmation/mutations/createOrderRequest";
 
 import Form, { DatePicker, Select } from 'app/core/components/form';
 import Button from "app/core/components/shared/Button"
@@ -146,7 +146,12 @@ const Checkout: BlitzPage | any = ({ cartItems, ...props }) => {
   const [clientSecret, setClientSecret] = useState('');
   const stripe = useStripe();
   const elements = useElements();
-  const [createOrderRequest] = useMutation(orderRequestMutation, { onSuccess: () => sendEmailOnSuccess() })
+  const [createOrderRequestMutation] = useMutation(createOrderRequest, {
+    // onSuccess: () => sendEmailOnSuccess(),
+    onError: () => {
+      setSucceeded(false)
+    }
+  })
   const cardStyle = {
     style: {
       base: {
@@ -235,7 +240,7 @@ const Checkout: BlitzPage | any = ({ cartItems, ...props }) => {
       setSucceeded(true);
       // Send confirmation email
       try {
-        await createOrderRequest();
+        await createOrderRequestMutation();
       } catch (err) {
         console.error(err)
       }
