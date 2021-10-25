@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BlitzPage, Link, getSession, Routes, useMutation } from "blitz";
+import { BlitzPage, Link, getSession, Router, useMutation } from "blitz";
 import { loadStripe } from "@stripe/stripe-js";
 import {
   CardElement,
@@ -9,9 +9,11 @@ import {
 } from "@stripe/react-stripe-js";
 import ArrowBack from '@material-ui/icons/ArrowBack';
 
+import { readableDate, transfromDateToReadableTime } from "app/helpers/dateHelpers"
 import { makeStyles } from "integrations/material-ui";
-import orderRequestMailer from "app/api/mailers/send-order-request";
-import createOrderRequest from "app/confirmation/mutations/createOrderRequest";
+
+import createConfirmationNumber from "app/confirmation/mutations/createOrderConfirmationNumber";
+import resetCartItemsMutation from "app/confirmation/mutations/resetCartItemsMutation";
 
 import Form, { DatePicker, Select } from 'app/core/components/form';
 import Button from "app/core/components/shared/Button"
@@ -137,6 +139,12 @@ interface DataType {
   clientSecret: string
 }
 
+interface EmailBodyType {
+  confirmationNumber: string
+  eventDate: string
+  eventTime: string
+}
+
 const Checkout: BlitzPage | any = ({ cartItems, ...props }) => {
   const classes = checkoutFormStyles();
   const [succeeded, setSucceeded] = useState(false);
@@ -146,8 +154,9 @@ const Checkout: BlitzPage | any = ({ cartItems, ...props }) => {
   const [clientSecret, setClientSecret] = useState('');
   const stripe = useStripe();
   const elements = useElements();
-  const [createOrderRequestMutation] = useMutation(createOrderRequest, {
-    // onSuccess: () => sendEmailOnSuccess(),
+  const [resetCartItems] = useMutation(resetCartItemsMutation);
+  const [createConfirmationNumberMutation] = useMutation(createConfirmationNumber, {
+    onSuccess: resetCartItems,
     onError: () => {
       setSucceeded(false)
     }
@@ -170,12 +179,14 @@ const Checkout: BlitzPage | any = ({ cartItems, ...props }) => {
     }
   };
 
-  function sendEmailOnSuccess() {
+  function sendOrderRequestEmail(emailData: EmailBodyType) {
     const orderRequestData = {
       to: 'shakhorsmith@gmail.com',
       templateData: {
+        eventDate: emailData.eventDate,
+        eventTime: emailData.eventTime,
         location: '4288 Leola Rd, Douglasville, Ga, 30135',
-        orderNumber: 'JTY12SA5'
+        orderNumber: emailData.confirmationNumber,
       }
     };
     return fetch("/api/mailers/send-order-request", {
@@ -219,7 +230,9 @@ const Checkout: BlitzPage | any = ({ cartItems, ...props }) => {
     setDisabled(event.empty);
     setError(event.error ? event.error.message : "");
   };
-  const handleSubmit = async () => {
+  const handleSubmit = async (values) => {
+    const { eventDate } = values
+
     if (!stripe || !elements) {
       return
     };
@@ -238,9 +251,18 @@ const Checkout: BlitzPage | any = ({ cartItems, ...props }) => {
       setError(null);
       setProcessing(false);
       setSucceeded(true);
-      // Send confirmation email
       try {
-        await createOrderRequestMutation();
+        const confirmationNumber = await createConfirmationNumberMutation();
+        const emailData: EmailBodyType = {
+          ...values,
+          confirmationNumber,
+          eventDate: readableDate(eventDate),
+        }
+        // Send confirmation email
+        if (confirmationNumber) {
+          sendOrderRequestEmail(emailData)
+          .then(() => Router.replace(`/confirmation/${confirmationNumber}`))
+        }
       } catch (err) {
         console.error(err)
       }
@@ -248,20 +270,12 @@ const Checkout: BlitzPage | any = ({ cartItems, ...props }) => {
   };
   const timesMockup = [
     {
-      key: '7:00 am',
-      value: '7:00 am'
+      key: transfromDateToReadableTime(new Date()),
+      value: transfromDateToReadableTime(new Date())
     },
     {
-      key: '7:15 am',
-      value: '7:15 am'
-    },
-    {
-      key: '7:30 am',
-      value: '7:30 am'
-    },
-    {
-      key: '8:00 am',
-      value: '8:00 am'
+      key: transfromDateToReadableTime(new Date(22)),
+      value: transfromDateToReadableTime(new Date(22))
     },
   ]
 
@@ -281,7 +295,7 @@ const Checkout: BlitzPage | any = ({ cartItems, ...props }) => {
       <Form
         initialValues={{
           eventDate: new Date(),
-          eventTime: timesMockup[0].value,
+          eventTime: transfromDateToReadableTime(new Date()),
         }}
         onSubmit={handleSubmit}
       >
@@ -350,16 +364,6 @@ const Checkout: BlitzPage | any = ({ cartItems, ...props }) => {
   )
 }
 
-export const getServerSideProps = async ({ req, res }) => {
-  const session = await getSession(req, res);
-  const cartItems = session.cart?.pendingCartItems;
-
-  return {
-    props: {
-      cartItems
-    }
-  }
-}
 
 Checkout.authenticate = { redirectTo: '/' }
 Checkout.getLayout = (page) => (
