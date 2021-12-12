@@ -1,8 +1,0 @@
--- CreateTable
-CREATE TABLE "Order" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL,
-    "confirmationNumber" BOOLEAN NOT NULL DEFAULT false,
-    "orderConfirmed" BOOLEAN NOT NULL DEFAULT false
-);

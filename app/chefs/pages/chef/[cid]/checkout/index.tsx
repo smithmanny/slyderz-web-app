@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BlitzPage, Link, getSession, Router, useMutation } from "blitz";
+import { BlitzPage, Link, getSession, Router, Routes, useMutation } from "blitz";
 import { loadStripe } from "@stripe/stripe-js";
 import {
   CardElement,
@@ -364,8 +364,7 @@ const Checkout: BlitzPage | any = ({ cartItems, ...props }) => {
   )
 }
 
-
-Checkout.authenticate = { redirectTo: '/' }
+Checkout.authenticate = { redirectTo: Routes.LoginPage() }
 Checkout.getLayout = (page) => (
   <Elements stripe={promise}>
     <Layout>

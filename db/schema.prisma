@@ -2,12 +2,12 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["interactiveTransactions"]
 }
 
@@ -29,27 +29,6 @@ model User {
   orders   Order[]
 }
 
-model Chef {
-  id             Int      @id @default(autoincrement())
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id])
-  userId Int
-
-  @@unique([userId])
-}
-
-model Order {
-  id             Int @id @default(autoincrement())
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  confirmationNumber   String @unique
-  orderConfirmed Boolean @default(false)
-  user           User @relation(fields: [userId], references: [id])
-  userId         Int
-}
-
 model Session {
   id                 Int       @id @default(autoincrement())
   createdAt          DateTime  @default(now())
@@ -66,13 +45,11 @@ model Session {
 }
 
 model Token {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id          Int       @id @default(autoincrement())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   hashedToken String
-  type        String
-  // See note below about TokenType enum
-  // type        TokenType
+  type        TokenType
   expiresAt   DateTime
   sentTo      String
 
@@ -81,9 +58,56 @@ model Token {
 
   @@unique([hashedToken, type])
 }
-// NOTE: It's highly recommended to use an enum for the token type
-//       but enums only work in Postgres.
-//       See: https://blitzjs.com/docs/database-overview#switch-to-postgresql
-// enum TokenType {
-//   RESET_PASSWORD
-// }
+
+enum TokenType {
+  RESET_PASSWORD
+}
+
+// Chef section
+model Chef {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId Int
+  dishes Dish[]
+
+  @@unique([userId])
+}
+
+model Order {
+  id                 Int      @id @default(autoincrement())
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  confirmationNumber String   @unique
+  orderConfirmed     Boolean  @default(false)
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId Int
+  dishes Dish[]
+}
+
+model Section {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String   @unique
+  dishes    Dish[]
+}
+
+model Dish {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  description String
+  name        String   @unique
+  price       Int
+
+  chef      Chef    @relation(fields: [chefId], references: [id])
+  chefId    Int
+  section   Section @relation(fields: [sectionId], references: [id])
+  sectionId Int
+  Order     Order?  @relation(fields: [orderId], references: [id])
+  orderId   Int?
+}
