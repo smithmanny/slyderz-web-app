@@ -11,7 +11,7 @@ export default makeStyles((theme) => ({
     flex: 1
   },
   dishPicture: {
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       height: 200,
       width: '100%'
     },
@@ -47,7 +47,7 @@ export default makeStyles((theme) => ({
     height: "100%",
   },
   root: {
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       flexDirection: 'column',
       maxWidth: 350,
       margin: 'auto',

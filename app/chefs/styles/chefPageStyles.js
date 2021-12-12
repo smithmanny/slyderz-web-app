@@ -8,12 +8,12 @@ export default makeStyles((theme) => ({
       top: "auto",
       transform: "inherit",
     },
-    height: `${theme.spacing(10)}px !important`,
+    height: `${theme.spacing(10)} !important`,
     position: "absolute",
     top: 0,
     transform: "translate(-50%, -50%)",
     left: "50%",
-    width: `${theme.spacing(10)}px !important`,
+    width: `${theme.spacing(10)} !important`,
   },
   chefAvatarContainer: {
     [theme.breakpoints.up("md")]: {

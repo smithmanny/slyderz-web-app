@@ -7,7 +7,7 @@ import {
   useStripe,
   useElements
 } from "@stripe/react-stripe-js";
-import ArrowBack from '@material-ui/icons/ArrowBack';
+import ArrowBack from '@mui/icons-material/ArrowBack';
 
 import { readableDate, transfromDateToReadableTime } from "app/helpers/dateHelpers"
 import { makeStyles } from "integrations/material-ui";

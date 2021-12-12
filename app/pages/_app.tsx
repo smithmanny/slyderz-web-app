@@ -8,8 +8,8 @@ import {
   ErrorFallbackProps,
   useQueryErrorResetBoundary,
 } from "blitz";
-import { ThemeProvider } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import { ThemeProvider, Theme, StyledEngineProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 import { Provider } from "react-redux";
 
 import store from "integrations/redux";
@@ -23,15 +23,17 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <Suspense fallback="Loading">
       <Provider store={store}>
-        <ThemeProvider theme={theme}>
-        <CssBaseline />
-          <ErrorBoundary
-            FallbackComponent={RootErrorFallback}
-            onReset={useQueryErrorResetBoundary().reset}
-          >
-            {getLayout(<Component {...pageProps} />)}
-          </ErrorBoundary>
-        </ThemeProvider>
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={theme}>
+          <CssBaseline />
+            <ErrorBoundary
+              FallbackComponent={RootErrorFallback}
+              onReset={useQueryErrorResetBoundary().reset}
+            >
+              {getLayout(<Component {...pageProps} />)}
+            </ErrorBoundary>
+          </ThemeProvider>
+        </StyledEngineProvider>
       </Provider>
     </Suspense>
   );

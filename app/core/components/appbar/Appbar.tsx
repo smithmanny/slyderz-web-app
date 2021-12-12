@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { Link, Routes, useSession } from "blitz";
-import Button from "@material-ui/core/Button";
-import Badge from "@material-ui/core/Badge";
-import IconButton from "@material-ui/core/IconButton";
-import ShoppingCart from "@material-ui/icons/ShoppingCart";
-import PersonIcon from "@material-ui/icons/Person";
-import Grid from "@material-ui/core/Grid";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import { default as MuiAppBar } from "@material-ui/core/AppBar";
+import Button from "@mui/material/Button";
+import Badge from "@mui/material/Badge";
+import IconButton from "@mui/material/IconButton";
+import ShoppingCart from "@mui/icons-material/ShoppingCart";
+import PersonIcon from "@mui/icons-material/Person";
+import Grid from "@mui/material/Grid";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import { default as MuiAppBar } from "@mui/material/AppBar";
 
 import AccountPopover from "app/core/components/accountPopover"
 
@@ -69,7 +69,7 @@ const Appbar = (props) => {
         aria-label="cart"
         disableRipple
         onClick={handleAccountModalClick}
-      >
+        size="large">
         <PersonIcon fontSize="large" />
       </IconButton>
     </Grid>

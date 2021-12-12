@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react'
 import PropTypes from "prop-types";
 import { Select as MuiSelect } from 'mui-rff';
-import { MenuItem } from '@material-ui/core';
+import { MenuItem } from '@mui/material';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 

@@ -3,7 +3,6 @@ import { BlitzPage, useMutation } from "blitz"
 import loginMutation from "app/auth/mutations/login"
 import { Login } from "app/auth/validations"
 import { useCurrentUser } from "app/core/hooks/useCurrentUser"
-import { makeStyles } from 'integrations/material-ui'
 
 import Layout from "app/core/layouts/Layout"
 import Button from "app/core/components/shared/Button";
@@ -12,16 +11,7 @@ import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
 import Form, { TextField } from "app/core/components/form"
 
-
-const styles = makeStyles((theme) => ({
-  title: {
-    marginTop: theme.spacing(6)
-  }
-}));
-
-
 const Account: BlitzPage = () => {
-  const classes = styles();
   const [login] = useMutation(loginMutation)
   const user = useCurrentUser();
   const initialValues = {
@@ -46,7 +36,7 @@ const Account: BlitzPage = () => {
           })
         }}
       >
-        <Typography variant="h6" className={classes.title}>
+        <Typography variant="h6" sx={{ mt: 6 }}>
           <strong>Update Password</strong>
         </Typography>
           <TextField
@@ -77,7 +67,7 @@ const Account: BlitzPage = () => {
           })
         }}
       >
-        <Typography variant="h6" className={classes.title} gutterBottom>
+        <Typography variant="h6" sx={{ mt: 6 }} gutterBottom>
           <strong>Personal Info</strong>
         </Typography>
         <Grid item container spacing={2}>
@@ -99,7 +89,7 @@ const Account: BlitzPage = () => {
       </Form>
 
       {/* Delete Account */}
-      <Typography variant="h6" className={classes.title} gutterBottom>
+      <Typography variant="h6" sx={{ mt: 6 }} gutterBottom>
         <strong>Delete Your Account</strong>
       </Typography>
       <Button

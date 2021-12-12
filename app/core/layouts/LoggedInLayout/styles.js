@@ -7,7 +7,7 @@ export default makeStyles((theme) => ({
     exploreItem: {
       display: "flex",
       "& span": {
-        margin: `auto ${theme.spacing(2)}px`,
+        margin: `auto ${theme.spacing(2)}`,
       },
     },
     card: {
