@@ -1,17 +1,8 @@
 import Container from './Container'
-import { makeStyles } from 'integrations/material-ui'
-
-const styles = makeStyles((theme) => ({
-  container: {
-    padding: theme.spacing(4)
-  },
-}));
-
 
 const ConsumerContainer = ({ children, ...props }) => {
-  const classes = styles();
   return (
-    <Container {...props} className={classes.container}>
+    <Container {...props} sx={{ padding: 4 }}>
       {children}
     </Container>
   )

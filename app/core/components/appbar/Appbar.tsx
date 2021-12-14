@@ -12,10 +12,7 @@ import { default as MuiAppBar } from "@mui/material/AppBar";
 
 import AccountPopover from "app/core/components/accountPopover"
 
-import styles from './styles';
-
 const Appbar = (props) => {
-  const classes = styles();
   const session = useSession();
   const [accountAnchorEl, setAccountAnchorEl] = useState(null);
   const isAccountOpen = Boolean(accountAnchorEl);
@@ -40,7 +37,7 @@ const Appbar = (props) => {
       <Grid item>
         <Link href={Routes.LoginPage()}>
           <Button
-            className={classes.login}
+            sx={{ ml: 1 }}
             variant="contained"
             // color="primary"
             component="a"
@@ -52,7 +49,7 @@ const Appbar = (props) => {
       <Grid item>
         <Link href={Routes.SignupPage()}>
           <Button
-            className={classes.login}
+            sx={{ ml: 1 }}
             variant="outlined"
             // color="primary"
             component="a"

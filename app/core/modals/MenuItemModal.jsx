@@ -3,42 +3,31 @@ import { Image, useMutation } from "blitz"
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types'
 
-import { makeStyles } from 'integrations/material-ui'
+import { styled } from 'integrations/material-ui'
 import addMenuItemToCartMutation from 'app/chefs/mutations/createMenuItemOnCart';
 
 import Modal from 'app/core/components/shared/Modal'
 import Button from 'app/core/components/shared/Button'
 import Typography from 'app/core/components/shared/Typography'
 
-const styles = makeStyles((theme) => ({
-  container: {
-    minHeight: 500
-  },
-  logo: {
-    marginBottom: theme.spacing(2),
-    position: 'relative',
-    height: 250,
-    width: '100%'
-  },
-  description: {
-    margin: theme.spacing(2, 0)
-  },
-  sectionName: {
-    fontWeight: 'bold',
-    fontSize: '.95rem',
-  }, 
-  quantity: {
-    padding: theme.spacing(0, 1),
-  },
-  quantityContainer: {
+const QuantityContainer = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     marginRight: theme.spacing(2)
-  }
 }))
 
+const LogoContainer = styled('div')(({ theme }) => ({
+    marginBottom: theme.spacing(2),
+    position: 'relative',
+    height: "250px",
+    width: '100%'
+}))
+
+const ModalContainer = styled('div')({
+  minHeight: "500px"
+})
+
 const MenuItemModal = ({ show, onClose, menuItem, ...props }) => {
-  const classes = styles();
   const [addMenuItemToCart] = useMutation(addMenuItemToCartMutation);
   const [quantity, setQuantity] = useState(1);
 
@@ -77,21 +66,21 @@ const MenuItemModal = ({ show, onClose, menuItem, ...props }) => {
       size="xs"
       actions={(
         <React.Fragment>
-          <div className={classes.quantityContainer}>
+          <QuantityContainer>
             <Button
               variant="text"
               onClick={decreaseQuantity}
             >
               -
             </Button>
-            <Typography className={classes.quantity}>{quantity}</Typography>
+            <Typography sx={{ px: 1 }}>{quantity}</Typography>
             <Button
               variant="text"
               onClick={increaseQuantity}
             >
               +
             </Button>
-          </div>
+          </QuantityContainer>
           <Button
             color="primary"
             variant="contained"
@@ -103,12 +92,12 @@ const MenuItemModal = ({ show, onClose, menuItem, ...props }) => {
       )}
       {...props}
     >
-      <div className={classes.container}>
-        <div className={classes.logo}>
+      <ModalContainer>
+        <LogoContainer>
           <Image src="/logo.png" layout="fill" />
-        </div>
+        </LogoContainer>
         <Typography variant="h6">{menuItem.name}</Typography>
-        <Typography className={classes.description}>
+        <Typography sx={{ my: 2 }}>
           There was a feature request in my current company, product
           team requested a table component which should order columns in
           ascending or descending way when clicking the column’s title.
@@ -118,10 +107,18 @@ const MenuItemModal = ({ show, onClose, menuItem, ...props }) => {
         </Typography>
 
         <section>
-          <Typography variant="subtitle1" className={classes.sectionName}>What's Included:</Typography>
+          <Typography
+            variant="subtitle1"
+            sx={{
+              fontWeight: 'bold',
+              fontSize: '.95rem',
+            }}
+          >
+          What's Included:
+        </Typography>
           <Typography>3 Course meal</Typography>
         </section>
-      </div>
+      </ModalContainer>
     </Modal>
   )
 }

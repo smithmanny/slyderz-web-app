@@ -3,7 +3,7 @@ import { Link } from "blitz";
 import InputAdornment from "@mui/material/InputAdornment";
 import { EmailOutline, Facebook, Twitter, Instagram } from "mdi-material-ui";
 
-import footerStyles from "./styles";
+import { styled } from "integrations/material-ui";
 
 import Container from "app/core/components/shared/Container";
 import Divider from "app/core/components/shared/Divider";
@@ -13,15 +13,98 @@ import Typography from "app/core/components/shared/Typography";
 import Button from "app/core/components/shared/Button";
 import Form, { TextField }  from "app/core/components/form";
 
+const FooterDiv = styled('div')(({ theme }) => ({
+  backgroundColor: theme.palette.primary.dark,
+  marginTop: theme.spacing(4),
+  padding: theme.spacing(6, 0),
+}))
+
+const Signup = styled('span')(({ theme }) => ({
+  [theme.breakpoints.up("md")]: {
+    flexDirection: 'row'
+  },
+  display: "flex",
+  flexDirection: 'column'
+}))
+
+const SocialContainer = styled('div')(({ theme }) => ({
+  "& span": {
+      marginLeft: "auto",
+    },
+    "& h6": {
+      fontSize: "16px",
+    },
+    alignItems: "center",
+    display: "flex",
+    color: "white",
+    marginTop: theme.spacing(2),
+}))
+
+const SocialList = styled('ul')(({ theme }) => ({
+  "& a": {
+    color: "rgba(255, 255, 255, 0.2)",
+  },
+  "& a:hover": {
+    color: "rgba(255, 255, 255, 0.7)",
+    cursor: "pointer",
+  },
+  "& li": {
+    "& svg": {
+      fontSize: "32px",
+    },
+    marginRight: theme.spacing(3),
+  },
+  display: "flex",
+  listStyle: "none",
+}))
+
+const Table = styled('table')(({ theme }) => ({
+  "& a:hover": {
+      cursor: "pointer",
+      textDecoration: "underline",
+    },
+    "& th": {
+      textTransform: "uppercase",
+      "& h6": {
+        fontSize: "14px",
+      },
+    },
+    "& tr": {
+      display: "flex",
+      fontWeight: 500,
+      marginBottom: theme.spacing(2),
+      justifyContent: "space-between",
+    },
+    color: "white",
+    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(4),
+    width: "100%",
+}))
+
 const Footer = () => {
-  const classes = footerStyles();
   return (
-    <footer className={classes.footer}>
+    <FooterDiv>
       <Container>
-        <Grid container className={classes.container}>
+        <Grid
+          container
+          sx={{
+            flexDirection: {
+              xs: 'row',
+              md: 'row-reverse',
+            }
+          }}
+        >
           <Grid item xs={12} md={6}>
-            <Paper className={classes.newsletterPaper}>
-              <Typography className={classes.text} color="primary" variant="h6">
+            <Paper
+              sx={{
+                ml: {
+                  md: 'auto'
+                },
+                maxWidth: "500px",
+                padding: 3,
+              }}
+            >
+              <Typography sx={{ mb: 3 }} color="primary" variant="h6">
                 We’re cooking up something delicious.
                 <br />
                 Sign up to find out more.
@@ -40,11 +123,14 @@ const Footer = () => {
                 //   }),
                 // }}
               >
-                <span className={classes.signup}>
+                <Signup>
                   <TextField
                     name="email"
                     variant="outlined"
-                    className={classes.emailAddress}
+                    sx={{
+                      flex: 1,
+                      mt: 2,
+                    }}
                     placeholder="Email"
                     InputProps={{
                       startAdornment: (
@@ -56,18 +142,24 @@ const Footer = () => {
                   />
                   <Button
                     color="primary"
-                    className={classes.button}
+                    sx={{
+                      marginTop: {
+                        xs: 2,
+                        md: 0,
+                      },
+                      padding: 2,
+                    }}
                     variant="contained"
                     type="submit"
                   >
                     Find a Chef
                   </Button>
-                </span>
+                </Signup>
               </Form>
             </Paper>
           </Grid>
           <Grid item xs={12} md={6}>
-            <table className={classes.table}>
+            <Table>
               <tbody>
                 <tr>
                   <th>
@@ -134,16 +226,16 @@ const Footer = () => {
                   </td>
                 </tr>
               </tbody>
-            </table>
+            </Table>
           </Grid>
           <Grid item xs={12}>
-            <Divider className={classes.divider} />
+            <Divider sx={{ backgroundColor: "rgba(255, 255, 255, 0.2)" }} />
           </Grid>
           <Grid item xs={12}>
-            <div className={classes.socialContainer}>
+            <SocialContainer>
               <Typography variant="h6">&#169; 2020 Slyderz LLC</Typography>
               <span>
-                <ul className={classes.socialList}>
+                <SocialList>
                   <li>
                     <a href="https://www.facebook.com/slyderz" target="__blank">
                       <Facebook />
@@ -162,13 +254,13 @@ const Footer = () => {
                       <Instagram />
                     </a>
                   </li>
-                </ul>
+                </SocialList>
               </span>
-            </div>
+            </SocialContainer>
           </Grid>
         </Grid>
       </Container>
-    </footer>
+    </FooterDiv>
   );
 };
 

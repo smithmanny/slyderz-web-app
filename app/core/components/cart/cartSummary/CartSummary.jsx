@@ -1,21 +1,28 @@
 import { Link, Routes, useSession } from "blitz"
 
-import cartSummaryContainerStyles from "./styles";
+import { styled } from "integrations/material-ui";
 
 import Button from 'app/core/components/shared/Button'
 import Typography from 'app/core/components/shared/Typography'
 import Form from "app/core/components/form";
 import CartItems from '../cartItems'
 
+const Root = styled('div')({
+  padding: 2
+});
+
+const Content = styled('div')({
+  width: "100%"
+});
+
 const CartSummary = (props) => {
-  const classes = cartSummaryContainerStyles();
   const session = useSession();
   const cartItems = session?.cart?.pendingCartItems;
   const total = session?.cart?.total || 0;
   const { buttonText } = props;
 
   return (
-    <div className={classes.root}>
+    <Root>
       <Form
       >
         {buttonText && (
@@ -23,9 +30,9 @@ const CartSummary = (props) => {
         )}
 
         {cartItems?.length > 0 && (
-          <div className={classes.content}>
+          <Content>
             <CartItems selectedCartItems={cartItems} />
-            <Typography variant="h5" className={classes.total}>Total: ${total}</Typography>
+            <Typography variant="h5" sx={{ my: 4 }}>Total: ${total}</Typography>
             {buttonText && (
               <Link href={Routes.Checkout({ cid: 1 })}>
                 <Button
@@ -37,10 +44,10 @@ const CartSummary = (props) => {
                 </Button>
               </Link>
             )}
-          </div>
+          </Content>
         )}
       </Form>
-    </div>
+    </Root>
   );
 };
 

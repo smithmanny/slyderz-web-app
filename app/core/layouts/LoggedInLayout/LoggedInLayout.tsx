@@ -2,38 +2,49 @@ import { Link, BlitzPage, Routes } from "blitz"
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-
-import styles from './styles';
+import { Global, css } from '@emotion/react'
 
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer"
 import Grid from "app/core/components/shared/Grid"
 import Typography from "app/core/components/shared/Typography"
 import Layout from "app/core/layouts/Layout"
 
-
 const LoggedinLayout: BlitzPage = () => {
-  const classes = styles();
   return (
     <ConsumerContainer>
-      <Grid container>
+      <Global
+        styles={css`
+          .MuiCard-root {
+            background: transparent;
+            box-shadow: none;
+            max-width: 308px;
+          }
+
+          .MuiCardContent-root {
+            padding-top: 8px;
+          }
+        `}
+      />
+      <Grid container spacing={2}>
         <Grid item xs={12} md={4}>
           <Link href={Routes.ChefPage({ cid: 1 })}>
             <a>
-              <Card
-                classes={{
-                  root: classes.card,
-                }}
-              >
+              <Card>
                 <CardMedia
-                  classes={{
-                    root: classes.cardMedia,
-                  }}
                   image="/logo.png"
+                  component="img"
+                  height="140"
                   title="Chef dish"
                 />
                 <CardContent
-                classes={{ root: classes.cardMediaRoot }}
-                className={classes.cardContent}
+                  sx={{
+                    "& .name": {
+                      mt: 1,
+                      mr: 1,
+                      mb: 1,
+                      ml: 0,
+                    },
+                  }}
                 >
                   <Typography variant="button">BBQ • Atlanta</Typography>
                   <div className="name">
@@ -50,21 +61,21 @@ const LoggedinLayout: BlitzPage = () => {
         <Grid item xs={12} md={4}>
           <Link href="/chef/1">
             <a>
-              <Card
-                classes={{
-                  root: classes.card,
-                }}
-              >
+              <Card>
                 <CardMedia
-                  classes={{
-                    root: classes.cardMedia,
-                  }}
                   image="/logo.png"
                   title="Chef dish"
                 />
                 <CardContent
-                classes={{ root: classes.cardMediaRoot }}
-                className={classes.cardContent}
+                  sx={{
+                    paddingLeft: 0,
+                    "& .name": {
+                      mt: 1,
+                      mr: 1,
+                      mb: 1,
+                      ml: 0,
+                    },
+                  }}
                 >
                   <Typography variant="button">BBQ • Atlanta</Typography>
                   <div className="name">
@@ -81,21 +92,21 @@ const LoggedinLayout: BlitzPage = () => {
         <Grid item xs={12} md={4}>
           <Link href="/chef/1">
             <a>
-              <Card
-                classes={{
-                  root: classes.card,
-                }}
-              >
+              <Card>
                 <CardMedia
-                  classes={{
-                    root: classes.cardMedia,
-                  }}
                   image="/logo.png"
                   title="Chef dish"
                 />
                 <CardContent
-                classes={{ root: classes.cardMediaRoot }}
-                className={classes.cardContent}
+                  sx={{
+                    paddingLeft: 0,
+                    "& .name": {
+                      mt: 1,
+                      mr: 1,
+                      mb: 1,
+                      ml: 0,
+                    },
+                  }}
                 >
                   <Typography variant="button">BBQ • Atlanta</Typography>
                   <div className="name">
@@ -112,21 +123,21 @@ const LoggedinLayout: BlitzPage = () => {
         <Grid item xs={12} md={4}>
           <Link href="/chef/1">
             <a>
-              <Card
-                classes={{
-                  root: classes.card,
-                }}
-              >
+              <Card>
                 <CardMedia
-                  classes={{
-                    root: classes.cardMedia,
-                  }}
                   image="/logo.png"
                   title="Chef dish"
                 />
                 <CardContent
-                classes={{ root: classes.cardMediaRoot }}
-                className={classes.cardContent}
+                  sx={{
+                    paddingLeft: 0,
+                    "& .name": {
+                      mt: 1,
+                      mr: 1,
+                      mb: 1,
+                      ml: 0,
+                    },
+                  }}
                 >
                   <Typography variant="button">BBQ • Atlanta</Typography>
                   <div className="name">
@@ -145,6 +156,10 @@ const LoggedinLayout: BlitzPage = () => {
   )
 }
 
-LoggedinLayout.getLayout = (page) => <Layout title="Logged In">{page}</Layout>
+LoggedinLayout.getLayout = (page) => (
+  <Layout title="Logged In">
+    {page}
+  </Layout>
+)
 
 export default LoggedinLayout

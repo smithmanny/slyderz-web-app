@@ -7,7 +7,6 @@ import ListItemText from "@mui/material/ListItemText";
 import PersonIcon from "@mui/icons-material/Person";
 import AddIcon from "@mui/icons-material/Add";
 
-import accountPopoverStyles from "./styles";
 import logoutMutation from 'app/auth/mutations/logout';
 
 import Popover from "app/core/components/shared/Popover";
@@ -22,7 +21,6 @@ const routes = [
 ];
 
 const AccountPopover = ({ ...props }) => {
-  const classes = accountPopoverStyles();
   const [logout] = useMutation(logoutMutation);
 
   return (
@@ -34,12 +32,26 @@ const AccountPopover = ({ ...props }) => {
               <ListItemAvatar>
                 <PersonIcon fontSize="large" />
               </ListItemAvatar>
-              <ListItemText primary={link.name} className={classes.text} />
+              <ListItemText
+                primary={link.name}
+                sx={{
+                  "& span": {
+                  fontWeight: "500"
+                  }
+                }}
+              />
             </ListItem>
           </Link>
         ))}
         <ListItem button onClick={() => logout()}>
-          <ListItemText primary="Sign out" className={classes.text} />
+          <ListItemText
+            primary="Sign out"
+            sx={{
+              "& span": {
+                fontWeight: "500"
+                }
+            }}
+          />
         </ListItem>
       </List>
     </Popover>

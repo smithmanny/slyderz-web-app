@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 
-import MenuStyles from "./styles";
+import { styled } from "integrations/material-ui";
 
 import Card, { CardMedia } from "app/core/components/shared/Card";
 import Button from "app/core/components/shared/Button";
@@ -9,12 +9,31 @@ import Typography from "app/core/components/shared/Typography";
 import MenuItemModal from "app/core/modals/MenuItemModal";
 import React from "react";
 
+const DishDescription = styled('span')({
+  flex: 1
+})
+
+const Content = styled('div')(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  padding: theme.spacing(2),
+  flex: 1,
+}))
+
+const OrderButton = styled('span')({
+  marginLeft: 'auto'
+})
+
+const Flex = styled('span')({
+  display: "flex",
+  justifyContent: "space-between",
+})
+
 const Menu = ({ dishes }) => {
-  const classes = MenuStyles();
   const [menuItem, setMenuItem] = useState(null);
   const [openModal, setModalOpen] = useState(false);
-  
-  const openMenuItemModal = useCallback((_menuItem) => {    
+
+  const openMenuItemModal = useCallback((_menuItem) => {
     setMenuItem(_menuItem)
     setModalOpen(true);
   }, []);
@@ -28,33 +47,70 @@ const Menu = ({ dishes }) => {
   return (
     <Grid container spacing={2}>
       {dishes.map((menuItem) => (
-        <Grid key={menuItem.id} className={classes.item} item xs={12}>
-          <Card className={classes.root} onClick={() => openMenuItemModal(menuItem)}>
+        <Grid key={menuItem.id} sx={{ mb: 2 }} item xs={12}>
+          <Card
+            onClick={() => openMenuItemModal(menuItem)}
+            sx={{
+              flexDirection: {
+                md: 'column'
+              },
+              maxWidth: {
+                md: 350
+              },
+              margin: {
+                md: 'auto'
+              },
+              height: {
+                md: 'auto'
+              },
+              display: 'flex',
+              minHeight: 200
+            }}
+          >
             <CardMedia
-              className={classes.dishPicture}
-              image="/logo.png" 
-              title="Menu Item" 
+              sx={{
+                backgroundSize: "cover",
+                borderRadius: '1, 1, 0, 0',
+                height: {
+                  md: 200
+                },
+                width: {
+                  xs: 200,
+                  md: '100%'
+                },
+                marginBottom: 1,
+              }}
+              image="/logo.png"
+              title="Menu Item"
             />
-            <div className={classes.content}>
-              <span className={classes.flex}>
-                <Typography variant="h6" className={classes.title}>
+            <Content>
+              <Flex>
+                <Typography variant="h6" sx={{ fontWeight: 500 }}>
                   {menuItem.name}
                 </Typography>
 
                 {/* Price */}
-                <Typography className={classes.price}>
+                <Typography
+                  sx={{
+                    "& span": {
+                      color: 'text.secondary',
+                    },
+                    fontWeight: 400,
+                    justifyContent: "flex-end",
+                  }}
+                >
                   {`$${menuItem.price} / `}
                   <span>serving</span>
                 </Typography>
-              </span>
+              </Flex>
 
-              <span className={classes.dishDescription}>
+              <DishDescription>
                 <Typography>
                   {renderDishDescription("There was a feature request in my current company, product team requested a table component which should order columns in ascending or descending way when clicking the column’s title. At the end of this post, you’ll see the working POC. There may be so many things to improve in the aspect of code quality but do not forget, this is just a POC. I’m looking forward to your responses to the code.")}
                 </Typography>
-              </span>
+              </DishDescription>
 
-              <span className={classes.orderButton}>
+              <OrderButton>
                 <Button
                   color="primary"
                   onClick={() => openMenuItemModal(menuItem)}
@@ -62,8 +118,8 @@ const Menu = ({ dishes }) => {
                 >
                   Add to cart
                 </Button>
-              </span>
-            </div>
+              </OrderButton>
+            </Content>
           </Card>
         </Grid>
       ))}

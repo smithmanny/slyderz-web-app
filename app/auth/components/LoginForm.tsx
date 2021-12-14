@@ -1,6 +1,5 @@
 import { Link, useMutation, Routes } from "blitz"
 
-import styles from "app/auth/styles/signupFormStyles"
 import loginMutation from "app/auth/mutations/login"
 import { Login } from "app/auth/validations"
 
@@ -13,11 +12,17 @@ type LoginFormProps = {
 }
 
 export const LoginForm = (props: LoginFormProps) => {
-  const classes = styles();
   const [login] = useMutation(loginMutation)
 
   return (
-    <Paper className={classes.form}>
+    <Paper
+      sx={{
+        padding: 2,
+        textAlign: 'center',
+        margin: 'auto',
+        maxWidth: 550,
+      }}
+    >
       <Typography gutterBottom variant="h1">Login</Typography>
 
       <Form
