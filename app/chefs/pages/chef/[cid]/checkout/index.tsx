@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BlitzPage, Link, getSession, Router, Routes, useMutation } from "blitz";
+import { BlitzPage, Link, Router, Routes, useMutation } from "blitz";
 import { loadStripe } from "@stripe/stripe-js";
 import {
   CardElement,
@@ -7,10 +7,11 @@ import {
   useStripe,
   useElements
 } from "@stripe/react-stripe-js";
-import ArrowBack from '@material-ui/icons/ArrowBack';
+import ArrowBack from '@mui/icons-material/ArrowBack';
+import { Global, css } from '@emotion/react'
 
 import { readableDate, transfromDateToReadableTime } from "app/helpers/dateHelpers"
-import { makeStyles } from "integrations/material-ui";
+import { styled } from "integrations/material-ui";
 
 import createConfirmationNumber from "app/confirmation/mutations/createOrderConfirmationNumber";
 import resetCartItemsMutation from "app/confirmation/mutations/resetCartItemsMutation";
@@ -25,115 +26,6 @@ import Grid from 'app/core/components/shared/Grid';
 import Typography from 'app/core/components/shared/Typography'
 
 const promise = loadStripe("pk_test_GrN77dvsAhUuGliIXge1nUD8");
-const checkoutFormStyles = makeStyles((theme) => ({
-  arrowBackButton: {
-    padding: 0,
-    marginRight: theme.spacing(1),
-  },
-  checkoutHeader: {
-    alignItems: 'center',
-    display: 'flex',
-    marginBottom: theme.spacing(2),
-  },
-  sectionHeader: {
-    marginBottom: theme.spacing(2),
-  },
-  // Stripe checkout form section
-  "&input": {
-    borderRadius: "6px",
-    marginBottom: "6px",
-    padding: "12px",
-    border: "1px solid rgba(50, 50, 93, 0.1)",
-    maxHeight: "44px",
-    fontSize: "16px",
-    width: "100%",
-    background: "white",
-    boxSizing: "border-box"
-  },
-  cardError: {
-    color: "rgb(105, 115, 134)",
-    fontSize: "16px",
-    lineHeight: "20px",
-    marginTop: "12px",
-    textAlign: "center"
-  },
-  cardElement: {
-    borderRadius: "4px 4px 0 0",
-    padding: "12px",
-    border: "1px solid rgba(50, 50, 93, 0.1)",
-    maxHeight: "44px",
-    width: "100%",
-    background: "white",
-    boxSizing: "border-box"
-  },
-  paymentRequestButton: {
-    marginBottom: "32px"
-  },
-  submit: {
-    background: "#5469d4",
-    fontFamily: "Arial, sans-serif",
-    color: "#ffffff",
-    borderRadius: "0 0 4px 4px",
-    border: "0",
-    padding: "12px 16px",
-    fontWeight: 600,
-    cursor: "pointer",
-    transition: "all 0.2s ease",
-    boxShadow: "0px 4px 5.5px 0px rgba(0, 0, 0, 0.07)",
-    width: "100%",
-    "&:disabled": {
-      opacity: 0.5,
-      cursor: "default",
-    },
-  },
-  spinner: {
-    "&:before": {
-      width: "10.4px",
-      height: "20.4px",
-      background: "#5469d4",
-      borderRadius: "20.4px 0 0 20.4px",
-      top: "-0.2px",
-      left: "-0.2px",
-      WebkitTransformOrigin: "10.4px 10.2px",
-      transformOrigin: "10.4px 10.2px",
-      WebkitAnimation: "loading 2s infinite ease 1.5s",
-      animation: "loading 2s infinite ease 1.5s"
-    },
-    "&:after": {
-      width: "10.4px",
-      height: "10.2px",
-      background: "#5469d4",
-      borderRadius: "0 10.2px 10.2px 0",
-      top: "-0.1px",
-      left: "10.2px",
-      WebkitTransformOrigin: "0px 10.2px",
-      transformOrigin: "0px 10.2px",
-      WebkitAnimation: "loading 2s infinite ease",
-      animation: "loading 2s infinite ease"
-    },
-    "&:before &:after": {
-      borderRadius: "50%",
-      position: "absolute",
-      content: '""'
-    },
-    color: "#ffffff",
-    fontSize: "22px",
-    textIndent: "-99999px",
-    margin: "0px auto",
-    position: "relative",
-    width: "20px",
-    height: "20px",
-    boxShadow: "inset 0 0 0 2px",
-    WebkitTransform: "translateZ(0)",
-    msTransform: "translateZ(0)",
-    transform: "translateZ(0)"
-  },
-  "@keyframes loading": {
-    "0%": { WebkitTransform: "rotate(0deg)", transform: "rotate(0deg)" },
-    "100%": { WebkitTransform: "rotate(360deg)", transform: "rotate(360deg)" }
-  },
-}
-));
 
 interface DataType {
   clientSecret: string
@@ -145,8 +37,78 @@ interface EmailBodyType {
   eventTime: string
 }
 
+const CardError = styled('div')({
+  color: "rgb(105, 115, 134)",
+  fontSize: "16px",
+  lineHeight: "20px",
+  marginTop: "12px",
+  textAlign: "center"
+});
+
+const StripeCardElement = styled(CardElement)({
+  borderRadius: "4px 4px 0 0",
+  padding: "12px",
+  border: "1px solid rgba(50, 50, 93, 0.1)",
+  maxHeight: "44px",
+  width: "100%",
+  background: "white",
+  boxSizing: "border-box"
+});
+
+const Section = styled('div')(({ theme }) => ({
+  alignItems: 'center',
+  display: 'flex',
+  marginBottom: theme.spacing(2),
+}));
+
+const Spinner = styled('div')({
+  "&:before": {
+    width: "10.4px",
+    height: "20.4px",
+    background: "#5469d4",
+    borderRadius: "20.4px 0 0 20.4px",
+    top: "-0.2px",
+    left: "-0.2px",
+    WebkitTransformOrigin: "10.4px 10.2px",
+    transformOrigin: "10.4px 10.2px",
+    WebkitAnimation: "loading 2s infinite ease 1.5s",
+    animation: "loading 2s infinite ease 1.5s"
+  },
+  "&:after": {
+    width: "10.4px",
+    height: "10.2px",
+    background: "#5469d4",
+    borderRadius: "0 10.2px 10.2px 0",
+    top: "-0.1px",
+    left: "10.2px",
+    WebkitTransformOrigin: "0px 10.2px",
+    transformOrigin: "0px 10.2px",
+    WebkitAnimation: "loading 2s infinite ease",
+    animation: "loading 2s infinite ease"
+  },
+  "&:before &:after": {
+    borderRadius: "50%",
+    position: "absolute",
+    content: '""'
+  },
+  color: "#ffffff",
+  fontSize: "22px",
+  textIndent: "-99999px",
+  margin: "0px auto",
+  position: "relative",
+  width: "20px",
+  height: "20px",
+  boxShadow: "inset 0 0 0 2px",
+  WebkitTransform: "translateZ(0)",
+  msTransform: "translateZ(0)",
+  transform: "translateZ(0)",
+  "@keyframes loading": {
+    "0%": { WebkitTransform: "rotate(0deg)", transform: "rotate(0deg)" },
+    "100%": { WebkitTransform: "rotate(360deg)", transform: "rotate(360deg)" }
+  },
+});
+
 const Checkout: BlitzPage | any = ({ cartItems, ...props }) => {
-  const classes = checkoutFormStyles();
   const [succeeded, setSucceeded] = useState(false);
   const [error, setError]: any | String = useState(null);
   const [processing, setProcessing] = useState(false);
@@ -281,17 +243,20 @@ const Checkout: BlitzPage | any = ({ cartItems, ...props }) => {
 
   const renderLeftContainer = () => (
     <React.Fragment>
-      <section className={classes.checkoutHeader}>
+      <Section>
         <Link href="/chef/1">
           <Button
             component="a"
             type="icon"
-            className={classes.arrowBackButton}
+            sx={{
+              padding: 0,
+              mr: 1,
+            }}
           >
             <ArrowBack />
           </Button>
         </Link>
-      </section>
+      </Section>
       <Form
         initialValues={{
           eventDate: new Date(),
@@ -301,7 +266,7 @@ const Checkout: BlitzPage | any = ({ cartItems, ...props }) => {
       >
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Typography className={classes.sectionHeader} variant="h5">Your reservation</Typography>
+            <Typography sx={{ mb: 2 }} variant="h5">Your reservation</Typography>
             <Typography variant="subtitle1">Date</Typography>
             <DatePicker
               name="eventDate"
@@ -320,15 +285,31 @@ const Checkout: BlitzPage | any = ({ cartItems, ...props }) => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography className={classes.sectionHeader} variant="h5">Payment Info</Typography>
-              <CardElement className={classes.cardElement} options={cardStyle} onChange={handleChange} />
+            <Typography sx={{ mb: 2 }} variant="h5">Payment Info</Typography>
+              <StripeCardElement options={cardStyle} onChange={handleChange} />
               <Button
                 disabled={processing || disabled || succeeded}
-                className={classes.submit}
+                sx={{
+                  background: "#5469d4",
+                  fontFamily: "Arial, sans-serif",
+                  color: "#ffffff",
+                  borderRadius: "0 0 4px 4px",
+                  border: "0",
+                  padding: "12px 16px",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  transition: "all 0.2s ease",
+                  boxShadow: "0px 4px 5.5px 0px rgba(0, 0, 0, 0.07)",
+                  width: "100%",
+                  "&:disabled": {
+                    opacity: 0.5,
+                    cursor: "default",
+                  },
+                }}
               >
                 <span>
                   {processing ? (
-                    <div className={classes.spinner} id="spinner"></div>
+                    <Spinner id="spinner"></Spinner>
                   ) : (
                     "Pay now"
                   )}
@@ -336,9 +317,9 @@ const Checkout: BlitzPage | any = ({ cartItems, ...props }) => {
               </Button>
               {/* Show any error that happens when processing the payment */}
               {error && (
-                <div className={classes.cardError} role="alert">
+                <CardError role="alert">
                   {error}
-                </div>
+                </CardError>
               )}
           </Grid>
         </Grid>
@@ -347,6 +328,21 @@ const Checkout: BlitzPage | any = ({ cartItems, ...props }) => {
   )
   return (
     <React.Fragment>
+      <Global
+        styles={css`
+          input {
+            border-radius: 6px;
+            margin-bottom: 6px;
+            padding: 12px;
+            border: 1px solid rgba(50, 50, 93, 0.1);
+            max-height: 44px;
+            font-size: 16px;
+            width: 100%;
+            background: white;
+            box-sizing: border-box;
+          }
+        `}
+      />
       <ConsumerContainer>
         <Grid container spacing={4}>
           {/* Left side */}

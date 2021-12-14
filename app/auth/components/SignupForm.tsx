@@ -1,6 +1,5 @@
 import { useMutation } from "blitz"
 
-import styles from "app/auth/styles/signupFormStyles"
 import signupMutation from "app/auth/mutations/signup"
 import { Signup } from "app/auth/validations"
 
@@ -14,11 +13,17 @@ type SignupFormProps = {
 }
 
 export const SignupForm = (props: SignupFormProps) => {
-  const classes = styles();
   const [signup] = useMutation(signupMutation)
 
   return (
-    <Paper className={classes.form}>
+    <Paper
+      sx={{
+        padding: 2,
+        textAlign: 'center',
+        margin: 'auto',
+        maxWidth: 550,
+      }}
+    >
       <Typography gutterBottom variant="h1" align="center">Create an Account</Typography>
 
       <Form

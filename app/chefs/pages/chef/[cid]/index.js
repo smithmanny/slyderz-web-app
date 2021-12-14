@@ -1,7 +1,5 @@
 import { useRouter } from "blitz"
 
-import styles from 'app/chefs/styles/chefPageStyles'
-
 import Avatar from "app/core/components/shared/Avatar"
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer"
 import Menu from "app/chefs/components/menu"
@@ -12,7 +10,6 @@ import Layout from "app/core/layouts/Layout"
 import CartSummary from 'app/core/components/cart/cartSummary'
 
 export const ChefPage = (props) => {
-  const classes = styles();
   const router = useRouter();
   const { cid } = router.query;
   // const { loading, error, data } = useQuery(FETCH_ALL_DISHES);
@@ -53,26 +50,97 @@ export const ChefPage = (props) => {
 
   return (
     <ConsumerContainer>
-      <Paper className={classes.chefIntro}>
+      <Paper
+        sx={{
+          backgroundColor: {
+            md: 'transparent'
+          },
+          border: {
+            md: 'none'
+          },
+          boxShadow: {
+            md: 'none'
+          },
+          padding: {
+            md: 0
+          },
+          height: "100%",
+          textAlign: "center",
+          padding: 2,
+          position: "relative",
+        }}
+      >
         <Grid container>
-          <Grid className={classes.chefAvatarContainer} item xs={12} md={1}>
+          <Grid
+           item
+           xs={12}
+           md={1}
+           sx={{
+            height: {
+              md: 'auto'
+            },
+            mr: {
+              md: 1
+            },
+            height: 8,
+           }}
+          >
             <Avatar
               alt="Remy Sharp"
-              className={classes.chefAvatar}
+              sx={{
+                height: 10,
+                position: {
+                  xs: "absolute",
+                  md: "relative"
+                },
+                top: {
+                  xs: 0,
+                  md: 'auto'
+                },
+                transform: {
+                  xs: "translate(-50%, -50%)",
+                  md: "inherit"
+                },
+                left: {
+                  xs: "50%",
+                  md: "auto"
+                },
+                width: 10,
+              }}
               src="/logo.png"
             />
           </Grid>
           <Grid item xs={12} md={7}>
-            <Typography className={classes.chefName} variant="h1">
+            <Typography sx={{ mt: { md: 0 }, textAlign: { md: 'left' } }} variant="h1">
               Shakhor Smith
             </Typography>
-            <span className={classes.chefRating}>
+            <span
+              sx={{
+                alignItems: "center",
+                display: "flex",
+                justifyContent: {
+                  xs: "center",
+                  md: "flex-start"
+                },
+                my: 1
+              }}
+            >
               {/* <StarRateIcon color="primary" /> */}
               <Typography variant="body1" className="city">
                 4.9 (50 reviews)
               </Typography>
             </span>
-            <Typography variant="body1" className={classes.description}>
+            <Typography
+              variant="body1"
+              sx={{
+                fontSize: "1rem",
+                fontWeight: 475,
+                textAlign: {
+                  xs: "center",
+                  md: "left"
+                },
+              }}
+            >
               There was a feature request in my current company, product
               team requested a table component which should order columns in
               ascending or descending way when clicking the column’s title.
@@ -82,13 +150,24 @@ export const ChefPage = (props) => {
               responses to the code.
             </Typography>
 
-            <Typography variant="body1" className={classes.state}>
+            <Typography
+              variant="body1"
+              sx={{
+                textTransform: "uppercase",
+                marginTop: 3,
+                textAlign: {
+                  xs: "center",
+                  md: "left"
+                },
+                fontWeight: 475,
+              }}
+            >
               Atlanta, GA
             </Typography>
           </Grid>
         </Grid>
       </Paper>
-      <Grid container className={classes.mainContent} spacing={2}>
+      <Grid container sx={{ mt: 6, flexDirection: "row-reverse" }} spacing={2}>
         <Grid item xs={12} md={5}>
           <Paper>
             <CartSummary buttonText="Checkout" />

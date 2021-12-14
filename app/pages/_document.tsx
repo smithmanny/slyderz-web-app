@@ -9,7 +9,7 @@ import {
 } from 'blitz';
 
 import React from "react";
-import { ServerStyleSheets } from "@material-ui/core/styles";
+import ServerStyleSheets from '@mui/styles/ServerStyleSheets';
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {

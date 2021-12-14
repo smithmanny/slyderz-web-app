@@ -1,4 +1,4 @@
-import { default as PopoverMUI } from "@material-ui/core/Popover";
+import { default as PopoverMUI } from "@mui/material/Popover";
 import PropTypes from "prop-types";
 
 const Popover = ({ anchorEl, children, handleClose, name, ...props }) => {

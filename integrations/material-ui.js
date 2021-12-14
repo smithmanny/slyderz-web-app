@@ -1,17 +1,10 @@
-import { createTheme, responsiveFontSizes } from "@material-ui/core/styles";
-import red from "@material-ui/core/colors/red";
+import { createTheme, responsiveFontSizes } from '@mui/material/styles';
+import { red } from '@mui/material/colors';
 
-export { makeStyles } from "@material-ui/core/styles";
+export { makeStyles } from "@mui/styles/makeStyles";
+export { styled } from "@mui/system";
 
 const MuiTheme = createTheme({
-  props: {
-    MuiTextField: {
-      margin: 'normal',
-    },
-    MuiFormControl: {
-      margin: 'normal',
-    },
-  },
   palette: {
     primary: {
       main: "#E54E44",
@@ -31,11 +24,11 @@ const MuiTheme = createTheme({
   typography: {
     fontSize: 14,
     h1: {
-      fontSize: "50px",
+      fontSize: 50,
       fontWeight: 500,
     },
     h2: {
-      fontSize: "40px",
+      fontSize: 40,
       fontWeight: 500,
     },
   },

@@ -2,26 +2,12 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Button from 'app/core/components/shared/Button'
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-
-import { makeStyles } from 'integrations/material-ui'
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    position: 'absolute',
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
-}));
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
 
 const Modal = ({ actions, children, size, title, show, closeModal }) => {
-  const classes = useStyles();
   return (
     <Dialog
       open={show}

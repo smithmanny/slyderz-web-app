@@ -1,4 +1,4 @@
-export { default } from "@material-ui/core/Card"
-export { default as CardActions } from "@material-ui/core/CardActions"
-export { default as CardContent } from "@material-ui/core/CardContent"
-export { default as CardMedia } from "@material-ui/core/CardMedia"
+export { default } from "@mui/material/Card"
+export { default as CardActions } from "@mui/material/CardActions"
+export { default as CardContent } from "@mui/material/CardContent"
+export { default as CardMedia } from "@mui/material/CardMedia"
