@@ -1,0 +1,16 @@
+query {
+  chefs {
+    id
+    avatar
+    firstName
+    lastName
+    city
+    state
+    dishes {
+      dishImage
+      dishName
+      dishType
+      pricePerPerson
+    }
+  }
+}

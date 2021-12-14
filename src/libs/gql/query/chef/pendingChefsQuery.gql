@@ -1,0 +1,9 @@
+query {
+  pendingChefs {
+    __typename
+    id
+    firstName
+    city
+    state
+  }
+}
