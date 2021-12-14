@@ -1,0 +1,18 @@
+query chef($id: ID!) {
+  chef(id: $id) {
+    __typename
+    id
+    firstName
+    lastName
+    city
+    state
+    dishes {
+      id
+      dishName
+      dishImage
+      dishType
+      dishSummary
+      pricePerPerson
+    }
+  }
+}

@@ -1,7 +1,4 @@
-.gitkeep
-.env*
-*.ico
-*.lock
-db/migrations
+package-lock.json
 .next
-.blitz
+node_modules/
+/out

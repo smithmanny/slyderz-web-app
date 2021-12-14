@@ -1,0 +1,5 @@
+mutation bookChef($eventDate: DateTime!, $eventTime: DateTime!, $chef: ID!, $dishes: [ID]!) {
+  bookChef(eventDate: $eventDate, eventTime: $eventTime, chef: $chef, dishes: $dishes) {
+    message
+  }
+}

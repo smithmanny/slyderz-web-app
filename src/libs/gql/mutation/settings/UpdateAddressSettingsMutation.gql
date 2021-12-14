@@ -1,0 +1,11 @@
+mutation UpdateUserAddress($address1: String!, $address2: String, $city: String!, $state: String!, $postalCode: Int!) {
+  updateAddressSettings(address1: $address1, address2: $address2, city: $city, state: $state, postalCode: $postalCode) {
+    __typename
+    id
+    city
+    state
+    address1
+    address2
+    postalCode
+  }
+}

@@ -1,0 +1,22 @@
+query currentUser {
+  me {
+    __typename
+    id
+    email
+    firstName
+    lastName
+    address1
+    address2
+    city
+    state
+    permissions
+    postalCode
+    chef {
+      __typename
+      id
+      isChef
+      city
+      state
+    }
+  }
+}
