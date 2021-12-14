@@ -1,9 +1,0 @@
-mutation UpdatePersonalInfoSettings($email: String, $firstName: String, $lastName: String) {
-  updatePersonalInfoSettings(email: $email, firstName: $firstName, lastName: $lastName) {
-    __typename
-    id
-    email
-    firstName
-    lastName
-  }
-}
