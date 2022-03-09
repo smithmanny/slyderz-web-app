@@ -1,6 +1,7 @@
 import { Link, Routes, useSession } from "blitz"
 
 import { styled } from "integrations/material-ui";
+import { formatNumberToCurrency } from "app/helpers"
 
 import Button from 'app/core/components/shared/Button'
 import Typography from 'app/core/components/shared/Typography'
@@ -20,7 +21,6 @@ const CartSummary = (props) => {
   const cartItems = session?.cart?.pendingCartItems;
   const total = session?.cart?.total || 0;
   const { buttonText } = props;
-
   return (
     <Root>
       <Form
@@ -32,7 +32,7 @@ const CartSummary = (props) => {
         {cartItems?.length > 0 && (
           <Content>
             <CartItems selectedCartItems={cartItems} />
-            <Typography variant="h5" sx={{ my: 4 }}>Total: ${total}</Typography>
+            <Typography variant="h6" sx={{ my: 4 }}>Total: {formatNumberToCurrency(total)}</Typography>
             {buttonText && (
               <Link href={Routes.Checkout({ cid: 1 })}>
                 <Button

@@ -4,7 +4,7 @@ import loginMutation from "app/auth/mutations/login"
 import { Login } from "app/auth/validations"
 
 import Typography from "app/core/components/shared/Typography"
-import Paper from "app/core/components/shared/Paper"
+import Box from "app/core/components/shared/Box"
 import Form, { TextField } from "app/core/components/form"
 
 type LoginFormProps = {
@@ -15,7 +15,7 @@ export const LoginForm = (props: LoginFormProps) => {
   const [login] = useMutation(loginMutation)
 
   return (
-    <Paper
+    <Box
       sx={{
         padding: 2,
         textAlign: 'center',
@@ -23,7 +23,7 @@ export const LoginForm = (props: LoginFormProps) => {
         maxWidth: 550,
       }}
     >
-      <Typography gutterBottom variant="h1">Login</Typography>
+      <Typography gutterBottom variant="h4">Login</Typography>
 
       <Form
         submitText="Login"
@@ -51,7 +51,7 @@ export const LoginForm = (props: LoginFormProps) => {
       <div style={{ marginTop: "1rem" }}>
         Or <Link href={Routes.SignupPage()}>Sign Up</Link>
       </div>
-    </Paper>
+    </Box>
   )
 }
 

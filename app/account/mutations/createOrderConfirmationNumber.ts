@@ -32,6 +32,7 @@ export default resolver.pipe(
       if (!confirmationNumber) {
         throw new Error('Order number was not created.')
       }
+
       return confirmationNumber;
     })
 

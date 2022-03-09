@@ -13,6 +13,12 @@ generator client {
 
 // --------------------------------------
 
+enum RoleType {
+  ADMIN
+  CHEF
+  USER
+}
+
 model User {
   id             Int      @id @default(autoincrement())
   createdAt      DateTime @default(now())
@@ -21,7 +27,8 @@ model User {
   lastName       String
   email          String   @unique
   hashedPassword String?
-  role           String   @default("USER")
+  stripeCustomerId String
+  role           RoleType   @default(USER)
 
   tokens   Token[]
   sessions Session[]

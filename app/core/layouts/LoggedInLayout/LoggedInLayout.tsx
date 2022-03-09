@@ -1,9 +1,7 @@
 import { Link, BlitzPage, Routes } from "blitz"
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import { Global, css } from '@emotion/react'
 
+import Card, { CardContent, CardMedia } from "app/core/components/shared/Card"
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer"
 import Grid from "app/core/components/shared/Grid"
 import Typography from "app/core/components/shared/Typography"

@@ -12,6 +12,9 @@ const MuiTheme = createTheme({
     secondary: {
       main: "#14A3A5",
     },
+    white: {
+      main: "#FFF",
+    },
     error: red,
     // Used by `getContrastText()` to maximize the contrast between the background and
     // the text.
@@ -32,5 +35,15 @@ const MuiTheme = createTheme({
       fontWeight: 500,
     },
   },
+  // components: {
+  //   MuiAvatar: {
+  //     styleOverrides: {
+  //       img: {
+  //         objectFit: "cover",
+  //         objectPosition: "top center"
+  //       }
+  //     }
+  //   }
+  // }
 });
 export const theme = responsiveFontSizes(MuiTheme);

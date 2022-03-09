@@ -84,13 +84,8 @@ export const addDishToCart = (orderChef, selectedCartItem) => async (
   if (chef === null) {
     dispatch(addChef(orderChef));
   }
-  // Update dishes in cart
-  // if (dishIds.includes(selectedCartItem.id)) {
-  //   await dispatch(increaseDishQuantity(selectedCartItem));
-  // } else {
-    // Add dishes to cart
-    await dispatch(addDish(selectedCartItem));
-  // }
+
+  await dispatch(addDish(selectedCartItem));
 };
 
 export const increaseQuantity = (selectedCartItem) => async (dispatch) => {

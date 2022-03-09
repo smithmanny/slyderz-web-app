@@ -1,10 +1,16 @@
+import { styled } from "integrations/material-ui"
+
 import Container from './Container'
+
+const SlyderzContainer = styled(Container)(({ theme }) => ({
+  padding: theme.spacing(0),
+}))
 
 const ConsumerContainer = ({ children, ...props }) => {
   return (
-    <Container {...props} sx={{ padding: 4 }}>
+    <SlyderzContainer {...props}>
       {children}
-    </Container>
+    </SlyderzContainer>
   )
 }
 

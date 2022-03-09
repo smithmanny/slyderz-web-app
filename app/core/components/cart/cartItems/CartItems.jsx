@@ -50,7 +50,7 @@ const CartItems = ({ selectedCartItems }) => {
             >
               +
             </Button>
-            <Typography variant="h6">x{item.quantity}</Typography>
+            <Typography>x{item.quantity}</Typography>
           </QuantityContainer>
         </Grid>
         <Grid item xs>

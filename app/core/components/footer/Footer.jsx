@@ -131,6 +131,7 @@ const Footer = () => {
                       flex: 1,
                       mt: 2,
                     }}
+                    label="email"
                     placeholder="Email"
                     InputProps={{
                       startAdornment: (

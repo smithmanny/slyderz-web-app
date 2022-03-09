@@ -8,7 +8,7 @@ import {
   ErrorFallbackProps,
   useQueryErrorResetBoundary,
 } from "blitz";
-import { ThemeProvider, Theme, StyledEngineProvider } from "@mui/material/styles";
+import { ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Provider } from "react-redux";
 
@@ -25,7 +25,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <Provider store={store}>
         <StyledEngineProvider injectFirst>
           <ThemeProvider theme={theme}>
-          <CssBaseline />
+            <CssBaseline />
             <ErrorBoundary
               FallbackComponent={RootErrorFallback}
               onReset={useQueryErrorResetBoundary().reset}

@@ -1,24 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { BlitzPage, Link, Router, Routes, useMutation } from "blitz";
+import { getAntiCSRFToken, BlitzPage, Link, Router, Routes, useMutation, getSession } from "blitz";
 import { loadStripe } from "@stripe/stripe-js";
 import {
-  CardElement,
+  PaymentElement,
   Elements,
   useStripe,
   useElements
 } from "@stripe/react-stripe-js";
 import ArrowBack from '@mui/icons-material/ArrowBack';
-import { Global, css } from '@emotion/react'
 
 import { readableDate, transfromDateToReadableTime } from "app/helpers/dateHelpers"
 import { styled } from "integrations/material-ui";
 
-import createConfirmationNumber from "app/confirmation/mutations/createOrderConfirmationNumber";
-import resetCartItemsMutation from "app/confirmation/mutations/resetCartItemsMutation";
+import createConfirmationNumber from "app/account/mutations/createOrderConfirmationNumber";
+import resetCartItemsMutation from "app/account/mutations/resetCartItemsMutation";
 
 import Form, { DatePicker, Select } from 'app/core/components/form';
+import Alert from 'app/core/components/shared/Alert';
 import Button from "app/core/components/shared/Button"
-import Paper from "app/core/components/shared/Paper"
 import Layout from "app/core/layouts/Layout";
 import CartSummary from 'app/core/components/cart/cartSummary'
 import ConsumerContainer from 'app/core/components/shared/ConsumerContainer';
@@ -36,24 +35,6 @@ interface EmailBodyType {
   eventDate: string
   eventTime: string
 }
-
-const CardError = styled('div')({
-  color: "rgb(105, 115, 134)",
-  fontSize: "16px",
-  lineHeight: "20px",
-  marginTop: "12px",
-  textAlign: "center"
-});
-
-const StripeCardElement = styled(CardElement)({
-  borderRadius: "4px 4px 0 0",
-  padding: "12px",
-  border: "1px solid rgba(50, 50, 93, 0.1)",
-  maxHeight: "44px",
-  width: "100%",
-  background: "white",
-  boxSizing: "border-box"
-});
 
 const Section = styled('div')(({ theme }) => ({
   alignItems: 'center',
@@ -108,38 +89,20 @@ const Spinner = styled('div')({
   },
 });
 
-const Checkout: BlitzPage | any = ({ cartItems, ...props }) => {
-  const [succeeded, setSucceeded] = useState(false);
-  const [error, setError]: any | String = useState(null);
-  const [processing, setProcessing] = useState(false);
-  const [disabled, setDisabled] = useState(true);
-  const [clientSecret, setClientSecret] = useState('');
-  const stripe = useStripe();
-  const elements = useElements();
-  const [resetCartItems] = useMutation(resetCartItemsMutation);
-  const [createConfirmationNumberMutation] = useMutation(createConfirmationNumber, {
+const CheckoutPage = () => {
+    const stripe = useStripe();
+    const elements = useElements();
+    const [error, setError]: any | String = useState(null);
+    const [processing, setProcessing] = useState(false);
+    const [succeeded, setSucceeded] = useState(false);
+
+    const [resetCartItems] = useMutation(resetCartItemsMutation);
+    const [createConfirmationNumberMutation] = useMutation(createConfirmationNumber, {
     onSuccess: resetCartItems,
     onError: () => {
       setSucceeded(false)
     }
   })
-  const cardStyle = {
-    style: {
-      base: {
-        color: "#32325d",
-        fontFamily: 'Arial, sans-serif',
-        fontSmoothing: "antialiased",
-        fontSize: "16px",
-        "::placeholder": {
-          color: "#32325d"
-        }
-      },
-      invalid: {
-        color: "#fa755a",
-        iconColor: "#fa755a"
-      }
-    }
-  };
 
   function sendOrderRequestEmail(emailData: EmailBodyType) {
     const orderRequestData = {
@@ -160,38 +123,6 @@ const Checkout: BlitzPage | any = ({ cartItems, ...props }) => {
     });
   }
 
-  useEffect(() => {
-    // Create PaymentIntent as soon as the page loads
-    async function createStripePaymentIntent() {
-      let data: DataType | null = null;
-
-      try {
-        const res = await fetch("/api/stripe-payment-intent", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ items: cartItems })
-        });
-        data = await res.json();
-      } catch (err) {
-        console.error(err)
-      } finally {
-        if (data) {
-          setClientSecret(data.clientSecret);
-        }
-      }
-    }
-
-    createStripePaymentIntent();
-  }, [cartItems]);
-
-  const handleChange = async (event) => {
-    // Listen for changes in the CardElement
-    // and display any errors as the customer types their card details
-    setDisabled(event.empty);
-    setError(event.error ? event.error.message : "");
-  };
   const handleSubmit = async (values) => {
     const { eventDate } = values
 
@@ -200,14 +131,17 @@ const Checkout: BlitzPage | any = ({ cartItems, ...props }) => {
     };
 
     setProcessing(true);
-    const payload = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        type: 'card',
-        card: elements.getElement(CardElement)
-      }
+
+    const { error } = await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        // Make sure to change this to your payment completion page
+        return_url: "http://localhost:3000/account/order",
+      },
     });
-    if (payload.error) {
-      setError(`Payment failed ${payload.error.message}`);
+
+    if (error) {
+      setError(error.message);
       setProcessing(false);
     } else {
       setError(null);
@@ -230,6 +164,7 @@ const Checkout: BlitzPage | any = ({ cartItems, ...props }) => {
       }
     }
   };
+
   const timesMockup = [
     {
       key: transfromDateToReadableTime(new Date()),
@@ -286,9 +221,10 @@ const Checkout: BlitzPage | any = ({ cartItems, ...props }) => {
           </Grid>
           <Grid item xs={12}>
             <Typography sx={{ mb: 2 }} variant="h5">Payment Info</Typography>
-              <StripeCardElement options={cardStyle} onChange={handleChange} />
+              <PaymentElement id="payment-element" />
               <Button
-                disabled={processing || disabled || succeeded}
+                disabled={processing || succeeded}
+                type="submit"
                 sx={{
                   background: "#5469d4",
                   fontFamily: "Arial, sans-serif",
@@ -300,6 +236,7 @@ const Checkout: BlitzPage | any = ({ cartItems, ...props }) => {
                   cursor: "pointer",
                   transition: "all 0.2s ease",
                   boxShadow: "0px 4px 5.5px 0px rgba(0, 0, 0, 0.07)",
+                  mt: 2,
                   width: "100%",
                   "&:disabled": {
                     opacity: 0.5,
@@ -317,9 +254,7 @@ const Checkout: BlitzPage | any = ({ cartItems, ...props }) => {
               </Button>
               {/* Show any error that happens when processing the payment */}
               {error && (
-                <CardError role="alert">
-                  {error}
-                </CardError>
+                <Alert onClose={() => setError(null)} />
               )}
           </Grid>
         </Grid>
@@ -327,46 +262,101 @@ const Checkout: BlitzPage | any = ({ cartItems, ...props }) => {
     </React.Fragment>
   )
   return (
-    <React.Fragment>
-      <Global
-        styles={css`
-          input {
-            border-radius: 6px;
-            margin-bottom: 6px;
-            padding: 12px;
-            border: 1px solid rgba(50, 50, 93, 0.1);
-            max-height: 44px;
-            font-size: 16px;
-            width: 100%;
-            background: white;
-            box-sizing: border-box;
-          }
-        `}
-      />
-      <ConsumerContainer>
-        <Grid container spacing={4}>
-          {/* Left side */}
-          <Grid item xs={12} md={6}>
-            {renderLeftContainer()}
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Paper variant="outlined">
-              <CartSummary />
-            </Paper>
-          </Grid>
-        </Grid>
-      </ConsumerContainer>
-    </React.Fragment>
+    <Grid container spacing={4}>
+      {/* Left side */}
+      <Grid item xs={12} md={6}>
+        {renderLeftContainer()}
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <CartSummary />
+      </Grid>
+    </Grid>
+  )
+}
+
+export async function getServerSideProps({ req, res }) {
+  const session = await getSession(req, res)
+
+  if (!session.userId) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false
+      }
+    }
+  }
+
+  if (!session.cart?.pendingCartItems) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props: {
+      cartItems: session.cart.pendingCartItems
+    },
+  }
+}
+
+const Checkout: BlitzPage = (props: any) => {
+  const antiCSRFToken = getAntiCSRFToken();
+  const [clientSecret, setClientSecret] = useState('');
+  const cartItems = props.cartItems;
+
+  useEffect(() => {
+    // Create PaymentIntent as soon as the page loads
+    async function createStripePaymentIntent() {
+      let data: DataType | null = null;
+
+      try {
+        const res = await fetch("/api/stripe-payment-intent", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "anti-csrf": antiCSRFToken,
+          },
+          body: JSON.stringify({ items: cartItems })
+        });
+        data = await res.json();
+      } catch (err) {
+        console.error(err)
+      } finally {
+        if (data) {
+          setClientSecret(data.clientSecret);
+        }
+      }
+    }
+
+    createStripePaymentIntent();
+  }, [cartItems]);
+
+  const appearance = {
+    theme: 'stripe',
+  };
+  const options = {
+    clientSecret,
+    appearance,
+  };
+  return (
+    <ConsumerContainer>
+      {clientSecret && (
+        <Elements options={options} stripe={promise}>
+          <CheckoutPage />
+        </Elements>
+      )}
+    </ConsumerContainer>
   )
 }
 
 Checkout.authenticate = { redirectTo: Routes.LoginPage() }
 Checkout.getLayout = (page) => (
-  <Elements stripe={promise}>
-    <Layout>
-      {page}
-    </Layout>
-  </Elements>
+  <Layout>
+    {page}
+  </Layout>
 )
 
 export default Checkout;

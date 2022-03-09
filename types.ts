@@ -12,7 +12,7 @@ export interface CartItem {
   quantity: number,
 }
 interface Cart {
-  pendingCartItems: Array<CartItem> | Array<[]>,
+  pendingCartItems: Array<CartItem> | [],
   total: number,
 }
 
@@ -23,6 +23,7 @@ declare module "blitz" {
   export interface Session {
     isAuthorized: SimpleRolesIsAuthorized<Role>
     PublicData: {
+      stripeCustomerId: string,
       userId: User["id"]
       role: Role,
       cart: Cart,

@@ -10,6 +10,7 @@ import {
 
 import React from "react";
 import ServerStyleSheets from '@mui/styles/ServerStyleSheets';
+import GlobalStyles from '@mui/material/GlobalStyles';
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -51,6 +52,13 @@ class MyDocument extends Document {
         <body>
           <Main />
           <BlitzScript />
+          <GlobalStyles
+            styles={{
+              a: {
+                textDecoration: 'none'
+              }
+            }}
+          />
           <style jsx global>{`
             /* Other global styles such as 'html, body' etc... */
             body {

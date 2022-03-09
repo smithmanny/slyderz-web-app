@@ -5,7 +5,7 @@ import { Signup } from "app/auth/validations"
 
 import Form, { TextField } from "app/core/components/form"
 import Grid from "app/core/components/shared/Grid"
-import Paper from "app/core/components/shared/Paper"
+import Box from "app/core/components/shared/Box"
 import Typography from "app/core/components/shared/Typography"
 
 type SignupFormProps = {
@@ -16,7 +16,7 @@ export const SignupForm = (props: SignupFormProps) => {
   const [signup] = useMutation(signupMutation)
 
   return (
-    <Paper
+    <Box
       sx={{
         padding: 2,
         textAlign: 'center',
@@ -24,7 +24,7 @@ export const SignupForm = (props: SignupFormProps) => {
         maxWidth: 550,
       }}
     >
-      <Typography gutterBottom variant="h1" align="center">Create an Account</Typography>
+      <Typography gutterBottom variant="h4" align="center">Create an Account</Typography>
 
       <Form
         submitText="Create Account"
@@ -50,7 +50,7 @@ export const SignupForm = (props: SignupFormProps) => {
         <TextField label="Email" name="email" required={true} />
         <TextField label="Password" name="password" required={true} type="password" />
       </Form>
-    </Paper>
+    </Box>
   )
 }
 
