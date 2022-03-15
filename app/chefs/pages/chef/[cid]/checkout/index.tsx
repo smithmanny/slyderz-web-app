@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { getAntiCSRFToken, BlitzPage, Link, Router, Routes, useMutation, getSession } from "blitz";
+import React, { useEffect, useState, useRef } from 'react';
+import { getAntiCSRFToken, BlitzPage, Link, Routes, getSession } from "blitz";
 import { loadStripe } from "@stripe/stripe-js";
 import {
   PaymentElement,
@@ -9,11 +9,9 @@ import {
 } from "@stripe/react-stripe-js";
 import ArrowBack from '@mui/icons-material/ArrowBack';
 
-import { readableDate, transfromDateToReadableTime } from "app/helpers/dateHelpers"
+import { transfromDateToReadableTime } from "app/helpers/dateHelpers"
 import { styled } from "integrations/material-ui";
-
-import createConfirmationNumber from "app/account/mutations/createOrderConfirmationNumber";
-import resetCartItemsMutation from "app/account/mutations/resetCartItemsMutation";
+import { CartItem } from 'types'
 
 import Form, { DatePicker, Select } from 'app/core/components/form';
 import Alert from 'app/core/components/shared/Alert';
@@ -28,12 +26,7 @@ const promise = loadStripe("pk_test_GrN77dvsAhUuGliIXge1nUD8");
 
 interface DataType {
   clientSecret: string
-}
-
-interface EmailBodyType {
-  confirmationNumber: string
-  eventDate: string
-  eventTime: string
+  id: Number
 }
 
 const Section = styled('div')(({ theme }) => ({
@@ -89,79 +82,64 @@ const Spinner = styled('div')({
   },
 });
 
-const CheckoutPage = () => {
-    const stripe = useStripe();
-    const elements = useElements();
-    const [error, setError]: any | String = useState(null);
-    const [processing, setProcessing] = useState(false);
-    const [succeeded, setSucceeded] = useState(false);
+interface CheckoutPageTypes {
+  cartItems: Array<CartItem>
+  orderTotal: Number
+  setupIntentId: Number
+  userId: Number
+}
 
-    const [resetCartItems] = useMutation(resetCartItemsMutation);
-    const [createConfirmationNumberMutation] = useMutation(createConfirmationNumber, {
-    onSuccess: resetCartItems,
-    onError: () => {
-      setSucceeded(false)
-    }
-  })
-
-  function sendOrderRequestEmail(emailData: EmailBodyType) {
-    const orderRequestData = {
-      to: 'shakhorsmith@gmail.com',
-      templateData: {
-        eventDate: emailData.eventDate,
-        eventTime: emailData.eventTime,
-        location: '4288 Leola Rd, Douglasville, Ga, 30135',
-        orderNumber: emailData.confirmationNumber,
-      }
-    };
-    return fetch("/api/mailers/send-order-request", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(orderRequestData)
-    });
-  }
+const CheckoutPage = ({ cartItems, orderTotal, setupIntentId, userId }: CheckoutPageTypes) => {
+  const antiCSRFToken = getAntiCSRFToken();
+  const stripe = useStripe();
+  const elements = useElements();
+  const [error, setError]: any | String = useState(null);
+  const [processing, setProcessing] = useState(false);
 
   const handleSubmit = async (values) => {
-    const { eventDate } = values
-
     if (!stripe || !elements) {
       return
     };
 
     setProcessing(true);
 
-    const { error } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        // Make sure to change this to your payment completion page
-        return_url: "http://localhost:3000/account/order",
-      },
-    });
+    // Update stripe paymentIntent to include form values
+    let data;
+    const body = {
+      ...values,
+      cartItems,
+      setupIntentId,
+      orderTotal,
+      userId,
+    }
+    try {
+      const res = await fetch("/api/stripe/update-payment-intent", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "anti-csrf": antiCSRFToken,
+        },
+        body: JSON.stringify(body)
+      });
+      data = await res.json();
+    } catch (err) {
+      console.error(err)
+    }
 
-    if (error) {
-      setError(error.message);
-      setProcessing(false);
-    } else {
-      setError(null);
-      setProcessing(false);
-      setSucceeded(true);
-      try {
-        const confirmationNumber = await createConfirmationNumberMutation();
-        const emailData: EmailBodyType = {
-          ...values,
-          confirmationNumber,
-          eventDate: readableDate(eventDate),
-        }
-        // Send confirmation email
-        if (confirmationNumber) {
-          sendOrderRequestEmail(emailData)
-          .then(() => Router.replace(`/confirmation/${confirmationNumber}`))
-        }
-      } catch (err) {
-        console.error(err)
+    if (data) {
+      const { error } = await stripe.confirmSetup({
+        elements,
+        confirmParams: {
+          // Make sure to change this to your payment completion page
+          return_url: "http://localhost:3000/account/order",
+        },
+      });
+
+      if (error) {
+        setError(error.message);
+        setProcessing(false);
       }
+      // Stripe redirects if there is no error
     }
   };
 
@@ -223,7 +201,7 @@ const CheckoutPage = () => {
             <Typography sx={{ mb: 2 }} variant="h5">Payment Info</Typography>
               <PaymentElement id="payment-element" />
               <Button
-                disabled={processing || succeeded}
+                disabled={processing}
                 type="submit"
                 sx={{
                   background: "#5469d4",
@@ -286,7 +264,7 @@ export async function getServerSideProps({ req, res }) {
     }
   }
 
-  if (!session.cart?.pendingCartItems) {
+  if (!session.cart?.total || !session.cart?.pendingCartItems) {
     return {
       redirect: {
         destination: '/',
@@ -297,15 +275,18 @@ export async function getServerSideProps({ req, res }) {
 
   return {
     props: {
-      cartItems: session.cart.pendingCartItems
+      cartItems: session.cart.pendingCartItems,
+      orderTotal: session.cart.total,
+      userId: session.userId,
     },
   }
 }
 
 const Checkout: BlitzPage = (props: any) => {
   const antiCSRFToken = getAntiCSRFToken();
+  const setupIntentId:any = useRef();
   const [clientSecret, setClientSecret] = useState('');
-  const cartItems = props.cartItems;
+  const { cartItems, orderTotal, userId }: CheckoutPageTypes = props;
 
   useEffect(() => {
     // Create PaymentIntent as soon as the page loads
@@ -313,13 +294,12 @@ const Checkout: BlitzPage = (props: any) => {
       let data: DataType | null = null;
 
       try {
-        const res = await fetch("/api/stripe-payment-intent", {
+        const res = await fetch("/api/stripe/setup-payment-intent", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             "anti-csrf": antiCSRFToken,
           },
-          body: JSON.stringify({ items: cartItems })
         });
         data = await res.json();
       } catch (err) {
@@ -327,12 +307,13 @@ const Checkout: BlitzPage = (props: any) => {
       } finally {
         if (data) {
           setClientSecret(data.clientSecret);
+          setupIntentId.current = data.id
         }
       }
     }
 
     createStripePaymentIntent();
-  }, [cartItems]);
+  }, []);
 
   const appearance = {
     theme: 'stripe',
@@ -345,7 +326,7 @@ const Checkout: BlitzPage = (props: any) => {
     <ConsumerContainer>
       {clientSecret && (
         <Elements options={options} stripe={promise}>
-          <CheckoutPage />
+          <CheckoutPage cartItems={cartItems} orderTotal={orderTotal} setupIntentId={setupIntentId.current} userId={userId} />
         </Elements>
       )}
     </ConsumerContainer>

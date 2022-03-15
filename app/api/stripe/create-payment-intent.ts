@@ -12,7 +12,7 @@ const handler = async(req: BlitzApiRequest, res: BlitzApiResponse) => {
     throw Error("Can't have an empty cart")
   }
 
-  const total = formatNumberToCurrency(session.$publicData.cart.total).replace("$", "")
+  const total = formatNumberToCurrency(session.$publicData.cart.total).replace("$", "").replace('US', '')
   // Stripe amount must be in cents
   const amount = Number((parseFloat(total) * 100).toString());
 
@@ -20,9 +20,10 @@ const handler = async(req: BlitzApiRequest, res: BlitzApiResponse) => {
   const paymentIntent = await stripe.paymentIntents.create({
     amount,
     currency: "usd",
-    automatic_payment_methods: {
-      enabled: true,
-    },
+    payment_method_types: ['card'],
+    confirm: true,
+    customer: session.$publicData.stripeCustomerId,
+    off_session: true,
   });
 
   res.statusCode = 200

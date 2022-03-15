@@ -78,20 +78,31 @@ model Chef {
 
   user   User   @relation(fields: [userId], references: [id])
   userId Int
+  orders Order[]
   dishes Dish[]
 
   @@unique([userId])
+}
+
+enum OrderStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
 }
 
 model Order {
   id                 Int      @id @default(autoincrement())
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
+  amount Int
   confirmationNumber String   @unique
-  orderConfirmed     Boolean  @default(false)
+  orderStatus     OrderStatus  @default(PENDING)
+  paymentMethod    String
 
   user   User   @relation(fields: [userId], references: [id])
   userId Int
+  chef   Chef   @relation(fields: [chefId], references: [id])
+  chefId Int
   dishes Dish[]
 }
 

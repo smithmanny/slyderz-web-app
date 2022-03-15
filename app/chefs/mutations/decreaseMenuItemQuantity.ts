@@ -23,6 +23,5 @@ export default resolver.pipe((resolver.zod(UpdateMenuItem)), async (input: any, 
     return total += (currentVal.quantity * currentVal.price);
   }, 0)
 
-  // await ctx.session.$setPublicData({ pendingCartItems: [] })
   await ctx.session.$setPublicData({ cart: { pendingCartItems: updatedArray, total } })
 })

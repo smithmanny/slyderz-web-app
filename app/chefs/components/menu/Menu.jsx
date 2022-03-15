@@ -57,7 +57,7 @@ const Menu = ({ dishes }) => {
                     {item.name}
                   </Typography>
                   <Typography variant="subtitle1" color="text.secondary">
-                    $20
+                  ${item.price}
                   </Typography>
                   <Typography variant="subtitle2" color="text.secondary">
                     {renderDishDescription("There was a feature request in my current company, product team requested a table component which should order columns in ascending or descending way when clicking the column’s title. At the end of this post, you’ll see the working POC. There may be so many things to improve in the aspect of code quality but do not forget, this is just a POC. I’m looking forward to your responses to the code.")}

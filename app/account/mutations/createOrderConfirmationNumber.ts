@@ -9,8 +9,8 @@ interface OrderConfirmationNumberType {
 
 export default resolver.pipe(
   resolver.authorize(),
-  async (input, ctx): Promise<string> => {
-    const userConfirmationNumber: OrderConfirmationNumberType = await db.$transaction(async (prisma) => {
+  async (input, ctx): Promise<object> => {
+    const userOrderRequest: OrderConfirmationNumberType = await db.$transaction(async (prisma) => {
       const { userId } = ctx.session;
       // 1. Generate random confirmation string
       const generateConfirmationNumber = `SLY-${randomstring.generate({
@@ -19,23 +19,27 @@ export default resolver.pipe(
         length: 7,
       })}`
       // 2. Save and link order number users order
-      const confirmationNumber = await prisma.order.create({
+      const order = await prisma.order.create({
         data: {
+          amount: 12,
+          chefId: 1,
           confirmationNumber: generateConfirmationNumber,
+          paymentMethod: 'ss',
           userId,
         },
         select: {
-          confirmationNumber: true
+          confirmationNumber: true,
+          id: true
         }
       })
 
-      if (!confirmationNumber) {
+      if (!order) {
         throw new Error('Order number was not created.')
       }
 
-      return confirmationNumber;
+      return order;
     })
 
-    return userConfirmationNumber.confirmationNumber;
+    return userOrderRequest;
   }
 )

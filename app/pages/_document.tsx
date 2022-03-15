@@ -59,7 +59,7 @@ class MyDocument extends Document {
               }
             }}
           />
-          <style jsx global>{`
+          <style global>{`
             /* Other global styles such as 'html, body' etc... */
             body {
               height: 100vh;
