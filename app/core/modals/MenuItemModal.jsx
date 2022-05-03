@@ -53,6 +53,7 @@ const MenuItemModal = ({ show, onClose, menuItem, ...props }) => {
       console.error('Error adding menu item to cart', e)
     } finally {
       onClose();
+      setQuantity(1)
     }
   }
 

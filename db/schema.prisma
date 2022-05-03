@@ -20,15 +20,15 @@ enum RoleType {
 }
 
 model User {
-  id             Int      @id @default(autoincrement())
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  firstName      String
-  lastName       String
-  email          String   @unique
-  hashedPassword String?
+  id               Int      @id @default(autoincrement())
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  firstName        String
+  lastName         String
+  email            String   @unique
+  hashedPassword   String?
   stripeCustomerId String
-  role           RoleType   @default(USER)
+  role             RoleType @default(USER)
 
   tokens   Token[]
   sessions Session[]
@@ -76,12 +76,45 @@ model Chef {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user   User   @relation(fields: [userId], references: [id])
+  user   User    @relation(fields: [userId], references: [id])
   userId Int
   orders Order[]
-  dishes Dish[]
-
+  menu   Menu?
   @@unique([userId])
+}
+
+model Menu {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  sections  Section[]
+  chef      Chef      @relation(fields: [chefId], references: [id])
+  chefId    Int       @unique
+}
+
+model Section {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String   @unique
+
+  dishes Dish[]
+  menu   Menu   @relation(fields: [menuId], references: [id])
+  menuId Int
+}
+
+model Dish {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  description String
+  name        String   @unique
+  price       Decimal  @db.Decimal(5, 2)
+
+  section   Section @relation(fields: [sectionId], references: [id])
+  sectionId Int
+  Order     Order?  @relation(fields: [orderId], references: [id])
+  orderId   Int?
 }
 
 enum OrderStatus {
@@ -91,41 +124,17 @@ enum OrderStatus {
 }
 
 model Order {
-  id                 Int      @id @default(autoincrement())
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-  amount Int
-  confirmationNumber String   @unique
-  orderStatus     OrderStatus  @default(PENDING)
-  paymentMethod    String
+  id                 Int         @id @default(autoincrement())
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+  amount             Int
+  confirmationNumber String      @unique
+  orderStatus        OrderStatus @default(PENDING)
+  paymentMethod      String
 
   user   User   @relation(fields: [userId], references: [id])
   userId Int
   chef   Chef   @relation(fields: [chefId], references: [id])
   chefId Int
   dishes Dish[]
-}
-
-model Section {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String   @unique
-  dishes    Dish[]
-}
-
-model Dish {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  description String
-  name        String   @unique
-  price       Int
-
-  chef      Chef    @relation(fields: [chefId], references: [id])
-  chefId    Int
-  section   Section @relation(fields: [sectionId], references: [id])
-  sectionId Int
-  Order     Order?  @relation(fields: [orderId], references: [id])
-  orderId   Int?
 }

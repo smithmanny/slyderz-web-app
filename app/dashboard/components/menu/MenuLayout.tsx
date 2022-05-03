@@ -1,11 +1,12 @@
 import IconButton from "@mui/material/IconButton";
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
+import ArrowBackIcon from 'app/core/components/icons/ArrowBackIcon'
 import Button from 'app/core/components/shared/Button'
 import Grid from 'app/core/components/shared/Grid'
+import Typography from 'app/core/components/shared/Typography'
 
 const MenuLayout = (props) => {
-  const { currentView, setCurrentView, goBackHome } = props;
+  const { currentView, buttonFunc, goBackHome, selectedSectionName } = props;
   let buttonTitle: String
 
   switch (currentView) {
@@ -16,30 +17,35 @@ const MenuLayout = (props) => {
       buttonTitle = 'Add Dish'
       break;
     case 'DISH':
-      buttonTitle = 'Update/Create Dish'
+      buttonTitle = ''
       break;
     default:
       buttonTitle = 'Add Section'
   }
   return (
     <Grid container spacing={2}>
-      {currentView === 'SECTION' && (
+      {(currentView === 'SECTION' || currentView === 'DISH') && (
         <Grid item xs={2}>
           <IconButton
             aria-label="back"
             disableRipple
             onClick={goBackHome}
             size="large">
-            <ArrowBackIosNewIcon fontSize="small" />
+            <ArrowBackIcon fontSize="small" />
           </IconButton>
         </Grid>
       )}
       {currentView !== 'DISH' && (
         <Grid item xs={currentView === 'SECTION' ? 10 : 12} justifyContent='flex-end' sx={{ display: 'flex' }}>
-          <Button onClick={setCurrentView}>{buttonTitle}</Button>
+          <Button onClick={buttonFunc}>{buttonTitle}</Button>
         </Grid>
       )}
-      <Grid item container xs={12}>
+      {currentView === 'SECTION' && (
+        <Grid item xs={12}>
+          <Typography>Section: {selectedSectionName}</Typography>
+        </Grid>
+      )}
+      <Grid item container xs={12} spacing={2}>
         {props.children}
       </Grid>
     </Grid>

@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
+import { useQuery } from "blitz"
+
+import ChefMenuSectionsQuery from "../../queries/chefMenuSectionsQuery"
 
 import Container from "app/core/components/shared/Container"
 import HomeContainer from 'app/dashboard/components/menu/HomeContainer'
@@ -11,6 +14,8 @@ const DISH = 'DISH'
 
 const IndexContainer = () => {
   const [currentView, setCurrentView] = useState(HOME)
+  const [selectedSectionId, setSelectedSectionId] = useState()
+  const [sections] = useQuery(ChefMenuSectionsQuery, {})
   let MenuView
 
   switch (currentView) {
@@ -30,7 +35,13 @@ const IndexContainer = () => {
 
   return (
     <Container>
-      <MenuView currentView={currentView} setCurrentView={setCurrentView} />
+      <MenuView
+        currentView={currentView}
+        setCurrentView={setCurrentView}
+        selectedSectionId={selectedSectionId}
+        setSelectedSectionId={setSelectedSectionId}
+        sections={sections}
+      />
     </Container>
   )
 }
