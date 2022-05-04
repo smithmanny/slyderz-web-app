@@ -5,26 +5,36 @@ import Button from 'app/core/components/shared/Button'
 import Grid from 'app/core/components/shared/Grid'
 import Typography from 'app/core/components/shared/Typography'
 
+import { CREATE_DISH, HOME, SECTION, UPDATE_DISH } from './IndexContainer'
+
 const MenuLayout = (props) => {
   const { currentView, buttonFunc, goBackHome, selectedSectionName } = props;
   let buttonTitle: String
+  let showActionButton: Boolean = true
 
   switch (currentView) {
-    case 'HOME':
+    case HOME:
       buttonTitle = 'Add Section'
       break;
-    case 'SECTION':
+    case SECTION:
       buttonTitle = 'Add Dish'
+      showActionButton = true
       break;
-    case 'DISH':
+    case CREATE_DISH:
       buttonTitle = ''
+      showActionButton = false
+      break;
+    case UPDATE_DISH:
+      buttonTitle = ''
+      showActionButton = false
       break;
     default:
       buttonTitle = 'Add Section'
   }
+
   return (
     <Grid container spacing={2}>
-      {(currentView === 'SECTION' || currentView === 'DISH') && (
+      {currentView !== 'HOME' && (
         <Grid item xs={2}>
           <IconButton
             aria-label="back"
@@ -35,12 +45,12 @@ const MenuLayout = (props) => {
           </IconButton>
         </Grid>
       )}
-      {currentView !== 'DISH' && (
+      {showActionButton && (
         <Grid item xs={currentView === 'SECTION' ? 10 : 12} justifyContent='flex-end' sx={{ display: 'flex' }}>
           <Button onClick={buttonFunc}>{buttonTitle}</Button>
         </Grid>
       )}
-      {currentView === 'SECTION' && (
+      {currentView === SECTION && (
         <Grid item xs={12}>
           <Typography>Section: {selectedSectionName}</Typography>
         </Grid>

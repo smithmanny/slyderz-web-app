@@ -1,5 +1,6 @@
-import { useEffect } from "react";
-import { useRouter } from "blitz"
+import { useQuery } from "blitz"
+
+import menuSectionQuery from "../../queries/menuSectionQuery"
 
 import IconButton from "app/core/components/shared/IconButton";
 import DeleteIcon from 'app/core/components/icons/DeleteIcon'
@@ -11,22 +12,22 @@ import Stack from 'app/core/components/shared/Stack'
 import Typography from 'app/core/components/shared/Typography'
 import MenuLayout from 'app/dashboard/components/menu/MenuLayout'
 
-const SectionContainer = (props) => {
-  const { currentView, sections, setCurrentView, selectedSectionId } = props;
-  const router = useRouter();
-  const selectedSection = sections.find(section => section.id === selectedSectionId);
-  const dishes = selectedSection.dishes
+import { CREATE_DISH, HOME, UPDATE_DISH } from './IndexContainer'
 
-  useEffect(() => {
-    if (selectedSectionId === null) {
-      router.replace('/dashboard')
-    }
-  }, [selectedSectionId])
+const SectionContainer = (props) => {
+  const { currentView, setCurrentView, selectedSection, setSelectedDishId } = props;
+  const [dishes] = useQuery(menuSectionQuery, { sectionId: selectedSection.id });
+
+  const handleEditOnClick = (dishId) => {
+    setSelectedDishId(dishId)
+    setCurrentView(UPDATE_DISH)
+  }
+
   return (
     <MenuLayout
       currentView={currentView}
-      goBackHome={() => setCurrentView('HOME')}
-      buttonFunc={() => setCurrentView('DISH')}
+      goBackHome={() => setCurrentView(HOME)}
+      buttonFunc={() => setCurrentView(CREATE_DISH)}
       selectedSectionName={selectedSection.name}
     >
       {dishes?.map(dish => (
@@ -43,7 +44,7 @@ const SectionContainer = (props) => {
                   <IconButton
                     aria-label="edit"
                     disableRipple
-                    onClick={() => setCurrentView('DISH')}
+                    onClick={() => handleEditOnClick(dish.id)}
                     size="large">
                     <EditIcon fontSize="small" />
                   </IconButton>

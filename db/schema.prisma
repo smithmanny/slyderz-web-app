@@ -79,17 +79,9 @@ model Chef {
   user   User    @relation(fields: [userId], references: [id])
   userId Int
   orders Order[]
-  menu   Menu?
+  dishes Dish[]
+  sections Section[]
   @@unique([userId])
-}
-
-model Menu {
-  id        Int       @id @default(autoincrement())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  sections  Section[]
-  chef      Chef      @relation(fields: [chefId], references: [id])
-  chefId    Int       @unique
 }
 
 model Section {
@@ -99,8 +91,8 @@ model Section {
   name      String   @unique
 
   dishes Dish[]
-  menu   Menu   @relation(fields: [menuId], references: [id])
-  menuId Int
+  chef Chef @relation(fields: [chefId], references: [id])
+  chefId Int
 }
 
 model Dish {
@@ -113,8 +105,10 @@ model Dish {
 
   section   Section @relation(fields: [sectionId], references: [id])
   sectionId Int
-  Order     Order?  @relation(fields: [orderId], references: [id])
+  order     Order?  @relation(fields: [orderId], references: [id])
   orderId   Int?
+  chef     Chef  @relation(fields: [chefId], references: [id])
+  chefId   Int
 }
 
 enum OrderStatus {

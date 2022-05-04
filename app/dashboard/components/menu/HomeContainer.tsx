@@ -1,4 +1,7 @@
+import { useQuery } from "blitz"
 import IconButton from "@mui/material/IconButton";
+
+import menuSectionsQuery from "../../queries/menuSectionsQuery"
 
 import DeleteIcon from 'app/core/components/icons/DeleteIcon'
 import Card, { CardContent } from 'app/core/components/shared/Card'
@@ -8,19 +11,21 @@ import Stack from 'app/core/components/shared/Stack'
 import Typography from 'app/core/components/shared/Typography'
 import MenuLayout from 'app/dashboard/components/menu/MenuLayout'
 
+import { SECTION } from './IndexContainer'
+
 const HomeContainer = (props) => {
-  const { currentView, sections, setCurrentView, setSelectedSectionId } = props;
+  const { currentView, setCurrentView, setSelectedSection } = props;
+  const [sections] = useQuery(menuSectionsQuery, {})
 
   return (
     <MenuLayout
       currentView={currentView}
-      buttonFunc={() => setCurrentView('SECTION')}
     >
       {sections?.map(section => (
         <Grid item xs={12} key={section.id}>
           <Card onClick={() => {
-            setCurrentView('SECTION')
-            setSelectedSectionId(section.id)
+            setCurrentView(SECTION)
+            setSelectedSection(section)
           }}
           >
             <CardContent>
