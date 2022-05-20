@@ -123,25 +123,28 @@ const Footer = () => {
                 //   }),
                 // }}
               >
-                <Signup>
-                  <TextField
-                    name="email"
-                    variant="outlined"
-                    sx={{
-                      flex: 1,
-                      mt: 2,
-                    }}
-                    label="email"
-                    placeholder="Email"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <EmailOutline />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                  <Button
+                <TextField
+                  name="email"
+                  variant="outlined"
+                  sx={{
+                    flex: 1,
+                    mt: 2,
+                  }}
+                  label="email"
+                  placeholder="Email"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <EmailOutline />
+                      </InputAdornment>
+                    ),
+                  }}
+                  xs={12}
+                  md={7}
+                />
+
+                <Grid item xs={12} md={5}>
+                    <Button
                     color="primary"
                     sx={{
                       marginTop: {
@@ -155,7 +158,7 @@ const Footer = () => {
                   >
                     Find a Chef
                   </Button>
-                </Signup>
+                </Grid>
               </Form>
             </Paper>
           </Grid>

@@ -1,4 +1,5 @@
 import { ReactNode, PropsWithoutRef } from "react"
+import PropTypes from 'prop-types'
 import { AuthenticationError, validateZodSchema } from "blitz"
 import { Form as FinalForm, FormProps as FinalFormProps } from "react-final-form"
 import { FORM_ERROR } from "final-form"
@@ -31,12 +32,11 @@ export function Form<S extends z.ZodType<any, any>>({
   onSuccess,
   ...props
 }: FormProps<S>) {
-  const _handleSubmit = async(values, formApi, cb) => {
-    if (mutation) {
-      const variables = mutation.toVariables(values);
-
+  const _handleSubmit = (values, formApi, cb) => {
+    async function handleMutation(variables) {
       try {
         await mutation.schema(variables)
+
         if (typeof onSuccess === 'function') {
           return onSuccess();
         }
@@ -52,7 +52,11 @@ export function Form<S extends z.ZodType<any, any>>({
       }
     }
 
-    // Use regular onSubmit function
+    if (mutation) {
+      const variables = mutation.toVariables(values);
+      return handleMutation(variables)
+    }
+
     if (onSubmit) {
       return onSubmit(values, formApi, cb)
     }
@@ -87,6 +91,21 @@ export function Form<S extends z.ZodType<any, any>>({
       )}
     />
   )
+}
+
+Form.defaultProps = {
+  mutation: {},
+  onSuccess: () => {}
+}
+
+Form.propTypes = {
+  submitText: PropTypes.string.isRequired,
+  children: PropTypes.any.isRequired,
+  mutation: PropTypes.shape({
+    schema: PropTypes.any,
+    toVariables: PropTypes.func
+  }),
+  onSuccess: PropTypes.func,
 }
 
 export default Form

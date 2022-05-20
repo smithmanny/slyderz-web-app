@@ -1,6 +1,7 @@
-import { useQuery } from "blitz"
+import { useMutation, useQuery } from "blitz"
 
 import menuSectionQuery from "../../queries/menuSectionQuery"
+import destroyDishMutation from "../../mutations/destroyDishMutation"
 
 import IconButton from "app/core/components/shared/IconButton";
 import DeleteIcon from 'app/core/components/icons/DeleteIcon'
@@ -16,11 +17,16 @@ import { CREATE_DISH, HOME, UPDATE_DISH } from './IndexContainer'
 
 const SectionContainer = (props) => {
   const { currentView, setCurrentView, selectedSection, setSelectedDishId } = props;
-  const [dishes] = useQuery(menuSectionQuery, { sectionId: selectedSection.id });
+  const [dishes, { refetch }] = useQuery(menuSectionQuery, { sectionId: selectedSection.id });
+  const [destroyDish] = useMutation(destroyDishMutation)
 
   const handleEditOnClick = (dishId) => {
     setSelectedDishId(dishId)
-    setCurrentView(UPDATE_DISH)
+    setCurrentView(UPDATE_DISH);
+  }
+
+  const handleDeleteDish = (id) => {
+    return destroyDish({ id }, { onSuccess: () => refetch() })
   }
 
   return (
@@ -51,7 +57,7 @@ const SectionContainer = (props) => {
                   <IconButton
                     aria-label="delete"
                     disableRipple
-                    // onClick={goBackHome}
+                    onClick={() => handleDeleteDish(dish.id)}
                     size="large">
                     <DeleteIcon fontSize="small" />
                   </IconButton>

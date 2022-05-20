@@ -1,20 +1,30 @@
+import PropTypes from 'prop-types'
 import InputAdornment from '@mui/material/InputAdornment';
 
 import Form, { TextField } from "app/core/components/form"
+import { formatNumberToCurrency } from 'app/helpers'
 
 const DishForm = (props) => {
-  const initialValues = props.initialValues ? props.initialValues : {}
+  const initialValues = props.initialValues
+
+  if (props.selectedDishId) {
+    initialValues['selectedDishId'] = props.selectedDishId;
+  }
+
   return (
     <Form
-      submitText="Create Dish"
+      submitText={props.submitText}
       // schema={Login}
       initialValues={initialValues}
       mutation={{
-        // schema: login,
+        schema: props.mutation,
         toVariables: values => ({
-          ...values
-        })
+          ...values,
+          price: formatNumberToCurrency(values.price).replace('$', ''),
+          sectionId: props.sectionId,
+        }),
       }}
+      onSuccess={() => props.setCurrentView('SECTION')}
     >
       <TextField
         name="name"
@@ -40,6 +50,20 @@ const DishForm = (props) => {
       />
     </Form>
   )
+}
+
+DishForm.defaultProps = {
+  initialValues: {},
+  selectedDishId: null,
+}
+
+DishForm.propTypes = {
+  initialValues: PropTypes.object,
+  setCurrentView: PropTypes.func.isRequired,
+  submitText: PropTypes.string.isRequired,
+  sectionId: PropTypes.string.isRequired,
+  selectedDishId: PropTypes.number,
+  mutation: PropTypes.any.isRequired
 }
 
 export default DishForm

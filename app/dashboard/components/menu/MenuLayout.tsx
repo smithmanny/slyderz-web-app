@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import IconButton from "@mui/material/IconButton";
 
 import ArrowBackIcon from 'app/core/components/icons/ArrowBackIcon'
@@ -60,6 +61,20 @@ const MenuLayout = (props) => {
       </Grid>
     </Grid>
   )
+}
+
+MenuLayout.defaultProps = {
+  buttonFunc: () => {},
+  goBackHome: () => {},
+  selectedSectionName: '',
+}
+
+MenuLayout.propTypes = {
+  currentView: PropTypes.string.isRequired,
+  buttonFunc: PropTypes.func,
+  goBackHome: PropTypes.func,
+  children: PropTypes.any.isRequired,
+  selectedSectionName: PropTypes.string,
 }
 
 export default MenuLayout
