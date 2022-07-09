@@ -10,7 +10,7 @@ interface TimeType {
 
 const renderHours = (tod = 'AM') => {
   const hours = 12
-  const times: Array<TimeType> = [{ key: 'OFF', value: null }]
+  const times: Array<TimeType> = []
 
     for (let x = 1; x <= hours; x++) {
       for (let y = 0; y < 60; y += 30) {
@@ -65,3 +65,17 @@ export const weekdays = [
     value: 'SATURDAY'
   },
 ]
+
+export const convertDayToInt = (day: string) => {
+  const daysOfWeek = {
+    'SUNDAY': 0,
+    'MONDAY': 1,
+    'TUESDAY': 2,
+    'WEDNESDAY': 3,
+    'THURSDAY': 4,
+    'FRIDAY': 5,
+    'SATURDAY': 6,
+  }
+
+  return daysOfWeek[day]
+}

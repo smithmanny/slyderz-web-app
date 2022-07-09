@@ -13,7 +13,7 @@ import { transfromDateToReadableTime } from "app/helpers/dateHelpers"
 import { styled } from "integrations/material-ui";
 import { CartItem } from 'types'
 
-import Form, { DatePicker, Select, TextField } from 'app/core/components/form';
+import Form from 'app/core/components/form';
 import Alert from 'app/core/components/shared/Alert';
 import Button from "app/core/components/shared/Button"
 import Layout from "app/core/layouts/Layout";
@@ -95,7 +95,6 @@ const CheckoutPage = ({ cartItems, orderTotal, setupIntentId, userId }: Checkout
   const elements = useElements();
   const [error, setError]: any | String = useState(null);
   const [processing, setProcessing] = useState(false);
-  console.log({ cartItems })
 
   const handleSubmit = async (values) => {
     if (!stripe || !elements) {
@@ -144,17 +143,6 @@ const CheckoutPage = ({ cartItems, orderTotal, setupIntentId, userId }: Checkout
     }
   };
 
-  const timesMockup = [
-    {
-      key: transfromDateToReadableTime(new Date()),
-      value: transfromDateToReadableTime(new Date())
-    },
-    {
-      key: transfromDateToReadableTime(new Date(22)),
-      value: transfromDateToReadableTime(new Date(22))
-    },
-  ]
-
   const renderLeftContainer = () => (
     <React.Fragment>
       <Section>
@@ -179,25 +167,6 @@ const CheckoutPage = ({ cartItems, orderTotal, setupIntentId, userId }: Checkout
         onSubmit={handleSubmit}
       >
         <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Typography sx={{ mb: 2 }} variant="h5">Your reservation</Typography>
-            <Typography variant="subtitle1">Date</Typography>
-            <DatePicker
-              name="eventDate"
-              disablePast
-              required
-              views={['month', 'day']}
-              inputVariant="outlined"
-              // shouldDisableDate={}
-            />
-
-            <Typography variant="subtitle1">Time</Typography>
-            <Select
-              name="eventTime"
-              items={timesMockup}
-              required
-            />
-          </Grid>
           <Grid item xs={12}>
             <Typography sx={{ mb: 2 }} variant="h5">Payment Info</Typography>
               <PaymentElement id="payment-element" />
@@ -247,7 +216,7 @@ const CheckoutPage = ({ cartItems, orderTotal, setupIntentId, userId }: Checkout
         {renderLeftContainer()}
       </Grid>
       <Grid item xs={12} md={6}>
-        <CartSummary />
+        <CartSummary checkoutPage />
       </Grid>
     </Grid>
   )

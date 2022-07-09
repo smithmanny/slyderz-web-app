@@ -11,14 +11,16 @@ export default async function fetchChefDishes(
   ctx: Ctx
 ) {
   const data = GetChefDishes.parse(input)
-  const userId = ctx.session.$publicData.userId
-
-  if (!userId) {
-    throw new Error("Can't find user")
-  }
 
   const dishes = await db.dish.findMany({
     where: { id: data.chefId },
+    include: {
+      chef: {
+        include: {
+          hours: true
+        }
+      }
+    }
   })
 
   return dishes;

@@ -13,7 +13,9 @@ export const DestroyMenuItem = z.object({
 })
 
 export const CreateMenuItem = z.object({
+  chefId: z.number(),
   id: z.string().uuid(),
+  description: z.string(),
   name: z.string(),
   price: z.number(),
   quantity: z.number(),

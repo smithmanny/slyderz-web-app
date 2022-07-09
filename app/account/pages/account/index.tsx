@@ -93,7 +93,7 @@ const Account: BlitzPage = () => {
         <strong>Delete Your Account</strong>
       </Typography>
       <Button
-        color="red"
+        // color="red"
         variant="text"
       >
         Delete Account

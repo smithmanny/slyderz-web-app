@@ -15,7 +15,8 @@ const MuiCardMedia = styled(CardMedia)`
   }
 `
 
-const Menu = ({ dishes }) => {
+const Menu = (props) => {
+  const { dishes } = props;
   const [menuItem, setMenuItem] = useState(null);
   const [openModal, setModalOpen] = useState(false);
 
@@ -75,7 +76,10 @@ const Menu = ({ dishes }) => {
         </Grid>
       </Grid>
       <Grid item xs={12} md={4}>
-        <CartSummary buttonText="Checkout" />
+        <CartSummary
+          buttonText="Checkout"
+          dishes={dishes}
+        />
       </Grid>
        <MenuItemModal
         aria-labelledby="simple-modal-title"
