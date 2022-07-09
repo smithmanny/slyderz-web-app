@@ -16,10 +16,10 @@ const Select: FunctionComponent<any> = (props) => {
   const menuItems = props.items.map((item: MenuItemType, index: number) => {
     return (
       <MenuItem
-        key={`${item.key}-${index}`}
+        key={item.key}
         value={item.value}
       >
-        {item.value}
+        {item.key}
       </MenuItem>
     )
   })
@@ -52,6 +52,7 @@ Select.propTypes = {
   label: PropTypes.string,
   name: PropTypes.string.isRequired,
   required: PropTypes.bool,
+  xs: PropTypes.number,
 };
 
 export default Select;

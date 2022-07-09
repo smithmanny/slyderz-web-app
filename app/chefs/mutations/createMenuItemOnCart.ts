@@ -16,5 +16,10 @@ export default resolver.pipe((resolver.zod(CreateMenuItem)), async (input: any, 
     }, 0)
   }
 
-  await ctx.session.$setPublicData({ cart: { pendingCartItems: [...cartItems, cartItem], total: sum } })
+  await ctx.session.$setPublicData({
+    cart: {
+      pendingCartItems: [...cartItems, cartItem],
+      total: sum,
+    }
+  })
 })

@@ -21,6 +21,7 @@ export const LoginForm = (props: LoginFormProps) => {
         textAlign: 'center',
         margin: 'auto',
         maxWidth: 550,
+        width: '100%'
       }}
     >
       <Typography gutterBottom variant="h4">Login</Typography>

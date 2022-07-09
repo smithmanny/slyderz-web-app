@@ -42,6 +42,7 @@ const MenuItemModal = ({ show, onClose, menuItem, ...props }) => {
   const updateCart = async () => {
     const values = {
       id: uuidv4(),
+      chefId: menuItem.chefId,
       name: menuItem.name,
       price: menuItem.price,
       quantity,

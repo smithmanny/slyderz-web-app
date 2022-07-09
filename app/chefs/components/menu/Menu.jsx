@@ -9,7 +9,6 @@ import Typography from "app/core/components/shared/Typography";
 import MenuItemModal from "app/core/modals/MenuItemModal";
 import CartSummary from 'app/core/components/cart/cartSummary'
 
-
 const MuiCardMedia = styled(CardMedia)`
   & .MuiCardMedia-img {
     object-fit: contain;

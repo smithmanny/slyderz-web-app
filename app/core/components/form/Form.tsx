@@ -52,7 +52,7 @@ export function Form<S extends z.ZodType<any, any>>({
       }
     }
 
-    if (mutation) {
+    if (mutation && mutation.toVariables) {
       const variables = mutation.toVariables(values);
       return handleMutation(variables)
     }

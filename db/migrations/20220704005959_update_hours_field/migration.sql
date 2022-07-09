@@ -1,0 +1,15 @@
+-- AlterTable
+ALTER TABLE "Hours" ALTER COLUMN "mondayStartTime" DROP NOT NULL,
+ALTER COLUMN "mondayEndTime" DROP NOT NULL,
+ALTER COLUMN "tuesdayStartTime" DROP NOT NULL,
+ALTER COLUMN "tuesdayEndTime" DROP NOT NULL,
+ALTER COLUMN "wednesdayStartTime" DROP NOT NULL,
+ALTER COLUMN "wednesdayEndTime" DROP NOT NULL,
+ALTER COLUMN "thursdayStartTime" DROP NOT NULL,
+ALTER COLUMN "thursdayEndTime" DROP NOT NULL,
+ALTER COLUMN "fridayStartTime" DROP NOT NULL,
+ALTER COLUMN "fridayEndTime" DROP NOT NULL,
+ALTER COLUMN "saturdayStartTime" DROP NOT NULL,
+ALTER COLUMN "saturdayEndTime" DROP NOT NULL,
+ALTER COLUMN "sundayStartTime" DROP NOT NULL,
+ALTER COLUMN "sundayEndTime" DROP NOT NULL;

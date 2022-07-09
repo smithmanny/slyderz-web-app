@@ -5,6 +5,7 @@ import { User } from "db"
 export type Role = "ADMIN" | "USER"
 
 export interface CartItem {
+  chefId: number,
   id: string,
   description: string,
   name: string,

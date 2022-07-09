@@ -1,8 +1,10 @@
 import React from "react"
-import { Image, useRouter } from "blitz"
+import { Image, useRouter, useQuery } from "blitz"
 
 import Logo from "public/logo.png"
 import { styled } from "integrations/material-ui"
+
+import ChefDishesQuery from "app/chefs/queries/chefDishesQuery"
 
 import Avatar from "app/core/components/shared/Avatar"
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer"
@@ -54,7 +56,6 @@ function a11yProps(index: number) {
 
 export const ChefPage = (props) => {
   const router = useRouter();
-
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -62,41 +63,7 @@ export const ChefPage = (props) => {
   };
 
   const { cid } = router.query;
-  // const { loading, error, data } = useQuery(FETCH_ALL_DISHES);
-  // if (loading) return "LOADING";
-  // const { dishes } = data;
-  const dishes = [
-    {
-      id: 0,
-      name: 'Deep Fried Chipotle Wings',
-      description: 'This is the description',
-      price: 25
-    },
-    {
-      id: 1,
-      name: 'Dish #2',
-      description: 'This is the description',
-      price: 25
-    },
-    {
-      id: 2,
-      name: 'Dish #3',
-      description: 'This is the description',
-      price: 25
-    },
-    {
-      id: 3,
-      name: 'Dish #4',
-      description: 'This is the description',
-      price: 100
-    },
-    {
-      id: 4,
-      name: 'Dish #5',
-      description: 'This is the description',
-      price: 50
-    },
-  ]
+  const [dishes] = useQuery(ChefDishesQuery, { chefId: Number(cid) });
 
   return (
     <ConsumerContainer>
@@ -147,6 +114,6 @@ export const ChefPage = (props) => {
   );
 };
 
-ChefPage.getLayout = (page) => <Layout title="Chef name">{page}</Layout>
+ChefPage.getLayout = (page) => <Layout title="Dashboard">{page}</Layout>
 
 export default ChefPage;

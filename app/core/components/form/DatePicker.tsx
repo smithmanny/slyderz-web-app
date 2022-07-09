@@ -2,19 +2,21 @@ import { FunctionComponent } from 'react'
 import PropTypes from "prop-types";
 import { DatePicker as MuiDatePicker } from 'mui-rff';
 import 'date-fns';
-import DateFnsUtils from '@date-io/date-fns';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import Grid from '../shared/Grid'
 
 const DatePicker: FunctionComponent<any> = (props) => (
   <Grid item xs={props.xs} md={props.md}>
-    <MuiDatePicker
-      label={props.label}
-      name={props.name}
-      required={props.required}
-      dateFunsUtils={DateFnsUtils}
-      {...props}
-    />
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <MuiDatePicker
+        label={props.label}
+        name={props.name}
+        required={props.required}
+        {...props}
+      />
+    </LocalizationProvider>
   </Grid>
 );
 

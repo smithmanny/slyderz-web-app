@@ -35,15 +35,14 @@ const MuiTheme = createTheme({
       fontWeight: 500,
     },
   },
-  // components: {
-  //   MuiAvatar: {
-  //     styleOverrides: {
-  //       img: {
-  //         objectFit: "cover",
-  //         objectPosition: "top center"
-  //       }
-  //     }
-  //   }
-  // }
+  components: {
+    MuiDatePicker: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'red',
+        },
+      },
+    },
+  }
 });
 export const theme = responsiveFontSizes(MuiTheme);

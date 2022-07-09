@@ -42,6 +42,9 @@ const HomeContainer = (props) => {
         currentView={currentView}
         buttonFunc={openSectionModal}
       >
+        <Grid item xs={12}>
+          <Typography variant='h6'>Your Sections</Typography>
+        </Grid>
         {sections?.map(section => (
           <Grid item xs={12} key={section.id}>
             <Card onClick={() => {

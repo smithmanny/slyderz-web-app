@@ -8,6 +8,7 @@ import Tabs from "app/core/components/shared/Tabs"
 import Tab from "app/core/components/shared/Tab"
 import Layout from "app/core/layouts/Layout"
 import IndexContainer from "app/dashboard/components/menu/IndexContainer"
+import HoursContainer from "app/dashboard/components/hours/HoursContainer"
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -72,7 +73,7 @@ export const Dashboard = (props) => {
             <IndexContainer />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            Hours
+            <HoursContainer />
           </TabPanel>
         </Grid>
       </Grid>

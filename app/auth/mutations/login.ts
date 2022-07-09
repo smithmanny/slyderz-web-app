@@ -25,13 +25,14 @@ export default resolver.pipe(resolver.zod(Login), async ({ email, password }, ct
   const pendingCartItems = ctx.session?.cart?.pendingCartItems || [];
   const total = ctx.session?.cart?.total || 0;
 
-  await ctx.session.$create({ 
-    userId: user.id, 
-    role: user.role as Role, 
+  await ctx.session.$create({
+    userId: user.id,
+    role: user.role as Role,
+    stripeCustomerId: user.stripeCustomerId,
     cart: {
       pendingCartItems,
       total,
-    }, 
+    },
   })
 
   return user

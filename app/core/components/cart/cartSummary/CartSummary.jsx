@@ -23,8 +23,7 @@ const CartSummary = (props) => {
   const { buttonText } = props;
   return (
     <Root>
-      <Form
-      >
+      <Form>
         {buttonText && (
           <Typography variant="h5">Your Reservation</Typography>
         )}

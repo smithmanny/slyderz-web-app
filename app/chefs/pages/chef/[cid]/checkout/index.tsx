@@ -13,7 +13,7 @@ import { transfromDateToReadableTime } from "app/helpers/dateHelpers"
 import { styled } from "integrations/material-ui";
 import { CartItem } from 'types'
 
-import Form, { DatePicker, Select } from 'app/core/components/form';
+import Form, { DatePicker, Select, TextField } from 'app/core/components/form';
 import Alert from 'app/core/components/shared/Alert';
 import Button from "app/core/components/shared/Button"
 import Layout from "app/core/layouts/Layout";
@@ -95,6 +95,7 @@ const CheckoutPage = ({ cartItems, orderTotal, setupIntentId, userId }: Checkout
   const elements = useElements();
   const [error, setError]: any | String = useState(null);
   const [processing, setProcessing] = useState(false);
+  console.log({ cartItems })
 
   const handleSubmit = async (values) => {
     if (!stripe || !elements) {
@@ -185,15 +186,15 @@ const CheckoutPage = ({ cartItems, orderTotal, setupIntentId, userId }: Checkout
               name="eventDate"
               disablePast
               required
-              views={['date', 'month']}
+              views={['month', 'day']}
               inputVariant="outlined"
+              // shouldDisableDate={}
             />
 
             <Typography variant="subtitle1">Time</Typography>
             <Select
               name="eventTime"
               items={timesMockup}
-              variant="outlined"
               required
             />
           </Grid>

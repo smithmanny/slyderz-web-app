@@ -1,4 +1,4 @@
-import { useMutation } from "blitz"
+import { Link, useMutation, Routes } from "blitz"
 
 import signupMutation from "app/auth/mutations/signup"
 import { Signup } from "app/auth/validations"
@@ -50,6 +50,10 @@ export const SignupForm = (props: SignupFormProps) => {
         <TextField label="Email" name="email" required={true} />
         <TextField label="Password" name="password" required={true} type="password" />
       </Form>
+
+      <div style={{ marginTop: "1rem" }}>
+        Or <Link href={Routes.LoginPage()}>Log In</Link>
+      </div>
     </Box>
   )
 }
