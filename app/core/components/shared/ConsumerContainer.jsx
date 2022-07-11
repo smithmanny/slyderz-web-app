@@ -3,7 +3,9 @@ import { styled } from "integrations/material-ui"
 import Container from './Container'
 
 const SlyderzContainer = styled(Container)(({ theme }) => ({
-  padding: theme.spacing(0),
+  [theme.breakpoints.up('md')]: {
+    padding: theme.spacing(0),
+  },
 }))
 
 const ConsumerContainer = ({ children, ...props }) => {

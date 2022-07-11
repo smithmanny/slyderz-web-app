@@ -21,21 +21,21 @@ export default function App({ Component, pageProps }: AppProps) {
   const getLayout = Component.getLayout || ((page) => page)
 
   return (
-    <Suspense fallback="Loading">
-      <Provider store={store}>
-        <StyledEngineProvider injectFirst>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <ErrorBoundary
-              FallbackComponent={RootErrorFallback}
-              onReset={useQueryErrorResetBoundary().reset}
-            >
+    <Provider store={store}>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <ErrorBoundary
+            FallbackComponent={RootErrorFallback}
+            onReset={useQueryErrorResetBoundary().reset}
+          >
+            <Suspense fallback="Loading">
               {getLayout(<Component {...pageProps} />)}
-            </ErrorBoundary>
-          </ThemeProvider>
-        </StyledEngineProvider>
-      </Provider>
-    </Suspense>
+            </Suspense>
+          </ErrorBoundary>
+        </ThemeProvider>
+      </StyledEngineProvider>
+    </Provider>
   );
 }
 

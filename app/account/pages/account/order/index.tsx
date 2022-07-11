@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
-import { Image, getSession, useRouter, useMutation, Router } from "blitz"
+import { Image, getSession, useRouter, useMutation, useQuery, Router } from "blitz"
 
+import orderConfirmationQuery from "./queries/getOrderByConfirmation";
 import resetCartItemsMutation from "app/account/mutations/resetCartItemsMutation";
 import completedOrderIcon from "public/completed-order.svg"
 
@@ -24,21 +25,43 @@ export async function getServerSideProps({ req, res }) {
     }
   }
 
-  return {
-    props: {},
+  // Check for confirmation searchParamas
+  if (req.url.includes('?')) {
+    const searchParamas = req.url.split('?')[1]
+    const [key, confirmationNumber] = searchParamas.split('=')
+
+    if (key !== 'confirmationNumber') {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false
+        }
+      };
+    }
+
+    return {
+      props: {
+        confirmationNumber,
+        userId: session.userId
+      },
+    }
+  } else {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    };
   }
 }
 
 export const ConfirmationPage = (props) => {
-  const router = useRouter();
+  const router = useRouter()
   const [resetCartItems] = useMutation(resetCartItemsMutation);
+  // const [order] = useQuery(orderConfirmationQuery, { confirmationNumber: props.confirmationNumber });
 
   useEffect(() => {
-    const clientSecret = new URLSearchParams(window.location.search).get(
-      "setup_intent_client_secret"
-    );
-
-    if (!clientSecret) {
+    if (!props.userId || !props.confirmationNumber) {
       router.push("/")
       return;
     }

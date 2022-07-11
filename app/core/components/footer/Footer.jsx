@@ -93,6 +93,7 @@ const Footer = () => {
               md: 'row-reverse',
             }
           }}
+          spacing={2}
         >
           <Grid item xs={12} md={6}>
             <Paper
@@ -123,41 +124,38 @@ const Footer = () => {
                 //   }),
                 // }}
               >
-                <TextField
-                  name="email"
-                  variant="outlined"
-                  sx={{
-                    flex: 1,
-                    mt: 2,
-                  }}
-                  label="email"
-                  placeholder="Email"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <EmailOutline />
-                      </InputAdornment>
-                    ),
-                  }}
-                  xs={12}
-                  md={7}
-                />
-
-                <Grid item xs={12} md={5}>
-                    <Button
-                    color="primary"
-                    sx={{
-                      marginTop: {
-                        xs: 2,
-                        md: 0,
-                      },
-                      padding: 2,
+                <Grid container spacing={2}>
+                  <TextField
+                    name="email"
+                    variant="outlined"
+                    label="email"
+                    placeholder="Email"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <EmailOutline />
+                        </InputAdornment>
+                      ),
                     }}
-                    variant="contained"
-                    type="submit"
-                  >
-                    Find a Chef
-                  </Button>
+                    xs={12}
+                    md={7}
+                  />
+
+                  <Grid item xs={12} md={5} textAlign="right">
+                    <Button
+                      color="primary"
+                      sx={{
+                        padding: 2,
+                        width: {
+                          xs: '100%'
+                        }
+                      }}
+                      variant="contained"
+                      type="submit"
+                    >
+                      Find a Chef
+                    </Button>
+                  </Grid>
                 </Grid>
               </Form>
             </Paper>

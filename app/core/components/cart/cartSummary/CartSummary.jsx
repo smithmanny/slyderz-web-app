@@ -20,31 +20,91 @@ const Content = styled('div')({
   width: "100%"
 });
 
-const CustomSelect = (props) => {
+const CartItemsContainer = (props) => {
   const formState = useFormState()
   const time = [...todAM, ...todPM]
   const selectedEventDate = formState.values?.eventDate
   const selectedDayOfWeek = selectedEventDate?.getDay()
+  let startTime
+  let startTimeIndex
+  let endTime
+  let endTimeIndex
+  let availableTime
 
-  // Get the time for the selected day
-  const day = props.hours.find(hourBlock =>
-    hourBlock.daysOfWeek.find(dayOfWeek =>
-      convertDayToInt(dayOfWeek) === selectedDayOfWeek
+  const disableDaysOff = (date) => {
+    const daysOfWeek = [0, 1, 2, 3, 4, 5, 6]
+    const workingDays = []
+
+    props.hours.map(hourBlock => hourBlock.daysOfWeek.map(day => {
+      const matchedDay = convertDayToInt(day)
+      workingDays.push(matchedDay)
+    }))
+
+    const offDays = daysOfWeek.filter(day => !workingDays.includes(day))
+
+    return offDays.includes(date.getDay())
+  }
+
+
+  if (!props.checkoutPage) {
+    const selectedTime = props.hours.find(hourBlock =>
+      hourBlock.daysOfWeek.find(dayOfWeek =>
+        convertDayToInt(dayOfWeek) === selectedDayOfWeek
+      )
     )
-  )
-
-  const startTime = time.find(t => t.key === day?.startTime)
-  const startTimeIndex = time.indexOf(startTime)
-  const endTime = time.find(t => t.key === day?.endTime)
-  const endTimeIndex = time.indexOf(endTime)
-  const availableTime = time.slice(startTimeIndex, endTimeIndex + 1)
+    startTime = time.find(t => t.key === selectedTime?.startTime)
+    startTimeIndex = time.indexOf(startTime)
+    endTime = time.find(t => t.key === selectedTime?.endTime)
+    endTimeIndex = time.indexOf(endTime)
+    availableTime = time.slice(startTimeIndex, endTimeIndex + 1)
+  }
 
   return (
-    <Select
-      name="eventTime"
-      items={availableTime}
-      required
-    />
+    <React.Fragment>
+      {!props.checkoutPage && (
+        <React.Fragment>
+          <Typography variant="subtitle1">Date</Typography>
+          <DatePicker
+            name="eventDate"
+            disablePast
+            required
+            views={['month', 'day']}
+            inputVariant="outlined"
+            shouldDisableDate={disableDaysOff}
+          />
+
+          <Typography variant="subtitle1">Time</Typography>
+          <Select
+            name="eventTime"
+            items={availableTime}
+            required
+          />
+        </React.Fragment>
+      )}
+
+      {props.cartItems?.length > 0 && (
+        <Content>
+          <Typography variant="h6" sx={{ mt: 4, fontWeight: '545' }}>Your Items</Typography>
+          <CartItems selectedCartItems={props.cartItems} />
+          <Typography variant="h6" sx={{ my: 4 }}>Total: {formatNumberToCurrency(props.total)}</Typography>
+          {props.buttonText && (
+            <Link href={Routes.Checkout({
+              cid: 1,
+              eventDate: selectedEventDate && new Date(selectedEventDate).toISOString(),
+              eventTime: formState.values?.eventTime
+            })}>
+              <Button
+                variant="contained"
+                color="primary"
+                size="large"
+              >
+                {props.buttonText}
+              </Button>
+            </Link>
+          )}
+        </Content>
+      )}
+    </React.Fragment>
   )
 }
 
@@ -55,62 +115,19 @@ const CartSummary = (props) => {
   const total = session?.cart?.total || 0;
   const hours = dishes[0]?.chef?.hours
 
-  const disableDaysOff = (date) => {
-    const daysOfWeek = [0, 1, 2, 3, 4, 5, 6]
-    const workingDays = []
-
-    hours.map(hourBlock => hourBlock.daysOfWeek.map(day => {
-      const matchedDay = convertDayToInt(day)
-      workingDays.push(matchedDay)
-    }))
-
-    const offDays = daysOfWeek.filter(day => !workingDays.includes(day))
-
-    return offDays.includes(date.getDay())
-  }
-
   return (
     <Root>
       <Form>
         {buttonText && (
           <Typography fontWeight="550" variant="h5">Your Reservation</Typography>
         )}
-
-        {!checkoutPage && (
-          <React.Fragment>
-            <Typography variant="subtitle1">Date</Typography>
-            <DatePicker
-              name="eventDate"
-              disablePast
-              required
-              views={['month', 'day']}
-              inputVariant="outlined"
-              shouldDisableDate={disableDaysOff}
-            />
-
-            <Typography variant="subtitle1">Time</Typography>
-            <CustomSelect hours={hours} />
-          </React.Fragment>
-        )}
-
-        {cartItems?.length > 0 && (
-          <Content>
-            <Typography variant="h6" sx={{ mt: 4, fontWeight: '545' }}>Your Items</Typography>
-            <CartItems selectedCartItems={cartItems} />
-            <Typography variant="h6" sx={{ my: 4 }}>Total: {formatNumberToCurrency(total)}</Typography>
-            {buttonText && (
-              <Link href={Routes.Checkout({ cid: 1 })}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="large"
-                >
-                  {buttonText}
-                </Button>
-              </Link>
-            )}
-          </Content>
-        )}
+        <CartItemsContainer
+          buttonText={buttonText}
+          checkoutPage={checkoutPage}
+          cartItems={cartItems}
+          hours={hours}
+          total={total}
+        />
       </Form>
     </Root>
   );

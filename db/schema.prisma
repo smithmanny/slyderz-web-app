@@ -148,7 +148,6 @@ model Order {
   amount             Int
   confirmationNumber String      @unique
   orderStatus        OrderStatus @default(PENDING)
-  paymentMethod      String
 
   user   User   @relation(fields: [userId], references: [id])
   userId Int

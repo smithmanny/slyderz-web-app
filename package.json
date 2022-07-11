@@ -65,6 +65,7 @@
     "@types/preview-email": "2.0.1",
     "@types/react": "17.0.39",
     "eslint": "8.10.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "husky": "7.0.4",
     "lint-staged": "12.3.4",
     "prettier": "2.5.1",

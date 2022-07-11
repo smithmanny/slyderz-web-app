@@ -10,14 +10,14 @@ interface OrderConfirmationNumberType {
 const stripe = require("stripe")(process.env.BLITZ_PUBLIC_STRIPE_SECRET_KEY);
 
 const handler = async(req: BlitzApiRequest, res: BlitzApiResponse) => {
-  const { paymentMethod, orderTotal, userId } = req.body;
+  const { orderTotal, userId } = req.body;
   let pendingOrder
 
-  await db.$transaction(async (prisma) => {
-    if (!userId) {
-      throw new Error("Can't create order without a user")
-    }
+  if (!userId) {
+    throw new Error("Can't create order without a user")
+  }
 
+  await db.$transaction(async (prisma) => {
     // 1. Generate random confirmation string
     const generateConfirmationNumber = `SLY-${randomstring.generate({
       charset: 'alphanumeric',
@@ -31,7 +31,6 @@ const handler = async(req: BlitzApiRequest, res: BlitzApiResponse) => {
         amount: Number(orderTotal),
         chefId: 1,
         confirmationNumber: generateConfirmationNumber,
-        paymentMethod,
         userId: Number(userId),
       },
       select: {

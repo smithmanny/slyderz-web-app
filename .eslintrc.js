@@ -18,12 +18,13 @@ module.exports = {
     amd: true,
     node: true,
   },
-  plugins: ["react", "prettier"],
+  plugins: ["react", "prettier", "react-hooks"],
   extends: [
     "airbnb",
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:jsx-a11y/recommended",
+    "plugin:react-hooks/recommended",
     "plugin:prettier/recommended", // Make sure this is always the last element in the array.
   ],
   rules: {
@@ -48,5 +49,7 @@ module.exports = {
         specialLink: ["to"],
       },
     ],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   },
 };

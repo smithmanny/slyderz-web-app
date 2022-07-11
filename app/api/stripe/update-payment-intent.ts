@@ -3,28 +3,26 @@ import { BlitzApiRequest, BlitzApiResponse } from "blitz"
 const stripe = require("stripe")(process.env.BLITZ_PUBLIC_STRIPE_SECRET_KEY);
 
 const handler = async(req: BlitzApiRequest, res: BlitzApiResponse) => {
-  const { cartItems, orderTotal, eventDate, eventTime, setupIntentId, userId } = req.body
+  const { eventDate, eventTime, paymentMethod, paymentIntentId } = req.body
 
-  if (setupIntentId === undefined) {
-    throw Error("No setup intent was provided")
+  if (paymentIntentId === undefined) {
+    throw Error("No payment intent was provided")
   }
 
-  const setupIntent = await stripe.setupIntents.update(
-    setupIntentId,
+  const paymentIntent = await stripe.paymentIntents.update(
+    paymentIntentId,
     {
+      payment_method: paymentMethod,
       metadata:{
-        cartItems: JSON.stringify(cartItems),
-        orderTotal,
         eventDate,
         eventTime,
-        userId,
       }
     }
   );
 
   res.statusCode = 200
   res.setHeader("Content-Type", "application/json")
-  res.end(JSON.stringify({ id: setupIntent.id }))
+  res.end(JSON.stringify({ paymentIntentMetadata: paymentIntent.metadata }))
 }
 
 export default handler

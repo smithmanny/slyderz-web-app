@@ -12,6 +12,15 @@ export interface CartItem {
   price: number,
   quantity: number,
 }
+export interface EmailBodyType {
+  cartItems: Array<CartItem>
+  confirmationNumber: string
+  acceptOrderUrl: string
+  denyOrderUrl: string
+  eventDate: string
+  eventTime: string
+  orderTotal: string
+}
 interface Cart {
   pendingCartItems: Array<CartItem> | [],
   total: number,
