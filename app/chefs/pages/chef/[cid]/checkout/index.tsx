@@ -8,7 +8,6 @@ import {
 } from "@stripe/react-stripe-js";
 import ArrowBack from '@mui/icons-material/ArrowBack';
 
-import { transfromDateToReadableTime } from "app/helpers/dateHelpers"
 import { styled } from "integrations/material-ui";
 import { readableDate } from "app/helpers/dateHelpers"
 import { sendOrderRequestEmail } from "app/helpers"
@@ -214,7 +213,7 @@ const CheckoutPage = ({ eventDate, eventTime, router, paymentIntentId, stripePay
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Typography sx={{ mb: 2 }} variant="h5">Payment Info</Typography>
-            {/* {stripePaymentMethods.length > 0 && (
+            {stripePaymentMethods.length > 0 && (
               <Select
                 label="Select payment method"
                 name="paymentMethod"
@@ -226,8 +225,8 @@ const CheckoutPage = ({ eventDate, eventTime, router, paymentIntentId, stripePay
                 md={12}
                 required
               />
-            )} */}
-            {stripePaymentMethods.length > 0 && (
+            )}
+            {stripePaymentMethods.length === 0 && (
               <Button
                 variant="text"
                 onClick={e => {

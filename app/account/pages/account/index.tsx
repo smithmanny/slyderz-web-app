@@ -1,5 +1,8 @@
 import React, { useCallback, useState } from 'react'
 import { BlitzPage, useMutation } from "blitz"
+import {
+  useElements
+} from "@stripe/react-stripe-js";
 
 import loginMutation from "app/auth/mutations/login"
 import { Login } from "app/auth/validations"
@@ -11,10 +14,9 @@ import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
 import Form, { TextField } from "app/core/components/form"
-import StripeCardElementModal from '../../components/StripeCardElementModal'
+import StripeCardElement from '../../components/StripeCardElement'
 
 const Account: BlitzPage = () => {
-  const [showPaymentModal, setShowPaymentModal] = useState(false)
   const [login] = useMutation(loginMutation)
   const user = useCurrentUser();
   const initialValues = {
@@ -22,9 +24,6 @@ const Account: BlitzPage = () => {
     lastName: user?.lastName,
     email: user?.email,
   };
-
-  const openHoursModal = useCallback(() => setShowPaymentModal(true), [])
-  const closeHoursModal = useCallback(() => setShowPaymentModal(false), [])
 
   return (
     <React.Fragment>
@@ -96,24 +95,20 @@ const Account: BlitzPage = () => {
         </Form>
 
         <Typography variant="h6" sx={{ mt: 6 }} gutterBottom>
-          <strong>Payment Method</strong>
+          <strong>Payment Methods</strong>
         </Typography>
+        <StripeCardElement />
 
         {/* Delete Account */}
         <Typography variant="h6" sx={{ mt: 6 }} gutterBottom>
           <strong>Delete Your Account</strong>
         </Typography>
         <Button
-          // color="red"
           variant="text"
         >
           Delete Account
         </Button>
       </ConsumerContainer>
-      {/* <StripeCardElementModal
-        show={showPaymentModal}
-        onClose={closeHoursModal}
-      /> */}
     </React.Fragment>
   )
 }

@@ -69,6 +69,7 @@ const StripeCardElementModal = ({ show, onClose, ...props }) => {
       // Your customer will be redirected to your `return_url`. For some payment
       // methods like iDEAL, your customer will be redirected to an intermediate
       // site first to authorize the payment, then redirected to the `return_url`.
+      onClose()
     }
   };
 
@@ -99,28 +100,21 @@ const StripeCardElementModal = ({ show, onClose, ...props }) => {
     createStripeSetupIntent();
   }, []);
 
-  const appearance = {
-    theme: 'stripe',
-  };
-  const options: any = {
-    clientSecret,
-    appearance,
-  };
   return (
     <Modal
       closeModal={onClose}
       show={show}
       size="sm"
-      title="Create Hours"
+      title="Add Payment Method"
       {...props}
     >
       {clientSecret && (
-        <Elements options={options} stripe={promise}>
+        <React.Fragment>
           <PaymentElement id="payment-element" />
           <Button type="submit" sx={{ mt: 2 }} onClick={handleSubmit}>
             Save Card
           </Button>
-        </Elements>
+        </React.Fragment>
       )}
     </Modal>
   )

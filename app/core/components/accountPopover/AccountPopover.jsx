@@ -1,7 +1,8 @@
-import { useMutation, Link } from "blitz"
+import { useMutation, Link, useRouter } from "blitz"
 import PropTypes from "prop-types";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+import ListItemButton from '@mui/material/ListItemButton';
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import PersonIcon from "@mui/icons-material/Person";
@@ -20,28 +21,32 @@ const routes = [
   },
 ];
 
-const AccountPopover = ({ ...props }) => {
+const AccountPopover = (props) => {
   const [logout] = useMutation(logoutMutation);
+  const router = useRouter();
+
+  const handlePopoverClick = (route) => {
+    router.push(route)
+    props.onClose();
+  }
 
   return (
     <Popover {...props}>
       <List>
         {routes.map((link) => (
-          <Link key={link.id} href={link.route}>
-            <ListItem button key={link}>
-              <ListItemAvatar>
-                <PersonIcon fontSize="large" />
-              </ListItemAvatar>
-              <ListItemText
-                primary={link.name}
-                sx={{
-                  "& span": {
-                  fontWeight: "500"
-                  }
-                }}
-              />
-            </ListItem>
-          </Link>
+          <ListItemButton key={link.id} onClick={() => handlePopoverClick(link.route)}>
+            <ListItemAvatar>
+              <PersonIcon fontSize="large" />
+            </ListItemAvatar>
+            <ListItemText
+              primary={link.name}
+              sx={{
+                "& span": {
+                fontWeight: "500"
+                }
+              }}
+            />
+          </ListItemButton>
         ))}
         <ListItem button onClick={() => logout()}>
           <ListItemText
@@ -58,9 +63,16 @@ const AccountPopover = ({ ...props }) => {
   );
 };
 
+AccountPopover.defaultProps = {
+  anchorEl: null,
+  id: null
+};
+
 AccountPopover.propTypes = {
+  id: PropTypes.string,
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
+  anchorEl: PropTypes.element,
 };
 
 export default AccountPopover;
