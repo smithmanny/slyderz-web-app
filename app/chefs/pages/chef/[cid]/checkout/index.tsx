@@ -77,16 +77,17 @@ const Spinner = styled('div')({
 });
 
 interface DataType {
-  clientSecret: string
-  id: Number
-  paymentIntentId: Number
+  paymentIntent: any
   paymentMethods: Array<any>
 }
 interface CheckoutPageTypes {
-  paymentIntentId: Number
+  paymentIntent: any
   stripePaymentMethods: Array<any>
+  cartItems: Array<any>
   eventDate: string
   eventTime: string
+  orderTotal: Number
+  userId: Number
   router: any
 }
 interface CheckoutTypes {
@@ -98,7 +99,7 @@ interface CheckoutTypes {
 
 const promise = loadStripe("pk_test_GrN77dvsAhUuGliIXge1nUD8");
 
-const CheckoutPage = ({ eventDate, eventTime, router, paymentIntentId, stripePaymentMethods }: CheckoutPageTypes) => {
+const CheckoutPage = ({ cartItems, eventDate, eventTime, orderTotal, userId, router, paymentIntent, stripePaymentMethods }: CheckoutPageTypes) => {
   const antiCSRFToken = getAntiCSRFToken();
   const stripe = useStripe();
   const elements = useElements();
@@ -120,71 +121,51 @@ const CheckoutPage = ({ eventDate, eventTime, router, paymentIntentId, stripePay
   }, [emailSent])
 
   const handleSubmit = async (values) => {
-    if (!stripe || !elements || !paymentIntentId) {
+    if (!stripe || !elements || !paymentIntent) {
       return
     };
 
     setProcessing(true);
 
-    // Update stripe paymentIntent to include form values
-    let data;
-    const body = {
-      ...values,
-      paymentIntentId
+    const createOrderBody = {
+      orderTotal,
+      userId
     }
+    let order
 
     try {
-      const res = await fetch("/api/stripe/update-payment-intent", {
+      const res = await fetch("http://localhost:3000/api/create-order", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          "anti-csrf": antiCSRFToken,
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify(body)
+        body: JSON.stringify(createOrderBody)
       });
-      data = await res.json();
+
+      order = await res.json()
+
     } catch (err) {
       console.error(err)
     }
 
-    if (data) {
-      const paymentIntentValues = data.paymentIntentMetadata
-      const paymentIntentOrderRequestData = {
-        ...paymentIntentValues
-      }
-      let paymentIntentData
+    const date = new Date(eventDate)
+    const acceptUrl = new URL(`http://localhost:3000/orders/confirm/${paymentIntent.id}`)
+    acceptUrl.searchParams.set('confirmationNumber', order.pendingOrder.confirmationNumber)
+    const denyUrl = new URL(`http://localhost:3000/orders/deny/${paymentIntent.id}`)
+    acceptUrl.searchParams.set('confirmationNumber', order.pendingOrder.confirmationNumber)
 
-      try {
-        const res = await fetch("http://localhost:3000/api/create-order", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(paymentIntentOrderRequestData)
-        });
-
-        paymentIntentData = await res.json()
-
-      } catch (err) {
-        console.error(err)
-      }
-
-      if (paymentIntentData) {
-        const date = new Date(paymentIntentValues.eventDate)
-        const emailData: EmailBodyType = {
-          acceptOrderUrl: 'http://localhost:3000',
-          denyOrderUrl: 'http://localhost:3000',
-          cartItems: JSON.parse(paymentIntentValues.cartItems),
-          orderTotal: paymentIntentValues.orderTotal,
-          confirmationNumber: paymentIntentData.pendingOrder.confirmationNumber,
-          eventTime: paymentIntentValues.eventTime,
-          eventDate: readableDate(date),
-        }
-        sendOrderRequestEmail(emailData)
-        setEmailSent(true)
-        confirmationNumberRef.current = paymentIntentData.pendingOrder.confirmationNumber
-      }
+    const emailData: EmailBodyType = {
+      acceptOrderUrl: acceptUrl,
+      denyOrderUrl: denyUrl,
+      cartItems,
+      orderTotal,
+      confirmationNumber: order.pendingOrder.confirmationNumber,
+      eventTime: eventTime,
+      eventDate: readableDate(date),
     }
+    sendOrderRequestEmail(emailData)
+    setEmailSent(true)
+    confirmationNumberRef.current = order.pendingOrder.confirmationNumber
   };
 
   const renderLeftContainer = () => (
@@ -232,7 +213,9 @@ const CheckoutPage = ({ eventDate, eventTime, router, paymentIntentId, stripePay
                 onClick={e => {
                   e.preventDefault()
 
-                  openStripeCardModal()
+                  router.push(Routes.Account())
+
+                  // openStripeCardModal()
                 }}
               >
                 Add Payment Method
@@ -288,10 +271,10 @@ const CheckoutPage = ({ eventDate, eventTime, router, paymentIntentId, stripePay
           <CartSummary checkoutPage />
         </Grid>
       </Grid>
-      <StripeCardElementModal
+      {/* <StripeCardElementModal
         show={showStripeCardModal}
         onClose={closeStripeCardModal}
-      />
+      /> */}
     </React.Fragment>
   )
 }
@@ -329,7 +312,7 @@ export async function getServerSideProps({ req, res }) {
 const Checkout: BlitzPage = (props: any) => {
   const router = useRouter();
   const antiCSRFToken = getAntiCSRFToken();
-  const paymentIntentId:any = useRef();
+  const paymentIntent:any = useRef();
   const stripePaymentMethods:any = useRef();
   const [clientSecret, setClientSecret] = useState('');
   const { cartItems, orderTotal, userId }: CheckoutTypes = props;
@@ -370,8 +353,8 @@ const Checkout: BlitzPage = (props: any) => {
         console.error(err)
       } finally {
         if (data) {
-          setClientSecret(data.clientSecret);
-          paymentIntentId.current = data.paymentIntentId
+          setClientSecret(data.paymentIntent.clientSecret);
+          paymentIntent.current = data.paymentIntent
           stripePaymentMethods.current = data.paymentMethods
         }
       }
@@ -392,10 +375,13 @@ const Checkout: BlitzPage = (props: any) => {
       {clientSecret && (eventTime && eventDate) && (
         <Elements options={options} stripe={promise}>
           <CheckoutPage
-            paymentIntentId={paymentIntentId.current}
+            paymentIntent={paymentIntent.current}
             stripePaymentMethods={stripePaymentMethods.current.data}
+            cartItems={cartItems}
             eventDate={eventDate}
             eventTime={eventTime}
+            orderTotal={orderTotal}
+            userId={userId}
             router={router}
           />
         </Elements>

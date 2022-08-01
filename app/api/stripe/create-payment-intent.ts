@@ -40,8 +40,7 @@ const handler = async(req: BlitzApiRequest, res: BlitzApiResponse) => {
   res.statusCode = 200
   res.setHeader("Content-Type", "application/json")
   res.end(JSON.stringify({
-    paymentIntentId: paymentIntent.id,
-    clientSecret: paymentIntent.client_secret,
+    paymentIntent: paymentIntent,
     paymentMethods
   }))
 }

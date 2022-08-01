@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, FunctionComponent } from 'react';
+import React, { useEffect, useState, FunctionComponent } from 'react';
 import { getAntiCSRFToken, useRouter } from "blitz";
 import { loadStripe } from "@stripe/stripe-js";
 import {
@@ -29,7 +29,6 @@ interface DataType {
 }
 
 const StripeCard: FunctionComponent<any> = (props) => {
-  const antiCSRFToken = getAntiCSRFToken();
   const router = useRouter()
   const stripe = useStripe();
   const elements = useElements();
@@ -78,11 +77,12 @@ const StripeCard: FunctionComponent<any> = (props) => {
       });
       data = await res.json()
 
-      if (data) {
-        router.reload()
-      }
     } catch (err) {
       console.log(err)
+    }
+
+    if (data) {
+      router.reload()
     }
   }
 
@@ -121,7 +121,6 @@ const StripeCard: FunctionComponent<any> = (props) => {
 
 const StripeCardElement = (props) => {
   const antiCSRFToken = getAntiCSRFToken();
-  const setupIntentId: any = useRef();
   const [clientSecret, setClientSecret] = useState('');
   const [stripePaymentMethods, setStripePaymentMethods]: any = useState([]);
 
@@ -153,7 +152,6 @@ const StripeCardElement = (props) => {
         if (data) {
           setClientSecret(data.clientSecret);
           setStripePaymentMethods(data.paymentMethods);
-          setupIntentId.current = data.id
         }
       }
     }

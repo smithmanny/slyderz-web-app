@@ -19,7 +19,7 @@ const handler = async(req: BlitzApiRequest, res: BlitzApiResponse) => {
 
   await db.$transaction(async (prisma) => {
     // 1. Generate random confirmation string
-    const generateConfirmationNumber = `SLY-${randomstring.generate({
+    const confirmationNumber = `SLY-${randomstring.generate({
       charset: 'alphanumeric',
       capitalization: 'uppercase',
       length: 7,
@@ -30,12 +30,13 @@ const handler = async(req: BlitzApiRequest, res: BlitzApiResponse) => {
       data: {
         amount: Number(orderTotal),
         chefId: 1,
-        confirmationNumber: generateConfirmationNumber,
+        confirmationNumber,
         userId: Number(userId),
       },
       select: {
         confirmationNumber: true,
-        id: true
+        id: true,
+        userId: true,
       }
     })
 

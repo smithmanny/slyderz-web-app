@@ -15,11 +15,11 @@ export interface CartItem {
 export interface EmailBodyType {
   cartItems: Array<CartItem>
   confirmationNumber: string
-  acceptOrderUrl: string
-  denyOrderUrl: string
+  acceptOrderUrl: URL
+  denyOrderUrl: URL
   eventDate: string
   eventTime: string
-  orderTotal: string
+  orderTotal: Number
 }
 interface Cart {
   pendingCartItems: Array<CartItem> | [],
