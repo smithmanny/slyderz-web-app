@@ -21,7 +21,6 @@ import CartSummary from 'app/core/components/cart/cartSummary'
 import ConsumerContainer from 'app/core/components/shared/ConsumerContainer';
 import Grid from 'app/core/components/shared/Grid';
 import Typography from 'app/core/components/shared/Typography'
-import StripeCardElementModal from 'app/account/components/StripeCardElementModal';
 
 const Section = styled('div')(({ theme }) => ({
   alignItems: 'center',
@@ -107,10 +106,6 @@ const CheckoutPage = ({ cartItems, eventDate, eventTime, orderTotal, userId, rou
   const [error, setError]: any | String = useState(null);
   const [emailSent, setEmailSent]: any | boolean = useState(false);
   const [processing, setProcessing] = useState(false);
-  const [showStripeCardModal, setShowStripeModal] = useState(false)
-
-  const openStripeCardModal = useCallback(() => setShowStripeModal(true), [])
-  const closeStripeCardModal = useCallback(() => setShowStripeModal(false), [])
 
   useEffect(() => {
     if (emailSent && confirmationNumberRef.current) {
@@ -137,7 +132,8 @@ const CheckoutPage = ({ cartItems, eventDate, eventTime, orderTotal, userId, rou
       const res = await fetch("http://localhost:3000/api/create-order", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "anti-csrf": antiCSRFToken,
         },
         body: JSON.stringify(createOrderBody)
       });
@@ -146,6 +142,7 @@ const CheckoutPage = ({ cartItems, eventDate, eventTime, orderTotal, userId, rou
 
     } catch (err) {
       console.error(err)
+      throw new Error('Failed creating order')
     }
 
     const date = new Date(eventDate)
@@ -261,21 +258,15 @@ const CheckoutPage = ({ cartItems, eventDate, eventTime, orderTotal, userId, rou
     </React.Fragment>
   )
   return (
-    <React.Fragment>
-      <Grid container spacing={4}>
-        {/* Left side */}
-        <Grid item xs={12} md={6}>
-          {renderLeftContainer()}
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <CartSummary checkoutPage />
-        </Grid>
+    <Grid container spacing={4}>
+      {/* Left side */}
+      <Grid item xs={12} md={6}>
+        {renderLeftContainer()}
       </Grid>
-      {/* <StripeCardElementModal
-        show={showStripeCardModal}
-        onClose={closeStripeCardModal}
-      /> */}
-    </React.Fragment>
+      <Grid item xs={12} md={6}>
+        <CartSummary checkoutPage />
+      </Grid>
+    </Grid>
   )
 }
 
@@ -353,7 +344,7 @@ const Checkout: BlitzPage = (props: any) => {
         console.error(err)
       } finally {
         if (data) {
-          setClientSecret(data.paymentIntent.clientSecret);
+          setClientSecret(data.paymentIntent.client_secret);
           paymentIntent.current = data.paymentIntent
           stripePaymentMethods.current = data.paymentMethods
         }
