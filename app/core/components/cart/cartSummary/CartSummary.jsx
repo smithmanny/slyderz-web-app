@@ -97,6 +97,7 @@ const CartItemsContainer = (props) => {
                 variant="contained"
                 color="primary"
                 size="large"
+                disabled={(!selectedEventDate || !formState.values?.eventTime)}
               >
                 {props.buttonText}
               </Button>

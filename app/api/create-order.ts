@@ -10,7 +10,7 @@ interface OrderConfirmationNumberType {
 const stripe = require("stripe")(process.env.BLITZ_PUBLIC_STRIPE_SECRET_KEY);
 
 const handler = async(req: BlitzApiRequest, res: BlitzApiResponse) => {
-  const { orderTotal, userId } = req.body;
+  const { orderTotal, userId, paymentMethod, paymentIntent } = req.body;
   let pendingOrder
 
   if (!userId) {
@@ -43,6 +43,13 @@ const handler = async(req: BlitzApiRequest, res: BlitzApiResponse) => {
     if (!order) {
       throw new Error('Order number was not created.')
     }
+
+    await stripe.paymentIntents.update(
+      paymentIntent.id,
+      {
+        payment_method: paymentMethod,
+      }
+    );
 
     pendingOrder = order
     return order;

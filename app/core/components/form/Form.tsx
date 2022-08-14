@@ -57,7 +57,7 @@ export function Form<S extends z.ZodType<any, any>>({
       return handleMutation(variables)
     }
 
-    if (onSubmit) {
+    if (typeof onSubmit === 'function') {
       return onSubmit(values, formApi, cb)
     }
   }
