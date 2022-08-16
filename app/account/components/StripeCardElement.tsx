@@ -1,5 +1,5 @@
-import React, { useEffect, useState, FunctionComponent } from 'react';
-import { getAntiCSRFToken, useRouter } from "blitz";
+import React, { useState, FunctionComponent } from 'react';
+import { useRouter } from "blitz";
 import { loadStripe } from "@stripe/stripe-js";
 import {
   PaymentElement,
@@ -22,12 +22,6 @@ const StripePaymentSpan = styled('span')(({ theme }) => ({
 
 const promise = loadStripe("pk_test_GrN77dvsAhUuGliIXge1nUD8");
 
-interface DataType {
-  clientSecret: string
-  id: Number
-  paymentMethods: Array<any>
-}
-
 const StripeCard: FunctionComponent<any> = (props) => {
   const router = useRouter()
   const stripe = useStripe();
@@ -46,7 +40,6 @@ const StripeCard: FunctionComponent<any> = (props) => {
     const { error }: any = await stripe.confirmSetup({
       //`Elements` instance that was used to create the Payment Element
       elements,
-      redirect: 'if_required',
       confirmParams: {
         return_url: 'http://localhost:3000/account',
       }
@@ -120,9 +113,7 @@ const StripeCard: FunctionComponent<any> = (props) => {
 }
 
 const StripeCardElement = (props) => {
-  const antiCSRFToken = getAntiCSRFToken();
-  const [clientSecret, setClientSecret] = useState('');
-  const [stripePaymentMethods, setStripePaymentMethods]: any = useState([]);
+  const { clientSecret, paymentMethods } = props;
 
   const appearance = {
     theme: 'stripe',
@@ -132,38 +123,11 @@ const StripeCardElement = (props) => {
     appearance,
   };
 
-  useEffect(() => {
-    // Create PaymentIntent as soon as the page loads
-    async function createStripeSetupIntent() {
-      let data: DataType | null = null;
-
-      try {
-        const res = await fetch("/api/stripe/create-setup-intent", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "anti-csrf": antiCSRFToken,
-          },
-        });
-        data = await res.json();
-      } catch (err) {
-        console.error(err)
-      } finally {
-        if (data) {
-          setClientSecret(data.clientSecret);
-          setStripePaymentMethods(data.paymentMethods);
-        }
-      }
-    }
-
-    createStripeSetupIntent();
-  }, []);
-
   return (
     <React.Fragment>
       {clientSecret && (
         <Elements options={options} stripe={promise}>
-          <StripeCard paymentMethods={stripePaymentMethods} />
+          <StripeCard paymentMethods={paymentMethods} />
         </Elements>
       )}
     </React.Fragment>

@@ -1,15 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { getAntiCSRFToken, Link, Routes, useRouter } from "blitz";
-import {
-  useStripe,
-  useElements
-} from "@stripe/react-stripe-js";
 import ArrowBack from '@mui/icons-material/ArrowBack';
 
 import { styled } from "integrations/material-ui";
-import { readableDate } from "app/helpers/dateHelpers"
-import { sendOrderRequestEmail } from "app/helpers"
-import { EmailBodyType } from 'types'
 
 import Form, { Select } from 'app/core/components/form';
 import Alert from 'app/core/components/shared/Alert';
@@ -72,97 +65,49 @@ const Spinner = styled('div')({
 });
 
 interface CheckoutPageTypes {
-  setupIntent: any
+  eventDate: Date
+  eventTime: Date
   stripePaymentMethods: Array<any>
-  cartItems: Array<any>
-  orderTotal: Number
   userId: Number
 }
 
-const CheckoutPage = ({ cartItems, orderTotal, userId, setupIntent, stripePaymentMethods }: CheckoutPageTypes) => {
+const CheckoutPage = ({ eventDate, eventTime, userId, stripePaymentMethods }: CheckoutPageTypes) => {
   const antiCSRFToken = getAntiCSRFToken();
   const router = useRouter();
-  const stripe = useStripe();
-  const elements = useElements();
-  const confirmationNumberRef: any = useRef()
-  // const [error, setError]: any | String = useState(null);
-  const [emailSent, setEmailSent]: any | boolean = useState(false);
   const [processing, setProcessing] = useState(false);
 
-  // useEffect(() => {
-  //   if (emailSent && confirmationNumberRef.current) {
-  //     const url = new URL(`http://localhost:3000/account/${userId}/orders`)
-  //     url.searchParams.set('confirmationNumber', confirmationNumberRef.current)
-  //     router.push(`${url.pathname}${url.search}`)
-  //   }
-  // }, [emailSent])
-
   const handleSubmit = async (values) => {
-    const { paymentMethod } = values
-
-    if (!stripe || !elements || !setupIntent) {
-      return
-    };
-
-    setProcessing(true);
-    console.log('RUNNING')
-    const { error } = await stripe.confirmSetup({
-      elements,
-      confirmParams: {
-        return_url: `http://localhost:3000/account/${userId}/orders`,
-      },
-    });
-
-    if (error) {
-      console.log('error', error)
-      setProcessing(false);
+    const orderBody = {
+      eventDate,
+      eventTime,
+      paymentMethodId: values.paymentMethod
     }
 
-    // const createOrderBody = {
-    //   setupIntent,
-    //   paymentMethod,
-    //   orderTotal,
-    //   userId
-    // }
-    // let order
+    setProcessing(true);
 
-    // try {
-    //   const res = await fetch("http://localhost:3000/api/create-order", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       "anti-csrf": antiCSRFToken,
-    //     },
-    //     body: JSON.stringify(createOrderBody)
-    //   });
+    try {
+      const res = await fetch("http://localhost:3000/api/create-order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "anti-csrf": antiCSRFToken,
+        },
+        body: JSON.stringify(orderBody)
+      });
 
-    //   order = await res.json()
+      const fufilledOrder = await res.json()
 
-    // } catch (err) {
-    //   console.error(err)
-    //   throw new Error('Failed creating order')
-    // }
+      if (fufilledOrder) {
+        const url = new URL(`http://localhost:3000/account/${userId}/orders`)
+        url.searchParams.set('confirmationNumber', fufilledOrder.data.confirmationNumber)
+        router.push(`${url.pathname}${url.search}`)
+      }
 
-    // if (order) {
-    //   const date = new Date(eventDate)
-    //   const acceptUrl = new URL(`http://localhost:3000/orders/confirm/${paymentIntent.id}`)
-    //   acceptUrl.searchParams.set('confirmationNumber', order.pendingOrder.confirmationNumber)
-    //   const denyUrl = new URL(`http://localhost:3000/orders/deny/${paymentIntent.id}`)
-    //   acceptUrl.searchParams.set('confirmationNumber', order.pendingOrder.confirmationNumber)
-
-    //   const emailData: EmailBodyType = {
-    //     acceptOrderUrl: acceptUrl,
-    //     denyOrderUrl: denyUrl,
-    //     cartItems,
-    //     orderTotal,
-    //     confirmationNumber: order.pendingOrder.confirmationNumber,
-    //     eventTime,
-    //     eventDate: readableDate(date),
-    //   }
-    //   sendOrderRequestEmail(emailData)
-    //   setEmailSent(true)
-    //   confirmationNumberRef.current = order.pendingOrder.confirmationNumber
-    // }
+    } catch (err) {
+      console.error(err)
+      setProcessing(true);
+      throw new Error('Failed creating order')
+    }
   };
 
   const renderLeftContainer = () => (
@@ -183,6 +128,9 @@ const CheckoutPage = ({ cartItems, orderTotal, userId, setupIntent, stripePaymen
       </Section>
       <Form
         onSubmit={handleSubmit}
+        initialValues={{
+          paymentMethod: stripePaymentMethods[0].id
+        }}
       >
         <Grid container spacing={2}>
           <Grid item xs={12}>
@@ -207,8 +155,6 @@ const CheckoutPage = ({ cartItems, orderTotal, userId, setupIntent, stripePaymen
                   e.preventDefault()
 
                   router.push(Routes.Account())
-
-                  // openStripeCardModal()
                 }}
               >
                 Add Payment Method

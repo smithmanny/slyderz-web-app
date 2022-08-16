@@ -1,4 +1,4 @@
-import { ReactNode, PropsWithoutRef } from "react"
+import { memo, ReactNode, PropsWithoutRef } from "react"
 import PropTypes from 'prop-types'
 import { AuthenticationError, validateZodSchema } from "blitz"
 import { Form as FinalForm, FormProps as FinalFormProps } from "react-final-form"
@@ -61,6 +61,7 @@ export function Form<S extends z.ZodType<any, any>>({
       return onSubmit(values, formApi, cb)
     }
   }
+
   return (
     <FinalForm
       initialValues={initialValues}

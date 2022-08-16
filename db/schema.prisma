@@ -147,6 +147,9 @@ model Order {
   updatedAt          DateTime    @updatedAt
   amount             Int
   confirmationNumber String      @unique
+  paymentMethodId String
+  eventDate DateTime
+  eventTime String
   orderStatus        OrderStatus @default(PENDING)
 
   user   User   @relation(fields: [userId], references: [id])
