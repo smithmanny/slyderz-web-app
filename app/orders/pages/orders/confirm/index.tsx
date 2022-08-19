@@ -114,11 +114,9 @@ export async function getServerSideProps({ req, res }) {
     }
   })
 
-  const orderProps = order
-  delete orderProps.paymentMethodId
   return {
     props: {
-      order: orderProps,
+      order,
     },
   }
 }

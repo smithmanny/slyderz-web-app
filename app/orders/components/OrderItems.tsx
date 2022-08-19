@@ -7,7 +7,6 @@ import Box from "app/core/components/shared/Box";
 
 const OrderItems = (props) => {
   const { order } = props;
-  console.log(order)
   return (
     <Box sx={{ width: '100%' }}>
       <Box

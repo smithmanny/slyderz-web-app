@@ -1,6 +1,9 @@
 {
-  "name": "blitz-slyderz",
+  "name": "Slyderz",
   "version": "1.0.0",
+  "engines": {
+    "node": "16.17.0"
+  },
   "scripts": {
     "dev": "blitz dev",
     "build": "blitz build",
