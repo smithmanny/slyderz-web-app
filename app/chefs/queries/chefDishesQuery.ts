@@ -19,6 +19,11 @@ export default async function fetchChefDishes(
         include: {
           hours: true
         }
+      },
+      section: {
+        select: {
+          id: true,
+        }
       }
     }
   })

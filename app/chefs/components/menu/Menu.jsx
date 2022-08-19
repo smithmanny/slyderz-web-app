@@ -81,13 +81,15 @@ const Menu = (props) => {
           dishes={dishes}
         />
       </Grid>
-       <MenuItemModal
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        menuItem={menuItem}
-        show={openModal}
-        onClose={closeMenuItemModal}
-      />
+      {menuItem && (
+        <MenuItemModal
+         aria-labelledby="simple-modal-title"
+         aria-describedby="simple-modal-description"
+         menuItem={menuItem}
+         show={openModal}
+         onClose={closeMenuItemModal}
+       />
+      )}
     </Grid>
   );
 };

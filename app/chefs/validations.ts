@@ -18,6 +18,7 @@ export const CreateMenuItem = z.object({
   description: z.string(),
   name: z.string(),
   price: z.number(),
+  dishId: z.number(),
   quantity: z.number(),
 })
 

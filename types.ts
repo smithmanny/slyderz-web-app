@@ -10,6 +10,7 @@ export interface CartItem {
   description: string,
   name: string,
   price: number,
+  dishId: number,
   quantity: number,
 }
 export interface EmailBodyType {

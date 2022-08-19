@@ -105,7 +105,7 @@ const CheckoutPage = ({ eventDate, eventTime, userId, stripePaymentMethods }: Ch
 
     } catch (err) {
       console.error(err)
-      setProcessing(true);
+      setProcessing(false);
       throw new Error('Failed creating order')
     }
   };

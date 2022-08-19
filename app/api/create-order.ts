@@ -28,11 +28,20 @@ const handler = async (req: BlitzApiRequest, res: BlitzApiResponse) => {
   const order = await db.order.create({
     data: {
       amount: Number(session.cart?.total),
-      chefId: 1,
+      chefId: session.cart.pendingCartItems[0].chefId,
       confirmationNumber,
-      paymentMethodId,
       eventDate,
       eventTime,
+      dishes: {
+        createMany: {
+          data: session.cart.pendingCartItems.map(item => ({
+            dishId: item.dishId,
+            chefId: item.chefId,
+            quantity: item.quantity,
+          }))
+        }
+      },
+      paymentMethodId,
       userId: Number(session.userId),
     },
     select: {
@@ -44,9 +53,9 @@ const handler = async (req: BlitzApiRequest, res: BlitzApiResponse) => {
   // Send email
   if (order) {
     const date = new Date(eventDate)
-    const acceptUrl = new URL(`http://localhost:3000/orders/confirm/${order.id}`)
+    const acceptUrl = new URL('http://localhost:3000/orders/confirm')
     acceptUrl.searchParams.set('confirmationNumber', order.confirmationNumber)
-    const denyUrl = new URL(`http://localhost:3000/orders/deny/${order.id}`)
+    const denyUrl = new URL('http://localhost:3000/orders/deny')
     acceptUrl.searchParams.set('confirmationNumber', order.confirmationNumber)
 
     const emailData: EmailBodyType = {
