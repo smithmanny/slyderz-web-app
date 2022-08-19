@@ -1,16 +1,30 @@
 import { Link, BlitzPage, Routes } from "blitz"
 import { Global, css } from '@emotion/react'
 
+import { styled } from "integrations/material-ui"
+
 import Card, { CardContent, CardMedia } from "app/core/components/shared/Card"
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer"
 import Grid from "app/core/components/shared/Grid"
 import Typography from "app/core/components/shared/Typography"
-import Layout from "app/core/layouts/Layout"
+
+const ChefCard = styled(Card)`
+ & .MuiCard-root {
+    background: transparent;
+    box-shadow: none;
+    max-width: 308px;
+  }
+`
+const ChefCardContent = styled(CardContent)`
+ & .MuiCardContent-root {
+      padding-top: 8px;
+    }
+`
 
 const LoggedinLayout: BlitzPage = () => {
   return (
     <ConsumerContainer>
-      <Global
+      {/* <Global
         styles={css`
           .MuiCard-root {
             background: transparent;
@@ -22,19 +36,19 @@ const LoggedinLayout: BlitzPage = () => {
             padding-top: 8px;
           }
         `}
-      />
+      /> */}
       <Grid container spacing={2}>
         <Grid item xs={12} md={4}>
           <Link href={Routes.ChefPage({ cid: 1 })}>
             <a>
-              <Card>
+              <ChefCard>
                 <CardMedia
                   image="/logo.png"
                   component="img"
                   height="140"
                   title="Chef dish"
                 />
-                <CardContent
+                <ChefCardContent
                   sx={{
                     "& .name": {
                       mt: 1,
@@ -51,8 +65,8 @@ const LoggedinLayout: BlitzPage = () => {
                   <Typography variant="body1">
                     Starting at $17/person
                 </Typography>
-                </CardContent>
-              </Card>
+                </ChefCardContent>
+              </ChefCard>
             </a>
           </Link>
         </Grid>
@@ -60,11 +74,5 @@ const LoggedinLayout: BlitzPage = () => {
     </ConsumerContainer>
   )
 }
-
-LoggedinLayout.getLayout = (page) => (
-  <Layout title="Logged In">
-    {page}
-  </Layout>
-)
 
 export default LoggedinLayout

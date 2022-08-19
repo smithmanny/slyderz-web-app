@@ -1,4 +1,4 @@
-import { ReactNode, Suspense } from "react"
+import { ReactNode } from "react"
 import { Head } from "blitz"
 
 import Appbar from 'app/core/components/appbar'

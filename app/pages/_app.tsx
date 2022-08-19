@@ -16,6 +16,24 @@ import store from "integrations/redux";
 import { theme } from "integrations/material-ui";
 
 import LoginForm from "app/auth/components/LoginForm"
+import Box from "app/core/components/shared/Box"
+import CircularProgress from "app/core/components/shared/CircularProgress"
+
+function LoadingIcon() {
+  return (
+    <Box
+      sx={{
+        width: '100vw',
+        height: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}
+    >
+      <CircularProgress size={250} />
+    </Box>
+  )
+}
 
 export default function App({ Component, pageProps }: AppProps) {
   const getLayout = Component.getLayout || ((page) => page)
@@ -29,7 +47,7 @@ export default function App({ Component, pageProps }: AppProps) {
             FallbackComponent={RootErrorFallback}
             onReset={useQueryErrorResetBoundary().reset}
           >
-            <Suspense fallback="Loading">
+            <Suspense fallback={<LoadingIcon />}>
               {getLayout(<Component {...pageProps} />)}
             </Suspense>
           </ErrorBoundary>
