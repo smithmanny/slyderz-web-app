@@ -15,11 +15,11 @@ interface CheckoutTypes {
   userId: Number
 }
 
-const stripeSecret = process.env.BLITZ_PUBLIC_STRIPE_SECRET_KEY || ''
+const STRIPE_SECRET = process.env.BLITZ_PUBLIC_STRIPE_SECRET_KEY || ''
 
 export async function getServerSideProps({ req, res }) {
   const session = await getSession(req, res)
-  const stripe = new Stripe(stripeSecret);
+  const stripe = new Stripe(STRIPE_SECRET, { apiVersion: "2020-08-27" });
   const searchParams = req.url.split('?')[1]
 
   if (!session.userId) {

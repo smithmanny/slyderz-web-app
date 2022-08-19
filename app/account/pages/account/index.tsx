@@ -15,11 +15,11 @@ import Typography from "app/core/components/shared/Typography";
 import Form, { TextField } from "app/core/components/form"
 import StripeCardElement from '../../components/StripeCardElement'
 
-const stripeSecret = process.env.BLITZ_PUBLIC_STRIPE_SECRET_KEY || ''
+const STRIPE_SECRET = process.env.BLITZ_PUBLIC_STRIPE_SECRET_KEY || ''
 
 export async function getServerSideProps({ req, res }) {
   const session = await getSession(req, res)
-  const stripe = new Stripe(stripeSecret);
+  const stripe = new Stripe(STRIPE_SECRET, { apiVersion: "2020-08-27" });
 
   if (!session.userId) {
     return {
@@ -61,7 +61,6 @@ export async function getServerSideProps({ req, res }) {
 }
 
 const Account: BlitzPage<any> = (props) => {
-  const [message, setMessage] = useState(null);
   const [login] = useMutation(loginMutation)
   const stripe = useStripe()
   const user = useCurrentUser();
@@ -84,6 +83,9 @@ const Account: BlitzPage<any> = (props) => {
       'setup_intent_client_secret'
     );
 
+    if (!clientSecret) {
+      return
+    }
     // Retrieve the SetupIntent
     stripe
       .retrieveSetupIntent(clientSecret)
@@ -95,25 +97,23 @@ const Account: BlitzPage<any> = (props) => {
         // confirmation, while others will first enter a `processing` state.
         //
         // [0]: https://stripe.com/docs/payments/payment-methods#payment-notification
-        switch (setupIntent.status) {
+        switch (setupIntent?.status) {
           case 'succeeded':
-            setMessage('Success! Your payment method has been saved.');
+            console.log('Success! Your payment method has been saved.');
             break;
 
           case 'processing':
-            setMessage("Processing payment details. We'll update you when processing is complete.");
+            console.log("Processing payment details. We'll update you when processing is complete.");
             break;
 
           case 'requires_payment_method':
             // Redirect your user back to your payment page to attempt collecting
             // payment again
-            setMessage('Failed to process payment details. Please try another payment method.');
+            console.log('Failed to process payment details. Please try another payment method.');
             break;
         }
       });
   }, [stripe]);
-
-  console.log(message)
 
   return (
     <React.Fragment>
