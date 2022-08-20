@@ -1,5 +1,5 @@
+import Link from "next/link";
 import React from "react";
-import { Link } from "blitz";
 import InputAdornment from "@mui/material/InputAdornment";
 import { EmailOutline, Facebook, Twitter, Instagram } from "mdi-material-ui";
 

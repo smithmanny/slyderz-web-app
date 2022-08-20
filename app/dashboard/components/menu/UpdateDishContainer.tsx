@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "blitz"
+import { useMutation, useQuery } from "@blitzjs/rpc";
 import PropTypes from 'prop-types'
 
 import dishQuery from "../../queries/dishQuery"

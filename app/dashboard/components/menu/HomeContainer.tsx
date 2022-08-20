@@ -1,5 +1,5 @@
+import { invalidateQuery, useMutation, useQuery } from "@blitzjs/rpc";
 import React, { useState } from 'react';
-import { invalidateQuery, useMutation, useQuery } from "blitz"
 import IconButton from "@mui/material/IconButton";
 
 import menuSectionsQuery from "../../queries/menuSectionsQuery"

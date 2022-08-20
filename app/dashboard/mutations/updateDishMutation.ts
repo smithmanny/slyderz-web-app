@@ -18,7 +18,7 @@ export default async function destroyDish(
   // Validate input - very important for security
   const data = GetDish.parse(input)
 
-  const userId = ctx.session.$publicData.userId
+  const userId = ctx.session.userId
   ctx.session.$authorize()
 
   if (!userId) {

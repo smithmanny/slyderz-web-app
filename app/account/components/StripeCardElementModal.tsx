@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef, FunctionComponent } from 'react';
-import { getAntiCSRFToken } from "blitz";
 import { loadStripe } from "@stripe/stripe-js";
 import {
   PaymentElement,
@@ -65,7 +64,6 @@ const StripeCard: FunctionComponent<any> = (props) => {
 }
 
 const StripeCardElementModal = ({ show, onClose, ...props }) => {
-  const antiCSRFToken = getAntiCSRFToken();
   const setupIntentId: any = useRef();
   const [clientSecret, setClientSecret] = useState('');
 
@@ -78,7 +76,6 @@ const StripeCardElementModal = ({ show, onClose, ...props }) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "anti-csrf": antiCSRFToken,
           },
         });
         data = await res.json();

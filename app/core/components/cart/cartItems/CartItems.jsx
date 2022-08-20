@@ -1,5 +1,5 @@
+import { useMutation } from "@blitzjs/rpc";
 import React from "react";
-import { useMutation } from "blitz"
 
 import destroyMenuItemMutation from 'app/chefs/mutations/destroyMenuItem';
 import decreaseMenuItemQuantityMutation from 'app/chefs/mutations/decreaseMenuItemQuantity';

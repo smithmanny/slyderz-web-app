@@ -1,4 +1,4 @@
-import { resolver } from "blitz"
+import { resolver } from "@blitzjs/rpc";
 
 export default resolver.pipe(
   resolver.authorize(),

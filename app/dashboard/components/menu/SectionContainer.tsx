@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "blitz"
+import { useMutation, useQuery } from "@blitzjs/rpc";
 
 import menuSectionQuery from "../../queries/menuSectionQuery"
 import destroyDishMutation from "../../mutations/destroyDishMutation"
@@ -43,7 +43,7 @@ const SectionContainer = (props) => {
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Box>
                   <Typography>{dish.name}</Typography>
-                  <Typography>${dish.price}</Typography>
+                  <Typography>{`$${dish.price}`}</Typography>
                 </Box>
 
                 <Stack direction="row">

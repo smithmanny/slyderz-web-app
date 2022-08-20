@@ -13,7 +13,7 @@ export default async function updateHoursMutation(
 ) {
   const data = GetHour.parse(input)
 
-  const userId = ctx.session.$publicData.userId
+  const userId = ctx.session.userId
   ctx.session.$authorize()
 
   if (!userId) {

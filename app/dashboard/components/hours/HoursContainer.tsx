@@ -1,5 +1,5 @@
+import { useMutation, useQuery } from "@blitzjs/rpc";
 import React, { useState, useCallback } from 'react';
-import { useMutation, useQuery } from "blitz"
 
 import destroyHoursMutation from "app/dashboard/mutations/destroyHoursMutation"
 import chefHoursQuery from "../../queries/hoursQuery"

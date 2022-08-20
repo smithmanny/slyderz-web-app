@@ -1,6 +1,6 @@
-import { memo, ReactNode, PropsWithoutRef } from "react"
+import { ReactNode, PropsWithoutRef } from "react"
+import { AuthenticationError, validateZodSchema } from 'blitz'
 import PropTypes from 'prop-types'
-import { AuthenticationError, validateZodSchema } from "blitz"
 import { Form as FinalForm, FormProps as FinalFormProps } from "react-final-form"
 import { FORM_ERROR } from "final-form"
 import * as z from "zod"

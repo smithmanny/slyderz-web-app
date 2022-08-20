@@ -1,4 +1,4 @@
-import { Ctx } from "blitz"
+import { Ctx, AuthorizationError } from "blitz"
 import db from "db"
 import * as z from "zod"
 
@@ -16,13 +16,13 @@ export default async function createHoursMutation(
   ctx: Ctx
 ) {
   const data = GetHours.parse(input)
-  const userId = ctx.session.$publicData.userId
+  const userId = ctx.session.userId
   const selectedWeekdays: Array<String> = []
 
   ctx.session.$authorize()
 
   if (!userId) {
-    throw new Error("Can't find user")
+    throw new AuthorizationError()
   }
 
   const chef = await db.chef.findFirst({
@@ -35,7 +35,7 @@ export default async function createHoursMutation(
   })
 
   if (!chef) {
-    throw new Error("Can't find user")
+    throw new AuthorizationError()
   }
 
   const allChefHours = await db.hours.findMany({

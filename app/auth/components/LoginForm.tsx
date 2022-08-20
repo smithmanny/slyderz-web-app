@@ -1,4 +1,6 @@
-import { Link, useMutation, Routes } from "blitz"
+import Link from "next/link";
+import { Routes } from "@blitzjs/next";
+import { useMutation } from "@blitzjs/rpc";
 
 import loginMutation from "app/auth/mutations/login"
 import { Login } from "app/auth/validations"

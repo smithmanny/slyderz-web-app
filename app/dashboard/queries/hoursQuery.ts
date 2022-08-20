@@ -8,7 +8,7 @@ export default async function getChefHoursQuery(
 ) {
 
   // Require user to be logged in
-  const userId = ctx.session.$publicData.userId
+  const userId = ctx.session.userId
   ctx.session.$authorize()
 
   if (!userId) {

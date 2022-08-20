@@ -1,8 +1,8 @@
 import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
 
-export { makeStyles } from "@mui/styles/makeStyles";
-export { styled } from "@mui/system";
+export { default } from "@mui/styles/makeStyles";
+export { styled } from "@mui/material/styles";
 
 const MuiTheme = createTheme({
   palette: {

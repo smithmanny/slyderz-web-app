@@ -1,4 +1,5 @@
-import { resolver, Ctx } from "blitz"
+import { resolver } from "@blitzjs/rpc";
+import { Ctx } from "blitz";
 
 import { CartItem } from 'types'
 import { DestroyMenuItem } from "../validations"

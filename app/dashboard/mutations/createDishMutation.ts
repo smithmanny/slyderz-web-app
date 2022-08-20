@@ -1,5 +1,5 @@
 import { Ctx } from "blitz"
-import { PrismaClient, Prisma } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 import * as z from "zod"
 
 import db from "db"
@@ -18,7 +18,7 @@ export default async function destroyDish(
 ) {
   const data = GetDish.parse(input)
 
-  const userId = ctx.session.$publicData.userId
+  const userId = ctx.session.userId
 
   if (!userId) {
     throw new Error("Can't find user")

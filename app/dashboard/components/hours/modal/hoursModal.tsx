@@ -1,6 +1,6 @@
+import { useMutation } from "@blitzjs/rpc";
 import React from 'react';
 import PropTypes from 'prop-types'
-import { useMutation } from "blitz"
 
 import createHoursMutation from "app/dashboard/mutations/createHoursMutation"
 

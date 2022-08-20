@@ -1,4 +1,5 @@
-import { Link, BlitzPage, Routes } from "blitz"
+import Link from "next/link";
+import { BlitzPage, Routes } from "@blitzjs/next";
 import { Global, css } from '@emotion/react'
 
 import { styled } from "integrations/material-ui"

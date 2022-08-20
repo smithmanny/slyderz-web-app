@@ -1,5 +1,7 @@
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { Routes } from "@blitzjs/next";
 import React, { useState } from 'react';
-import { getAntiCSRFToken, Link, Routes, useRouter } from "blitz";
 import ArrowBack from '@mui/icons-material/ArrowBack';
 
 import { styled } from "integrations/material-ui";
@@ -72,7 +74,6 @@ interface CheckoutPageTypes {
 }
 
 const CheckoutPage = ({ eventDate, eventTime, userId, stripePaymentMethods }: CheckoutPageTypes) => {
-  const antiCSRFToken = getAntiCSRFToken();
   const router = useRouter();
   const [processing, setProcessing] = useState(false);
 
@@ -90,7 +91,6 @@ const CheckoutPage = ({ eventDate, eventTime, userId, stripePaymentMethods }: Ch
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "anti-csrf": antiCSRFToken,
         },
         body: JSON.stringify(orderBody)
       });
@@ -98,7 +98,7 @@ const CheckoutPage = ({ eventDate, eventTime, userId, stripePaymentMethods }: Ch
       const fufilledOrder = await res.json()
 
       if (fufilledOrder) {
-        const url = new URL(`http://localhost:3000/account/${userId}/orders`)
+        const url = new URL(`http://localhost:3000/orders/${userId}/new`)
         url.searchParams.set('confirmationNumber', fufilledOrder.data.confirmationNumber)
         router.push(`${url.pathname}${url.search}`)
       }

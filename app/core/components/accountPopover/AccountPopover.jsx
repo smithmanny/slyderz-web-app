@@ -1,4 +1,6 @@
-import { useMutation, Link, useRouter } from "blitz"
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useMutation } from "@blitzjs/rpc";
 import PropTypes from "prop-types";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";

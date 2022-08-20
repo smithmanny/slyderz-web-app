@@ -1,4 +1,4 @@
-import { useMutation } from "blitz"
+import { useMutation } from "@blitzjs/rpc";
 
 import Grid from 'app/core/components/shared/Grid'
 
