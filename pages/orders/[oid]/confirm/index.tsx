@@ -170,7 +170,7 @@ export const ConfirmOrderPage = (props) => {
 };
 
 ConfirmOrderPage.getLayout = (page) => (
-  <Layout title="Order Reserved">{page}</Layout>
+  <Layout title="Order has been reserved">{page}</Layout>
 )
 
 export default ConfirmOrderPage;

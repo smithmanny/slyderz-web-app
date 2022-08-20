@@ -11,7 +11,6 @@ import { default as MuiAppBar } from "@mui/material/AppBar";
 import AccountPopover from "app/core/components/accountPopover"
 import Button from "app/core/components/shared/Button"
 import Box from "app/core/components/shared/Box"
-import Grid from "app/core/components/shared/Grid"
 import Typography from "app/core/components/shared/Typography"
 
 const Appbar = (props) => {
@@ -30,11 +29,11 @@ const Appbar = (props) => {
   const renderLoggedOutLinks = () => (
     <span>
       <Stack direction="row" spacing={2}>
-        <Link href={Routes.BecomeAChef()}>
+        {/* <Link href={Routes.BecomeAChef()}>
           <Button component="a" variant="text">
             Become a chef
           </Button>
-        </Link>
+        </Link> */}
         <Link href={Routes.LoginPage()}>
           <Button
             variant="contained"
