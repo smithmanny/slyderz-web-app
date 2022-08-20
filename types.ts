@@ -22,6 +22,13 @@ export interface EmailBodyType {
   eventTime: string
   orderTotal: Number
 }
+export interface EmailBodyResponseType {
+  cartItems: Array<CartItem>
+  orderNumber: string
+  eventDate: string
+  eventTime: string
+  orderTotal: Number
+}
 interface Cart {
   pendingCartItems: Array<CartItem> | [],
   total: number,

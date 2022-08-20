@@ -19,7 +19,7 @@ const OrderItems = (props) => {
           <strong>Confirmation#:</strong> {order.confirmationNumber}
         </Typography>
         <Typography gutterBottom>
-          <strong>Event Date:</strong> {readableDate(order.eventDate)}
+          <strong>Event Date:</strong> {readableDate(new Date(order.eventDate))}
         </Typography>
         <Typography gutterBottom>
           <strong>Event Time:</strong> {order.eventTime}
@@ -34,10 +34,10 @@ const OrderItems = (props) => {
           }}
         >
           <Typography>{item.dish.name}</Typography>
-
-          <Typography>
+          {/* TODO: Fix rendering dish price */}
+          {/* <Typography>
             ${item.quantity * item.dish.price}
-          </Typography>
+          </Typography> */}
         </Box>
       ))}
     </Box>

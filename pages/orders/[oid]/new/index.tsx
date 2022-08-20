@@ -14,10 +14,10 @@ import Button from "app/core/components/shared/Button"
 import Typography from "app/core/components/shared/Typography"
 import Layout from "app/core/layouts/Layout"
 
-export const getServerSideProps = gSSP(async function getServerSideProps({ req, res, query }) {
+export const getServerSideProps = gSSP(async function getServerSideProps({ req, res, params }) {
   const session = await getSession(req, res)
 
-  if (!query.oid) {
+  if (!params?.oid) {
     return {
       redirect: {
         destination: '/',
@@ -35,9 +35,11 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ req, 
     }
   }
 
-  const confirmationNumber = query.oid
+  const confirmationNumber = params.oid
 
   // TODO: Redirect if confirmation status is not 'PENDING'
+  // check session.userId and order.userId
+  // Throw error if it don't match
 
   return {
     props: {

@@ -55,10 +55,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // Send email
   if (order) {
     const date = new Date(eventDate)
-    const acceptUrl = new URL('http://localhost:3000/orders/confirm')
-    acceptUrl.searchParams.set('confirmationNumber', order.confirmationNumber)
-    const denyUrl = new URL('http://localhost:3000/orders/deny')
-    acceptUrl.searchParams.set('confirmationNumber', order.confirmationNumber)
+    const acceptUrl = new URL(`http://localhost:3000/orders/${order.confirmationNumber}/confirm`)
+    const denyUrl = new URL(`http://localhost:3000/orders/${order.confirmationNumber}/deny`)
 
     const emailData: EmailBodyType = {
       acceptOrderUrl: acceptUrl,

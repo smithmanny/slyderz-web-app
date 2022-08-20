@@ -1,5 +1,5 @@
 
-import { EmailBodyType } from 'types'
+import { EmailBodyType, EmailBodyResponseType } from 'types'
 
 export const formatNumberToCurrency = (number: number) => {
   return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'USD' }).format(number)
@@ -98,6 +98,28 @@ export function sendOrderRequestEmail(emailData: EmailBodyType) {
     }
   };
   return fetch("http://localhost:3000/api/mailers/send-order-request", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(orderRequestData)
+  });
+}
+
+export function sendOrderResponseEmail(emailData: EmailBodyResponseType, response: Boolean) {
+  const orderRequestData = {
+    to: 'shakhorsmith@gmail.com',
+    templateData: {
+      cartItems: emailData.cartItems,
+      orderNumber: emailData.orderNumber,
+      eventDate: emailData.eventDate,
+      eventTime: emailData.eventTime,
+      location: '4288 Leola Rd, Douglasville, Ga, 30135',
+      orderTotal: emailData.orderTotal,
+    },
+    response
+  };
+  return fetch("http://localhost:3000/api/mailers/order-response", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

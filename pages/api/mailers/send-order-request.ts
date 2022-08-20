@@ -1,16 +1,11 @@
 import { api } from "app/blitz-server";
 import { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "@blitzjs/auth";
+
 import sendgrid from "integrations/sendgrid";
 
 type OrderRequestMailerProps = {
   to: string
-  templateData: TemplateDataProps
-}
-
-type TemplateDataProps = {
-  to: string
-  location: string
+  templateData: any
 }
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
@@ -40,7 +35,6 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
   .catch(err => {
     console.error(`Failed to send email ${err}`)
   })
-  // res.end(JSON.stringify({ name: "John Doe" }))
   res.end();
 }
 export default api(handler);

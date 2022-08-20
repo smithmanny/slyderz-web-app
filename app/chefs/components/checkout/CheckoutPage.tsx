@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Routes } from "@blitzjs/next";
+import { getAntiCSRFToken } from "@blitzjs/auth"
 import React, { useState } from 'react';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 
@@ -75,6 +76,7 @@ interface CheckoutPageTypes {
 
 const CheckoutPage = ({ eventDate, eventTime, userId, stripePaymentMethods }: CheckoutPageTypes) => {
   const router = useRouter();
+  const antiCSRFToken = getAntiCSRFToken()
   const [processing, setProcessing] = useState(false);
 
   const handleSubmit = async (values) => {
@@ -91,6 +93,7 @@ const CheckoutPage = ({ eventDate, eventTime, userId, stripePaymentMethods }: Ch
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "anti-csrf": antiCSRFToken,
         },
         body: JSON.stringify(orderBody)
       });
@@ -98,9 +101,8 @@ const CheckoutPage = ({ eventDate, eventTime, userId, stripePaymentMethods }: Ch
       const fufilledOrder = await res.json()
 
       if (fufilledOrder) {
-        const url = new URL(`http://localhost:3000/orders/${userId}/new`)
-        url.searchParams.set('confirmationNumber', fufilledOrder.data.confirmationNumber)
-        router.push(`${url.pathname}${url.search}`)
+        const url = new URL(`http://localhost:3000/orders/${fufilledOrder.data.confirmationNumber}/new`)
+        router.push(url)
       }
 
     } catch (err) {

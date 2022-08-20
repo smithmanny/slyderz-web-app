@@ -2,6 +2,7 @@ import { gSSP } from "app/blitz-server";
 import { getSession } from "@blitzjs/auth";
 import { BlitzPage, Routes } from "@blitzjs/next";
 import React from 'react';
+import { NotFoundError } from "blitz";
 import Stripe from 'stripe'
 
 import Layout from "app/core/layouts/Layout";
@@ -19,25 +20,14 @@ interface CheckoutTypes {
 
 const STRIPE_SECRET = process.env.BLITZ_PUBLIC_STRIPE_SECRET_KEY || ''
 
-export const getServerSideProps = gSSP(async function getServerSideProps({ req, res }) {
+export const getServerSideProps = gSSP(async function getServerSideProps({ req, res, query }) {
   const session = await getSession(req, res)
   const stripe = new Stripe(STRIPE_SECRET, { apiVersion: "2022-08-01" });
 
-  if (!req.url) {
+  if (!query.eventDate || !query.eventTime || !session.userId) {
     return {
       redirect: {
         destination: '/',
-        permanent: false
-      }
-    }
-  }
-
-  const searchParams = req.url.split('?')[1]
-
-  if (!session.userId) {
-    return {
-      redirect: {
-        destination: '/login',
         permanent: false
       }
     }
@@ -52,12 +42,8 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ req, 
     }
   }
 
-  const eventDate = new URLSearchParams(searchParams).get(
-    "eventDate"
-  );
-  const eventTime = new URLSearchParams(searchParams).get(
-    "eventTime"
-  );
+  const eventDate = query.eventDate;
+  const eventTime = query.eventTime;
 
   const paymentMethods = await stripe.paymentMethods.list({
     customer: session.stripeCustomerId,

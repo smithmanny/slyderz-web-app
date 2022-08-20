@@ -3,7 +3,8 @@ import { useRouter } from "next/router";
 import Stripe from 'stripe'
 import db from 'db'
 
-import { formatNumberToCurrency } from "app/helpers"
+import { sendOrderResponseEmail } from "app/helpers"
+import { readableDate } from "app/helpers/dateHelpers"
 
 import Box from "app/core/components/shared/Box"
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer"
@@ -15,22 +16,9 @@ import Divider from 'app/core/components/shared/Divider'
 
 const STRIPE_SECRET = process.env.BLITZ_PUBLIC_STRIPE_SECRET_KEY || ''
 
-export const getServerSideProps = gSSP(async function getServerSideProps({ req, res }) {
+export const getServerSideProps = gSSP(async function getServerSideProps({ req, res, params }) {
   const stripe = new Stripe(STRIPE_SECRET, { apiVersion: "2022-08-01" });
-
-  if (!req.url) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false
-      }
-    }
-  }
-
-  const searchParams = req.url.split('?')[1]
-  const confirmationNumber = new URLSearchParams(searchParams).get(
-    'confirmationNumber'
-  );
+  const confirmationNumber = String(params?.oid)
 
   if (!confirmationNumber) {
     return {
@@ -55,30 +43,31 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ req, 
       paymentMethodId: true,
       dishes: {
         include: {
-          dish: true,
-        },
+          dish: {
+            select: {
+              description: true,
+              name: true,
+            }
+          }
+        }
       },
       chef: {
         select: {
           id: true,
-          user: {
-            select: {
-              firstName: true
-            }
-          }
         },
       },
       user: {
         select: {
           id: true,
-          stripeCustomerId: true
+          stripeCustomerId: true,
+          firstName: true
         }
       }
     }
   })
 
   // Don't charge card again if order is already accepted
-  if (order.orderStatus === 'COMPLETED') {
+  if (order.orderStatus !== 'PENDING') {
     return {
       redirect: {
         destination: '/',
@@ -87,9 +76,8 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ req, 
     };
   }
 
-  const total = formatNumberToCurrency(order.amount).replace("$", "").replace('US', '')
   // Stripe amount must be in cents
-  const stripeAmount = Number((parseFloat(total) * 100).toString());
+  const stripeAmount = Number((parseFloat(String(order.amount)) * 100).toString());
 
   const paymentIntent = await stripe.paymentIntents.create({
     amount: stripeAmount,
@@ -125,6 +113,21 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ req, 
     }
   })
 
+  const eventDate = new Date(order.eventDate)
+  const emailData: any = {
+    cartItems: order.dishes.map(d => ({
+      id: String(d.id),
+      quantity: d.quantity,
+      description: d.dish.description,
+      name: d.dish.name,
+    })),
+    orderTotal: order.amount,
+    orderNumber: order.confirmationNumber,
+    eventTime: order.eventTime,
+    eventDate: readableDate(eventDate),
+  }
+  sendOrderResponseEmail(emailData, true)
+
   return {
     props: {
       order,
@@ -139,7 +142,7 @@ export const ConfirmOrderPage = (props) => {
     <ConsumerContainer maxWidth="sm">
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <Typography variant="h6">
-          Your order has been approved. The card used to place this order will be chared in the amount of ${order.amount}
+          The order has been approved.
         </Typography>
         <Divider sx={{
           marginBottom: 2,
