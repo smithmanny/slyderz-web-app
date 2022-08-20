@@ -1,5 +1,7 @@
+import { AuthenticationError } from "blitz";
 import { SecurePassword } from "@blitzjs/auth";
 import { resolver } from "@blitzjs/rpc";
+
 import db from "db"
 import { Signup } from "app/auth/validations"
 import { Role } from "types"
@@ -8,6 +10,15 @@ const stripe = require("stripe")(process.env.BLITZ_PUBLIC_STRIPE_SECRET_KEY);
 
 export default resolver.pipe(resolver.zod(Signup), async ({ email, firstName, lastName, password }, ctx) => {
   const hashedPassword = await SecurePassword.hash(password)
+  const userExists = await db.user.findFirst({
+    where: {
+      email
+    }
+  })
+
+  if (userExists) {
+    throw new AuthenticationError()
+  }
 
   const stripeCustomer = await stripe.customers.create({
     email,
