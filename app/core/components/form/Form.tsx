@@ -42,7 +42,7 @@ export function Form<S extends z.ZodType<any, any>>({
           return onSuccess(variables);
         }
       } catch (error) {
-        log.error('Error submitting form', error)
+        log.error(`Error submitting form ${JSON.stringify(error)}`)
         if (error.code === "P2002" && error.meta?.target?.includes("email")) {
           // This error comes from Prisma
           return { email: "This email is already being used" }
