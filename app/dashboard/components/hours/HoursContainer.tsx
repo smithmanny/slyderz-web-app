@@ -40,9 +40,9 @@ const HoursContainer = () => {
                     Days of the week
                   </Typography>
                   <Stack direction="row" spacing={2} justifyContent="center">
-                    {ch.daysOfWeek.map((day, index) => (
+                    {ch.daysOfWeek.map((dow, index) => (
                       <Typography key={index} variant="body2">
-                        {day}
+                        {dow.day}
                       </Typography>
                     ))}
                   </Stack>
