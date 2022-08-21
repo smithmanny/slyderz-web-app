@@ -4,7 +4,6 @@
  "scripts": {
   "dev": "blitz dev",
   "build": "blitz build",
-  "migrate": "prisma db push",
   "start": "blitz start",
   "studio": "blitz prisma studio",
   "lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx .",
@@ -56,6 +55,8 @@
   "mdi-material-ui": "7.5.0",
   "mui-rff": "5.3.1",
   "next": "12.2.5",
+  "next-axiom": "^0.13.0",
+  "next-compose-plugins": "^2.2.1",
   "notistack": "^2.0.5",
   "prisma": "^4.0.0",
   "prop-types": "15.8.1",
