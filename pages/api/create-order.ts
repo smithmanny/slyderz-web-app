@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "@blitzjs/auth";
 import randomstring from "randomstring";
 
+import { siteUrl } from "app/helpers/site";
 import { readableDate } from "app/helpers/dateHelpers"
 import { sendOrderRequestEmail } from "app/helpers"
 import db from "db"
@@ -55,8 +56,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // Send email
   if (order) {
     const date = new Date(eventDate)
-    const acceptUrl = new URL(`http://localhost:3000/orders/${order.confirmationNumber}/confirm`)
-    const denyUrl = new URL(`http://localhost:3000/orders/${order.confirmationNumber}/deny`)
+    const acceptUrl = new URL(`${siteUrl}/orders/${order.confirmationNumber}/confirm`)
+    const denyUrl = new URL(`${siteUrl}/orders/${order.confirmationNumber}/deny`)
 
     const emailData: EmailBodyType = {
       acceptOrderUrl: acceptUrl,

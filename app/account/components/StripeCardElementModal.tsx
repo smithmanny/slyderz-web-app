@@ -6,6 +6,8 @@ import {
   useElements
 } from "@stripe/react-stripe-js";
 
+import { siteUrl } from 'app/helpers/site';
+
 import Alert from 'app/core/components/shared/Alert';
 import Button from "app/core/components/shared/Button"
 import Modal from 'app/core/components/shared/Modal'
@@ -36,7 +38,7 @@ const StripeCard: FunctionComponent<any> = (props) => {
       elements,
       redirect: 'if_required',
       confirmParams: {
-        return_url: 'http://localhost:3000',
+        return_url: siteUrl,
       }
     });
 

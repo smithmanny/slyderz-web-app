@@ -1,5 +1,6 @@
 
 import { EmailBodyType, EmailBodyResponseType } from 'types'
+import { siteUrl } from './site'
 
 export const formatNumberToCurrency = (number: number) => {
   return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'USD' }).format(number)
@@ -97,7 +98,7 @@ export function sendOrderRequestEmail(emailData: EmailBodyType) {
       orderTotal: emailData.orderTotal,
     }
   };
-  return fetch("http://localhost:3000/api/mailers/send-order-request", {
+  return fetch(`${siteUrl}/api/mailers/send-order-request`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -119,7 +120,7 @@ export function sendOrderResponseEmail(emailData: EmailBodyResponseType, respons
     },
     response
   };
-  return fetch("http://localhost:3000/api/mailers/order-response", {
+  return fetch(`${siteUrl}/api/mailers/order-response`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

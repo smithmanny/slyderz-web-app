@@ -5,6 +5,7 @@ import { getAntiCSRFToken } from "@blitzjs/auth"
 import React, { useState } from 'react';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 
+import { siteUrl } from "app/helpers/site";
 import { styled } from "integrations/material-ui";
 
 import Form, { Select } from 'app/core/components/form';
@@ -89,7 +90,7 @@ const CheckoutPage = ({ eventDate, eventTime, userId, stripePaymentMethods }: Ch
     setProcessing(true);
 
     try {
-      const res = await fetch("http://localhost:3000/api/create-order", {
+      const res = await fetch(`${siteUrl}/api/create-order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -101,7 +102,7 @@ const CheckoutPage = ({ eventDate, eventTime, userId, stripePaymentMethods }: Ch
       const fufilledOrder = await res.json()
 
       if (fufilledOrder) {
-        const url = new URL(`http://localhost:3000/orders/${fufilledOrder.data.confirmationNumber}/new`)
+        const url = new URL(`${siteUrl}/orders/${fufilledOrder.data.confirmationNumber}/new`)
         router.push(url)
       }
 
