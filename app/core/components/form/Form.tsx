@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { Form as FinalForm, FormProps as FinalFormProps } from "react-final-form"
 import { FORM_ERROR } from "final-form"
 import * as z from "zod"
+import { log } from 'next-axiom';
 
 import Button from '../shared/Button'
 
@@ -41,6 +42,7 @@ export function Form<S extends z.ZodType<any, any>>({
           return onSuccess(variables);
         }
       } catch (error) {
+        log.error('Error submitting form', error)
         if (error.code === "P2002" && error.meta?.target?.includes("email")) {
           // This error comes from Prisma
           return { email: "This email is already being used" }
