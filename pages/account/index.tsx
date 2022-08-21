@@ -8,6 +8,7 @@ import Stripe from 'stripe'
 import loginMutation from "app/auth/mutations/login"
 import { Login } from "app/auth/validations"
 import { useCurrentUser } from "app/core/hooks/useCurrentUser"
+import { STRIPE_SECRET } from "app/helpers/site"
 
 import Layout from "app/core/layouts/Layout"
 import Button from "app/core/components/shared/Button";
@@ -16,8 +17,6 @@ import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
 import Form, { TextField } from "app/core/components/form"
 import StripeCardElement from 'app/account/components/StripeCardElement'
-
-const STRIPE_SECRET = process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY || ''
 
 export const getServerSideProps = gSSP(async function getServerSideProps({ req, res }) {
   const session = await getSession(req, res)
