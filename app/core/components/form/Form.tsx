@@ -38,7 +38,7 @@ export function Form<S extends z.ZodType<any, any>>({
         await mutation.schema(variables)
 
         if (typeof onSuccess === 'function') {
-          return onSuccess();
+          return onSuccess(variables);
         }
       } catch (error) {
         if (error.code === "P2002" && error.meta?.target?.includes("email")) {

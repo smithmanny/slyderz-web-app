@@ -11,7 +11,7 @@ import Box from "app/core/components/shared/Box"
 import Typography from "app/core/components/shared/Typography"
 
 type SignupFormProps = {
-  onSuccess?: () => void
+  onSuccess?: (values?:any) => void
 }
 
 export const SignupForm = (props: SignupFormProps) => {

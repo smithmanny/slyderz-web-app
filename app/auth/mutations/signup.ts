@@ -1,12 +1,14 @@
 import { AuthenticationError } from "blitz";
 import { SecurePassword } from "@blitzjs/auth";
 import { resolver } from "@blitzjs/rpc";
+import sendgridClient from '@sendgrid/client'
 
 import db from "db"
 import { Signup } from "app/auth/validations"
 import { Role } from "types"
 
 const stripe = require("stripe")(process.env.BLITZ_PUBLIC_STRIPE_SECRET_KEY);
+sendgridClient.setApiKey(process.env.BLITZ_PUBLIC_SENDGRID_API_TOKEN || '')
 
 export default resolver.pipe(resolver.zod(Signup), async ({ email, firstName, lastName, password }, ctx) => {
   const hashedPassword = await SecurePassword.hash(password)
@@ -37,6 +39,31 @@ export default resolver.pipe(resolver.zod(Signup), async ({ email, firstName, la
     select: { id: true, firstName: true, lastName: true, email: true, role: true },
   })
 
+  // // Create user in sendgrid
+  const data = {
+    "contacts": [
+      {
+        "email": email,
+        "first_name": firstName,
+        "last_name": lastName,
+        "custom_fields": {
+          "e2_T": "false",  // confirmed_email
+        }
+      }
+    ]
+  };
+
+  const request:any = {
+    url: `/v3/marketing/contacts`,
+    method: 'PUT',
+    body: data
+  }
+
+  sendgridClient.request(request)
+    .catch(error => {
+      console.error(error);
+    });
+
   // Merge pending carts from logged out session
   const pendingCartItems = ctx.session?.cart?.pendingCartItems || [];
   const total = ctx.session?.cart?.total || 0;
@@ -50,5 +77,6 @@ export default resolver.pipe(resolver.zod(Signup), async ({ email, firstName, la
     },
     stripeCustomerId: stripeCustomer.id
   })
+
   return user
 })

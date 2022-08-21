@@ -10,7 +10,9 @@ const SignupPage: BlitzPage = () => {
 
   return (
     <ConsumerContainer maxWidth="sm">
-      <SignupForm onSuccess={() => router.push("/")} />
+      <SignupForm
+        onSuccess={() => router.push("/")}
+      />
     </ConsumerContainer>
   )
 }
