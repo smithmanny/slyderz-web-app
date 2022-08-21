@@ -1,0 +1,150 @@
+{
+  "polyfillFiles": [
+    "static/chunks/polyfills-c67a75d1b6f99dc8.js"
+  ],
+  "devFiles": [],
+  "ampDevFiles": [],
+  "lowPriorityFiles": [
+    "static/r-Me35KzoLpuHMe2dY6-1/_buildManifest.js",
+    "static/r-Me35KzoLpuHMe2dY6-1/_ssgManifest.js"
+  ],
+  "rootMainFiles": [],
+  "pages": {
+    "/": [
+      "static/chunks/webpack-6181e5b33eb96d31.js",
+      "static/chunks/framework-4556c45dd113b893.js",
+      "static/chunks/main-766c402b5f3e5730.js",
+      "static/chunks/997-42d0fb4e4bf7143c.js",
+      "static/chunks/229-46358153047674d0.js",
+      "static/chunks/pages/index-13a60077446556c6.js"
+    ],
+    "/404": [
+      "static/chunks/webpack-6181e5b33eb96d31.js",
+      "static/chunks/framework-4556c45dd113b893.js",
+      "static/chunks/main-766c402b5f3e5730.js",
+      "static/chunks/pages/404-f700a5dfebcd1bd0.js"
+    ],
+    "/_app": [
+      "static/chunks/webpack-6181e5b33eb96d31.js",
+      "static/chunks/framework-4556c45dd113b893.js",
+      "static/chunks/main-766c402b5f3e5730.js",
+      "static/chunks/pages/_app-5463a051d21cbb07.js"
+    ],
+    "/_error": [
+      "static/chunks/webpack-6181e5b33eb96d31.js",
+      "static/chunks/framework-4556c45dd113b893.js",
+      "static/chunks/main-766c402b5f3e5730.js",
+      "static/chunks/pages/_error-a4ba2246ff8fb532.js"
+    ],
+    "/account": [
+      "static/chunks/webpack-6181e5b33eb96d31.js",
+      "static/chunks/framework-4556c45dd113b893.js",
+      "static/chunks/main-766c402b5f3e5730.js",
+      "static/chunks/997-42d0fb4e4bf7143c.js",
+      "static/chunks/540-4ff84a595236fb3a.js",
+      "static/chunks/229-46358153047674d0.js",
+      "static/chunks/pages/account-0d22f0307f8c58f2.js"
+    ],
+    "/become-a-chef": [
+      "static/chunks/webpack-6181e5b33eb96d31.js",
+      "static/chunks/framework-4556c45dd113b893.js",
+      "static/chunks/main-766c402b5f3e5730.js",
+      "static/chunks/997-42d0fb4e4bf7143c.js",
+      "static/chunks/229-46358153047674d0.js",
+      "static/chunks/pages/become-a-chef-1302b0a57440cdb1.js"
+    ],
+    "/chefs/chef/[cid]": [
+      "static/chunks/webpack-6181e5b33eb96d31.js",
+      "static/chunks/framework-4556c45dd113b893.js",
+      "static/chunks/main-766c402b5f3e5730.js",
+      "static/chunks/997-42d0fb4e4bf7143c.js",
+      "static/chunks/101-d50abda27f971f20.js",
+      "static/chunks/675-43190f830ccd33e3.js",
+      "static/chunks/229-46358153047674d0.js",
+      "static/chunks/pages/chefs/chef/[cid]-77722236a3904b77.js"
+    ],
+    "/chefs/chef/[cid]/checkout": [
+      "static/chunks/webpack-6181e5b33eb96d31.js",
+      "static/chunks/framework-4556c45dd113b893.js",
+      "static/chunks/main-766c402b5f3e5730.js",
+      "static/chunks/997-42d0fb4e4bf7143c.js",
+      "static/chunks/229-46358153047674d0.js",
+      "static/chunks/pages/chefs/chef/[cid]/checkout-e270e9ada79e1c2d.js"
+    ],
+    "/dashboard": [
+      "static/chunks/webpack-6181e5b33eb96d31.js",
+      "static/chunks/framework-4556c45dd113b893.js",
+      "static/chunks/main-766c402b5f3e5730.js",
+      "static/chunks/997-42d0fb4e4bf7143c.js",
+      "static/chunks/101-d50abda27f971f20.js",
+      "static/chunks/229-46358153047674d0.js",
+      "static/chunks/pages/dashboard-1fb6a13c83bb7016.js"
+    ],
+    "/forgot-password": [
+      "static/chunks/webpack-6181e5b33eb96d31.js",
+      "static/chunks/framework-4556c45dd113b893.js",
+      "static/chunks/main-766c402b5f3e5730.js",
+      "static/chunks/997-42d0fb4e4bf7143c.js",
+      "static/chunks/229-46358153047674d0.js",
+      "static/chunks/pages/forgot-password-d30b3cb3bea64db9.js"
+    ],
+    "/login": [
+      "static/chunks/webpack-6181e5b33eb96d31.js",
+      "static/chunks/framework-4556c45dd113b893.js",
+      "static/chunks/main-766c402b5f3e5730.js",
+      "static/chunks/997-42d0fb4e4bf7143c.js",
+      "static/chunks/229-46358153047674d0.js",
+      "static/chunks/pages/login-30a50ecdb9e531a3.js"
+    ],
+    "/orders/[oid]/confirm": [
+      "static/chunks/webpack-6181e5b33eb96d31.js",
+      "static/chunks/framework-4556c45dd113b893.js",
+      "static/chunks/main-766c402b5f3e5730.js",
+      "static/chunks/997-42d0fb4e4bf7143c.js",
+      "static/chunks/229-46358153047674d0.js",
+      "static/chunks/pages/orders/[oid]/confirm-4dfddeba54e140c9.js"
+    ],
+    "/orders/[oid]/deny": [
+      "static/chunks/webpack-6181e5b33eb96d31.js",
+      "static/chunks/framework-4556c45dd113b893.js",
+      "static/chunks/main-766c402b5f3e5730.js",
+      "static/chunks/997-42d0fb4e4bf7143c.js",
+      "static/chunks/229-46358153047674d0.js",
+      "static/chunks/pages/orders/[oid]/deny-a564beacabe34ffc.js"
+    ],
+    "/orders/[oid]/new": [
+      "static/chunks/webpack-6181e5b33eb96d31.js",
+      "static/chunks/framework-4556c45dd113b893.js",
+      "static/chunks/main-766c402b5f3e5730.js",
+      "static/chunks/997-42d0fb4e4bf7143c.js",
+      "static/chunks/675-43190f830ccd33e3.js",
+      "static/chunks/229-46358153047674d0.js",
+      "static/chunks/pages/orders/[oid]/new-2d756e522abc30e3.js"
+    ],
+    "/reset-password": [
+      "static/chunks/webpack-6181e5b33eb96d31.js",
+      "static/chunks/framework-4556c45dd113b893.js",
+      "static/chunks/main-766c402b5f3e5730.js",
+      "static/chunks/997-42d0fb4e4bf7143c.js",
+      "static/chunks/229-46358153047674d0.js",
+      "static/chunks/pages/reset-password-996645e25761ba99.js"
+    ],
+    "/signup": [
+      "static/chunks/webpack-6181e5b33eb96d31.js",
+      "static/chunks/framework-4556c45dd113b893.js",
+      "static/chunks/main-766c402b5f3e5730.js",
+      "static/chunks/997-42d0fb4e4bf7143c.js",
+      "static/chunks/229-46358153047674d0.js",
+      "static/chunks/pages/signup-c0554ea4be348948.js"
+    ],
+    "/terms-and-conditions": [
+      "static/chunks/webpack-6181e5b33eb96d31.js",
+      "static/chunks/framework-4556c45dd113b893.js",
+      "static/chunks/main-766c402b5f3e5730.js",
+      "static/chunks/997-42d0fb4e4bf7143c.js",
+      "static/chunks/229-46358153047674d0.js",
+      "static/chunks/pages/terms-and-conditions-08d987fe0dfc8e8c.js"
+    ]
+  },
+  "ampFirstPages": []
+}
