@@ -3,11 +3,9 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "@blitzjs/auth";
 import Stripe from 'stripe'
 
-import { STRIPE_SECRET } from "app/helpers/site";
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession(req, res)
-  const stripe = new Stripe(STRIPE_SECRET, { apiVersion: "2022-08-01" });
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', { apiVersion: "2022-08-01" });
 
   if (session.stripeCustomerId === undefined) {
     throw Error("No customer was provided")

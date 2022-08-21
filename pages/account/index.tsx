@@ -8,7 +8,6 @@ import Stripe from 'stripe'
 import loginMutation from "app/auth/mutations/login"
 import { Login } from "app/auth/validations"
 import { useCurrentUser } from "app/core/hooks/useCurrentUser"
-import { STRIPE_SECRET } from "app/helpers/site"
 
 import Layout from "app/core/layouts/Layout"
 import Button from "app/core/components/shared/Button";
@@ -20,7 +19,7 @@ import StripeCardElement from 'app/account/components/StripeCardElement'
 
 export const getServerSideProps = gSSP(async function getServerSideProps({ req, res }) {
   const session = await getSession(req, res)
-  const stripe = new Stripe(STRIPE_SECRET, { apiVersion: "2022-08-01" });
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', { apiVersion: "2022-08-01" });
 
   if (!session.userId || !session.stripeCustomerId) {
     return {

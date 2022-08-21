@@ -3,7 +3,6 @@ import { resolver } from "@blitzjs/rpc";
 import sendgridClient from '@sendgrid/client'
 import Stripe from 'stripe'
 
-import { STRIPE_SECRET } from "app/helpers/site"
 import db from "db"
 import { Signup } from "app/auth/validations"
 import { Role } from "types"
@@ -11,13 +10,15 @@ import { Role } from "types"
 sendgridClient.setApiKey(process.env.NEXT_PUBLIC_SENDGRID_API_TOKEN || '')
 
 export default resolver.pipe(resolver.zod(Signup), async ({ email, firstName, lastName, password }, ctx) => {
-  const stripe = new Stripe('sk_test_PHGdRXFISHoYwFqSlVPfTEh7', { apiVersion: "2022-08-01" });
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', { apiVersion: "2022-08-01" });
   const hashedPassword = await SecurePassword.hash(password)
   const userExists = await db.user.findFirst({
     where: {
       email
     }
   })
+
+  console.log('STRIP', process.env.STRIPE_SECRET)
 
   if (userExists) {
     throw new Error('User already exists')

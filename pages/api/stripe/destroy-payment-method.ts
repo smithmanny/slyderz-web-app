@@ -2,10 +2,8 @@ import { api } from "app/blitz-server";
 import { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe"
 
-import { STRIPE_SECRET } from "app/helpers/site";
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const stripe = new Stripe(STRIPE_SECRET, { apiVersion: "2022-08-01" });
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', { apiVersion: "2022-08-01" });
   const { paymentMethodId } = req.body
 
   if (paymentMethodId === undefined) {

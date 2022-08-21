@@ -14,10 +14,8 @@ import Layout from "app/core/layouts/Layout"
 import OrderItems from 'app/orders/components/OrderItems'
 import Divider from 'app/core/components/shared/Divider'
 
-const STRIPE_SECRET = process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY || ''
-
 export const getServerSideProps = gSSP(async function getServerSideProps({ req, res, params }) {
-  const stripe = new Stripe(STRIPE_SECRET, { apiVersion: "2022-08-01" });
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', { apiVersion: "2022-08-01" });
   const confirmationNumber = String(params?.oid)
 
   if (!confirmationNumber) {
