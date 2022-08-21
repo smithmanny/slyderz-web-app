@@ -1,4 +1,3 @@
-import { AuthenticationError } from "blitz";
 import { SecurePassword } from "@blitzjs/auth";
 import { resolver } from "@blitzjs/rpc";
 import sendgridClient from '@sendgrid/client'
@@ -21,7 +20,7 @@ export default resolver.pipe(resolver.zod(Signup), async ({ email, firstName, la
   })
 
   if (userExists) {
-    throw new AuthenticationError()
+    throw new Error('User already exists')
   }
 
   const stripeCustomer = await stripe.customers.create({
