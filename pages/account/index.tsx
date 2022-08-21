@@ -4,7 +4,6 @@ import { getSession } from "@blitzjs/auth";
 import { BlitzPage } from "@blitzjs/next";
 import React, { useEffect, useState } from 'react'
 import Stripe from 'stripe'
-import { useStripe } from '@stripe/react-stripe-js';
 
 import loginMutation from "app/auth/mutations/login"
 import { Login } from "app/auth/validations"
@@ -24,19 +23,10 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ req, 
   const session = await getSession(req, res)
   const stripe = new Stripe(STRIPE_SECRET, { apiVersion: "2022-08-01" });
 
-  if (!session.userId) {
+  if (!session.userId || !session.stripeCustomerId) {
     return {
       redirect: {
         destination: '/login',
-        permanent: false
-      }
-    }
-  }
-
-  if (!session.cart?.total || !session.cart?.pendingCartItems || !session.stripeCustomerId) {
-    return {
-      redirect: {
-        destination: '/',
         permanent: false
       }
     }
@@ -65,7 +55,6 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ req, 
 
 const Account: BlitzPage<any> = (props) => {
   const [login] = useMutation(loginMutation)
-  const stripe = useStripe()
   const user = useCurrentUser();
   const clientSecret = props.setupIntent.client_secret
 
@@ -75,48 +64,48 @@ const Account: BlitzPage<any> = (props) => {
     email: user?.email,
   };
 
-  useEffect(() => {
-    if (!stripe) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (!stripe) {
+  //     return;
+  //   }
 
-    // Retrieve the "setup_intent_client_secret" query parameter appended to
-    // your return_url by Stripe.js
-    const clientSecret = new URLSearchParams(window.location.search).get(
-      'setup_intent_client_secret'
-    );
+  //   // Retrieve the "setup_intent_client_secret" query parameter appended to
+  //   // your return_url by Stripe.js
+  //   const clientSecret = new URLSearchParams(window.location.search).get(
+  //     'setup_intent_client_secret'
+  //   );
 
-    if (!clientSecret) {
-      return
-    }
-    // Retrieve the SetupIntent
-    stripe
-      .retrieveSetupIntent(clientSecret)
-      .then(({ setupIntent }) => {
-        // Inspect the SetupIntent `status` to indicate the status of the payment
-        // to your customer.
-        //
-        // Some payment methods will [immediately succeed or fail][0] upon
-        // confirmation, while others will first enter a `processing` state.
-        //
-        // [0]: https://stripe.com/docs/payments/payment-methods#payment-notification
-        switch (setupIntent?.status) {
-          case 'succeeded':
-            console.log('Success! Your payment method has been saved.');
-            break;
+  //   if (!clientSecret) {
+  //     return
+  //   }
+  //   // Retrieve the SetupIntent
+  //   stripe
+  //     .retrieveSetupIntent(clientSecret)
+  //     .then(({ setupIntent }) => {
+  //       // Inspect the SetupIntent `status` to indicate the status of the payment
+  //       // to your customer.
+  //       //
+  //       // Some payment methods will [immediately succeed or fail][0] upon
+  //       // confirmation, while others will first enter a `processing` state.
+  //       //
+  //       // [0]: https://stripe.com/docs/payments/payment-methods#payment-notification
+  //       switch (setupIntent?.status) {
+  //         case 'succeeded':
+  //           console.log('Success! Your payment method has been saved.');
+  //           break;
 
-          case 'processing':
-            console.log("Processing payment details. We'll update you when processing is complete.");
-            break;
+  //         case 'processing':
+  //           console.log("Processing payment details. We'll update you when processing is complete.");
+  //           break;
 
-          case 'requires_payment_method':
-            // Redirect your user back to your payment page to attempt collecting
-            // payment again
-            console.log('Failed to process payment details. Please try another payment method.');
-            break;
-        }
-      });
-  }, [stripe]);
+  //         case 'requires_payment_method':
+  //           // Redirect your user back to your payment page to attempt collecting
+  //           // payment again
+  //           console.log('Failed to process payment details. Please try another payment method.');
+  //           break;
+  //       }
+  //     });
+  // }, [stripe]);
 
   return (
     <React.Fragment>
