@@ -2,7 +2,7 @@ import { api } from "app/blitz-server";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "@blitzjs/auth";
 
-const stripe = require("stripe")(process.env.BLITZ_PUBLIC_STRIPE_SECRET_KEY);
+const stripe = require("stripe")(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession(req, res)

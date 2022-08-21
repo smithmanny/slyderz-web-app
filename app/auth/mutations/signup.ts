@@ -7,8 +7,8 @@ import db from "db"
 import { Signup } from "app/auth/validations"
 import { Role } from "types"
 
-const stripe = require("stripe")(process.env.BLITZ_PUBLIC_STRIPE_SECRET_KEY);
-sendgridClient.setApiKey(process.env.BLITZ_PUBLIC_SENDGRID_API_TOKEN || '')
+const stripe = require("stripe")(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
+sendgridClient.setApiKey(process.env.NEXT_PUBLIC_SENDGRID_API_TOKEN || '')
 
 export default resolver.pipe(resolver.zod(Signup), async ({ email, firstName, lastName, password }, ctx) => {
   const hashedPassword = await SecurePassword.hash(password)

@@ -18,7 +18,7 @@ interface CheckoutTypes {
   userId: Number
 }
 
-const STRIPE_SECRET = process.env.BLITZ_PUBLIC_STRIPE_SECRET_KEY || ''
+const STRIPE_SECRET = process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY || ''
 
 export const getServerSideProps = gSSP(async function getServerSideProps({ req, res, query }) {
   const session = await getSession(req, res)

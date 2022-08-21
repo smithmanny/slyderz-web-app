@@ -17,7 +17,7 @@ import Typography from "app/core/components/shared/Typography";
 import Form, { TextField } from "app/core/components/form"
 import StripeCardElement from 'app/account/components/StripeCardElement'
 
-const STRIPE_SECRET = process.env.BLITZ_PUBLIC_STRIPE_SECRET_KEY || ''
+const STRIPE_SECRET = process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY || ''
 
 export const getServerSideProps = gSSP(async function getServerSideProps({ req, res }) {
   const session = await getSession(req, res)
