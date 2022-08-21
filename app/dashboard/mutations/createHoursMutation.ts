@@ -41,12 +41,15 @@ export default async function createHoursMutation(
   const allChefHours = await db.hours.findMany({
     where: {
       chefId: chef.id
+    },
+    include: {
+      daysOfWeek: true
     }
   })
 
   // create array with days of week thats already created
   allChefHours.map(hourBlock => {
-    hourBlock.daysOfWeek.map(dayOfWeek => selectedWeekdays.push(dayOfWeek))
+    hourBlock.daysOfWeek.map(dayOfWeek => selectedWeekdays.push(dayOfWeek.day))
   })
 
   data.daysOfWeek.map(dayOfWeek => {
