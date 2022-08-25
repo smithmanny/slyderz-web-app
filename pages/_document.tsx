@@ -1,6 +1,4 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
-
-import React from "react";
 import GlobalStyles from '@mui/material/GlobalStyles';
 import createEmotionServer from '@emotion/server/create-instance';
 

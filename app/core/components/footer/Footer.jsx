@@ -1,5 +1,4 @@
 import Link from "next/link";
-import React from "react";
 import InputAdornment from "@mui/material/InputAdornment";
 import { EmailOutline, Facebook, Twitter, Instagram } from "mdi-material-ui";
 
@@ -128,7 +127,7 @@ const Footer = () => {
                   <TextField
                     name="email"
                     variant="outlined"
-                    label="email"
+                    label="Email"
                     placeholder="Email"
                     InputProps={{
                       startAdornment: (

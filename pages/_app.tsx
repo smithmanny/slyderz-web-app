@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import { Suspense } from "react";
 import { AuthenticationError, AuthorizationError } from 'blitz'
 import { withBlitz } from "app/blitz-client";
 import { useQueryErrorResetBoundary } from "@blitzjs/rpc";
@@ -8,7 +8,7 @@ import {
   ErrorComponent,
   ErrorFallbackProps,
 } from "@blitzjs/next";
-import { ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Provider } from "react-redux";
 
@@ -39,22 +39,19 @@ function LoadingIcon() {
 
 export default withBlitz(function App({ Component, pageProps }: AppProps) {
   const getLayout = Component.getLayout || ((page) => page)
-
   return (
     <Provider store={store}>
-      <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <ErrorBoundary
-            FallbackComponent={RootErrorFallback}
-            onReset={useQueryErrorResetBoundary().reset}
-          >
-            <Suspense fallback={<LoadingIcon />}>
-              {getLayout(<Component {...pageProps} />)}
-            </Suspense>
-          </ErrorBoundary>
-        </ThemeProvider>
-      </StyledEngineProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <ErrorBoundary
+          FallbackComponent={RootErrorFallback}
+          onReset={useQueryErrorResetBoundary().reset}
+        >
+          <Suspense fallback={<LoadingIcon />}>
+            {getLayout(<Component {...pageProps} />)}
+          </Suspense>
+        </ErrorBoundary>
+      </ThemeProvider>
     </Provider>
   );
 });
