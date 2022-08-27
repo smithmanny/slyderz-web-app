@@ -2,17 +2,13 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider = "mysql"
-  // provider = "postgresql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
-  referentialIntegrity = "prisma"
-  // url      = env("POSTGRES_DATABASE_URL")
 }
 
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity"]
-  // previewFeatures = ["interactiveTransactions"]
+  previewFeatures = ["interactiveTransactions"]
 }
 
 // --------------------------------------
@@ -101,21 +97,11 @@ enum DaysOfWeekTypeEnum {
   SATURDAY
 }
 
-model DaysOfWeekType {
-  id                 Int      @id @default(autoincrement())
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-  day DaysOfWeekTypeEnum
-
-  hour   Hours @relation(fields: [hourId], references: [id])
-  hourId Int
-}
-
 model Hours {
   id                 Int      @id @default(autoincrement())
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
-  daysOfWeek         DaysOfWeekType[]
+  daysOfWeek         DaysOfWeekTypeEnum[]
   startTime          String?
   endTime            String?
 

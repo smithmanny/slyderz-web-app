@@ -19,7 +19,6 @@ export default resolver.pipe(resolver.zod(Signup), async ({ email, firstName, la
     }
   })
 
-
   if (userExists) {
     throw new Error('User already exists')
   }

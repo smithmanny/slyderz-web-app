@@ -14,7 +14,8 @@ import Box from "app/core/components/shared/Box"
 import Typography from "app/core/components/shared/Typography"
 
 const Appbar = (props) => {
-  // const session = useSession();
+  const session = useSession({ suspense: false });
+  console.log(session)
   const [accountAnchorEl, setAccountAnchorEl] = useState(null);
   const isAccountOpen = Boolean(accountAnchorEl);
   const accountId = isAccountOpen ? "account-popover" : null;
@@ -89,7 +90,7 @@ const Appbar = (props) => {
           </Link>
 
           <div>
-            {/* {session.userId ? renderLoggedInLinks() : renderLoggedOutLinks()} */}
+            {session.userId ? renderLoggedInLinks() : renderLoggedOutLinks()}
           </div>
         </Box>
       </Toolbar>

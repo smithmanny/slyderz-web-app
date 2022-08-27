@@ -42,7 +42,7 @@ const HoursContainer = () => {
                   <Stack direction="row" spacing={2} justifyContent="center">
                     {ch.daysOfWeek.map((dow, index) => (
                       <Typography key={index} variant="body2">
-                        {dow.day}
+                        {dow}
                       </Typography>
                     ))}
                   </Stack>
