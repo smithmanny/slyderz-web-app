@@ -1,10 +1,9 @@
 import { api } from "app/blitz-server";
 import { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "@blitzjs/auth";
 import Stripe from 'stripe'
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const session = await getSession(req, res)
+const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
+  const { session } = ctx
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', { apiVersion: "2022-08-01" });
 
   if (session.stripeCustomerId === undefined) {

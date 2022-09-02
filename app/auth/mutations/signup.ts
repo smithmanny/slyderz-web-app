@@ -7,7 +7,7 @@ import db from "db"
 import { Signup } from "app/auth/validations"
 import { Role } from "types"
 
-sendgridClient.setApiKey(process.env.NEXT_PUBLIC_SENDGRID_API_TOKEN || '')
+sendgridClient.setApiKey(process.env.SENDGRID_API_TOKEN || '')
 
 export default resolver.pipe(resolver.zod(Signup), async ({ email, firstName, lastName, password }, ctx) => {
   console.log('STRIP', process.env.STRIPE_SECRET)

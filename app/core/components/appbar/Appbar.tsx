@@ -14,7 +14,7 @@ import Box from "app/core/components/shared/Box"
 import Typography from "app/core/components/shared/Typography"
 
 const Appbar = (props) => {
-  const session = useSession({ suspense: false });
+  const session = useSession();
   console.log(session)
   const [accountAnchorEl, setAccountAnchorEl] = useState(null);
   const isAccountOpen = Boolean(accountAnchorEl);

@@ -1,8 +1,7 @@
 import { gSSP } from "app/blitz-server";
 import { useMutation } from "@blitzjs/rpc";
-import { getSession } from "@blitzjs/auth";
 import { BlitzPage } from "@blitzjs/next";
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Stripe from 'stripe'
 
 import loginMutation from "app/auth/mutations/login"
@@ -17,8 +16,8 @@ import Typography from "app/core/components/shared/Typography";
 import Form, { TextField } from "app/core/components/form"
 import StripeCardElement from 'app/account/components/StripeCardElement'
 
-export const getServerSideProps = gSSP(async function getServerSideProps({ req, res }) {
-  const session = await getSession(req, res)
+export const getServerSideProps = gSSP(async function getServerSideProps({ ctx }) {
+  const session = ctx?.session
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', { apiVersion: "2022-08-01" });
 
   if (!session.userId || !session.stripeCustomerId) {

@@ -1,6 +1,5 @@
 import { api } from "app/blitz-server";
 import { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "@blitzjs/auth";
 import randomstring from "randomstring";
 
 import { siteUrl } from "app/helpers/site";
@@ -9,15 +8,14 @@ import { sendOrderRequestEmail } from "app/helpers"
 import db from "db"
 import { EmailBodyType } from 'types'
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const session = await getSession(req, res)
+const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
   const { eventDate, eventTime, paymentMethodId } = req.body;
 
-  if (!session.cart) {
+  if (!ctx.session.cart) {
     throw new Error("Cart can't be empty")
   }
 
-  if (session.stripeCustomerId === undefined || !paymentMethodId) {
+  if (ctx.session.stripeCustomerId === undefined || !paymentMethodId) {
     throw Error("Wrong order data")
   }
 
@@ -30,14 +28,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const order = await db.order.create({
     data: {
-      amount: Number(session.cart?.total),
-      chefId: session.cart.pendingCartItems[0].chefId,
+      amount: Number(ctx.session.cart?.total),
+      chefId: ctx.session.cart.pendingCartItems[0].chefId,
       confirmationNumber,
       eventDate,
       eventTime,
       dishes: {
         createMany: {
-          data: session.cart.pendingCartItems.map(item => ({
+          data: ctx.session.cart.pendingCartItems.map(item => ({
             dishId: item.dishId,
             chefId: item.chefId,
             quantity: item.quantity,
@@ -45,7 +43,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
       },
       paymentMethodId,
-      userId: Number(session.userId),
+      userId: Number(ctx.session.userId),
     },
     select: {
       confirmationNumber: true,
@@ -62,8 +60,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const emailData: EmailBodyType = {
       acceptOrderUrl: acceptUrl,
       denyOrderUrl: denyUrl,
-      cartItems: session.cart.pendingCartItems,
-      orderTotal: session.cart.total,
+      cartItems: ctx.session.cart.pendingCartItems,
+      orderTotal: ctx.session.cart.total,
       confirmationNumber: order.confirmationNumber,
       eventTime,
       eventDate: readableDate(date),

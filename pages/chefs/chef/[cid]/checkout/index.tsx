@@ -1,5 +1,4 @@
 import { gSSP } from "app/blitz-server";
-import { getSession } from "@blitzjs/auth";
 import { BlitzPage, Routes } from "@blitzjs/next";
 import React from 'react';
 import Stripe from 'stripe'
@@ -17,8 +16,8 @@ interface CheckoutTypes {
   userId: Number
 }
 
-export const getServerSideProps = gSSP(async function getServerSideProps({ req, res, query }) {
-  const session = await getSession(req, res)
+export const getServerSideProps = gSSP(async function getServerSideProps({ ctx, query }) {
+  const session = ctx?.session
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', { apiVersion: "2022-08-01" });
 
   if (!query.eventDate || !query.eventTime || !session.userId) {

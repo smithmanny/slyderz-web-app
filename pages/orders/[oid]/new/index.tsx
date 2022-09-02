@@ -2,7 +2,6 @@ import { gSSP } from "app/blitz-server";
 import Image from "next/image";
 import { useMutation } from "@blitzjs/rpc";
 import { useRouter } from "next/router";
-import { getSession } from "@blitzjs/auth";
 import { useEffect } from 'react'
 
 import resetCartItemsMutation from "app/account/mutations/resetCartItemsMutation";
@@ -14,8 +13,8 @@ import Button from "app/core/components/shared/Button"
 import Typography from "app/core/components/shared/Typography"
 import Layout from "app/core/layouts/Layout"
 
-export const getServerSideProps = gSSP(async function getServerSideProps({ req, res, params }) {
-  const session = await getSession(req, res)
+export const getServerSideProps = gSSP(async function getServerSideProps({ ctx, params }) {
+  const session = ctx?.session
 
   if (!params?.oid) {
     return {
