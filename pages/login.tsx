@@ -13,7 +13,7 @@ const LoginPage: BlitzPage = () => {
       <LoginForm
         onSuccess={() => {
           const next = (router.query.next as string) ?? "/"
-          router.push(next)
+          return router.push(next)
         }}
       />
     </ConsumerContainer>

@@ -66,7 +66,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
       eventTime,
       eventDate: readableDate(date),
     }
-    sendOrderRequestEmail(emailData)
+
+    await sendOrderRequestEmail(emailData)
   }
 
   res.statusCode = 200

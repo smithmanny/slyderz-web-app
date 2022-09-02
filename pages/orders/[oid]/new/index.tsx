@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { gSSP } from "app/blitz-server";
 import Image from "next/image";
 import { useMutation } from "@blitzjs/rpc";
@@ -55,7 +56,6 @@ export const ConfirmationPage = (props) => {
   useEffect(() => {
     if (!props.userId || !props.confirmationNumber) {
       router.push("/")
-      return;
     }
 
     router.prefetch('/')
@@ -76,10 +76,10 @@ export const ConfirmationPage = (props) => {
         >
           Thank you for your order!
         </Typography>
-        <Image src={completedOrderIcon} height={250} width={250} />
+        <Image src={completedOrderIcon} height={250} width={250} alt="New Order" />
 
         <Typography variant="h5" align="center">
-          Your order has been requested. We'll notify you when the chef has confirmed your order.
+          Your order has been requested.We&apos;ll notify you when the chef has confirmed your order.
         </Typography>
         <Typography variant="caption" align="center">
           •Your card will not be charged until the chef confirms your order.

@@ -18,11 +18,7 @@ export default async function getChefHoursQuery(
   const query = await db.chef.findFirst({
     where: { userId },
     include: {
-      hours: {
-        include: {
-          daysOfWeek: true
-        }
-      }
+      hours: true
     }
   })
   const hours = query?.hours

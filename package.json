@@ -7,6 +7,7 @@
   "start": "blitz start",
   "studio": "blitz prisma studio",
   "lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx .",
+  "lint:fix": "eslint --fix",
   "test": "jest",
   "test:watch": "jest --watch"
  },
@@ -59,7 +60,6 @@
   "react-final-form": "6.5.9",
   "react-redux": "7.2.6",
   "stripe": "10.3.0",
-  "typescript": "4.7.4",
   "uuid": "8.3.2",
   "zod": "3.18.0"
  },

@@ -103,7 +103,7 @@ const CheckoutPage = ({ eventDate, eventTime, userId, stripePaymentMethods }: Ch
 
       if (fufilledOrder) {
         const url = new URL(`${siteUrl}/orders/${fufilledOrder.data.confirmationNumber}/new`)
-        router.push(url)
+        return router.push(url)
       }
 
     } catch (err) {
@@ -157,7 +157,7 @@ const CheckoutPage = ({ eventDate, eventTime, userId, stripePaymentMethods }: Ch
                 onClick={e => {
                   e.preventDefault()
 
-                  router.push(Routes.Account())
+                  return router.push(Routes.Account())
                 }}
               >
                 Add Payment Method

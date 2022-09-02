@@ -27,6 +27,7 @@ const OrderItems = (props) => {
       </Box>
       {order.dishes.map(item => (
         <Box
+          key={item.id}
           sx={{
             display: 'flex',
             alignItems: 'center',

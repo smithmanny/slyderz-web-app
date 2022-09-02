@@ -21,7 +21,7 @@ const HoursContainer = () => {
   const closeHoursModal = useCallback(() => setShowHoursModal(false), [])
 
   const destroyHourBlock = (hourBlockId: number) => {
-    destroyHours({ id: hourBlockId }).then(() => refetch())
+    return destroyHours({ id: hourBlockId }).then(() => refetch())
   }
 
   return (

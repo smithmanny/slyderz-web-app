@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { BlitzPage } from "@blitzjs/next";
 
 import Layout from "app/core/layouts/Layout"

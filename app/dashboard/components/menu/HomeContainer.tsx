@@ -64,7 +64,7 @@ const HomeContainer = (props) => {
                       disableRipple
                       onClick={(e) => {
                         e.stopPropagation();
-                        destroySection({ id: section.id }, { onSuccess: () => refetch() })
+                        return destroySection({ id: section.id }, { onSuccess: () => refetch() })
                       }}
                       size="large">
                       <DeleteIcon fontSize="small" />

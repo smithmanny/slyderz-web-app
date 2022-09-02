@@ -9,16 +9,20 @@ export default resolver.pipe((resolver.zod(UpdateMenuItem)), async (input: any, 
   const cartItems = ctx.session?.cart?.pendingCartItems || []
   const index = cartItems.findIndex(elem => elem?.id === id);
   let updatedArray: CartItem[] = [...cartItems]
+  let item = updatedArray[index]
 
-  if (updatedArray[index]) {
-    if (updatedArray[index].quantity === 1) {
-      updatedArray[index].quantity = 1;
+
+  if (item) {
+    if (item.quantity === 1) {
+      item.quantity = 1;
     } else {
-      updatedArray[index].quantity -= quantity;
+      item.quantity -= quantity;
     }
   } else {
     throw new Error('Error finding index for selected menu item')
   }
+
+  updatedArray = [...updatedArray, item]
 
   const total = updatedArray.reduce((total, currentVal: CartItem) => {
     return total += (currentVal.quantity * currentVal.price);
