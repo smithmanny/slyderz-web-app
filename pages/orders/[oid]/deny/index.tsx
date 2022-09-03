@@ -81,7 +81,9 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ req, 
     eventDate: readableDate(order.eventDate),
   }
 
-  await sendOrderResponseEmail(emailData, false)
+  sendOrderResponseEmail(emailData, false).catch(e => {
+    console.log('Failed to send email', e)
+  })
 
   return {
     props: {
