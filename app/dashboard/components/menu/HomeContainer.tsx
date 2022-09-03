@@ -1,9 +1,8 @@
-import { invalidateQuery, useMutation, useQuery } from "@blitzjs/rpc";
+import { useMutation, useQuery } from "@blitzjs/rpc";
 import React, { useState } from 'react';
 import IconButton from "@mui/material/IconButton";
 
 import menuSectionsQuery from "../../queries/menuSectionsQuery"
-import createSectionMutation from "../../mutations/createSectionMutation"
 import destroySectionMutation from "../../mutations/destroySectionMutation"
 
 import DeleteIcon from 'app/core/components/icons/DeleteIcon'
@@ -21,7 +20,6 @@ const HomeContainer = (props) => {
   const { currentView, setCurrentView, setSelectedSection } = props;
   const [showSectionModal, setShowSectionModal] = useState(false)
   const [sections, { refetch }] = useQuery(menuSectionsQuery, {})
-  const [createSection] = useMutation(createSectionMutation)
   const [destroySection] = useMutation(destroySectionMutation)
 
   const closeSectionModal = () => {
@@ -30,10 +28,6 @@ const HomeContainer = (props) => {
 
   const openSectionModal = () => {
     setShowSectionModal(true)
-  }
-
-  const refetchSections = () => {
-    return invalidateQuery(menuSectionsQuery)
   }
 
   return (
@@ -78,7 +72,6 @@ const HomeContainer = (props) => {
       </MenuLayout>
       <CreateSectionModal
         show={showSectionModal}
-        createSection={createSection}
         onClose={closeSectionModal}
         refetch={refetch}
       />

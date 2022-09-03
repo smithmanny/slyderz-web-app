@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import InputAdornment from '@mui/material/InputAdornment';
 
 import Form, { TextField } from "app/core/components/form"
-import { formatNumberToCurrency } from 'app/helpers'
+import { formatNumberToCurrency } from 'app/utils/time'
 
 const DishForm = (props) => {
   const initialValues = props.initialValues

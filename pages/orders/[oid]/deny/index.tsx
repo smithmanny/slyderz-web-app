@@ -2,7 +2,8 @@ import { gSSP } from "app/blitz-server";
 import { useRouter } from "next/router";
 import db from 'db'
 
-import { formatNumberToCurrency, sendOrderResponseEmail } from "app/helpers"
+import { sendOrderResponseEmail } from "app/utils/send-email"
+import { formatNumberToCurrency } from "app/utils/time"
 import { readableDate } from "app/helpers/dateHelpers"
 
 import Box from "app/core/components/shared/Box"
@@ -79,6 +80,7 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ req, 
     eventTime: order.eventTime,
     eventDate: readableDate(order.eventDate),
   }
+
   await sendOrderResponseEmail(emailData, false)
 
   return {

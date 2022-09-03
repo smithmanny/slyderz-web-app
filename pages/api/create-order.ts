@@ -4,7 +4,7 @@ import randomstring from "randomstring";
 
 import { siteUrl } from "app/helpers/site";
 import { readableDate } from "app/helpers/dateHelpers"
-import { sendOrderRequestEmail } from "app/helpers"
+import { sendOrderRequestEmail } from "app/utils/send-email"
 import db from "db"
 import { EmailBodyType } from 'types'
 
@@ -67,7 +67,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
       eventDate: readableDate(date),
     }
 
-    await sendOrderRequestEmail(emailData)
+    sendOrderRequestEmail(emailData).catch(e => {
+      console.log('Failed to send email', e)
+    })
   }
 
   res.statusCode = 200

@@ -17,7 +17,7 @@ export default async function updateHoursMutation(
   ctx.session.$authorize()
 
   if (!userId) {
-    throw new Error("Can't find user")
+    throw new Error("User not found")
   }
 
   const hours = await db.hours.delete({

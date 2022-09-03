@@ -11,7 +11,6 @@ export default resolver.pipe((resolver.zod(UpdateMenuItem)), async (input: any, 
   let updatedArray: CartItem[] = [...cartItems]
   let item = updatedArray[index]
 
-
   if (item) {
     if (item.quantity === 1) {
       item.quantity = 1;
@@ -21,8 +20,6 @@ export default resolver.pipe((resolver.zod(UpdateMenuItem)), async (input: any, 
   } else {
     throw new Error('Error finding index for selected menu item')
   }
-
-  updatedArray = [...updatedArray, item]
 
   const total = updatedArray.reduce((total, currentVal: CartItem) => {
     return total += (currentVal.quantity * currentVal.price);

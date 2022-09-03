@@ -37,9 +37,14 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ ctx, 
 
   const confirmationNumber = params.oid
 
-  // TODO: Redirect if confirmation status is not 'PENDING'
-  // check session.userId and order.userId
-  // Throw error if it don't match
+  if (!confirmationNumber) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    }
+  }
 
   return {
     props: {
@@ -54,14 +59,8 @@ export const ConfirmationPage = (props) => {
   const [resetCartItems] = useMutation(resetCartItemsMutation);
 
   useEffect(() => {
-    if (!props.userId || !props.confirmationNumber) {
-      router.push("/")
-    }
-
-    router.prefetch('/')
-
     resetCartItems()
-  }, []);
+  }, [resetCartItems]);
 
   return (
     <ConsumerContainer maxWidth="sm">

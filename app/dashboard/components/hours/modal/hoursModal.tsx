@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 import createHoursMutation from "app/dashboard/mutations/createHoursMutation"
 
-import { todAM, todPM, weekdays } from 'app/helpers/index'
+import { todAM, todPM, weekdays } from 'app/utils/time'
 
 import Grid from "app/core/components/shared/Grid"
 import Form, { Checkbox, Select } from "app/core/components/form"
@@ -34,29 +34,27 @@ const CreateSectionModal = ({ refetch, show, onClose, ...props }) => {
           onClose();
         }}
       >
-        <Grid container spacing={2}>
-          <Checkbox
-            label="Select Days"
-            name="daysOfWeek"
-            data={weekdays}
-          />
-          <Select
-            label="Start Time"
-            name="startTime"
-            items={todAM}
-            variant="outlined"
-            md={6}
-            required
-          />
-          <Select
-            label="End Time"
-            name="endTime"
-            items={todPM}
-            variant="outlined"
-            md={6}
-            required
-          />
-        </Grid>
+        <Checkbox
+          label="Select Days"
+          name="daysOfWeek"
+          data={weekdays}
+        />
+        <Select
+          label="Start Time"
+          name="startTime"
+          items={todAM}
+          variant="outlined"
+          md={6}
+          required
+        />
+        <Select
+          label="End Time"
+          name="endTime"
+          items={todPM}
+          variant="outlined"
+          md={6}
+          required
+        />
       </Form>
     </Modal>
   )

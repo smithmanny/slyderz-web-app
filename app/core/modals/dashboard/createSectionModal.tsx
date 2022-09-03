@@ -1,11 +1,15 @@
 import React from 'react';
+import { useMutation } from "@blitzjs/rpc";
 import PropTypes from 'prop-types'
 
-import Form, { TextField } from "app/core/components/form"
+import createSectionMutation from "app/dashboard/mutations/createSectionMutation"
 
+import Form, { TextField } from "app/core/components/form"
 import Modal from 'app/core/components/shared/Modal'
 
-const CreateSectionModal = ({ createSection, refetch, show, onClose, ...props }) => {
+const CreateSectionModal = ({ refetch, show, onClose, ...props }) => {
+  const [createSection] = useMutation(createSectionMutation)
+
   return (
     <Modal
       closeModal={onClose}

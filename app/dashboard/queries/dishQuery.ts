@@ -18,7 +18,7 @@ export default async function getChefMenuSections(
   ctx.session.$authorize()
 
   if (!userId) {
-    throw new Error("Can't find user")
+    throw new Error("User not found")
   }
 
   const query = await db.chef.findFirst({

@@ -22,7 +22,7 @@ export default async function destroyDish(
   ctx.session.$authorize()
 
   if (!userId) {
-    throw new Error("Can't find user")
+    throw new Error("User not found")
   }
 
   const chef = await db.chef.findFirst({
@@ -35,7 +35,7 @@ export default async function destroyDish(
   })
 
   if (!chef) {
-    throw new Error("Can't find user")
+    throw new Error("User not found")
   }
 
   const dish = await db.dish.update({

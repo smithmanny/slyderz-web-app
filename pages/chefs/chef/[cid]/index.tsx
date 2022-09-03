@@ -13,6 +13,7 @@ import ConsumerContainer from "app/core/components/shared/ConsumerContainer"
 import Menu from "app/chefs/components/menu"
 import Grid from "app/core/components/shared/Grid"
 import Tabs from "app/core/components/shared/Tabs"
+import TabPanel from "app/core/components/shared/TabPanel"
 import Tab from "app/core/components/shared/Tab"
 import Typography from "app/core/components/shared/Typography"
 import Layout from "app/core/layouts/Layout"
@@ -22,32 +23,6 @@ const ChefProfileAvatar = styled(Avatar)`
     object-position: top center;
   }
 `
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`slyderz-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <React.Fragment>
-          {children}
-        </React.Fragment>
-      )}
-    </div>
-  );
-}
 
 function a11yProps(index: number) {
   return {
@@ -72,7 +47,7 @@ export const ChefPage = (props) => {
       <Grid container>
         <Grid item xs={12} sx={{ mb: 4 }}>
           <div style={{ height: 250, maxHeight: 250, width: '100%', position: 'relative' }}>
-            <Image src={Logo} layout="fill" objectFit="cover" />
+            <Image src={Logo} layout="fill" objectFit="cover" alt="Logo" />
           </div>
         </Grid>
         <Grid item xs={12}>
@@ -102,7 +77,9 @@ export const ChefPage = (props) => {
         </Grid>
         <Grid item xs>
           <TabPanel value={value} index={0}>
-            <Menu dishes={dishes} />
+            <Menu
+              dishes={dishes}
+            />
           </TabPanel>
           <TabPanel value={value} index={1}>
             Item Two

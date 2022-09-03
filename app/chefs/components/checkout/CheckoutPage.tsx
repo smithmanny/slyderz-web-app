@@ -132,72 +132,70 @@ const CheckoutPage = ({ eventDate, eventTime, userId, stripePaymentMethods }: Ch
       <Form
         onSubmit={handleSubmit}
         initialValues={{
-          paymentMethod: stripePaymentMethods[0].id
+          paymentMethod: stripePaymentMethods[0]?.id
         }}
       >
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Typography sx={{ mb: 2 }} variant="h5">Payment Info</Typography>
-            {stripePaymentMethods.length > 0 && (
-              <Select
-                label="Select payment method"
-                name="paymentMethod"
-                items={stripePaymentMethods.map(paymentMethod => ({
-                  key: paymentMethod.card.last4,
-                  value: paymentMethod.id
-                }))}
-                variant="outlined"
-                md={12}
-                required
-              />
-            )}
-            {stripePaymentMethods.length === 0 && (
-              <Button
-                variant="text"
-                onClick={e => {
-                  e.preventDefault()
-
-                  return router.push(Routes.Account())
-                }}
-              >
-                Add Payment Method
-              </Button>
-            )}
+        <Grid item xs={12}>
+          <Typography sx={{ mb: 2 }} variant="h5">Payment Info</Typography>
+          {stripePaymentMethods.length > 0 && (
+            <Select
+              label="Select payment method"
+              name="paymentMethod"
+              items={stripePaymentMethods.map(paymentMethod => ({
+                key: paymentMethod.card.last4,
+                value: paymentMethod.id
+              }))}
+              variant="outlined"
+              md={12}
+              required
+            />
+          )}
+          {stripePaymentMethods.length === 0 && (
             <Button
-              disabled={processing}
-              type="submit"
-              sx={{
-                background: "#5469d4",
-                fontFamily: "Arial, sans-serif",
-                color: "#ffffff",
-                borderRadius: "0 0 4px 4px",
-                border: "0",
-                padding: "12px 16px",
-                fontWeight: 600,
-                cursor: "pointer",
-                transition: "all 0.2s ease",
-                boxShadow: "0px 4px 5.5px 0px rgba(0, 0, 0, 0.07)",
-                mt: 2,
-                width: "100%",
-                "&:disabled": {
-                  opacity: 0.5,
-                  cursor: "default",
-                },
+              variant="text"
+              onClick={e => {
+                e.preventDefault()
+
+                return router.push(Routes.Account())
               }}
             >
-              <span>
-                {processing ? (
-                  <Spinner id="spinner"></Spinner>
-                ) : (
-                  "Pay now"
-                )}
-              </span>
+              Add Payment Method
             </Button>
-            {/* Show any error that happens when processing the payment */}
-            {/* {error && (
-              <Alert onClose={() => setError(null)} />
-            )} */}
-          </Grid>
+          )}
+          <Button
+            disabled={processing}
+            type="submit"
+            sx={{
+              background: "#5469d4",
+              fontFamily: "Arial, sans-serif",
+              color: "#ffffff",
+              borderRadius: "0 0 4px 4px",
+              border: "0",
+              padding: "12px 16px",
+              fontWeight: 600,
+              cursor: "pointer",
+              transition: "all 0.2s ease",
+              boxShadow: "0px 4px 5.5px 0px rgba(0, 0, 0, 0.07)",
+              mt: 2,
+              width: "100%",
+              "&:disabled": {
+                opacity: 0.5,
+                cursor: "default",
+              },
+            }}
+          >
+            <span>
+              {processing ? (
+                <Spinner id="spinner"></Spinner>
+              ) : (
+                "Pay now"
+              )}
+            </span>
+          </Button>
+          {/* Show any error that happens when processing the payment */}
+          {/* {error && (
+            <Alert onClose={() => setError(null)} />
+          )} */}
         </Grid>
       </Form>
     </React.Fragment>

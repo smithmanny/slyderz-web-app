@@ -1,25 +1,23 @@
 import Link from "next/link";
-import { useSession } from "@blitzjs/auth";
 import { Routes } from "@blitzjs/next";
+import { useSession } from "@blitzjs/auth";
 import React from 'react'
 import PropTypes from 'prop-types'
 import { useFormState } from 'react-final-form'
 
 import { styled } from "integrations/material-ui"
-import { formatNumberToCurrency } from "app/helpers"
-import { convertDayToInt, todAM, todPM } from 'app/helpers'
+import { formatNumberToCurrency } from "app/utils/time"
+import { convertDayToInt, todAM, todPM } from 'app/utils/time'
 
 import Form, { DatePicker, Select } from 'app/core/components/form'
+import Box from 'app/core/components/shared/Box'
 import Button from 'app/core/components/shared/Button'
+import Grid from 'app/core/components/shared/Grid'
 import Typography from 'app/core/components/shared/Typography'
 import CartItems from '../cartItems'
 
 const Root = styled('div')({
   padding: 2
-});
-
-const Content = styled('div')({
-  width: "100%"
 });
 
 const CartItemsContainer = (props) => {
@@ -47,9 +45,8 @@ const CartItemsContainer = (props) => {
     return offDays.includes(date.getDay())
   }
 
-
   if (!props.checkoutPage) {
-    const selectedTime = props.hours.find(hourBlock =>
+    const selectedTime = props.hours?.find(hourBlock =>
       hourBlock.daysOfWeek.find(dayOfWeek =>
         convertDayToInt(dayOfWeek) === selectedDayOfWeek
       )
@@ -65,19 +62,18 @@ const CartItemsContainer = (props) => {
     <React.Fragment>
       {!props.checkoutPage && (
         <React.Fragment>
-          <Typography variant="subtitle1">Date</Typography>
           <DatePicker
             name="eventDate"
             disablePast
             required
+            label="Date"
             views={['month', 'day']}
             inputVariant="outlined"
             shouldDisableDate={disableDaysOff}
           />
-
-          <Typography variant="subtitle1">Time</Typography>
           <Select
             name="eventTime"
+            label="Time"
             items={availableTime}
             required
           />
@@ -85,7 +81,7 @@ const CartItemsContainer = (props) => {
       )}
 
       {props.cartItems?.length > 0 && (
-        <Content>
+        <Grid item xs={12}>
           <Typography variant="h6" sx={{ mt: 4, fontWeight: '545' }}>Your Items</Typography>
           <CartItems selectedCartItems={props.cartItems} />
           <Typography variant="h6" sx={{ my: 4 }}>Total: {formatNumberToCurrency(props.total)}</Typography>
@@ -105,7 +101,7 @@ const CartItemsContainer = (props) => {
               </Button>
             </Link>
           )}
-        </Content>
+        </Grid>
       )}
     </React.Fragment>
   )
@@ -122,7 +118,9 @@ const CartSummary = (props) => {
     <Root>
       <Form>
         {buttonText && (
-          <Typography fontWeight="550" variant="h5">Your Reservation</Typography>
+          <Grid item>
+            <Typography fontWeight="550" variant="h5">Your Reservation</Typography>
+          </Grid>
         )}
         <CartItemsContainer
           buttonText={buttonText}

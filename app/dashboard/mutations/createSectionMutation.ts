@@ -11,14 +11,13 @@ export default async function createSection(
   input: z.infer<typeof GetSection>,
   ctx: Ctx
 ) {
-  // Validate input - very important for security
   const data = GetSection.parse(input)
 
   const userId = ctx.session.userId
   ctx.session.$authorize()
 
   if (!userId) {
-    throw new Error("Can't find user")
+    throw new Error("User not found")
   }
 
   const chef = await db.chef.findFirst({
@@ -31,7 +30,7 @@ export default async function createSection(
   })
 
   if (!chef) {
-    throw new Error("Can't find user")
+    throw new Error("Chef not found")
   }
 
   const section = await db.section.create({

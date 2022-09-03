@@ -11,6 +11,7 @@ import {
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Provider } from "react-redux";
+import * as dotenv from 'dotenv'
 
 import store from "integrations/redux";
 import { theme } from "integrations/material-ui";
@@ -19,6 +20,7 @@ import LoginForm from "app/auth/components/LoginForm"
 import Box from "app/core/components/shared/Box"
 import CircularProgress from "app/core/components/shared/CircularProgress"
 
+dotenv.config()
 export { reportWebVitals } from 'next-axiom';
 
 function LoadingIcon() {
