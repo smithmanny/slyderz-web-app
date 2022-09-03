@@ -10,6 +10,7 @@ import { EmailBodyType } from 'types'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
   const { eventDate, eventTime, paymentMethodId } = req.body;
+  let order
 
   if (!ctx.session.cart) {
     throw new Error("Cart can't be empty")
@@ -19,58 +20,74 @@ const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
     throw Error("Wrong order data")
   }
 
-  // Create order
-  const confirmationNumber = `SLY-${randomstring.generate({
-    charset: 'alphanumeric',
-    capitalization: 'uppercase',
-    length: 7,
-  })}`
+  await db.$transaction(async (db) => {
+    // Create order
+    const confirmationNumber = `SLY-${randomstring.generate({
+      charset: 'alphanumeric',
+      capitalization: 'uppercase',
+      length: 7,
+    })}`
 
-  const order = await db.order.create({
-    data: {
-      amount: Number(ctx.session.cart?.total),
-      chefId: ctx.session.cart.pendingCartItems[0].chefId,
-      confirmationNumber,
-      eventDate,
-      eventTime,
-      dishes: {
-        createMany: {
-          data: ctx.session.cart.pendingCartItems.map(item => ({
-            dishId: item.dishId,
-            chefId: item.chefId,
-            quantity: item.quantity,
-          }))
+    order = await db.order.create({
+      data: {
+        amount: Number(ctx.session.cart?.total),
+        chefId: ctx.session.cart.pendingCartItems[0].chefId,
+        confirmationNumber,
+        eventDate,
+        eventTime,
+        dishes: {
+          createMany: {
+            data: ctx.session.cart.pendingCartItems.map(item => ({
+              dishId: item.dishId,
+              chefId: item.chefId,
+              quantity: item.quantity,
+            }))
+          }
+        },
+        paymentMethodId,
+        userId: Number(ctx.session.userId),
+      },
+      select: {
+        confirmationNumber: true,
+        id: true,
+        user: {
+          select: {
+            email: true
+          }
         }
       },
-      paymentMethodId,
-      userId: Number(ctx.session.userId),
-    },
-    select: {
-      confirmationNumber: true,
-      id: true,
-    }
-  })
-
-  // Send email
-  if (order) {
-    const date = new Date(eventDate)
-    const acceptUrl = new URL(`${siteUrl}/orders/${order.confirmationNumber}/confirm`)
-    const denyUrl = new URL(`${siteUrl}/orders/${order.confirmationNumber}/deny`)
-
-    const emailData: EmailBodyType = {
-      acceptOrderUrl: acceptUrl,
-      denyOrderUrl: denyUrl,
-      cartItems: ctx.session.cart.pendingCartItems,
-      orderTotal: ctx.session.cart.total,
-      confirmationNumber: order.confirmationNumber,
-      eventTime,
-      eventDate: readableDate(date),
-    }
-
-    sendOrderRequestEmail(emailData).catch(e => {
-      console.log('Failed to send email', e)
     })
-  }
+
+    // Send email
+    if (order) {
+      const date = new Date(eventDate)
+      const acceptUrl = new URL(`${siteUrl}/orders/${order.confirmationNumber}/confirm`)
+      const denyUrl = new URL(`${siteUrl}/orders/${order.confirmationNumber}/deny`)
+
+      const emailData: EmailBodyType = {
+        acceptOrderUrl: acceptUrl,
+        denyOrderUrl: denyUrl,
+        cartItems: ctx.session.cart.pendingCartItems,
+        email: order.user.email,
+        orderTotal: ctx.session.cart.total,
+        confirmationNumber: order.confirmationNumber,
+        eventTime,
+        eventDate: readableDate(date),
+      }
+
+      sendOrderRequestEmail(emailData).catch(e => {
+        throw new Error(`Failed to send email ${e}`)
+      })
+    }
+
+    // reset cart & total
+    await ctx.session.$setPublicData({
+      cart: {
+        pendingCartItems: [],
+        total: 0,
+      }
+    })
+  })
 
   res.statusCode = 200
   res.setHeader("Content-Type", "application/json")

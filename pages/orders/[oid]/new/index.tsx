@@ -56,11 +56,6 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ ctx, 
 
 export const ConfirmationPage = (props) => {
   const router = useRouter()
-  const [resetCartItems] = useMutation(resetCartItemsMutation);
-
-  useEffect(() => {
-    resetCartItems()
-  }, [resetCartItems]);
 
   return (
     <ConsumerContainer maxWidth="sm">

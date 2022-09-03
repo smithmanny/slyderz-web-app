@@ -80,6 +80,12 @@ const CartItemsContainer = (props) => {
         </React.Fragment>
       )}
 
+      {props.cartItems.length === 0 && (
+        <Grid item xs={12}>
+          <Typography fontWeight="550" variant="h5">Your cart is empty</Typography>
+        </Grid>
+      )}
+
       {props.cartItems?.length > 0 && (
         <Grid item xs={12}>
           <Typography variant="h6" sx={{ mt: 4, fontWeight: '545' }}>Your Items</Typography>

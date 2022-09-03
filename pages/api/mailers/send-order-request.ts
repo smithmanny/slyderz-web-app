@@ -33,7 +33,7 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
   sendgrid.send(consumerMsg)
   .then(() => sendgrid.send(chefMsg))
   .catch(err => {
-    console.error(`Failed to send email ${err}`)
+    throw new Error(`Failed to send email ${err}`)
   })
   res.end();
 }

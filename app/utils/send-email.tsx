@@ -4,7 +4,7 @@ import { siteUrl } from '../helpers/site'
 
 export function sendOrderRequestEmail(emailData: EmailBodyType) {
   const orderRequestData = {
-    to: 'shakhorsmith@gmail.com',
+    to: emailData.email,
     templateData: {
       acceptOrderUrl: emailData.acceptOrderUrl,
       denyOrderUrl: emailData.denyOrderUrl,
@@ -27,7 +27,7 @@ export function sendOrderRequestEmail(emailData: EmailBodyType) {
 
 export function sendOrderResponseEmail(emailData: EmailBodyResponseType, response: Boolean) {
   const orderRequestData = {
-    to: 'shakhorsmith@gmail.com',
+    to: emailData.email,
     templateData: {
       cartItems: emailData.cartItems,
       orderNumber: emailData.orderNumber,

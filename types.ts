@@ -18,6 +18,7 @@ export interface EmailBodyType {
   confirmationNumber: string
   acceptOrderUrl: URL
   denyOrderUrl: URL
+  email: string
   eventDate: string
   eventTime: string
   orderTotal: Number
@@ -25,6 +26,7 @@ export interface EmailBodyType {
 export interface EmailBodyResponseType {
   cartItems: Array<CartItem>
   orderNumber: string
+  email: string
   eventDate: string
   eventTime: string
   orderTotal: Number

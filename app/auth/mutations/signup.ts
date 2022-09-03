@@ -10,7 +10,6 @@ import { Role } from "types"
 sendgridClient.setApiKey(process.env.SENDGRID_API_TOKEN || '')
 
 export default resolver.pipe(resolver.zod(Signup), async ({ email, firstName, lastName, password }, ctx) => {
-  console.log('STRIP', process.env.STRIPE_SECRET)
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', { apiVersion: "2022-08-01" });
   const hashedPassword = await SecurePassword.hash(password)
   const userExists = await db.user.findFirst({

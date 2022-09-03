@@ -57,6 +57,7 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ req, 
       user: {
         select: {
           id: true,
+          email: true,
           stripeCustomerId: true,
           firstName: true
         }
@@ -119,6 +120,7 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ req, 
       description: d.dish.description,
       name: d.dish.name,
     })),
+    email: order.user.email,
     orderTotal: order.amount,
     orderNumber: order.confirmationNumber,
     eventTime: order.eventTime,
