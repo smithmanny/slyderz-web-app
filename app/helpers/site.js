@@ -1,1 +1,1 @@
-export const siteUrl = process.env.VERCEL_URL || "http://localhost:3000"
+export const siteUrl = process.env.RAILWAY_STATIC_URL || "http://localhost:3000"

@@ -76,7 +76,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
       }
 
       sendOrderRequestEmail(emailData).catch(e => {
-        throw new Error(`Failed to send email ${e}`)
+        return res.status(405).json({ error: e })
       })
     }
 
