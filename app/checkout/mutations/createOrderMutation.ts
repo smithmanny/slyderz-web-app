@@ -73,10 +73,7 @@ export default async function CreateOrderMutation(input: any, ctx: Ctx) {
         eventDate: readableDate(date),
       }
 
-      sendOrderRequestEmail(emailData).catch(e => {
-        console.log(e)
-        throw new Error('Failed sending email', e)
-      })
+      await sendOrderRequestEmail(emailData)
 
       // reset cart & total
       await ctx.session.$setPublicData({

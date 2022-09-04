@@ -8,7 +8,7 @@ type OrderRequestMailerProps = {
   templateData: any
 }
 
-const handler = (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async(req: NextApiRequest, res: NextApiResponse) => {
   const { to, templateData }: OrderRequestMailerProps = req.body;
   const consumerMsg = {
     from: 'shakhor@slyderz.co',
@@ -30,11 +30,14 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
       }
     ]
   }
-  sendgrid.send(consumerMsg)
-  .then(() => sendgrid.send(chefMsg))
-  .catch(err => {
+
+  try {
+    await sendgrid.send(consumerMsg)
+    await sendgrid.send(chefMsg)
+  } catch(err) {
     throw new Error(`Failed to send email ${err}`)
-  })
-  res.end();
+  }
+
+  res.status(200).json({ sent: true });
 }
 export default api(handler);
