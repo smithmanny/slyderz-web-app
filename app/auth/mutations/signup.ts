@@ -8,9 +8,9 @@ import { Signup } from "app/auth/validations"
 import { Role } from "types"
 
 sendgridClient.setApiKey(process.env.SENDGRID_API_TOKEN || '')
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', { apiVersion: "2022-08-01" });
 
 export default resolver.pipe(resolver.zod(Signup), async ({ email, firstName, lastName, password }, ctx) => {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', { apiVersion: "2022-08-01" });
   const hashedPassword = await SecurePassword.hash(password)
   const userExists = await db.user.findFirst({
     where: {
