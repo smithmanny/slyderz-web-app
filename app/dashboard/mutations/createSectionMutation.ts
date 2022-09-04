@@ -14,7 +14,7 @@ export default async function createSection(
   const data = GetSection.parse(input)
 
   const userId = ctx.session.userId
-  ctx.session.$authorize()
+  ctx.session.$authorize("CHEF")
 
   if (!userId) {
     throw new Error("User not found")

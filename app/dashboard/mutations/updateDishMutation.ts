@@ -19,7 +19,7 @@ export default async function destroyDish(
   const data = GetDish.parse(input)
 
   const userId = ctx.session.userId
-  ctx.session.$authorize()
+  ctx.session.$authorize("CHEF")
 
   if (!userId) {
     throw new Error("User not found")

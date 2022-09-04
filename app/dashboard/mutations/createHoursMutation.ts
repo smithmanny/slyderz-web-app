@@ -19,7 +19,7 @@ export default async function createHoursMutation(
   const userId = ctx.session.userId
   const selectedWeekdays: Array<String> = []
 
-  ctx.session.$authorize()
+  ctx.session.$authorize("CHEF")
 
   if (!userId) {
     throw new AuthorizationError()

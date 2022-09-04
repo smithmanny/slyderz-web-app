@@ -30,7 +30,7 @@ export default async function destroyDish(
     throw new Error("User not found")
   }
 
-  ctx.session.$authorize()
+  ctx.session.$authorize("CHEF")
 
   const dish = await db.dish.create({
     data: {

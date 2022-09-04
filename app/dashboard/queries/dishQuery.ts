@@ -15,7 +15,7 @@ export default async function getChefMenuSections(
 
   // Require user to be logged in
   const userId = ctx.session.userId
-  ctx.session.$authorize()
+  ctx.session.$authorize("CHEF")
 
   if (!userId) {
     throw new Error("User not found")

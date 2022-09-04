@@ -11,11 +11,9 @@ export default async function destroyDish(
   input: z.infer<typeof GetDish>,
   ctx: Ctx
 ) {
-  // Validate input - very important for security
   const data = GetDish.parse(input)
 
-  // Require user to be logged in
-  ctx.session.$authorize()
+  ctx.session.$authorize("CHEF")
 
   const dish = await db.dish.delete({
     where: {

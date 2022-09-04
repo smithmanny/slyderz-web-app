@@ -2,7 +2,7 @@ import { SessionContext, SimpleRolesIsAuthorized } from "@blitzjs/auth";
 import { User } from "db"
 
 // Note: You should switch to Postgres and then use a DB enum for role type
-export type Role = "ADMIN" | "USER"
+export type Role = "ADMIN" | "USER" | "CHEF"
 
 export interface CartItem {
   chefId: number,

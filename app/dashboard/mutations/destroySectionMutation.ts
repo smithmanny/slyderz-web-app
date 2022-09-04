@@ -15,7 +15,7 @@ export default async function destroySection(
   const data = GetSection.parse(input)
 
   // Require user to be logged in
-  ctx.session.$authorize()
+  ctx.session.$authorize("CHEF")
 
   const section = await db.section.delete({
     where: {
