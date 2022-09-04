@@ -1,6 +1,5 @@
 
 import { EmailBodyType, EmailBodyResponseType } from 'types'
-import { siteUrl } from '../helpers/site'
 
 export function sendOrderRequestEmail(emailData: EmailBodyType) {
   const orderRequestData = {
@@ -16,7 +15,7 @@ export function sendOrderRequestEmail(emailData: EmailBodyType) {
       orderTotal: emailData.orderTotal,
     }
   };
-  return fetch(`${siteUrl}/api/mailers/send-order-request`, {
+  return fetch(`${process.env.URL}/api/mailers/send-order-request`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -38,7 +37,7 @@ export function sendOrderResponseEmail(emailData: EmailBodyResponseType, respons
     },
     response
   };
-  return fetch(`${siteUrl}/api/mailers/order-response`, {
+  return fetch(`${process.env.URL}/api/mailers/order-response`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

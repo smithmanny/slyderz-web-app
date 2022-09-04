@@ -8,7 +8,6 @@ import {
   useElements
 } from "@stripe/react-stripe-js";
 
-import { siteUrl } from "app/helpers/site"
 import { styled } from "integrations/material-ui";
 
 import Box from "app/core/components/shared/Box"
@@ -42,7 +41,7 @@ const StripeCard: FunctionComponent<any> = (props) => {
       //`Elements` instance that was used to create the Payment Element
       elements,
       confirmParams: {
-        return_url: `${siteUrl}/account`,
+        return_url: `${process.env.URL}/account`,
       }
     });
 
@@ -62,7 +61,7 @@ const StripeCard: FunctionComponent<any> = (props) => {
   const destroyPaymentMethodMutation = async(paymentMethodId: number) => {
     let data
     try {
-      const res = await fetch(`${siteUrl}/api/stripe/destroy-payment-method`, {
+      const res = await fetch(`${process.env.URL}/api/stripe/destroy-payment-method`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

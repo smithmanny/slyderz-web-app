@@ -1,7 +1,3 @@
-
-import { EmailBodyType, EmailBodyResponseType } from 'types'
-import { siteUrl } from '../helpers/site'
-
 export const formatNumberToCurrency = (number: number) => {
   return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'USD' }).format(number)
 }

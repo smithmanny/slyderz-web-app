@@ -2,7 +2,6 @@ import { api } from "app/blitz-server";
 import { NextApiRequest, NextApiResponse } from "next";
 import randomstring from "randomstring";
 
-import { siteUrl } from "app/helpers/site";
 import { readableDate } from "app/helpers/dateHelpers"
 import { sendOrderRequestEmail } from "app/utils/send-email"
 import db from "db"
@@ -62,8 +61,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
       // Send email
       if (order) {
         const date = new Date(eventDate)
-        const acceptUrl = new URL(`${siteUrl}/orders/${order.confirmationNumber}/confirm`)
-        const denyUrl = new URL(`${siteUrl}/orders/${order.confirmationNumber}/deny`)
+        const acceptUrl = new URL(`${process.env.URL}/orders/${order.confirmationNumber}/confirm`)
+        const denyUrl = new URL(`${process.env.URL}/orders/${order.confirmationNumber}/deny`)
 
         const emailData: EmailBodyType = {
           acceptOrderUrl: acceptUrl,

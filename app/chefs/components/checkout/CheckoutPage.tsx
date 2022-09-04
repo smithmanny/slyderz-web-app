@@ -5,7 +5,6 @@ import { Routes } from "@blitzjs/next";
 import React, { useState } from 'react';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 
-import { siteUrl } from "app/helpers/site";
 import { styled } from "integrations/material-ui";
 import CreateOrderMutation from 'app/checkout/mutations/createOrderMutation'
 
@@ -91,8 +90,8 @@ const CheckoutPage = ({ eventDate, eventTime, stripePaymentMethods }: CheckoutPa
     setProcessing(true);
     const fufilledOrder = await createOrder(orderBody)
 
-    if (fufilledOrder) {
-      const url = new URL(`${siteUrl}/orders/${fufilledOrder.confirmationNumber}/new`)
+    if (fufilledOrder && fufilledOrder.confirmationNumber) {
+      const url = new URL(`${process.env.URL}/orders/${fufilledOrder.confirmationNumber}/new`)
       return router.push(url)
     }
   };

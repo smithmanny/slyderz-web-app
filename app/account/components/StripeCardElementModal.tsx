@@ -6,8 +6,6 @@ import {
   useElements
 } from "@stripe/react-stripe-js";
 
-import { siteUrl } from 'app/helpers/site';
-
 import Alert from 'app/core/components/shared/Alert';
 import Button from "app/core/components/shared/Button"
 import Modal from 'app/core/components/shared/Modal'
@@ -38,7 +36,7 @@ const StripeCard: FunctionComponent<any> = (props) => {
       elements,
       redirect: 'if_required',
       confirmParams: {
-        return_url: siteUrl,
+        return_url: process.env.URL,
       }
     });
 
@@ -91,7 +89,7 @@ const StripeCardElementModal = ({ show, onClose, ...props }) => {
       }
     }
 
-    createStripeSetupIntent();
+    createStripeSetupIntent().catch(e => console.log(e))
   }, []);
 
   return (

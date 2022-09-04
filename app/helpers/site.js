@@ -1,1 +1,0 @@
-export const siteUrl = process.env.RAILWAY_STATIC_URL || "http://localhost:3000"
