@@ -59,8 +59,8 @@ export default async function CreateOrderMutation(input: any, ctx: Ctx) {
     // Send email
     if (order && order.confirmationNumber) {
       const date = new Date(eventDate)
-      const acceptUrl = `${process.env.URL}/orders/${order.confirmationNumber}/confirm`
-      const denyUrl = `${process.env.URL}/orders/${order.confirmationNumber}/deny`
+      const acceptUrl = `${process.env.NEXT_PUBLIC_URL}/orders/${order.confirmationNumber}/confirm`
+      const denyUrl = `${process.env.NEXT_PUBLIC_URL}/orders/${order.confirmationNumber}/deny`
 
       const emailData: EmailBodyType = {
         acceptOrderUrl: acceptUrl,

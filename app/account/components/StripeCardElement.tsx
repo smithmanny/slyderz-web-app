@@ -41,7 +41,7 @@ const StripeCard: FunctionComponent<any> = (props) => {
       //`Elements` instance that was used to create the Payment Element
       elements,
       confirmParams: {
-        return_url: `${process.env.URL}/account`,
+        return_url: `${process.env.NEXT_PUBLIC_URL}/account`,
       }
     });
 
@@ -61,7 +61,7 @@ const StripeCard: FunctionComponent<any> = (props) => {
   const destroyPaymentMethodMutation = async(paymentMethodId: number) => {
     let data
     try {
-      const res = await fetch(`${process.env.URL}/api/stripe/destroy-payment-method`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/stripe/destroy-payment-method`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

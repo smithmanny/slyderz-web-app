@@ -15,7 +15,7 @@ export function sendOrderRequestEmail(emailData: EmailBodyType) {
       orderTotal: emailData.orderTotal,
     }
   };
-  return fetch(`${process.env.URL}/api/mailers/send-order-request`, {
+  return fetch(`${process.env.NEXT_PUBLIC_URL}/api/mailers/send-order-request`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -37,7 +37,7 @@ export function sendOrderResponseEmail(emailData: EmailBodyResponseType, respons
     },
     response
   };
-  return fetch(`${process.env.URL}/api/mailers/order-response`, {
+  return fetch(`${process.env.NEXT_PUBLIC_URL}/api/mailers/order-response`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

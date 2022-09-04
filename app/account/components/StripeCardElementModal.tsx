@@ -36,7 +36,7 @@ const StripeCard: FunctionComponent<any> = (props) => {
       elements,
       redirect: 'if_required',
       confirmParams: {
-        return_url: process.env.URL,
+        return_url: process.env.NEXT_PUBLIC_URL,
       }
     });
 
