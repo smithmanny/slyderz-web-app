@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useMutation } from "@blitzjs/rpc";
 import { Routes } from "@blitzjs/next";
-import { getAntiCSRFToken } from "@blitzjs/auth"
 import React, { useState } from 'react';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 
 import { siteUrl } from "app/helpers/site";
 import { styled } from "integrations/material-ui";
+import CreateOrderMutation from 'app/checkout/mutations/createOrderMutation'
 
 import Form, { Select } from 'app/core/components/form';
 import Alert from 'app/core/components/shared/Alert';
@@ -75,10 +76,10 @@ interface CheckoutPageTypes {
   userId: Number
 }
 
-const CheckoutPage = ({ eventDate, eventTime, userId, stripePaymentMethods }: CheckoutPageTypes) => {
+const CheckoutPage = ({ eventDate, eventTime, stripePaymentMethods }: CheckoutPageTypes) => {
   const router = useRouter();
-  const antiCSRFToken = getAntiCSRFToken()
   const [processing, setProcessing] = useState(false);
+  const [createOrder] = useMutation(CreateOrderMutation)
 
   const handleSubmit = async (values) => {
     const orderBody = {
@@ -88,28 +89,11 @@ const CheckoutPage = ({ eventDate, eventTime, userId, stripePaymentMethods }: Ch
     }
 
     setProcessing(true);
+    const fufilledOrder = await createOrder(orderBody)
 
-    try {
-      const res = await fetch(`${siteUrl}/api/create-order`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "anti-csrf": antiCSRFToken,
-        },
-        body: JSON.stringify(orderBody)
-      });
-
-      const fufilledOrder = await res.json()
-
-      if (fufilledOrder) {
-        const url = new URL(`${siteUrl}/orders/${fufilledOrder.data.confirmationNumber}/new`)
-        return router.push(url)
-      }
-
-    } catch (err) {
-      console.error(err)
-      setProcessing(false);
-      throw new Error('Failed creating order')
+    if (fufilledOrder) {
+      const url = new URL(`${siteUrl}/orders/${fufilledOrder.confirmationNumber}/new`)
+      return router.push(url)
     }
   };
 

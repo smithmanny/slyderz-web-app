@@ -32,7 +32,7 @@ export interface EmailBodyResponseType {
   orderTotal: Number
 }
 interface Cart {
-  pendingCartItems: Array<CartItem> | [],
+  pendingCartItems: Array<CartItem> | Array<any>,
   total: number,
 }
 
