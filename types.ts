@@ -16,8 +16,8 @@ export interface CartItem {
 export interface EmailBodyType {
   cartItems: Array<CartItem>
   confirmationNumber: string
-  acceptOrderUrl: URL
-  denyOrderUrl: URL
+  acceptOrderUrl: string
+  denyOrderUrl: string
   email: string
   eventDate: string
   eventTime: string
