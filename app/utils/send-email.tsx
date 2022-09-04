@@ -2,6 +2,11 @@
 import { EmailBodyType, EmailBodyResponseType } from 'types'
 
 export function sendOrderRequestEmail(emailData: EmailBodyType) {
+  let url = "localhost:3000/api/mailers/send-order-request"
+  if (process.env.NEXT_PUBLIC_URL) {
+    url = `${process.env.NEXT_PUBLIC_URL}/api/mailers/send-order-request`
+  }
+
   const orderRequestData = {
     to: emailData.email,
     templateData: {
@@ -15,7 +20,7 @@ export function sendOrderRequestEmail(emailData: EmailBodyType) {
       orderTotal: emailData.orderTotal,
     }
   };
-  return fetch(`${process.env.NEXT_PUBLIC_URL}/api/mailers/send-order-request`, {
+  return fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -25,6 +30,11 @@ export function sendOrderRequestEmail(emailData: EmailBodyType) {
 }
 
 export function sendOrderResponseEmail(emailData: EmailBodyResponseType, response: Boolean) {
+  let url = "localhost:3000/api/mailers/send-order-request"
+  if (process.env.NEXT_PUBLIC_URL) {
+    url = `${process.env.NEXT_PUBLIC_URL}/api/mailers/send-order-request`
+  }
+
   const orderRequestData = {
     to: emailData.email,
     templateData: {
@@ -37,7 +47,7 @@ export function sendOrderResponseEmail(emailData: EmailBodyResponseType, respons
     },
     response
   };
-  return fetch(`${process.env.NEXT_PUBLIC_URL}/api/mailers/order-response`, {
+  return fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
