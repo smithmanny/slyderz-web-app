@@ -91,8 +91,9 @@ const CheckoutPage = ({ eventDate, eventTime, stripePaymentMethods }: CheckoutPa
     const fufilledOrder = await createOrder(orderBody)
 
     if (fufilledOrder && fufilledOrder.confirmationNumber) {
-      const url = `${process.env.URL}/orders/${fufilledOrder.confirmationNumber}/new`
-      return router.push(url)
+      return router.push(Routes.NewOrderConfirmationPage({
+        oid: fufilledOrder.confirmationNumber
+      }))
     }
   };
 

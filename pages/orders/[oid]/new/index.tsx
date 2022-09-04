@@ -1,11 +1,8 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { gSSP } from "app/blitz-server";
 import Image from "next/image";
-import { useMutation } from "@blitzjs/rpc";
 import { useRouter } from "next/router";
-import { useEffect } from 'react'
 
-import resetCartItemsMutation from "app/account/mutations/resetCartItemsMutation";
 import completedOrderIcon from "public/completed-order.svg"
 
 import Box from "app/core/components/shared/Box"
@@ -54,7 +51,7 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ ctx, 
   }
 });
 
-export const ConfirmationPage = (props) => {
+export const NewOrderConfirmationPage = (props) => {
   const router = useRouter()
 
   return (
@@ -95,8 +92,8 @@ export const ConfirmationPage = (props) => {
   );
 };
 
-ConfirmationPage.getLayout = (page) => (
+NewOrderConfirmationPage.getLayout = (page) => (
   <Layout title="Order Reserved">{page}</Layout>
 )
 
-export default ConfirmationPage;
+export default NewOrderConfirmationPage;
