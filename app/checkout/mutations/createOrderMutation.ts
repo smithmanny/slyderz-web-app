@@ -57,7 +57,7 @@ export default async function CreateOrderMutation(input: any, ctx: Ctx) {
     })
 
     // Send email
-    if (order) {
+    if (order && order.confirmationNumber) {
       const date = new Date(eventDate)
       const acceptUrl = `${process.env.URL}/orders/${order.confirmationNumber}/confirm`
       const denyUrl = `${process.env.URL}/orders/${order.confirmationNumber}/deny`
@@ -77,15 +77,15 @@ export default async function CreateOrderMutation(input: any, ctx: Ctx) {
         console.log(e)
         throw new Error('Failed sending email', e)
       })
-    }
 
-    // reset cart & total
-    await ctx.session.$setPublicData({
-      cart: {
-        pendingCartItems: [],
-        total: 0,
-      }
-    })
+      // reset cart & total
+      await ctx.session.$setPublicData({
+        cart: {
+          pendingCartItems: [],
+          total: 0,
+        }
+      })
+    }
   })
 
   return order
