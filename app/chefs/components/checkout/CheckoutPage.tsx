@@ -84,8 +84,11 @@ const CheckoutPage = ({ eventDate, eventTime, stripePaymentMethods }: CheckoutPa
     const orderBody = {
       eventDate,
       eventTime,
-      paymentMethodId: values.paymentMethod
+      paymentMethodId: values?.paymentMethod
     }
+
+    // TODO: Throw error
+    if (!values.paymentMethod) throw new Error('Select payment method')
 
     setProcessing(true);
     const fufilledOrder = await createOrder(orderBody)
