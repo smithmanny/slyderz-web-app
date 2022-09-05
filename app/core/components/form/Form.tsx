@@ -76,9 +76,9 @@ export function Form<S extends z.ZodType<any, any>>({
             {children}
 
             {submitError && (
-              <div role="alert" style={{ color: "red" }}>
+              <Grid item sx={{ color: "red" }}>
                 {submitError}
-              </div>
+              </Grid>
             )}
 
             {submitText && (

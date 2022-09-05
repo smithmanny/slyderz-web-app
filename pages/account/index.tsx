@@ -23,7 +23,7 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ ctx }
   if (!session.userId || !session.stripeCustomerId) {
     return {
       redirect: {
-        destination: '/login',
+        destination: '/auth/login',
         permanent: false
       }
     }
