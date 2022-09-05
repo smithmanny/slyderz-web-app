@@ -92,7 +92,6 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ req, 
     off_session: true,
     confirm: true,
     metadata: {
-      cartItems: JSON.stringify(order.dishes),
       userId: order.user.id,
     }
   });
