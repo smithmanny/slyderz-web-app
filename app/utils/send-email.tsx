@@ -7,6 +7,8 @@ export function sendOrderRequestEmail(emailData: EmailBodyType) {
     url = `${process.env.NEXT_PUBLIC_URL}/api/mailers/send-order-request`
   }
 
+  console.log({ url })
+
   const orderRequestData = {
     to: emailData.email,
     templateData: {
@@ -20,7 +22,7 @@ export function sendOrderRequestEmail(emailData: EmailBodyType) {
       orderTotal: emailData.orderTotal,
     }
   };
-  return fetch(url, {
+  return fetch("https://slyderz-web-app-staging.up.railway.app/api/mailers/send-order-request", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
