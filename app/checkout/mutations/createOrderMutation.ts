@@ -48,6 +48,15 @@ export default async function CreateOrderMutation(input: any, ctx: Ctx) {
       select: {
         confirmationNumber: true,
         id: true,
+        chef: {
+          select: {
+            user: {
+              select: {
+                email: true
+              }
+            }
+          }
+        },
         user: {
           select: {
             email: true
@@ -64,6 +73,7 @@ export default async function CreateOrderMutation(input: any, ctx: Ctx) {
 
       const emailData: EmailBodyType = {
         acceptOrderUrl: acceptUrl,
+        chefEmail: order.chef.user.email,
         denyOrderUrl: denyUrl,
         cartItems: ctx.session.cart.pendingCartItems,
         email: order.user.email,

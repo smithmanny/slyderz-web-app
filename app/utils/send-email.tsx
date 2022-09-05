@@ -6,6 +6,7 @@ export function sendOrderRequestEmail(emailData: EmailBodyType) {
     to: emailData.email,
     templateData: {
       acceptOrderUrl: emailData.acceptOrderUrl,
+      chefEmail: emailData.chefEmail,
       denyOrderUrl: emailData.denyOrderUrl,
       cartItems: emailData.cartItems,
       eventDate: emailData.eventDate,
@@ -29,6 +30,7 @@ export function sendOrderResponseEmail(emailData: EmailBodyResponseType, respons
     to: emailData.email,
     templateData: {
       cartItems: emailData.cartItems,
+      chefEmail: emailData.chefEmail,
       orderNumber: emailData.orderNumber,
       eventDate: emailData.eventDate,
       eventTime: emailData.eventTime,
@@ -37,7 +39,7 @@ export function sendOrderResponseEmail(emailData: EmailBodyResponseType, respons
     },
     response
   };
-  return fetch(`${process.env.NEXT_PUBLIC_URL}/api/mailers/send-order-request`, {
+  return fetch(`${process.env.NEXT_PUBLIC_URL}/api/mailers/order-response`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

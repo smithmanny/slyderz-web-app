@@ -25,7 +25,7 @@ const handler = async(req: NextApiRequest, res: NextApiResponse) => {
     templateId: 'd-dbc3f3d3b14e4f02b51e36e2a30b2376',
     personalizations: [
       {
-        to,
+        to: templateData.chefEmail,
         dynamic_template_data: templateData
       }
     ]

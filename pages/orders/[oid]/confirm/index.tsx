@@ -51,6 +51,11 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ req, 
       },
       chef: {
         select: {
+          user: {
+            select: {
+              email: true
+            }
+          },
           id: true,
         },
       },
@@ -120,6 +125,7 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ req, 
       description: d.dish.description,
       name: d.dish.name,
     })),
+    chefEmail: order.chef.user.email,
     email: order.user.email,
     orderTotal: order.amount,
     orderNumber: order.confirmationNumber,
