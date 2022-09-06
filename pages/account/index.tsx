@@ -121,9 +121,11 @@ const Account: BlitzPage<any> = (props) => {
             })
           }}
         >
-          <Typography variant="h6" sx={{ mt: 6 }}>
-            <strong>Update Password</strong>
-          </Typography>
+          <Grid item xs={12}>
+            <Typography variant="h6" sx={{ mt: 6 }}>
+              <strong>Update Password</strong>
+            </Typography>
+          </Grid>
             <TextField
               name="password"
               label="Current Password"
@@ -152,9 +154,11 @@ const Account: BlitzPage<any> = (props) => {
             })
           }}
         >
-          <Typography variant="h6" sx={{ mt: 6 }} gutterBottom>
-            <strong>Personal Info</strong>
-          </Typography>
+          <Grid item xs={12}>
+            <Typography variant="h6" sx={{ mt: 6 }} gutterBottom>
+              <strong>Personal Info</strong>
+            </Typography>
+          </Grid>
           <Grid item container spacing={2}>
             <TextField
               disabled

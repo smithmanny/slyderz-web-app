@@ -20,7 +20,7 @@ const DishForm = (props) => {
         schema: props.mutation,
         toVariables: values => ({
           ...values,
-          price: formatNumberToCurrency(values.price).replace('$', ''),
+          price: Number(formatNumberToCurrency(values.price).replace('$', '')),
           sectionId: props.sectionId,
         }),
       }}
