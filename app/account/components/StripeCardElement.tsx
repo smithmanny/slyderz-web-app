@@ -7,7 +7,9 @@ import {
   useStripe,
   useElements
 } from "@stripe/react-stripe-js";
+import { useMutation } from "@blitzjs/rpc";
 
+import deletePaymentMethodMutation from "../mutations/deletePaymentMethodMutation";
 import { styled } from "integrations/material-ui";
 
 import Box from "app/core/components/shared/Box"
@@ -27,6 +29,11 @@ const StripeCard: FunctionComponent<any> = (props) => {
   const stripe = useStripe();
   const elements = useElements();
   const [errorMessage, setErrorMessage] = useState(null);
+  const [deletePaymentMethod] = useMutation(deletePaymentMethodMutation, {
+    onSuccess: () => {
+      return router.reload()
+    }
+  })
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -58,27 +65,6 @@ const StripeCard: FunctionComponent<any> = (props) => {
     }
   };
 
-  const destroyPaymentMethodMutation = async(paymentMethodId: number) => {
-    let data
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/stripe/destroy-payment-method`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ paymentMethodId })
-      });
-      data = await res.json()
-
-    } catch (err) {
-      console.log(err)
-    }
-
-    if (data) {
-      router.reload()
-    }
-  }
-
   return (
     props.paymentMethods.length > 0 ? (
       props.paymentMethods.map(stripePaymentMethod => (
@@ -94,7 +80,7 @@ const StripeCard: FunctionComponent<any> = (props) => {
           <StripePaymentSpan>
             <Button
               variant="text"
-              onClick={async () => await destroyPaymentMethodMutation(stripePaymentMethod.id)}
+              onClick={() => deletePaymentMethod(stripePaymentMethod.id)}
             >
               Delete
             </Button>
