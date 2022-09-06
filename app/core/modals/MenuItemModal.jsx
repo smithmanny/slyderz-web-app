@@ -68,7 +68,7 @@ const MenuItemModal = ({ show, onClose, menuItem, ...props }) => {
     <Modal
       closeModal={onClose}
       show={show}
-      size="xs"
+      size="sm"
       actions={(
         <React.Fragment>
           <QuantityContainer>
@@ -99,7 +99,7 @@ const MenuItemModal = ({ show, onClose, menuItem, ...props }) => {
     >
       <ModalContainer>
         <LogoContainer>
-          <Image src="/logo.png" layout="fill" />
+          <Image src="/logo.png" layout="fill" alt="Logo" />
         </LogoContainer>
         <Typography variant="h6">{menuItem.name}</Typography>
         <Typography sx={{ my: 2 }}>
@@ -119,7 +119,7 @@ const MenuItemModal = ({ show, onClose, menuItem, ...props }) => {
               fontSize: '.95rem',
             }}
           >
-          What's Included:
+            What&apos;s Included:
         </Typography>
           <Typography>3 Course meal</Typography>
         </section>
