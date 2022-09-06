@@ -1,10 +1,12 @@
+import { useRouter } from "next/router";
 import { gSSP } from "app/blitz-server";
 import { useMutation } from "@blitzjs/rpc";
-import { BlitzPage } from "@blitzjs/next";
+import { BlitzPage, Routes } from "@blitzjs/next";
 import React from 'react'
 import Stripe from 'stripe'
 
 import loginMutation from "app/auth/mutations/login"
+import deleteAccountMutation from "app/account/mutations/deleteAccountMutation"
 import { Login } from "app/auth/validations"
 import { useCurrentUser } from "app/core/hooks/useCurrentUser"
 
@@ -51,8 +53,15 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ ctx }
 });
 
 const Account: BlitzPage<any> = (props) => {
-  const [login] = useMutation(loginMutation)
+  const router = useRouter();
   const user = useCurrentUser();
+  // TODO: Fix updating password
+  const [login] = useMutation(loginMutation)
+  const [deleteAccount] = useMutation(deleteAccountMutation, {
+    onSuccess: () => {
+      return router.replace(Routes.Home())
+    }
+  })
   const clientSecret = props.setupIntent.client_secret
 
   const initialValues = {
@@ -191,6 +200,7 @@ const Account: BlitzPage<any> = (props) => {
         </Typography>
         <Button
           variant="text"
+          onClick={() => deleteAccount()}
         >
           Delete Account
         </Button>
@@ -199,7 +209,6 @@ const Account: BlitzPage<any> = (props) => {
   )
 }
 
-Account.authenticate = { redirectTo: '/' }
 Account.getLayout = (page) => <Layout>{page}</Layout>
 
 export default Account;

@@ -7,6 +7,7 @@ import { Login } from "app/auth/validations"
 
 import Typography from "app/core/components/shared/Typography"
 import Box from "app/core/components/shared/Box"
+import Grid from "app/core/components/shared/Grid"
 import Form, { TextField } from "app/core/components/form"
 
 type LoginFormProps = {
@@ -42,13 +43,13 @@ export const LoginForm = (props: LoginFormProps) => {
       >
         <TextField name="email" label="Email" placeholder="Email" />
         <TextField name="password" label="Password" placeholder="Password" type="password" />
-        <div>
+        <Grid item xs={12}>
           <Link href={Routes.ForgotPasswordPage()}>
             <a>
               <Typography>Forgot your password?</Typography>
             </a>
           </Link>
-        </div>
+        </Grid>
       </Form>
 
       <div style={{ marginTop: "1rem" }}>
