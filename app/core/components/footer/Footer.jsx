@@ -123,38 +123,36 @@ const Footer = () => {
                 //   }),
                 // }}
               >
-                <Grid container spacing={2}>
-                  <TextField
-                    name="email"
-                    variant="outlined"
-                    label="Email"
-                    placeholder="Email"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <EmailOutline />
-                        </InputAdornment>
-                      ),
-                    }}
-                    xs={12}
-                    md={7}
-                  />
+                <TextField
+                  name="email"
+                  variant="outlined"
+                  label="Email"
+                  placeholder="Email"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <EmailOutline />
+                      </InputAdornment>
+                    ),
+                  }}
+                  xs={12}
+                  md={7}
+                />
 
-                  <Grid item xs={12} md={5} textAlign="right">
-                    <Button
-                      color="primary"
-                      sx={{
-                        padding: 2,
-                        width: {
-                          xs: '100%'
-                        }
-                      }}
-                      variant="contained"
-                      type="submit"
-                    >
-                      Find a Chef
-                    </Button>
-                  </Grid>
+                <Grid item xs={12} md={5} textAlign="right">
+                  <Button
+                    color="primary"
+                    sx={{
+                      padding: 2,
+                      width: {
+                        xs: '100%'
+                      }
+                    }}
+                    variant="contained"
+                    type="submit"
+                  >
+                    Find a Chef
+                  </Button>
                 </Grid>
               </Form>
             </Paper>
