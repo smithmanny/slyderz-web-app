@@ -5,7 +5,7 @@ import Layout from "app/core/layouts/Layout"
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Typography from "app/core/components/shared/Typography";
 
-const About: BlitzPage = () => (
+const TermsAndCondition: BlitzPage = () => (
   <ConsumerContainer>
     <Typography variant="h2" gutterBottom>
       <strong>Terms and Conditions</strong>
@@ -329,6 +329,6 @@ const About: BlitzPage = () => (
   </ConsumerContainer>
 );
 
-About.getLayout = (page) => <Layout>{page}</Layout>
+TermsAndCondition.getLayout = (page) => <Layout>{page}</Layout>
 
-export default About;
+export default TermsAndCondition;

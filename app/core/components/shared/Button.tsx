@@ -2,6 +2,7 @@ import { default as MuiButton } from "@mui/material/Button";
 import IconButton from '@mui/material/IconButton';
 import PropTypes from 'prop-types';
 
+
 const Button = ({ children, ...props }) => {
   const { ariaLabel, type } = props;
   switch(type) {
@@ -31,6 +32,7 @@ Button.defaultProps = {
 
 Button.propTypes = {
   ariaLabel: PropTypes.string,
+  children: PropTypes.node,
   type: PropTypes.oneOf(["icon", "default"]),
   variant: PropTypes.oneOf(["text", "outlined", "contained", undefined])
 }

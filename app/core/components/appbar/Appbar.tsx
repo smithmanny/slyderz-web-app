@@ -77,7 +77,11 @@ const Appbar = (props) => {
   return (
     <MuiAppBar
       position="static"
-      sx={{ backgroundColor: 'transparent', mb: 4 }}
+      sx={{
+        backgroundColor: 'transparent',
+        mb: 4,
+        boxShadow: 'none'
+      }}
       {...props}
     >
       <Toolbar>

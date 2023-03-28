@@ -4,6 +4,7 @@
     "lib": [
       "dom",
       "dom.iterable",
+      "es6",
       "esnext"
     ],
     "baseUrl": ".",
@@ -21,7 +22,9 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "tsBuildInfoFile": ".tsbuildinfo"
+    "tsBuildInfoFile": ".tsbuildinfo",
+    "noImplicitAny": true,
+    "noImplicitThis": true,
   },
   "exclude": [
     "node_modules",

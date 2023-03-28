@@ -13,7 +13,7 @@ const Layout = ({ title, children }: LayoutProps) => {
   return (
     <>
       <Head>
-        <title>{title || "blitz-slyderz"}</title>
+        <title>{title || "Slyderz"}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Appbar />

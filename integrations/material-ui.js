@@ -25,7 +25,6 @@ const MuiTheme = createTheme({
     tonalOffset: 0.2,
   },
   typography: {
-    fontSize: 14,
     h1: {
       fontSize: 50,
       fontWeight: 500,
