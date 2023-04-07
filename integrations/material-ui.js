@@ -15,6 +15,9 @@ const MuiTheme = createTheme({
     white: {
       main: "#FFF",
     },
+    grey: {
+      main: '#f3f7f5'
+    },
     error: red,
     // Used by `getContrastText()` to maximize the contrast between the background and
     // the text.
@@ -33,6 +36,10 @@ const MuiTheme = createTheme({
       fontSize: 40,
       fontWeight: 500,
     },
+    allVariants: {
+      letterSpacing: '1.2px',
+      lineHeight: 2
+    }
   },
   components: {
     MuiDatePicker: {
