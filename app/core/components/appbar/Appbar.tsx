@@ -36,8 +36,8 @@ const Appbar = (props) => {
         </Link> */}
         <Link href={Routes.LoginPage()}>
           <Button
+            label="log-in"
             variant="contained"
-            component="a"
           >
             Log in
           </Button>
@@ -45,7 +45,7 @@ const Appbar = (props) => {
         <Link href={Routes.SignupPage()}>
           <Button
             variant="contained"
-            component="a"
+            label="sign-up"
           >
             Sign up
           </Button>
@@ -87,9 +87,7 @@ const Appbar = (props) => {
       <Toolbar>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
           <Link href="/">
-            <a>
-              <Typography variant="h5">Slyderz</Typography>
-            </a>
+            <Typography variant="h5">Slyderz</Typography>
           </Link>
 
           <div>

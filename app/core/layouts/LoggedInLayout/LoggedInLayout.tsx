@@ -25,34 +25,32 @@ const ChefCardContent = styled(CardContent)`
 const LoggedinLayout: BlitzPage = () => {
   const renderChefs = () => (
     <Link href={Routes.ChefPage({ cid: 1 })}>
-      <a>
-        <ChefCard>
-          <CardMedia
-            image="/logo.png"
-            component="img"
-            height="140"
-            title="Chef dish"
-          />
-          <ChefCardContent
-            sx={{
-              "& .name": {
-                mt: 1,
-                mr: 1,
-                mb: 1,
-                ml: 0,
-              },
-            }}
-          >
-            <Typography variant="button">BBQ • Atlanta</Typography>
-            <div className="name">
-              <Typography variant="h6">Chef Shakhor</Typography>
-            </div>
-            <Typography variant="body1">
-              Starting at $17/person
-            </Typography>
-          </ChefCardContent>
-        </ChefCard>
-      </a>
+      <ChefCard>
+        <CardMedia
+          image="/logo.png"
+          component="img"
+          height="140"
+          title="Chef dish"
+        />
+        <ChefCardContent
+          sx={{
+            "& .name": {
+              mt: 1,
+              mr: 1,
+              mb: 1,
+              ml: 0,
+            },
+          }}
+        >
+          <Typography variant="button">BBQ • Atlanta</Typography>
+          <div className="name">
+            <Typography variant="h6">Chef Shakhor</Typography>
+          </div>
+          <Typography variant="body1">
+            Starting at $17/person
+          </Typography>
+        </ChefCardContent>
+      </ChefCard>
     </Link>
   )
 
@@ -81,6 +79,7 @@ const LoggedinLayout: BlitzPage = () => {
               <Button
                 sx={{ mt: 4 }}
                 variant="outlined"
+                label="learn-more"
               >
                 Learn More
               </Button>

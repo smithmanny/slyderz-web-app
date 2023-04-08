@@ -105,7 +105,7 @@ const CheckoutPage = ({ eventDate, eventTime, stripePaymentMethods }: CheckoutPa
       <Section>
         <Link href="/chef/1">
           <Button
-            component="a"
+            label="go-back"
             buttonType="icon"
             sx={{
               padding: 0,

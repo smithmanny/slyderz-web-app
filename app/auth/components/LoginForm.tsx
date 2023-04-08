@@ -45,9 +45,7 @@ export const LoginForm = (props: LoginFormProps) => {
         <TextField name="password" label="Password" placeholder="Password" type="password" />
         <Grid item xs={12}>
           <Link href={Routes.ForgotPasswordPage()}>
-            <a>
-              <Typography>Forgot your password?</Typography>
-            </a>
+            <Typography>Forgot your password?</Typography>
           </Link>
         </Grid>
       </Form>

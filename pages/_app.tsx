@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { Roboto_Serif } from 'next/font/google'
 import { AuthenticationError, AuthorizationError } from 'blitz'
 import { withBlitz } from "app/blitz-client";
 import { useQueryErrorResetBoundary } from "@blitzjs/rpc";
@@ -20,6 +21,8 @@ import Box from "app/core/components/shared/Box"
 import CircularProgress from "app/core/components/shared/CircularProgress"
 
 export { reportWebVitals } from 'next-axiom';
+
+const roboto = Roboto_Serif({ subsets: ['latin'] })
 
 function LoadingIcon() {
   return (
@@ -48,7 +51,7 @@ export default withBlitz(function App({ Component, pageProps }: AppProps) {
           onReset={useQueryErrorResetBoundary().reset}
         >
           <Suspense fallback={<LoadingIcon />}>
-            {getLayout(<Component {...pageProps} />)}
+            {getLayout(<Component className={roboto.className} {...pageProps} />)}
           </Suspense>
         </ErrorBoundary>
       </ThemeProvider>

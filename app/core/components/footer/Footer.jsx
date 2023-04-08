@@ -177,14 +177,14 @@ const Footer = () => {
                 <tr>
                   <td>
                     <Link href="/about">
-                      <Typography variant="body1" component="a">
+                      <Typography variant="body1">
                         About
                       </Typography>
                     </Link>
                   </td>
                   <td>
                     <Link href="/become-a-chef">
-                      <Typography variant="body1" component="a">
+                      <Typography variant="body1">
                         Join Slyderz
                       </Typography>
                     </Link>
@@ -199,7 +199,7 @@ const Footer = () => {
                 <tr>
                   <td>
                     <Link href="/contact">
-                      <Typography variant="body1" component="a">
+                      <Typography variant="body1">
                         Contact
                       </Typography>
                     </Link>
@@ -213,7 +213,7 @@ const Footer = () => {
                 <tr>
                   <td>
                     <Link href="/terms-and-conditions">
-                      <Typography variant="body1" component="a">
+                      <Typography variant="body1">
                         Terms
                       </Typography>
                     </Link>
