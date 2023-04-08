@@ -42,6 +42,10 @@ function LoadingIcon() {
 
 export default withBlitz(function App({ Component, pageProps }: AppProps) {
   const getLayout = Component.getLayout || ((page) => page)
+  pageProps = {
+    ...pageProps,
+    className: roboto.className
+  }
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
@@ -51,7 +55,7 @@ export default withBlitz(function App({ Component, pageProps }: AppProps) {
           onReset={useQueryErrorResetBoundary().reset}
         >
           <Suspense fallback={<LoadingIcon />}>
-            {getLayout(<Component className={roboto.className} {...pageProps} />)}
+            {getLayout(<Component {...pageProps} />)}
           </Suspense>
         </ErrorBoundary>
       </ThemeProvider>

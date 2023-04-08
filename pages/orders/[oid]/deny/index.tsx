@@ -109,6 +109,7 @@ export const DenyOrderPage = (props) => {
         }} />
 
         <Button
+          label="go-back-home"
           onClick={() => router.replace('/')}
           sx={{
             p: 2,

@@ -1,3 +1,5 @@
+"use client"
+
 import { useMutation, useQuery } from "@blitzjs/rpc";
 
 import menuSectionQuery from "../../queries/menuSectionQuery"

@@ -1,3 +1,5 @@
+"use client"
+
 import { useQuery } from "@blitzjs/rpc";
 import getCurrentUser from "app/users/queries/getCurrentUser"
 

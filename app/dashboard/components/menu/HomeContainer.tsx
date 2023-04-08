@@ -1,3 +1,5 @@
+"use client"
+
 import { useMutation, useQuery } from "@blitzjs/rpc";
 import React, { useState } from 'react';
 import IconButton from "@mui/material/IconButton";

@@ -11,7 +11,7 @@ const getStripe = () => {
 };
 
 export const getStripeServer = () => {
-  return new StripeServer(process.env.STRIPE_SECRET_KEY || '', { apiVersion: "2022-08-01" });
+  return new StripeServer(process.env.STRIPE_SECRET_KEY || '', { apiVersion: "2022-11-15" });
 }
 
 export default getStripe;
