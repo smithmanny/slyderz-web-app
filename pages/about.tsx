@@ -24,6 +24,7 @@ const About: BlitzPage = () => {
         <AboutSection
           title="Our Story"
           description="We&apos;re building a platform that connects consumers with professional chefs for unforgettable dining experiences in the comfort of their own homes."
+          type="our-story"
         />
         <AboutSection
           title="Our Mission"
