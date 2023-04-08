@@ -48,7 +48,7 @@ const MenuLayout = (props) => {
       )}
       {showActionButton && (
         <Grid item xs={currentView === 'SECTION' ? 10 : 12} justifyContent='flex-end' sx={{ display: 'flex' }}>
-          <Button onClick={buttonFunc}>{buttonTitle}</Button>
+          <Button label="action-btn" onClick={buttonFunc}>{buttonTitle}</Button>
         </Grid>
       )}
       {currentView === SECTION && (

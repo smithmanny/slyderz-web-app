@@ -23,22 +23,6 @@ class MyDocument extends Document {
               }
             }}
           />
-          <style global>{`
-            /* Other global styles such as 'html, body' etc... */
-            body {
-              height: 100vh;
-            }
-
-            #__next {
-              display: flex;
-              flex-direction: column;
-              height: 100%;
-            }
-
-            main {
-              flex: 1
-            }
-          `}</style>
         </body>
       </Html>
     );

@@ -23,7 +23,7 @@
     "jsx": "preserve",
     "incremental": true,
     "tsBuildInfoFile": ".tsbuildinfo",
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "noImplicitThis": true,
   },
   "exclude": [

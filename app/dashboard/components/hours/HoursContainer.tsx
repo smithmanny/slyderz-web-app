@@ -28,7 +28,7 @@ const HoursContainer = () => {
     <React.Fragment>
       <Grid container spacing={2}>
         <Grid item xs={12} justifyContent="flex-end" sx={{ display: 'flex' }}>
-          <Button onClick={openHoursModal}>Add Hours</Button>
+          <Button label="add-hours" onClick={openHoursModal}>Add Hours</Button>
         </Grid>
 
         {chefHours?.map(ch => (
@@ -65,6 +65,7 @@ const HoursContainer = () => {
               </CardContent>
               <CardActions>
                 <Button
+                  label="delete"
                   variant="text"
                   onClick={() => destroyHourBlock(ch.id)}
                 >

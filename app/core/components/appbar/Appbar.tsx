@@ -56,7 +56,7 @@ const Appbar = (props) => {
   const renderLoggedInLinks = () => (
     <span>
       <Stack direction="row" spacing={2}>
-        <Button variant="text" color="white">Dashboard</Button>
+        <Button label="dashboard" variant="text" sx={{ color: 'white' }}>Dashboard</Button>
         <IconButton
           aria-label="cart"
           disableRipple

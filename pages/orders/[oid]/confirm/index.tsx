@@ -1,6 +1,5 @@
 import { gSSP } from "app/blitz-server";
 import { useRouter } from "next/router";
-import Stripe from 'stripe'
 import db from 'db'
 
 import { sendOrderResponseEmail } from "app/utils/send-email"
@@ -13,9 +12,10 @@ import Typography from "app/core/components/shared/Typography"
 import Layout from "app/core/layouts/Layout"
 import OrderItems from 'app/orders/components/OrderItems'
 import Divider from 'app/core/components/shared/Divider'
+import { getStripeServer } from "app/utils/getStripe";
 
 export const getServerSideProps = gSSP(async function getServerSideProps({ req, res, params }) {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', { apiVersion: "2022-08-01" });
+  const stripe = getStripeServer()
   const confirmationNumber = String(params?.oid)
 
   if (!confirmationNumber) {
@@ -159,6 +159,7 @@ export const ConfirmOrderPage = (props) => {
         />
 
         <Button
+          label="go-back-home"
           onClick={() => router.replace('/')}
           sx={{
             p: 2,

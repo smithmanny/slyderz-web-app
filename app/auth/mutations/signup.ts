@@ -1,16 +1,16 @@
-import { SecurePassword } from "@blitzjs/auth";
+import { SecurePassword } from "@blitzjs/auth/secure-password";
 import { resolver } from "@blitzjs/rpc";
 import sendgridClient from '@sendgrid/client'
-import Stripe from 'stripe'
 
 import db from "db"
 import { Signup } from "app/auth/validations"
 import { Role } from "types"
+import { getStripeServer } from 'app/utils/getStripe'
 
 sendgridClient.setApiKey(process.env.SENDGRID_API_TOKEN || '')
 
 export default resolver.pipe(resolver.zod(Signup), async ({ email, firstName, lastName, password }, ctx) => {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', { apiVersion: "2022-08-01" });
+  const stripe = getStripeServer()
   const hashedPassword = await SecurePassword.hash(password)
   const userExists = await db.user.findFirst({
     where: {

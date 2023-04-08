@@ -3,7 +3,6 @@ import { gSSP } from "app/blitz-server";
 import { useMutation } from "@blitzjs/rpc";
 import { BlitzPage, Routes } from "@blitzjs/next";
 import React from 'react'
-import Stripe from 'stripe'
 
 import loginMutation from "app/auth/mutations/login"
 import deleteAccountMutation from "app/account/mutations/deleteAccountMutation"
@@ -17,10 +16,11 @@ import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
 import Form, { TextField } from "app/core/components/form"
 import StripeCardElement from 'app/account/components/StripeCardElement'
+import { getStripeServer } from "app/utils/getStripe";
 
 export const getServerSideProps = gSSP(async function getServerSideProps({ ctx }) {
   const session = ctx?.session
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', { apiVersion: "2022-08-01" });
+  const stripe = getStripeServer()
 
   if (!session.userId || !session.stripeCustomerId) {
     return {
@@ -199,6 +199,7 @@ const Account: BlitzPage<any> = (props) => {
           <strong>Delete Your Account</strong>
         </Typography>
         <Button
+          label="delete-account"
           variant="text"
           onClick={() => deleteAccount()}
         >

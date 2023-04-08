@@ -6,6 +6,7 @@ import Stripe from 'stripe'
 import Layout from "app/core/layouts/Layout";
 import ConsumerContainer from 'app/core/components/shared/ConsumerContainer';
 import CheckoutPage from 'app/chefs/components/checkout/CheckoutPage'
+import { getStripeServer } from "app/utils/getStripe";
 
 interface CheckoutTypes {
   eventDate: Date
@@ -18,7 +19,7 @@ interface CheckoutTypes {
 
 export const getServerSideProps = gSSP(async function getServerSideProps({ ctx, query }) {
   const session = ctx?.session
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', { apiVersion: "2022-08-01" });
+  const stripe = getStripeServer()
 
   if (!query.eventDate || !query.eventTime || !session.userId) {
     return {

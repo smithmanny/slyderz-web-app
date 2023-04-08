@@ -1,10 +1,10 @@
 import { api } from "app/blitz-server";
+import { getStripeServer } from "app/utils/getStripe";
 import { NextApiRequest, NextApiResponse } from "next";
-import Stripe from 'stripe'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
   const { session } = ctx
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', { apiVersion: "2022-08-01" });
+  const stripe = getStripeServer()
 
   if (session.stripeCustomerId === undefined) {
     throw Error("No customer was provided")
