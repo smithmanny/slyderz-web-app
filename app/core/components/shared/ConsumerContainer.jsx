@@ -10,7 +10,7 @@ const SlyderzContainer = styled(Container)(({ theme }) => ({
 
 const ConsumerContainer = ({ children, ...props }) => {
   return (
-    <SlyderzContainer {...props}>
+    <SlyderzContainer maxWidth="xl" {...props}>
       {children}
     </SlyderzContainer>
   )

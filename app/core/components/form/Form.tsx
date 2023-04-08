@@ -83,7 +83,7 @@ export function Form<S extends z.ZodType<any, any>>({
 
             {submitText && (
               <Grid item xs={12}>
-                <Button type="submit" disabled={submitting}>
+                <Button label="submit-text" buttonType="submit" disabled={submitting}>
                   {submitText}
                 </Button>
               </Grid>

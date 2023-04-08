@@ -79,6 +79,7 @@ const StripeCard: FunctionComponent<any> = (props) => {
           <Typography>{stripePaymentMethod.card.last4}</Typography>
           <StripePaymentSpan>
             <Button
+              label="delete"
               variant="text"
               onClick={() => deletePaymentMethod(stripePaymentMethod.id)}
             >
@@ -90,7 +91,7 @@ const StripeCard: FunctionComponent<any> = (props) => {
     ) : (
       <React.Fragment>
         <PaymentElement id="payment-element" />
-        <Button type="submit" sx={{ mt: 2 }} onClick={handleSubmit}>
+        <Button label="save card" buttonType="submit" sx={{ mt: 2 }} onClick={handleSubmit}>
           Save Card
         </Button>
       </React.Fragment>

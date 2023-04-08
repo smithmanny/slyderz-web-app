@@ -36,6 +36,14 @@ const MuiTheme = createTheme({
       fontSize: 40,
       fontWeight: 500,
     },
+    h3: {
+      fontSize: 18,
+      fontWeight: 450
+    },
+    subtitle2: {
+      fontWeight: 300,
+      fontSize: 16
+    },
     allVariants: {
       letterSpacing: '1.2px',
       lineHeight: 2

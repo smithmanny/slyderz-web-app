@@ -83,7 +83,7 @@ const Table = styled('table')(({ theme }) => ({
 const Footer = () => {
   return (
     <FooterDiv>
-      <Container>
+      <Container maxWidth="xl">
         <Grid
           container
           sx={{
@@ -149,7 +149,7 @@ const Footer = () => {
                       }
                     }}
                     variant="contained"
-                    type="submit"
+                    buttonType="submit"
                   >
                     Find a Chef
                   </Button>

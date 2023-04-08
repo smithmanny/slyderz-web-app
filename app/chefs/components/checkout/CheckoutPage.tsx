@@ -106,7 +106,7 @@ const CheckoutPage = ({ eventDate, eventTime, stripePaymentMethods }: CheckoutPa
         <Link href="/chef/1">
           <Button
             component="a"
-            type="icon"
+            buttonType="icon"
             sx={{
               padding: 0,
               mr: 1,
@@ -139,6 +139,7 @@ const CheckoutPage = ({ eventDate, eventTime, stripePaymentMethods }: CheckoutPa
           )}
           {stripePaymentMethods.length === 0 && (
             <Button
+              label="add-payment-method"
               variant="text"
               onClick={e => {
                 e.preventDefault()
@@ -151,7 +152,8 @@ const CheckoutPage = ({ eventDate, eventTime, stripePaymentMethods }: CheckoutPa
           )}
           <Button
             disabled={processing}
-            type="submit"
+            buttonType="submit"
+            label="pay-now"
             sx={{
               background: "#5469d4",
               fontFamily: "Arial, sans-serif",

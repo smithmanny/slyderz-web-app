@@ -1,21 +1,26 @@
-import { default as MuiButton } from "@mui/material/Button";
+import { FC } from 'react'
+import { default as MuiButton, ButtonProps } from "@mui/material/Button";
 import IconButton from '@mui/material/IconButton';
 import PropTypes from 'prop-types';
 
+interface ButtonType extends ButtonProps {
+  label: string
+  buttonType?: string
+}
 
-const Button = ({ children, ...props }) => {
-  const { ariaLabel, type } = props;
-  switch(type) {
+
+const Button: FC<ButtonType> = ({ children, buttonType, label, ...props }) => {
+  switch (buttonType) {
     case 'icon':
       return (
-        <IconButton aria-label={ariaLabel} {...props} size="large">
+        <IconButton aria-label={label} {...props} size="large">
           {children}
         </IconButton>
       );
     default:
       return (
         <MuiButton
-          aria-label={ariaLabel}
+          aria-label={label}
           {...props}
         >
           {children}
@@ -25,15 +30,15 @@ const Button = ({ children, ...props }) => {
 }
 
 Button.defaultProps = {
-  ariaLabel: 'button',
-  type: 'default',
+  label: 'button',
+  buttonType: 'default',
   variant: "contained"
 }
 
 Button.propTypes = {
-  ariaLabel: PropTypes.string,
-  children: PropTypes.node,
-  type: PropTypes.oneOf(["icon", "default"]),
+  label: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+  buttonType: PropTypes.oneOf(["icon", "default"]),
   variant: PropTypes.oneOf(["text", "outlined", "contained", undefined])
 }
 
