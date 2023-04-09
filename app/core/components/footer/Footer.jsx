@@ -10,7 +10,10 @@ import Grid from "app/core/components/shared/Grid";
 import Paper from "app/core/components/shared/Paper";
 import Typography from "app/core/components/shared/Typography";
 import Button from "app/core/components/shared/Button";
+import Box from "app/core/components/shared/Box";
+import Stack from "app/core/components/shared/Stack";
 import Form, { TextField }  from "app/core/components/form";
+import { Routes } from "@blitzjs/next";
 
 const FooterDiv = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.primary.dark,
@@ -79,6 +82,81 @@ const Table = styled('table')(({ theme }) => ({
     marginTop: theme.spacing(4),
     width: "100%",
 }))
+
+const FooterLinks = (props) => {
+  const aboutLinks = [
+    {
+      name: "About",
+      route: Routes.About()
+    },
+    {
+      name: "Contact",
+      route: Routes.About()
+    },
+    {
+      name: "Blog",
+      route: Routes.About()
+    },
+    {
+      name: "Terms",
+      route: Routes.TermsAndCondition()
+    },
+    {
+      name: "Privacy",
+      route: Routes.About()
+    }
+  ]
+  const chefLinks = [
+    {
+      name: 'Join Slyderz',
+      route: Routes.BecomeAChef()
+    }
+  ]
+  const supportLinks = [
+    {
+      name: 'Consumer Help',
+      route: Routes.BecomeAChef()
+    }
+  ]
+  const citiesLinks = [
+    {
+      name: 'Atlanta',
+      route: Routes.Home()
+    }
+  ]
+
+  let links
+  switch(props.section) {
+    case 'company':
+      links = aboutLinks
+      break;
+    case 'chefs':
+      links = chefLinks
+      break;
+    case 'support':
+      links = supportLinks
+      break;
+    case 'cities':
+      links = citiesLinks
+      break;
+    default:
+      links = [{ name: '', route: ''}]
+  }
+
+  return (
+    <Stack spacing={2}>
+      {links.map((link, index) => (
+        <Box key={`${link.name}-${index}`}>
+          <Link href="/about">
+            <Typography variant="body1">
+              {link.name}
+            </Typography>
+          </Link>
+        </Box>
+      ))}
+    </Stack>
+  )
+}
 
 const Footer = () => {
   return (
@@ -157,105 +235,55 @@ const Footer = () => {
               </Form>
             </Paper>
           </Grid>
-          <Grid item xs={12} md={6}>
-            <Table>
-              <tbody>
-                <tr>
-                  <th>
-                    <Typography variant="h6">Company</Typography>
-                  </th>
-                  <th>
-                    <Typography variant="h6">Chefs</Typography>
-                  </th>
-                  <th>
-                    <Typography variant="h6">Support</Typography>
-                  </th>
-                  <th>
-                    <Typography variant="h6">Cities</Typography>
-                  </th>
-                </tr>
-                <tr>
-                  <td>
-                    <Link href="/about">
-                      <Typography variant="body1">
-                        About
-                      </Typography>
-                    </Link>
-                  </td>
-                  <td>
-                    <Link href="/become-a-chef">
-                      <Typography variant="body1">
-                        Join Slyderz
-                      </Typography>
-                    </Link>
-                  </td>
-                  <td>
-                    <Typography variant="body1">Consumer Help</Typography>
-                  </td>
-                  <td>
-                    <Typography variant="body1">Atlanta</Typography>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <Link href="/contact">
-                      <Typography variant="body1">
-                        Contact
-                      </Typography>
-                    </Link>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <Typography variant="body1">Blog</Typography>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <Link href="/terms-and-conditions">
-                      <Typography variant="body1">
-                        Terms
-                      </Typography>
-                    </Link>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <Typography variant="body1">Privacy</Typography>
-                  </td>
-                </tr>
-              </tbody>
-            </Table>
+          <Grid item xs={12} md={6} textAlign='center'>
+            <Grid container item xs={12}>
+              <Grid item xs={12} md={3}>
+                <Typography variant="h6" sx={{ color: '#FFF' }}>Company</Typography>
+                <FooterLinks section="company" />
+              </Grid>
+              <Grid item xs={12} md={3}>
+                <Typography variant="h6" sx={{ color: '#FFF' }}>Chefs</Typography>
+                <FooterLinks section="chefs" />
+              </Grid>
+              <Grid item xs={12} md={3}>
+                <Typography variant="h6" sx={{ color: '#FFF' }}>Support</Typography>
+                <FooterLinks section="support" />
+              </Grid>
+              <Grid item xs={12} md={3}>
+                <Typography variant="h6" sx={{ color: '#FFF' }}>Cities</Typography>
+                <FooterLinks section="cities" />
+              </Grid>
+            </Grid>
           </Grid>
           <Grid item xs={12}>
             <Divider sx={{ backgroundColor: "rgba(255, 255, 255, 0.2)" }} />
           </Grid>
           <Grid item xs={12}>
-            <SocialContainer>
-              <Typography variant="h6">&#169; 2020 Slyderz LLC</Typography>
-              <span>
-                <SocialList>
-                  <li>
-                    <a href="https://www.facebook.com/slyderz" target="__blank">
+            <Grid container item xs={12} spacing={2} textAlign={{ xs: 'center', md: 'left' }}>
+              <Grid item xs={12} md>
+                <Typography variant="h6">&#169; 2020 Slyderz LLC</Typography>
+              </Grid>
+
+              <Grid item xs={12} md>
+                <Stack direction="row" spacing={2} justifyContent={{ xs: "center", md: 'flex-end' }}>
+                  <Box>
+                    <Link href="https://www.facebook.com/slyderz">
                       <Facebook />
-                    </a>
-                  </li>
-                  <li>
-                    <a href="https://twitter.com/SlyderzApp" target="__blank">
+                    </Link>
+                  </Box>
+                  <Box>
+                    <Link href="https://twitter.com/SlyderzApp">
                       <Twitter />
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="https://www.instagram.com/slyderz_app/"
-                      target="__blank"
-                    >
+                    </Link>
+                  </Box>
+                  <Box>
+                    <Link href="https://www.instagram.com/slyderz_app/">
                       <Instagram />
-                    </a>
-                  </li>
-                </SocialList>
-              </span>
-            </SocialContainer>
+                    </Link>
+                  </Box>
+                </Stack>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </Container>

@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { useRouter } from "next/router";
+import { useSession } from "@blitzjs/auth";
 import { useMutation } from "@blitzjs/rpc";
 import PropTypes from "prop-types";
 import List from "@mui/material/List";
@@ -13,19 +13,43 @@ import AddIcon from "@mui/icons-material/Add";
 import logoutMutation from 'app/auth/mutations/logout';
 
 import Popover from "app/core/components/shared/Popover";
+import { useEffect } from "react";
+import { Routes } from "@blitzjs/next";
 
-const routes = [
+let routes = [
   {
     id: 0,
     icon: AddIcon,
     name: "Account",
-    route: "/account",
+    route: Routes.Account(),
   },
 ];
 
 const AccountPopover = (props) => {
   const [logout] = useMutation(logoutMutation);
   const router = useRouter();
+  const session = useSession()
+
+  useEffect(() => {
+    const loggedOutRoutes = [
+      {
+        id: 0,
+        icon: AddIcon,
+        name: "Login",
+        route: Routes.LoginPage(),
+      },
+      {
+        id: 0,
+        icon: AddIcon,
+        name: "Register",
+        route: Routes.SignupPage(),
+      },
+    ]
+
+    if (!session.userId) {
+      routes = loggedOutRoutes
+    }
+  }, [session])
 
   const handlePopoverClick = (route) => {
     router.push(route)
@@ -34,7 +58,11 @@ const AccountPopover = (props) => {
 
   return (
     <Popover {...props}>
-      <List>
+      <List
+        sx={{
+          width: 225
+        }}
+      >
         {routes.map((link) => (
           <ListItemButton key={link.id} onClick={() => handlePopoverClick(link.route)}>
             <ListItemAvatar>
@@ -50,16 +78,18 @@ const AccountPopover = (props) => {
             />
           </ListItemButton>
         ))}
-        <ListItem button onClick={() => logout()}>
-          <ListItemText
-            primary="Sign out"
-            sx={{
-              "& span": {
-                fontWeight: "500"
+        {session.userId ? (
+          <ListItem onClick={() => logout()}>
+            <ListItemText
+              primary="Sign out"
+              sx={{
+                "& span": {
+                  fontWeight: "500"
                 }
-            }}
-          />
-        </ListItem>
+              }}
+            />
+          </ListItem>
+        ) : null}
       </List>
     </Popover>
   );

@@ -15,6 +15,7 @@ import { Provider } from "react-redux";
 
 import store from "integrations/redux";
 import { theme } from "integrations/material-ui";
+import 'app/styles/base.css';
 
 import LoginForm from "app/auth/components/LoginForm"
 import Box from "app/core/components/shared/Box"

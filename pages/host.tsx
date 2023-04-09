@@ -1,5 +1,5 @@
 import { BlitzPage, Routes } from "@blitzjs/next";
-
+import Link from "next/link";
 
 import Layout from "app/core/layouts/Layout"
 import AboutSection from "app/about/components/AboutSection";
@@ -61,7 +61,14 @@ const Host: BlitzPage = () => {
 
         <Grid item xs={12} textAlign="center">
           <Typography variant="h6">Ready to get started?</Typography>
-          <Button label="Become a host" sx={{ mt: 2 }}>Become a host</Button>
+          <Link href={Routes.Home()}>
+            <Button
+              label="Become a host"
+              sx={{ mt: 2 }}
+              >
+                Become a host
+              </Button>
+          </Link>
         </Grid>
       </Grid>
     </ConsumerContainer>
