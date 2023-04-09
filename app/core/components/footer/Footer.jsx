@@ -227,7 +227,6 @@ const Footer = () => {
                       }
                     }}
                     variant="contained"
-                    buttonType="submit"
                   >
                     Find a Chef
                   </Button>

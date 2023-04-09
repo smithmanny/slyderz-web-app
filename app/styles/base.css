@@ -1,3 +1,17 @@
+body {
+  height: 100vh;
+}
+
+#__next {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+main {
+  flex: 1
+}
+
 a {
   color: #FFF;
 }

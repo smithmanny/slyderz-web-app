@@ -44,6 +44,7 @@ export function Form<S extends z.ZodType<any, any>>({
         }
       } catch (error) {
         log.error(`Error submitting form ${JSON.stringify(error)}`)
+        console.log(`Error submitting form ${JSON.stringify(error)}`)
         if (error.code === "P2002" && error.meta?.target?.includes("email")) {
           // This error comes from Prisma
           return { email: "This email is already being used" }
@@ -83,7 +84,7 @@ export function Form<S extends z.ZodType<any, any>>({
 
             {submitText && (
               <Grid item xs={12}>
-                <Button label="submit-text" buttonType="submit" disabled={submitting}>
+                <Button label="submit-text" disabled={submitting}>
                   {submitText}
                 </Button>
               </Grid>

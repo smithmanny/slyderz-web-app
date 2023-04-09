@@ -152,7 +152,6 @@ const CheckoutPage = ({ eventDate, eventTime, stripePaymentMethods }: CheckoutPa
           )}
           <Button
             disabled={processing}
-            buttonType="submit"
             label="pay-now"
             sx={{
               background: "#5469d4",

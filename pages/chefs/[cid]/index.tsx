@@ -72,7 +72,6 @@ export const ChefPage = (props) => {
               sx={{ my: 4 }}
             >
               <Tab label="Menu" {...a11yProps(0)} />
-              <Tab label="Hours" {...a11yProps(1)} />
               <Tab label="Photos" {...a11yProps(2)} />
             </Tabs>
           </div>
@@ -85,9 +84,6 @@ export const ChefPage = (props) => {
           </TabPanel>
           <TabPanel value={value} index={1}>
             Item Two
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            Item Three
           </TabPanel>
         </Grid>
       </Grid>

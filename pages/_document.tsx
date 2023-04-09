@@ -9,7 +9,6 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          {/* Google Fonts */}
           {/* Pinterest */}
           <meta name="p:domain_verify" content="d9a0531c70e05a526b6dc638bb535a50" />
         </Head>

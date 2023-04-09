@@ -1,8 +1,9 @@
 "use client"
 
 import { useMutation, useQuery } from "@blitzjs/rpc";
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import IconButton from "@mui/material/IconButton";
+import dynamic from "next/dynamic";
 
 import menuSectionsQuery from "../../queries/menuSectionsQuery"
 import destroySectionMutation from "../../mutations/destroySectionMutation"
@@ -16,7 +17,10 @@ import Typography from 'app/core/components/shared/Typography'
 import MenuLayout from 'app/dashboard/components/menu/MenuLayout'
 
 import { SECTION } from './IndexContainer'
-import CreateSectionModal from 'app/core/modals/dashboard/createSectionModal'
+
+const CreateSectionModal = dynamic(() => import('app/core/modals/dashboard/createSectionModal'), {
+  ssr: false
+})
 
 const HomeContainer = (props) => {
   const { currentView, setCurrentView, setSelectedSection } = props;
@@ -24,13 +28,13 @@ const HomeContainer = (props) => {
   const [sections, { refetch }] = useQuery(menuSectionsQuery, {})
   const [destroySection] = useMutation(destroySectionMutation)
 
-  const closeSectionModal = () => {
+  const closeSectionModal = useCallback(() => {
     setShowSectionModal(false)
-  }
+  }, [])
 
-  const openSectionModal = () => {
+  const openSectionModal = useCallback(() => {
     setShowSectionModal(true)
-  }
+  }, [])
 
   return (
     <React.Fragment>

@@ -91,7 +91,7 @@ const StripeCard: FunctionComponent<any> = (props) => {
     ) : (
       <React.Fragment>
         <PaymentElement id="payment-element" />
-        <Button label="save card" buttonType="submit" sx={{ mt: 2 }} onClick={handleSubmit}>
+        <Button label="save card" sx={{ mt: 2 }} onClick={handleSubmit}>
           Save Card
         </Button>
       </React.Fragment>
