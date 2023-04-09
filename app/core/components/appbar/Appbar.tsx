@@ -46,7 +46,7 @@ const Appbar = (props) => {
   };
 
   return (
-    <Container maxWidth="xl" sx={{ mb: 10 }}>
+    <>
       <ElevationScroll>
         <MuiAppBar
           position='fixed'
@@ -57,33 +57,36 @@ const Appbar = (props) => {
           }}
           {...props}
         >
-          <Toolbar>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
-              <Link href="/">
-                <Typography variant="h5" sx={{ color: 'black', fontWeight: 600 }}>Slyderz</Typography>
-              </Link>
+          <Container maxWidth="xl">
+            <Toolbar>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
+                <Link href="/">
+                  <Typography variant="h5" sx={{ color: 'black', fontWeight: 600 }}>Slyderz</Typography>
+                </Link>
 
-              <Stack direction="row" spacing={2}>
-                <IconButton
-                  aria-label="cart"
-                  disableRipple
-                  onClick={handleAccountModalClick}
-                  size="large">
-                  <PersonIcon fontSize="large" />
-                </IconButton>
+                <Stack direction="row" spacing={2}>
+                  <IconButton
+                    aria-label="cart"
+                    disableRipple
+                    onClick={handleAccountModalClick}
+                    size="large">
+                    <PersonIcon fontSize="large" />
+                  </IconButton>
 
-                <AccountPopover
-                  id={accountId}
-                  open={isAccountOpen}
-                  onClose={closeAccountModal}
-                  anchorEl={accountAnchorEl}
-                />
-              </Stack>
-            </Box>
-          </Toolbar>
+                  <AccountPopover
+                    id={accountId}
+                    open={isAccountOpen}
+                    onClose={closeAccountModal}
+                    anchorEl={accountAnchorEl}
+                  />
+                </Stack>
+              </Box>
+            </Toolbar>
+          </Container>
         </MuiAppBar>
       </ElevationScroll>
-    </Container>
+      <Toolbar />
+    </>
   )
 };
 
