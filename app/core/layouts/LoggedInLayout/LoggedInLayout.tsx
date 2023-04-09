@@ -1,59 +1,61 @@
 import Link from "next/link";
 import { BlitzPage, Routes } from "@blitzjs/next";
 
-import { styled } from "integrations/material-ui"
-
 import Card, { CardContent, CardMedia } from "app/core/components/shared/Card"
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer"
 import Button from "app/core/components/shared/Button"
 import Grid from "app/core/components/shared/Grid"
 import Typography from "app/core/components/shared/Typography"
 
-const ChefCard = styled(Card)`
- & .MuiCard-root {
-    background: transparent;
-    box-shadow: none;
-    max-width: 308px;
-  }
-`
-const ChefCardContent = styled(CardContent)`
- & .MuiCardContent-root {
-      padding-top: 8px;
+const NearbyChefs = (props) => {
+  const chefs = [
+    {
+      name: 'Shaki'
+    },
+    {
+      name: 'Mar'
+    },
+    {
+      name: 'Nicole'
+    },
+    {
+      name: 'John'
     }
-`
+  ]
+  return (
+    <>
+      {chefs.map((chef, index) => (
+        <Grid key={`${chef.name}-${index}`} item xs={12} md={2}>
+          <Link href={Routes.ChefPage({ cid: 1 })}>
+            <Card sx={{ maxWidth: 245 }}>
+              <CardMedia
+                image="/headshot.jpeg"
+                title="Chef dish"
+                sx={{
+                  borderRadius: '50%',
+                  width: 175,
+                  height: 175,
+                  margin: 'auto',
+                  objectFit: 'contain',
+                  objectPosition: '50% 50%'
+                }}
+              />
+              <CardContent>
+                <Typography variant="body1">BBQ • Atlanta</Typography>
+                <Typography variant="h6">{chef.name}</Typography>
+                <Typography variant="subtitle2">
+                  Starting at $17/person
+                </Typography>
+              </CardContent>
+            </Card>
+          </Link>
+        </Grid>
+      ))}
+    </>
+  )
+}
 
 const LoggedinLayout: BlitzPage = () => {
-  const renderChefs = () => (
-    <Link href={Routes.ChefPage({ cid: 1 })}>
-      <ChefCard>
-        <CardMedia
-          image="/logo.png"
-          component="img"
-          height="140"
-          title="Chef dish"
-        />
-        <ChefCardContent
-          sx={{
-            "& .name": {
-              mt: 1,
-              mr: 1,
-              mb: 1,
-              ml: 0,
-            },
-          }}
-        >
-          <Typography variant="button">BBQ • Atlanta</Typography>
-          <div className="name">
-            <Typography variant="h6">Chef Shakhor</Typography>
-          </div>
-          <Typography variant="body1">
-            Starting at $17/person
-          </Typography>
-        </ChefCardContent>
-      </ChefCard>
-    </Link>
-  )
-
   return (
     <ConsumerContainer>
       <Grid container spacing={2}>
@@ -64,7 +66,8 @@ const LoggedinLayout: BlitzPage = () => {
           spacing={2}
           sx={{
             minHeight: '250px',
-            textAlign: "center"
+            textAlign: "center",
+            mb: 10
           }}
         >
           <Grid item xs={12}>
@@ -86,8 +89,11 @@ const LoggedinLayout: BlitzPage = () => {
             </Link>
           </Grid>
         </Grid>
-        <Grid item xs={12} md={4}>
-          {renderChefs()}
+        <Grid container item xs={12} spacing={4}>
+          <Grid item xs={12}>
+            <Typography variant="h5" sx={{ fontWeight: 600 }}>Nearby Chefs</Typography>
+          </Grid>
+          <NearbyChefs />
         </Grid>
       </Grid>
     </ConsumerContainer>
