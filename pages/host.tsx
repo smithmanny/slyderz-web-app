@@ -1,5 +1,6 @@
-import { BlitzPage, Routes } from "@blitzjs/next";
 import Link from "next/link";
+import { BlitzPage, Routes } from "@blitzjs/next";
+import { useSession } from "@blitzjs/auth";
 
 import Layout from "app/core/layouts/Layout"
 import AboutSection from "app/about/components/AboutSection";
@@ -11,6 +12,7 @@ import Box from "app/core/components/shared/Box"
 import Button from "app/core/components/shared/Button";
 
 const Host: BlitzPage = () => {
+  const session = useSession()
   return (
     <ConsumerContainer>
       <Grid container spacing={2}>
@@ -61,7 +63,7 @@ const Host: BlitzPage = () => {
 
         <Grid item xs={12} textAlign="center">
           <Typography variant="h4">Ready to get started?</Typography>
-          <Link href={Routes.Home()}>
+          <Link href={session.userId ? Routes.BecomeAHost() : Routes.SignupPage()}>
             <Button
               label="Become a host"
               sx={{ mt: 2 }}

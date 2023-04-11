@@ -8,54 +8,41 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import PersonIcon from "@mui/icons-material/Person";
-import AddIcon from "@mui/icons-material/Add";
 
 import logoutMutation from 'app/auth/mutations/logout';
-
 import Popover from "app/core/components/shared/Popover";
-import { useEffect } from "react";
-import { Routes } from "@blitzjs/next";
-
-let routes = [
-  {
-    id: 0,
-    icon: AddIcon,
-    name: "Account",
-    route: Routes.Account(),
-  },
-];
+import { loggedInRoutes, loggedOutRoutes, onboardedRoutes } from "./routes";
 
 const AccountPopover = (props) => {
   const [logout] = useMutation(logoutMutation);
   const router = useRouter();
   const session = useSession()
 
-  useEffect(() => {
-    const loggedOutRoutes = [
-      {
-        id: 0,
-        icon: AddIcon,
-        name: "Login",
-        route: Routes.LoginPage(),
-      },
-      {
-        id: 0,
-        icon: AddIcon,
-        name: "Register",
-        route: Routes.SignupPage(),
-      },
-    ]
-
-    if (!session.userId) {
-      routes = loggedOutRoutes
+  const fetchListItems = () => {
+    const isChefOnboarded = true
+    const routes = {
+      loggedIn: loggedInRoutes,
+      loggedOut: loggedOutRoutes,
+      chefOnboarded: onboardedRoutes,
     }
-  }, [session])
+
+    if (session.userId && !isChefOnboarded) {
+      return routes.loggedIn
+    }
+
+    if (isChefOnboarded) {
+      return routes.chefOnboarded
+    }
+
+    return routes.loggedOut
+  }
 
   const handlePopoverClick = (route) => {
     router.push(route)
     props.onClose();
   }
 
+  const routes = fetchListItems()
   return (
     <Popover {...props}>
       <List
@@ -65,14 +52,16 @@ const AccountPopover = (props) => {
       >
         {routes.map((link) => (
           <ListItemButton key={link.id} onClick={() => handlePopoverClick(link.route)}>
-            <ListItemAvatar>
-              <PersonIcon fontSize="large" />
-            </ListItemAvatar>
+            {link.icon && (
+              <ListItemAvatar>
+                <PersonIcon fontSize="large" />
+              </ListItemAvatar>
+            )}
             <ListItemText
               primary={link.name}
               sx={{
                 "& span": {
-                fontWeight: "500"
+                fontWeight: "549"
                 }
               }}
             />
@@ -104,7 +93,7 @@ AccountPopover.propTypes = {
   id: PropTypes.string,
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
-  anchorEl: PropTypes.element,
+  anchorEl: PropTypes.object,
 };
 
 export default AccountPopover;

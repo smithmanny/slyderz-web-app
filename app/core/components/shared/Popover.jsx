@@ -1,7 +1,7 @@
 import { default as PopoverMUI } from "@mui/material/Popover";
 import PropTypes from "prop-types";
 
-const Popover = ({ anchorEl, children, handleClose, name, ...props }) => {
+const Popover = ({ anchorEl, children, onClose, name, ...props }) => {
   const open = Boolean(anchorEl);
   const id = open ? name : undefined;
   return (
@@ -10,7 +10,7 @@ const Popover = ({ anchorEl, children, handleClose, name, ...props }) => {
       id={id}
       open={open}
       anchorEl={anchorEl}
-      onClose={handleClose}
+      onClose={onClose}
       anchorOrigin={{
         vertical: "bottom",
         horizontal: "left",
@@ -27,12 +27,13 @@ const Popover = ({ anchorEl, children, handleClose, name, ...props }) => {
 };
 
 Popover.defaultProps = {
+  anchorEl: null,
   name: "Popover",
 };
 
 Popover.propTypes = {
-  anchorEl: PropTypes.element.isRequired,
-  handleClose: PropTypes.func.isRequired,
+  anchorEl: PropTypes.object,
+  onClose: PropTypes.func.isRequired,
   name: PropTypes.string,
 };
 

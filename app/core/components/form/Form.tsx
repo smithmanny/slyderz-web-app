@@ -90,12 +90,6 @@ export function Form<S extends z.ZodType<any, any>>({
               </Grid>
             )}
           </Grid>
-
-          {/* <style global jsx>{`
-            .form > * + * {
-              margin-top: 1rem;
-            }
-          `}</style> */}
         </form>
       )}
     />
@@ -108,7 +102,7 @@ Form.defaultProps = {
 }
 
 Form.propTypes = {
-  submitText: PropTypes.string.isRequired,
+  submitText: PropTypes.string,
   children: PropTypes.any.isRequired,
   mutation: PropTypes.shape({
     schema: PropTypes.any,
