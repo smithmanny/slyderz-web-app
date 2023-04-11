@@ -60,7 +60,7 @@ const Host: BlitzPage = () => {
         />
 
         <Grid item xs={12} textAlign="center">
-          <Typography variant="h6">Ready to get started?</Typography>
+          <Typography variant="h4">Ready to get started?</Typography>
           <Link href={Routes.Home()}>
             <Button
               label="Become a host"

@@ -8,7 +8,6 @@ datasource db {
 
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["interactiveTransactions"]
 }
 
 // --------------------------------------
@@ -75,6 +74,7 @@ model Chef {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  stripeAccountId String
 
   user     User      @relation(fields: [userId], references: [id])
   userId   Int

@@ -21,68 +21,6 @@ const FooterDiv = styled('div')(({ theme }) => ({
   padding: theme.spacing(6, 0),
 }))
 
-const Signup = styled('span')(({ theme }) => ({
-  [theme.breakpoints.up("md")]: {
-    flexDirection: 'row'
-  },
-  display: "flex",
-  flexDirection: 'column'
-}))
-
-const SocialContainer = styled('div')(({ theme }) => ({
-  "& span": {
-      marginLeft: "auto",
-    },
-    "& h6": {
-      fontSize: "16px",
-    },
-    alignItems: "center",
-    display: "flex",
-    color: "white",
-    marginTop: theme.spacing(2),
-}))
-
-const SocialList = styled('ul')(({ theme }) => ({
-  "& a": {
-    color: "rgba(255, 255, 255, 0.2)",
-  },
-  "& a:hover": {
-    color: "rgba(255, 255, 255, 0.7)",
-    cursor: "pointer",
-  },
-  "& li": {
-    "& svg": {
-      fontSize: "32px",
-    },
-    marginRight: theme.spacing(3),
-  },
-  display: "flex",
-  listStyle: "none",
-}))
-
-const Table = styled('table')(({ theme }) => ({
-  "& a:hover": {
-      cursor: "pointer",
-      textDecoration: "underline",
-    },
-    "& th": {
-      textTransform: "uppercase",
-      "& h6": {
-        fontSize: "14px",
-      },
-    },
-    "& tr": {
-      display: "flex",
-      fontWeight: 500,
-      marginBottom: theme.spacing(2),
-      justifyContent: "space-between",
-    },
-    color: "white",
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(4),
-    width: "100%",
-}))
-
 const FooterLinks = (props) => {
   const aboutLinks = [
     {
@@ -109,7 +47,7 @@ const FooterLinks = (props) => {
   const chefLinks = [
     {
       name: 'Join Slyderz',
-      route: Routes.BecomeAChef()
+      route: Routes.Host()
     }
   ]
   const supportLinks = [
@@ -147,7 +85,7 @@ const FooterLinks = (props) => {
     <Stack spacing={2}>
       {links.map((link, index) => (
         <Box key={`${link.name}-${index}`}>
-          <Link href="/about">
+          <Link href={link.route}>
             <Typography variant="body1">
               {link.name}
             </Typography>
@@ -228,7 +166,7 @@ const Footer = () => {
                     }}
                     variant="contained"
                   >
-                    Find a Chef
+                    Subscribe
                   </Button>
                 </Grid>
               </Form>

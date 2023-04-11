@@ -4,7 +4,7 @@ import { BlitzPage } from "@blitzjs/next";
 import Layout from "app/core/layouts/Layout"
 
 const LoggedInContainer = dynamic(() =>
-  import("app/core/layouts/LoggedInLayout")
+  import("app/LoggedInLayout")
 );
 
 const Home: BlitzPage = () => {

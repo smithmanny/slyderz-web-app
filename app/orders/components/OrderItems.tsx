@@ -1,6 +1,6 @@
 import React from "react";
 
-import { readableDate } from "app/helpers/dateHelpers"
+import { readableDate } from "app/utils/dateHelpers"
 
 import Typography from 'app/core/components/shared/Typography'
 import Box from "app/core/components/shared/Box";

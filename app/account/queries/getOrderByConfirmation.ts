@@ -1,4 +1,4 @@
-import { Ctx, NotFoundError } from "blitz"
+import { Ctx } from "blitz"
 import db from "db"
 import * as z from "zod"
 

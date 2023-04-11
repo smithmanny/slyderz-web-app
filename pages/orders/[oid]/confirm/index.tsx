@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import db from 'db'
 
 import { sendOrderResponseEmail } from "app/utils/send-email"
-import { readableDate } from "app/helpers/dateHelpers"
+import { readableDate } from "app/utils/dateHelpers"
 
 import Box from "app/core/components/shared/Box"
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer"

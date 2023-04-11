@@ -1,5 +1,8 @@
 import Link from "next/link";
 import { BlitzPage, Routes } from "@blitzjs/next";
+import { useQuery } from "@blitzjs/rpc";
+
+import NearbyChefQuery from 'app/chefs/queries/getNearbyChefsQuery'
 
 import Card, { CardContent, CardMedia } from "app/core/components/shared/Card"
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer"
@@ -22,10 +25,11 @@ const NearbyChefs = (props) => {
       name: 'John'
     }
   ]
+  const [nearbyChefs] = useQuery(NearbyChefQuery, null)
   return (
     <>
-      {chefs.map((chef, index) => (
-        <Grid key={`${chef.name}-${index}`} item xs={12} md={2}>
+      {nearbyChefs.map((chef, index) => (
+        <Grid key={`${chef.user.firstName}-${index}`} item xs={12} sm={6} md={4} lg={2}>
           <Link href={Routes.ChefPage({ cid: 1 })}>
             <Card sx={{ maxWidth: 245 }}>
               <CardMedia
@@ -42,7 +46,7 @@ const NearbyChefs = (props) => {
               />
               <CardContent>
                 <Typography variant="body1">BBQ • Atlanta</Typography>
-                <Typography variant="h6">{chef.name}</Typography>
+                <Typography variant="h6">{chef.user.firstName}</Typography>
                 <Typography variant="subtitle2">
                   Starting at $17/person
                 </Typography>
@@ -67,7 +71,7 @@ const LoggedinLayout: BlitzPage = () => {
           sx={{
             minHeight: '250px',
             textAlign: "center",
-            mb: 10
+            mb: { xs: 5, md: 10 }
           }}
         >
           <Grid item xs={12}>
@@ -89,12 +93,10 @@ const LoggedinLayout: BlitzPage = () => {
             </Link>
           </Grid>
         </Grid>
-        <Grid container item xs={12} spacing={4}>
-          <Grid item xs={12}>
+        <Grid item xs={12}>
             <Typography variant="h5" sx={{ fontWeight: 600 }}>Nearby Chefs</Typography>
-          </Grid>
-          <NearbyChefs />
         </Grid>
+        <NearbyChefs />
       </Grid>
     </ConsumerContainer>
   )
