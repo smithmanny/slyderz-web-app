@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useSession } from "@blitzjs/auth";
-import { useMutation } from "@blitzjs/rpc";
+import { useMutation, useQuery } from "@blitzjs/rpc";
 import PropTypes from "prop-types";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -10,16 +10,17 @@ import ListItemText from "@mui/material/ListItemText";
 import PersonIcon from "@mui/icons-material/Person";
 
 import logoutMutation from 'app/auth/mutations/logout';
+import isChefOnboardedQuery from 'app/chefs/queries/isChefOnboarded'
 import Popover from "app/core/components/shared/Popover";
 import { loggedInRoutes, loggedOutRoutes, onboardedRoutes } from "./routes";
 
 const AccountPopover = (props) => {
   const [logout] = useMutation(logoutMutation);
+  const [isChefOnboarded] = useQuery(isChefOnboardedQuery)
   const router = useRouter();
   const session = useSession()
 
   const fetchListItems = () => {
-    const isChefOnboarded = true
     const routes = {
       loggedIn: loggedInRoutes,
       loggedOut: loggedOutRoutes,
@@ -30,7 +31,7 @@ const AccountPopover = (props) => {
       return routes.loggedIn
     }
 
-    if (isChefOnboarded) {
+    if (session.userId && isChefOnboarded) {
       return routes.chefOnboarded
     }
 

@@ -12,10 +12,10 @@ const About: BlitzPage = () => {
   return (
     <ConsumerContainer>
       <Grid container spacing={2}>
-        <Grid item xs={12} textAlign="center" sx={{ mb: 8 }}>
+        <Grid item xs={12} textAlign="center" sx={{ mb: 4 }}>
           <Typography variant="h1">We&apos;re changing the whole game.</Typography>
         </Grid>
-        <Grid item xs={12} textAlign="center" sx={{ mb: 8 }}>
+        <Grid item xs={12} textAlign="center" sx={{ mb: 4 }}>
           <Box sx={{ p: 2 }}>
             <Typography sx={{ fontWeight: 500 }}>&quot;Slyderz is an on-demand chef service that connects consumers with professional chefs to enjoy high-quality cuisine in the comfort of their homes. The platform offers a convenient booking and payment system, allowing customers to browse local chefs, view their menus and pricing, and book the perfect chef for their needs.&quot;</Typography>
           </Box>

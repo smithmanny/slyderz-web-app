@@ -75,6 +75,7 @@ model Chef {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   stripeAccountId String
+  isOnboardingComplete Boolean @default(false)
 
   user     User      @relation(fields: [userId], references: [id])
   userId   Int

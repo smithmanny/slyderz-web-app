@@ -37,9 +37,17 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ ctx }
   let stripeAccountUrl: string = ''
 
   if (user.chef?.stripeAccountId) {
-    const onboardingFinished = await stripe.accounts.retrieve(user.chef.stripeAccountId)
-    // Stripe connect onboarding finished
-    if (onboardingFinished.charges_enabled) {
+    const account = await stripe.accounts.retrieve(user.chef.stripeAccountId)
+
+    // User can receive payments
+    if (account.charges_enabled) {
+      await db.chef.update({
+        where: { id: user.chef.id },
+        data: {
+          isOnboardingComplete: true
+        }
+      })
+
       return {
         redirect: {
           destination: '/',

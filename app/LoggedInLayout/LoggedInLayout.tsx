@@ -11,26 +11,12 @@ import Grid from "app/core/components/shared/Grid"
 import Typography from "app/core/components/shared/Typography"
 
 const NearbyChefs = (props) => {
-  const chefs = [
-    {
-      name: 'Shaki'
-    },
-    {
-      name: 'Mar'
-    },
-    {
-      name: 'Nicole'
-    },
-    {
-      name: 'John'
-    }
-  ]
   const [nearbyChefs] = useQuery(NearbyChefQuery, null)
   return (
     <>
       {nearbyChefs.map((chef, index) => (
         <Grid key={`${chef.user.firstName}-${index}`} item xs={12} sm={6} md={4} lg={2}>
-          <Link href={Routes.ChefPage({ cid: 1 })}>
+          <Link href={Routes.ChefPage({ cid: chef.id })}>
             <Card sx={{ maxWidth: 245 }}>
               <CardMedia
                 image="/headshot.jpeg"

@@ -11,8 +11,6 @@ const TermsAndCondition: BlitzPage = () => (
       <strong>Terms and Conditions</strong>
     </Typography>
 
-    <Typography paragraph>Welcome to Slyderz!</Typography>
-
     <Typography paragraph>
       These terms and conditions outline the rules and regulations for the use
       of Slyderz LLC's Website, located at https://slyderz.co.
@@ -329,6 +327,6 @@ const TermsAndCondition: BlitzPage = () => (
   </ConsumerContainer>
 );
 
-TermsAndCondition.getLayout = (page) => <Layout>{page}</Layout>
+TermsAndCondition.getLayout = (page) => <Layout title="Terms & Conditions">{page}</Layout>
 
 export default TermsAndCondition;

@@ -16,7 +16,7 @@ const Host: BlitzPage = () => {
   return (
     <ConsumerContainer>
       <Grid container spacing={2}>
-        <Grid item xs={12} textAlign="center" sx={{ mb: 8 }}>
+        <Grid item xs={12} textAlign="center" sx={{ mb: 4 }}>
           <Typography variant="h1">Become a host with Slyderz</Typography>
         </Grid>
         <Grid container item xs={12} spacing={2}>
