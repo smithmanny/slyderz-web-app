@@ -1,0 +1,5 @@
+<mj-section background-color="#F6644A" padding-bottom="0px" padding-top="0">
+  <mj-column vertical-align="top" width="100%">
+    <mj-image src="https://img.mailinblue.com/5956969/images/content_library/original/6439d6e26789506d3860531f.png" alt="" align="center" border="none" width="250px" padding-left="0px" padding-right="0px" padding-bottom="24px" padding-top="0"></mj-image>
+  </mj-column>
+</mj-section>

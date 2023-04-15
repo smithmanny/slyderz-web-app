@@ -1,0 +1,40 @@
+<mj-wrapper>
+  <mj-section>
+    <mj-column>
+      <mj-text font-size="18px" font-weight="bold">
+      Order Summary
+      </mj-text>
+      <mj-text font-weight="bold">Order Number: {{order.orderNumber}}</mj-text>
+      <mj-text font-weight="bold">Date: {{order.date}}</mj-text>
+      <mj-text font-weight="bold">Time: {{order.time}}</mj-text>
+      <mj-text font-weight="bold">Location: {{order.location}}</mj-text>
+    </mj-column>
+  </mj-section>
+
+  <mj-section>
+    <mj-column>
+      <mj-table>
+        <tr style="border-bottom:1px solid #ecedee;text-align:left;padding:15px 0;">
+          <th style="padding: 0 15px;">Title</th>
+          <th style="padding: 0 0 0 15px;">Quantity</th>
+        </tr>
+        <mj-raw>
+          {% for item in var:items %}
+        </mj-raw>
+          <tr>
+            <td style="padding: 0 15px;">{{ item.title }}</td>
+            <td style="padding: 0 0 0 15px;">{{ item.quantity }}</td>
+          </tr>
+          <mj-raw>
+            {% endfor %}
+          </mj-raw>
+      </mj-table>
+    </mj-column>
+  </mj-section>
+
+  <mj-section>
+    <mj-column>
+      <mj-divider border-width="1px" border-style="solid" border-color="lightgrey" />
+    </mj-column>
+  </mj-section>
+</mj-wrapper>
