@@ -42,22 +42,6 @@ export default resolver.pipe(resolver.zod(Signup), async ({ email, firstName, la
     return user
   }
 
-  const addContactToList = async (contactId) => {
-    try {
-      await mailjetClient.post("contact").id(contactId).action('managecontactslists')
-      .request({
-        ContactsLists: [
-          {
-            ListID: 10251087, //Subscribers list
-            Action: 'addnoforce'
-          }
-        ]
-      })
-    } catch (err) {
-      console.log('User not created cause of error...', err)
-    }
-  }
-
   const createMailjetContact = async(user) => {
     const body: Contact.PostContactBody = {
       "IsExcludedFromCampaigns": false,
@@ -66,10 +50,20 @@ export default resolver.pipe(resolver.zod(Signup), async ({ email, firstName, la
     }
     let contact: LibraryResponse<Contact.GetContactResponse>
     try {
-      contact = await mailjet.post("contact")
-        .request(body)
+      contact = await mailjet.post("contact").request(body)
       const contactId = contact?.body?.Data[0]?.ID
-      await addContactToList(contactId)
+
+      if (contactId) {
+        await mailjetClient.post("contact").id(contactId).action('managecontactslists')
+          .request({
+            ContactsLists: [
+              {
+                ListID: 10251087, //Subscribers list
+                Action: 'addnoforce'
+              }
+            ]
+          })
+      }
     } catch (err) {
       console.log('User not created cause of error...', err)
       await db.user.delete({ where: { id: user.id }})
