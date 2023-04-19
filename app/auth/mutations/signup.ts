@@ -76,6 +76,7 @@ export default resolver.pipe(resolver.zod(Signup), async ({ email, firstName, la
   const user = await createUser()
   // Create contact in mailjet and add to list
   await createMailjetContact(user)
+  // TODO: Send activation email
 
   // Merge pending carts from logged out session
   const pendingCartItems = ctx.session?.cart?.pendingCartItems || [];
