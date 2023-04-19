@@ -1,13 +1,12 @@
 import { SecurePassword } from "@blitzjs/auth/secure-password";
 import { resolver } from "@blitzjs/rpc";
-import sendgridClient from '@sendgrid/client'
+import { Contact, LibraryResponse } from 'node-mailjet'
 
 import db from "db"
 import { Signup } from "app/auth/validations"
 import { Role } from "types"
 import { getStripeServer } from 'app/utils/getStripe'
-
-sendgridClient.setApiKey(process.env.SENDGRID_API_TOKEN || '')
+import { mailjet, mailjetClient } from 'app/utils/getMailjet'
 
 export default resolver.pipe(resolver.zod(Signup), async ({ email, firstName, lastName, password }, ctx) => {
   const stripe = getStripeServer()
@@ -22,47 +21,67 @@ export default resolver.pipe(resolver.zod(Signup), async ({ email, firstName, la
     throw new Error('User already exists')
   }
 
-  const stripeCustomer = await stripe.customers.create({
-    email,
-    name: `${firstName} ${lastName}`,
-  })
+  const createUser = async() => {
+    const stripeCustomer = await stripe.customers.create({
+      email,
+      name: `${firstName} ${lastName}`,
+    })
 
-  const user = await db.user.create({
-    data: {
-      email: email.toLowerCase(),
-      firstName,
-      lastName,
-      hashedPassword,
-      role: "USER",
-      stripeCustomerId: stripeCustomer.id,
-    },
-    select: { id: true, firstName: true, lastName: true, email: true, role: true },
-  })
+    const user = await db.user.create({
+      data: {
+        email: email.toLowerCase(),
+        firstName,
+        lastName,
+        hashedPassword,
+        role: "USER",
+        stripeCustomerId: stripeCustomer.id,
+      },
+      select: { id: true, firstName: true, lastName: true, email: true, role: true, stripeCustomerId: true },
+    })
 
-  // // Create user in sendgrid
-  const data = {
-    "contacts": [
-      {
-        "email": email,
-        "first_name": firstName,
-        "last_name": lastName,
-        "custom_fields": {
-          "e2_T": "false",  // confirmed_email
-        }
-      }
-    ]
-  };
-
-  const request:any = {
-    url: `/v3/marketing/contacts`,
-    method: 'PUT',
-    body: data
+    return user
   }
 
-  sendgridClient.request(request)
-    .catch(error => {
-      console.error(error);
-    });
+  const addContactToList = async (contactId) => {
+    try {
+      await mailjetClient.post("contact").id(contactId).action('managecontactslists')
+      .request({
+        ContactsLists: [
+          {
+            ListID: 10251087, //Subscribers list
+            Action: 'addnoforce'
+          }
+        ]
+      })
+    } catch (err) {
+      console.log('User not created cause of error...', err)
+    }
+  }
+
+  const createMailjetContact = async(user) => {
+    const body: Contact.PostContactBody = {
+      "IsExcludedFromCampaigns": false,
+      "Name": firstName,
+      "Email": email
+    }
+    let contact: LibraryResponse<Contact.GetContactResponse>
+    try {
+      contact = await mailjet.post("contact")
+        .request(body)
+      const contactId = contact?.body?.Data[0]?.ID
+      await addContactToList(contactId)
+    } catch (err) {
+      console.log('User not created cause of error...', err)
+      await db.user.delete({ where: { id: user.id }})
+      throw new Error("Contact not created")
+    }
+
+    return contact
+  }
+
+  const user = await createUser()
+  // Create contact in mailjet and add to list
+  await createMailjetContact(user)
 
   // Merge pending carts from logged out session
   const pendingCartItems = ctx.session?.cart?.pendingCartItems || [];
@@ -75,7 +94,7 @@ export default resolver.pipe(resolver.zod(Signup), async ({ email, firstName, la
       pendingCartItems,
       total,
     },
-    stripeCustomerId: stripeCustomer.id
+    stripeCustomerId: user.stripeCustomerId
   })
 
   return user
