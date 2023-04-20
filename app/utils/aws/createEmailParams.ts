@@ -1,6 +1,6 @@
 import { SESParamsType } from "types";
 
-function createEmailParams({ subject, to, htmlMessage, textMessage }: SESParamsType) {
+function createEmailParams({ subject, to, htmlContent, textContent }: SESParamsType) {
   return {
     Destination: { /* required */
       ToAddresses: [
@@ -12,11 +12,11 @@ function createEmailParams({ subject, to, htmlMessage, textMessage }: SESParamsT
       Body: { /* required */
         Html: {
           Charset: "UTF-8",
-          Data: htmlMessage
+          Data: htmlContent
         },
         Text: {
           Charset: "UTF-8",
-          Data: textMessage
+          Data: textContent
         }
       },
       Subject: {

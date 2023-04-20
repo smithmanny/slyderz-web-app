@@ -4,7 +4,7 @@ import { Contact, LibraryResponse } from 'node-mailjet'
 
 import db from "db"
 import { Signup } from "app/auth/validations"
-import { Role } from "types"
+import { Role, TRANSACTIONAL_EMAILS } from "types"
 import { getStripeServer } from 'app/utils/getStripe'
 import { mailjet, mailjetClient } from 'app/utils/getMailjet'
 import sendSesEmail from "emails/utils/sendSesEmail";
@@ -80,8 +80,7 @@ export default resolver.pipe(resolver.zod(Signup), async ({ email, firstName, la
   await sendSesEmail({
     to: 'contact@slyderz.co',
     subject: 'Test Email',
-    htmlMessage: '<h1>Message Succesful</h1>',
-    textMessage: "Message Succesful"
+    type: TRANSACTIONAL_EMAILS.activation
   })
 
   // Merge pending carts from logged out session

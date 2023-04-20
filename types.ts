@@ -56,6 +56,14 @@ declare module "@blitzjs/auth" {
 export interface SESParamsType {
   subject: string
   to: string
-  htmlMessage: string
-  textMessage: string
+  htmlContent: string
+  textContent: string
+}
+
+type TranactionalEmailTypes = 'ACTIVATION' | 'NEW-ORDER-CHEF' | 'NEW-ORDER-CONSUMER' | 'ORDER-APPROVED' | 'ORDER-DENIED'
+interface TransactionalEmailInterface {
+  activation: TranactionalEmailTypes
+}
+export const TRANSACTIONAL_EMAILS: TransactionalEmailInterface = {
+  activation: 'ACTIVATION'
 }
