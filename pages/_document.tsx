@@ -2,7 +2,7 @@ import Document, { Html, Head, Main, NextScript } from "next/document";
 import GlobalStyles from '@mui/material/GlobalStyles';
 import createEmotionServer from '@emotion/server/create-instance';
 
-import createEmotionCache from "integrations/createEmotionCache"
+import createEmotionCache from "app/utils/createEmotionCache"
 
 class MyDocument extends Document {
   render() {

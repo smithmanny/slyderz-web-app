@@ -52,3 +52,10 @@ declare module "@blitzjs/auth" {
     }
   }
 }
+
+export interface SESParamsType {
+  subject: string
+  to: string
+  htmlMessage: string
+  textMessage: string
+}

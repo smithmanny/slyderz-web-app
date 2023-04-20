@@ -7,6 +7,7 @@ import { Signup } from "app/auth/validations"
 import { Role } from "types"
 import { getStripeServer } from 'app/utils/getStripe'
 import { mailjet, mailjetClient } from 'app/utils/getMailjet'
+import sendSesEmail from "emails/utils/sendSesEmail";
 
 export default resolver.pipe(resolver.zod(Signup), async ({ email, firstName, lastName, password }, ctx) => {
   const stripe = getStripeServer()
@@ -67,7 +68,7 @@ export default resolver.pipe(resolver.zod(Signup), async ({ email, firstName, la
     } catch (err) {
       console.log('User not created cause of error...', err)
       await db.user.delete({ where: { id: user.id }})
-      throw new Error("Contact not created")
+      throw new Error("Try again later...")
     }
 
     return contact
@@ -76,7 +77,12 @@ export default resolver.pipe(resolver.zod(Signup), async ({ email, firstName, la
   const user = await createUser()
   // Create contact in mailjet and add to list
   await createMailjetContact(user)
-  // TODO: Send activation email
+  await sendSesEmail({
+    to: 'contact@slyderz.co',
+    subject: 'Test Email',
+    htmlMessage: '<h1>Message Succesful</h1>',
+    textMessage: "Message Succesful"
+  })
 
   // Merge pending carts from logged out session
   const pendingCartItems = ctx.session?.cart?.pendingCartItems || [];
