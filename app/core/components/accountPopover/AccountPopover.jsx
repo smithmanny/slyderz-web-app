@@ -69,7 +69,7 @@ const AccountPopover = (props) => {
           </ListItemButton>
         ))}
         {session.userId ? (
-          <ListItem onClick={() => logout()}>
+          <ListItemButton onClick={() => logout()}>
             <ListItemText
               primary="Sign out"
               sx={{
@@ -78,7 +78,7 @@ const AccountPopover = (props) => {
                 }
               }}
             />
-          </ListItem>
+          </ListItemButton>
         ) : null}
       </List>
     </Popover>

@@ -63,7 +63,47 @@ export interface SESParamsType {
 type TranactionalEmailTypes = 'ACTIVATION' | 'NEW-ORDER-CHEF' | 'NEW-ORDER-CONSUMER' | 'ORDER-APPROVED' | 'ORDER-DENIED'
 interface TransactionalEmailInterface {
   activation: TranactionalEmailTypes
+  newOrderConsumer: TranactionalEmailTypes
+  newOrderChef: TranactionalEmailTypes
+  denyOrder: TranactionalEmailTypes
 }
 export const TRANSACTIONAL_EMAILS: TransactionalEmailInterface = {
-  activation: 'ACTIVATION'
+  activation: "ACTIVATION",
+  newOrderConsumer: 'NEW-ORDER-CONSUMER',
+  newOrderChef: 'NEW-ORDER-CHEF',
+  denyOrder: 'ORDER-DENIED',
+}
+
+export interface ActivationEmailInputType {
+  activationUrl: string
+}
+type OrderItemsType = {
+  title: string
+  quantity: string
+}
+export interface ConsumerNewOrderEmailInputType {
+  order: {
+    orderNumber: string
+    date: string
+    time: string
+    location: string
+    subtotal: number
+    serviceFee: number
+    total: number
+    items: Array<OrderItemsType>
+  }
+}
+export interface ConsumerOrderApprovedEmailInputType extends ConsumerNewOrderEmailInputType {}
+export interface ChefNewOrderEmailInputType {
+  order: {
+    subtotal: number
+  }
+}
+
+type SendSesObjectType = ChefNewOrderEmailInputType | ConsumerOrderApprovedEmailInputType | ConsumerNewOrderEmailInputType | OrderItemsType | ActivationEmailInputType | object
+export interface SendSesEmailType {
+  subject: string
+  to: string
+  type: string
+  variables?: SendSesObjectType
 }

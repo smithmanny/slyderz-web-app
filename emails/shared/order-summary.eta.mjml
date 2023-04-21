@@ -4,10 +4,10 @@
       <mj-text font-size="18px" font-weight="bold">
       Order Summary
       </mj-text>
-      <mj-text font-weight="bold">Order Number: {{order.orderNumber}}</mj-text>
-      <mj-text font-weight="bold">Date: {{order.date}}</mj-text>
-      <mj-text font-weight="bold">Time: {{order.time}}</mj-text>
-      <mj-text font-weight="bold">Location: {{order.location}}</mj-text>
+      <mj-text font-weight="bold">Order Number: {{= order.orderNumber }}</mj-text>
+      <mj-text font-weight="bold">Date: {{= order.date }}</mj-text>
+      <mj-text font-weight="bold">Time: {{= order.time }}</mj-text>
+      <mj-text font-weight="bold">Location: {{= order.location }}</mj-text>
     </mj-column>
   </mj-section>
 
@@ -19,15 +19,17 @@
           <th style="padding: 0 0 0 15px;">Quantity</th>
         </tr>
         <mj-raw>
-          {% for item in var:items %}
+          <!-- {% for item in var:items %} -->
+          {{ items.forEach(function(item){ }}
         </mj-raw>
           <tr>
-            <td style="padding: 0 15px;">{{ item.title }}</td>
-            <td style="padding: 0 0 0 15px;">{{ item.quantity }}</td>
+            <td style="padding: 0 15px;">{{= item.title }}</td>
+            <td style="padding: 0 0 0 15px;">{{= item.quantity }}</td>
           </tr>
-          <mj-raw>
-            {% endfor %}
-          </mj-raw>
+        <mj-raw>
+          {{ }) }}
+          <!-- {% endfor %} -->
+        </mj-raw>
       </mj-table>
     </mj-column>
   </mj-section>

@@ -1,0 +1,27 @@
+{{ layout("../../shared/_layout.eta.mjml") }}
+
+<mj-section background-color="#F6644A" padding-bottom="0px" padding-top="0">
+  <mj-column vertical-align="top" width="100%">
+    <mj-text align="left" color="#000" font-size="28px" font-weight="bold" font-family="Raleway open Sans Helvetica, Arial, sans-serif" padding-left="25px" padding-right="25px" padding-bottom="0px" padding-top="30px">Your order has been approved 🥳</mj-text>
+    <mj-text font-size="18px">You're one step closer to an unforgettable experience. </mj-text>
+  </mj-column>
+</mj-section>
+
+{{~ includeFile("../../shared/order-summary.eta.mjml") }}
+
+<mj-wrapper>
+  <mj-section>
+    <mj-column>
+      <mj-text font-weight="bold">Subtotal:{{= order.subtotal }}</mj-text>
+      <mj-text font-weight="bold">Service Fee:{{= order.serviceFee }}</mj-text>
+      <mj-text font-weight="bold">Total:{{= order.total }}</mj-text>
+    </mj-column>
+  </mj-section>
+
+  <mj-section>
+    <mj-column>
+      <mj-text font-weight="bold">Need help?</mj-text>
+      <mj-text>If you have any questions, please contact us by email at contact@slyderz.co</mj-text>
+    </mj-column>
+  </mj-section>
+</mj-wrapper>
