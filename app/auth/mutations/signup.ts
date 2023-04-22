@@ -79,7 +79,6 @@ export default resolver.pipe(resolver.zod(Signup), async ({ email, firstName, la
   await createMailjetContact(user)
   await sendSesEmail({
     to: 'contact@slyderz.co',
-    subject: 'Test Email',
     type: TRANSACTIONAL_EMAILS.activation
   })
 

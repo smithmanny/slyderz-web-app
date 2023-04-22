@@ -10,7 +10,7 @@
 <mj-wrapper>
   <mj-section>
     <mj-column>
-      <mj-text font-weight="bold">Order Number: {{= order.orderNumber }}</mj-text>
+      <mj-text font-weight="bold">Order Number: {{= it.order.orderNumber }}</mj-text>
     </mj-column>
   </mj-section>
 

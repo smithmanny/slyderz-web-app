@@ -2,9 +2,9 @@ import { Ctx } from "blitz";
 import randomstring from "randomstring";
 
 import { readableDate } from "app/utils/dateHelpers"
-import { sendOrderRequestEmail } from "app/utils/send-email"
+import sendSesEmail from "emails/utils/sendSesEmail";
 import db from "db"
-import { EmailBodyType } from 'types'
+import { TRANSACTIONAL_EMAILS } from 'types'
 
 export default async function CreateOrderMutation(input: any, ctx: Ctx) {
   const { eventDate, eventTime, paymentMethodId } = input;
@@ -46,6 +46,7 @@ export default async function CreateOrderMutation(input: any, ctx: Ctx) {
         userId: Number(ctx.session.userId),
       },
       select: {
+        amount: true,
         confirmationNumber: true,
         id: true,
         chef: {
@@ -71,19 +72,45 @@ export default async function CreateOrderMutation(input: any, ctx: Ctx) {
       const acceptUrl = `${process.env.NEXT_PUBLIC_URL}/orders/${order.confirmationNumber}/confirm`
       const denyUrl = `${process.env.NEXT_PUBLIC_URL}/orders/${order.confirmationNumber}/deny`
 
-      const emailData: EmailBodyType = {
-        acceptOrderUrl: acceptUrl,
-        chefEmail: order.chef.user.email,
-        denyOrderUrl: denyUrl,
-        cartItems: ctx.session.cart.pendingCartItems,
-        email: order.user.email,
-        orderTotal: ctx.session.cart.total,
-        confirmationNumber: order.confirmationNumber,
-        eventTime,
-        eventDate: readableDate(date),
+      try {
+        await sendSesEmail({
+          to: 'contact@slyderz.co',
+          type: TRANSACTIONAL_EMAILS.newOrderConsumer,
+          variables: {
+            order: {
+              orderNumber: order.confirmationNumber,
+              date: readableDate(date),
+              time: eventTime,
+              location: "",
+              subtotal: order.amount,
+              serviceFee: 3,
+              total: order.amount + 3,
+              items: ctx.session.cart.pendingCartItems
+            }
+          }
+        })
+        await sendSesEmail({
+          to: 'contact@slyderz.co',
+          type: TRANSACTIONAL_EMAILS.newOrderChef,
+          variables: {
+            order: {
+              approveUrl: acceptUrl,
+              denyUrl: denyUrl,
+              orderNumber: order.confirmationNumber,
+              date: readableDate(date),
+              time: eventTime,
+              location: "",
+              subtotal: order.amount,
+              serviceFee: 3,
+              total: order.amount + 3,
+              items: ctx.session.cart.pendingCartItems
+            }
+          }
+        })
+      } catch(err) {
+        console.log("Error sending email", err)
+        throw new Error("Sorry, your order can't be placed right now")
       }
-
-      await sendOrderRequestEmail(emailData)
 
       // reset cart & total
       await ctx.session.$setPublicData({

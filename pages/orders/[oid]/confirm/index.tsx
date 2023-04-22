@@ -2,8 +2,9 @@ import { gSSP } from "app/blitz-server";
 import { useRouter } from "next/router";
 import db from 'db'
 
-import { sendOrderResponseEmail } from "app/utils/send-email"
 import { readableDate } from "app/utils/dateHelpers"
+import { TRANSACTIONAL_EMAILS } from "types"
+import sendSesEmail from "emails/utils/sendSesEmail";
 
 import Box from "app/core/components/shared/Box"
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer"
@@ -117,21 +118,28 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ req, 
   })
 
   const eventDate = new Date(order.eventDate)
-  const emailData: any = {
-    cartItems: order.dishes.map(d => ({
-      id: String(d.id),
-      quantity: d.quantity,
-      description: d.dish.description,
-      name: d.dish.name,
-    })),
-    chefEmail: order.chef.user.email,
-    email: order.user.email,
-    orderTotal: order.amount,
-    orderNumber: order.confirmationNumber,
-    eventTime: order.eventTime,
-    eventDate: readableDate(eventDate),
-  }
-  await sendOrderResponseEmail(emailData, true)
+
+  await sendSesEmail({
+    to: 'contact@slyderz.co',
+    type: TRANSACTIONAL_EMAILS.confirmOrder,
+    variables: {
+      order: {
+        orderNumber: order.confirmationNumber,
+        date: readableDate(eventDate),
+        time: order.eventTime,
+        location: "",
+        subtotal: order.amount,
+        serviceFee: 3,
+        total: order.amount + 3,
+        items: order.dishes.map(d => ({
+          id: String(d.id),
+          quantity: d.quantity,
+          description: d.dish.description,
+          name: d.dish.name,
+        }))
+      }
+    }
+  })
 
   return {
     props: {

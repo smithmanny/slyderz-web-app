@@ -7,24 +7,37 @@ import Eta from './useEta'
 
 import { TRANSACTIONAL_EMAILS, SendSesEmailType } from "types";
 
-async function sendSesEmail({ to, subject, type, variables = {} }: SendSesEmailType) {
+async function sendSesEmail({ to, type, variables = {} }: SendSesEmailType) {
   let emailTemplate: string
+  let subject: string
 
   switch(type) {
     case TRANSACTIONAL_EMAILS.activation:
       emailTemplate = './emails/transactional/views/activate.eta.mjml'
+      subject = 'Activate your account.'
       break;
     case TRANSACTIONAL_EMAILS.newOrderConsumer:
       emailTemplate = './emails/transactional/views/new-order.eta.mjml'
+      subject = 'We got your request! Your order will be confirmed soon.'
       break;
     case TRANSACTIONAL_EMAILS.newOrderChef:
       emailTemplate = './emails/transactional/views/chef-order-request.eta.mjml'
+      subject = 'You got a new order!'
       break;
     case TRANSACTIONAL_EMAILS.denyOrder:
       emailTemplate = './emails/transactional/views/order-denied.eta.mjml'
+      subject = 'Sorry, your order was denied.'
+      break;
+    case TRANSACTIONAL_EMAILS.confirmOrder:
+      emailTemplate = './emails/transactional/views/order-approved.eta.mjml'
+      subject = 'Your order has been approved!'
       break;
     default:
       throw new Error("Can't send email")
+  }
+
+  if (!subject || !emailTemplate) {
+    throw new Error("Can't send email")
   }
 
   // 1. Read email mjml file

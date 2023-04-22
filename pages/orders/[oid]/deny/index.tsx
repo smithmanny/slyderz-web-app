@@ -2,17 +2,15 @@ import { gSSP } from "app/blitz-server";
 import { useRouter } from "next/router";
 import db from 'db'
 
-import { sendOrderResponseEmail } from "app/utils/send-email"
-import { formatNumberToCurrency } from "app/utils/time"
-import { readableDate } from "app/utils/dateHelpers"
-
 import Box from "app/core/components/shared/Box"
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer"
 import Button from "app/core/components/shared/Button"
 import Typography from "app/core/components/shared/Typography"
 import Layout from "app/core/layouts/Layout"
 import Divider from 'app/core/components/shared/Divider'
-import { TruckRemove } from "mdi-material-ui";
+
+import { TRANSACTIONAL_EMAILS } from "types"
+import sendSesEmail from "emails/utils/sendSesEmail";
 
 export const getServerSideProps = gSSP(async function getServerSideProps({ req, res, params }) {
   const confirmationNumber = String(params?.oid)
@@ -73,21 +71,13 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ req, 
     }
   })
 
-  const emailData: any = {
-    cartItems: order.dishes.map(d => ({
-      id: String(d.id),
-      quantity: d.quantity,
-      description: d.dish.description,
-      name: d.dish.name,
-    })),
-    email: order.user.email,
-    orderTotal: order.amount,
-    orderNumber: order.confirmationNumber,
-    eventTime: order.eventTime,
-    eventDate: readableDate(order.eventDate),
-  }
-
-  await sendOrderResponseEmail(emailData, false)
+  await sendSesEmail({
+    to: 'contact@slyderz.co',
+    type: TRANSACTIONAL_EMAILS.denyOrder,
+    variables: {
+      orderNumber: order.confirmationNumber
+    }
+  })
 
   return {
     props: {
