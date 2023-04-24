@@ -46,8 +46,8 @@ async function sendSesEmail({ to, type, variables = {} }: SendSesEmailType) {
   // 4. Convert from mjml to html
   fs.readFile(emailTemplate, 'utf8', async(err, data) => {
     if (err) {
-      console.error(err);
-      return;
+      console.error('Template error', err);
+      throw new Error("Can't send emails", err)
     }
 
     const emailTemplate = Eta.render(data, variables)
@@ -66,7 +66,8 @@ async function sendSesEmail({ to, type, variables = {} }: SendSesEmailType) {
 
       return response
     } catch(err) {
-      console.log(err)
+      console.log('Email template has errors', err)
+      throw new Error("Can't send emails", err)
     }
   })
 }

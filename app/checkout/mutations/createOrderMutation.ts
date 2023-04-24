@@ -4,7 +4,7 @@ import randomstring from "randomstring";
 import { readableDate } from "app/utils/dateHelpers"
 import sendSesEmail from "emails/utils/sendSesEmail";
 import db from "db"
-import { TRANSACTIONAL_EMAILS } from 'types'
+import { TRANSACTIONAL_EMAILS, CHEF_SERVICE_FEE, CONSUMER_SERVICE_FEE } from 'types'
 
 export default async function CreateOrderMutation(input: any, ctx: Ctx) {
   const { eventDate, eventTime, paymentMethodId } = input;
@@ -47,6 +47,7 @@ export default async function CreateOrderMutation(input: any, ctx: Ctx) {
       },
       select: {
         amount: true,
+        dishes: true,
         confirmationNumber: true,
         id: true,
         chef: {
@@ -71,40 +72,38 @@ export default async function CreateOrderMutation(input: any, ctx: Ctx) {
       const date = new Date(eventDate)
       const acceptUrl = `${process.env.NEXT_PUBLIC_URL}/orders/${order.confirmationNumber}/confirm`
       const denyUrl = `${process.env.NEXT_PUBLIC_URL}/orders/${order.confirmationNumber}/deny`
+      const consumerServiceFee = order.amount * CONSUMER_SERVICE_FEE
+      const chefServiceFee = order.amount * CHEF_SERVICE_FEE
 
       try {
         await sendSesEmail({
           to: 'contact@slyderz.co',
           type: TRANSACTIONAL_EMAILS.newOrderConsumer,
           variables: {
-            order: {
-              orderNumber: order.confirmationNumber,
-              date: readableDate(date),
-              time: eventTime,
-              location: "",
-              subtotal: order.amount,
-              serviceFee: 3,
-              total: order.amount + 3,
-              items: ctx.session.cart.pendingCartItems
-            }
+            orderNumber: order.confirmationNumber,
+            orderDate: readableDate(date),
+            orderTime: eventTime,
+            orderLocation: "",
+            orderSubtotal: order.amount,
+            orderServiceFee: consumerServiceFee,
+            orderTotal: order.amount + consumerServiceFee,
+            // orderItems: order.dishes,
           }
         })
         await sendSesEmail({
           to: 'contact@slyderz.co',
           type: TRANSACTIONAL_EMAILS.newOrderChef,
           variables: {
-            order: {
-              approveUrl: acceptUrl,
-              denyUrl: denyUrl,
-              orderNumber: order.confirmationNumber,
-              date: readableDate(date),
-              time: eventTime,
-              location: "",
-              subtotal: order.amount,
-              serviceFee: 3,
-              total: order.amount + 3,
-              items: ctx.session.cart.pendingCartItems
-            }
+            orderApproveUrl: acceptUrl,
+            orderDenyUrl: denyUrl,
+            orderNumber: order.confirmationNumber,
+            orderDate: readableDate(date),
+            orderTime: eventTime,
+            orderLocation: "",
+            orderSubtotal: order.amount,
+            orderServiceFee: chefServiceFee,
+            orderTotal: order.amount + chefServiceFee,
+            // orderItems: order.dishes,
           }
         })
       } catch(err) {

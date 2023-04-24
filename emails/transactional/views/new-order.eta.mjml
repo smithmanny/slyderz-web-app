@@ -7,14 +7,20 @@
   </mj-column>
 </mj-section>
 
-{{~ includeFile("../../shared/order-summary.eta.mjml", { order: it.order }) }}
+{{~ includeFile("../../shared/order-summary.eta.mjml", {
+    orderNumber: it.orderNumber,
+    orderDate: it.orderDate,
+    orderTime: it.orderTime,
+    orderLocation: it.orderLocation
+  })
+}}
 
 <mj-wrapper>
   <mj-section>
     <mj-column>
-      <mj-text font-weight="bold">Subtotal:{{= it.order.subtotal }}</mj-text>
-      <mj-text font-weight="bold">Service Fee:{{= it.order.serviceFee }}</mj-text>
-      <mj-text font-weight="bold">Total:{{= it.order.total }}</mj-text>
+      <mj-text font-weight="bold">Subtotal: ${{= it.orderSubtotal }}</mj-text>
+      <mj-text font-weight="bold">Service Fee: ${{= it.orderServiceFee }}</mj-text>
+      <mj-text font-weight="bold">Total: ${{= it.orderTotal }}</mj-text>
     </mj-column>
   </mj-section>
 

@@ -52,12 +52,13 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ req, 
       },
       chef: {
         select: {
+          id: true,
+          stripeAccountId: true,
           user: {
             select: {
-              email: true
+              email: true,
             }
           },
-          id: true,
         },
       },
       user: {
@@ -92,6 +93,10 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ req, 
     payment_method: order.paymentMethodId,
     off_session: true,
     confirm: true,
+    application_fee_amount: 1,
+    transfer_data: {
+      destination: order.chef.stripeAccountId
+    },
     metadata: {
       userId: order.user.id,
     }
@@ -123,21 +128,19 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ req, 
     to: 'contact@slyderz.co',
     type: TRANSACTIONAL_EMAILS.confirmOrder,
     variables: {
-      order: {
-        orderNumber: order.confirmationNumber,
-        date: readableDate(eventDate),
-        time: order.eventTime,
-        location: "",
-        subtotal: order.amount,
-        serviceFee: 3,
-        total: order.amount + 3,
-        items: order.dishes.map(d => ({
-          id: String(d.id),
-          quantity: d.quantity,
-          description: d.dish.description,
-          name: d.dish.name,
-        }))
-      }
+      orderNumber: order.confirmationNumber,
+      orderDate: readableDate(eventDate),
+      orderTime: order.eventTime,
+      orderLocation: "",
+      orderSubtotal: order.amount,
+      orderServiceFee: 3,
+      orderTotal: order.amount + 3,
+      // orderItems: order.dishes.map(d => ({
+      //   id: String(d.id),
+      //   quantity: d.quantity,
+      //   description: d.dish.description,
+      //   name: d.dish.name,
+      // })),
     }
   })
 

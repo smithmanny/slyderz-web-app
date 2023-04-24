@@ -108,3 +108,6 @@ export interface SendSesEmailType {
   type: string
   variables?: SendSesObjectType
 }
+
+export const CHEF_SERVICE_FEE = .03
+export const CONSUMER_SERVICE_FEE = .10

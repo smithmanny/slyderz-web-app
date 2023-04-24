@@ -50,7 +50,7 @@ export const LoginForm = (props: LoginFormProps) => {
         </Grid>
       </Form>
 
-      <div style={{ marginTop: "1rem" }}>
+      <div style={{ marginTop: "1rem", color: '#000' }}>
         Or <Link href={Routes.SignupPage()}>Sign Up</Link>
       </div>
     </Box>

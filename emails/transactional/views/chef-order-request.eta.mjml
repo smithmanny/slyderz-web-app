@@ -1,6 +1,5 @@
 {{ layout("../../shared/_layout.eta.mjml") }}
 
-
 <mj-section background-color="#F6644A" padding-bottom="0px" padding-top="0">
   <mj-column vertical-align="top" width="100%">
     <mj-text align="left" color="#000" font-size="28px" font-weight="bold" font-family="Raleway open Sans Helvetica, Arial, sans-serif" padding-left="25px" padding-right="25px" padding-bottom="0px" padding-top="30px">You received a new order!</mj-text>
@@ -8,21 +7,29 @@
   </mj-column>
 </mj-section>
 
-{{~ includeFile("../../shared/order-summary.eta.mjml", { order: it.order }) }}
+{{~ includeFile("../../shared/order-summary.eta.mjml", {
+    orderNumber: it.orderNumber,
+    orderDate: it.orderDate,
+    orderTime: it.orderTime,
+    orderLocation: it.orderLocation
+  })
+}}
 
 <mj-wrapper>
   <mj-section>
-    <mj-column width="100%">
-      <mj-text font-weight="bold">Total: {{= it.order.subtotal }}</mj-text>
+    <mj-column>
+      <mj-text font-weight="bold">Subtotal: ${{= it.orderSubtotal }}</mj-text>
+      <mj-text font-weight="bold">Service Fee: ${{= it.orderServiceFee }}</mj-text>
+      <mj-text font-weight="bold">Total: ${{= it.orderTotal }}</mj-text>
     </mj-column>
 
     <mj-column>
-      <mj-button background-color="#F6644A" href="{{= it.order.approveUrl }}">
+      <mj-button background-color="#F6644A" href="{{= it.orderApproveUrl }}">
         Approve Order
       </mj-button>
     </mj-column>
     <mj-column>
-      <mj-button background-color="#F64A4A" href="{{= it.order.denyUrl }}">
+      <mj-button background-color="#F64A4A" href="{{= it.orderDenyUrl }}">
         Deny Order
       </mj-button>
     </mj-column>
