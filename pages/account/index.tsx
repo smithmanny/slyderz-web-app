@@ -41,7 +41,8 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ ctx }
     payment_method_types: ['card'],
     metadata: {
       userId: session.userId,
-    }
+    },
+    usage: 'off_session'
   });
 
   return {

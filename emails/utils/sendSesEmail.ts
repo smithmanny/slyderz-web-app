@@ -32,6 +32,10 @@ async function sendSesEmail({ to, type, variables = {} }: SendSesEmailType) {
       emailTemplate = './emails/transactional/views/order-approved.eta.mjml'
       subject = 'Your order has been approved!'
       break;
+    case TRANSACTIONAL_EMAILS.resetPassword:
+      emailTemplate = './emails/transactional/views/reset-password.eta.mjml'
+      subject = 'Reset your Slyderz password'
+      break;
     default:
       throw new Error("Can't send email")
   }
