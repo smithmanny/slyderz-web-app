@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import db from 'db'
 
 import { readableDate } from "app/utils/dateHelpers"
-import { TRANSACTIONAL_EMAILS } from "types"
+import { TRANSACTIONAL_EMAILS, CHEF_SERVICE_FEE } from "types"
 import sendSesEmail from "emails/utils/sendSesEmail";
 
 import Box from "app/core/components/shared/Box"
@@ -93,7 +93,7 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ req, 
     payment_method: order.paymentMethodId,
     off_session: true,
     confirm: true,
-    application_fee_amount: 1,
+    application_fee_amount: order.amount * CHEF_SERVICE_FEE,
     transfer_data: {
       destination: order.chef.stripeAccountId
     },

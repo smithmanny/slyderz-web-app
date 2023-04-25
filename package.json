@@ -56,7 +56,6 @@
   "mjml": "^4.14.1",
   "mui-rff": "6.1.4",
   "next": "13.3.0",
-  "next-axiom": "^0.17.0",
   "node-mailjet": "^6.0.2",
   "notistack": "^3.0.1",
   "prisma": "^4.0.0",
