@@ -1,7 +1,7 @@
 import { useMutation } from "@blitzjs/rpc";
 import { BlitzPage } from "@blitzjs/next";
 import Layout from "app/core/layouts/Layout"
-import Form, { TextField, FORM_ERROR } from "app/core/components/form"
+import Form, { TextField } from "app/core/components/form"
 import { ForgotPassword } from "app/auth/validations"
 import forgotPassword from "app/auth/mutations/forgotPassword"
 
@@ -24,16 +24,11 @@ const ForgotPasswordPage: BlitzPage = () => {
         <Form
           submitText="Send Reset Password Instructions"
           schema={ForgotPassword}
-          initialValues={{ email: "" }}
-          onSubmit={async (values) => {
-            console.log({ values })
-            // try {
-            //   await forgotPasswordMutation(values)
-            // } catch (error) {
-            //   return {
-            //     [FORM_ERROR]: "Sorry, we had an unexpected error. Please try again.",
-            //   }
-            // }
+          mutation={{
+            schema: forgotPasswordMutation,
+            toVariables: values => ({
+              ...values
+            })
           }}
         >
             <TextField name="email" label="Email" placeholder="Email" />

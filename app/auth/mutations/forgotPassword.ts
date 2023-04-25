@@ -1,10 +1,11 @@
 import { generateToken, hash256 } from "@blitzjs/auth";
 import { resolver } from "@blitzjs/rpc";
 import db from "db"
-// import { forgotPasswordMailer } from "mailers/forgotPasswordMailer"
+import sendSesEmail from "emails/utils/sendSesEmail";
 import { ForgotPassword } from "../validations"
+import { TRANSACTIONAL_EMAILS } from 'types'
 
-const RESET_PASSWORD_TOKEN_EXPIRATION_IN_HOURS = 4
+const RESET_PASSWORD_TOKEN_EXPIRATION_IN_HOURS = 24
 
 export default resolver.pipe(resolver.zod(ForgotPassword), async ({ email }) => {
   // 1. Get the user
@@ -31,7 +32,8 @@ export default resolver.pipe(resolver.zod(ForgotPassword), async ({ email }) => 
       },
     })
     // 6. Send the email
-    // await forgotPasswordMailer({ to: user.email, token }).send()
+    // TODO: Add forgotPasswordUrl to variables
+    await sendSesEmail({ to: user.email, type: TRANSACTIONAL_EMAILS.forgotPassword })
   } else {
     // 7. If no user found wait the same time so attackers can't tell the difference
     await new Promise((resolve) => setTimeout(resolve, 750))
