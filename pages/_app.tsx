@@ -21,8 +21,6 @@ import LoginForm from "app/auth/components/LoginForm"
 import Box from "app/core/components/shared/Box"
 import CircularProgress from "app/core/components/shared/CircularProgress"
 
-export { reportWebVitals } from 'next-axiom';
-
 const roboto = Roboto_Serif({ subsets: ['latin'] })
 
 function LoadingIcon() {

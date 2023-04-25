@@ -60,13 +60,14 @@ export interface SESParamsType {
   textContent: string
 }
 
-type TranactionalEmailTypes = 'ACTIVATION' | 'NEW-ORDER-CHEF' | 'NEW-ORDER-CONSUMER' | 'ORDER-APPROVED' | 'ORDER-DENIED' | 'ORDER-CONFIRMED'
+type TranactionalEmailTypes = 'ACTIVATION' | 'NEW-ORDER-CHEF' | 'NEW-ORDER-CONSUMER' | 'ORDER-APPROVED' | 'ORDER-DENIED' | 'ORDER-CONFIRMED' | 'RESET-PASSWORD'
 interface TransactionalEmailInterface {
   activation: TranactionalEmailTypes
   newOrderConsumer: TranactionalEmailTypes
   newOrderChef: TranactionalEmailTypes
   denyOrder: TranactionalEmailTypes
   confirmOrder: TranactionalEmailTypes
+  resetPassword: TranactionalEmailTypes
 }
 export const TRANSACTIONAL_EMAILS: TransactionalEmailInterface = {
   activation: "ACTIVATION",
@@ -74,6 +75,7 @@ export const TRANSACTIONAL_EMAILS: TransactionalEmailInterface = {
   newOrderChef: 'NEW-ORDER-CHEF',
   denyOrder: 'ORDER-DENIED',
   confirmOrder: 'ORDER-CONFIRMED',
+  resetPassword: 'RESET-PASSWORD'
 }
 
 export interface ActivationEmailInputType {

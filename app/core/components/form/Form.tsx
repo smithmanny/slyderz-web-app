@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import { Form as FinalForm, FormProps as FinalFormProps } from "react-final-form"
 import { FORM_ERROR } from "final-form"
 import * as z from "zod"
-import { log } from 'next-axiom';
 
 import Button from '../shared/Button'
 import Grid from '../shared/Grid'
@@ -43,7 +42,6 @@ export function Form<S extends z.ZodType<any, any>>({
           return onSuccess(variables);
         }
       } catch (error) {
-        log.error(`Error submitting form ${JSON.stringify(error)}`)
         console.log(`Error submitting form ${JSON.stringify(error)}`)
         if (error.code === "P2002" && error.meta?.target?.includes("email")) {
           // This error comes from Prisma
