@@ -4,8 +4,7 @@ module.exports = (phase, { defaultConfig }) => {
   return withBlitz({
     reactStrictMode: true,
     compiler: {
-      emotion: true
-    }
-  })
+      emotion: true,
+    },
+  });
 };
-

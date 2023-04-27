@@ -1,37 +1,37 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 
-import Container from "app/core/components/shared/Container"
-import HomeContainer from 'app/dashboard/components/menu/HomeContainer'
-import SectionContainer from 'app/dashboard/components/menu/SectionContainer'
-import CreateDishContainer from 'app/dashboard/components/menu/CreateDishContainer'
-import UpdateDishContainer from 'app/dashboard/components/menu/UpdateDishContainer'
+import Container from "app/core/components/shared/Container";
+import HomeContainer from "app/dashboard/components/menu/HomeContainer";
+import SectionContainer from "app/dashboard/components/menu/SectionContainer";
+import CreateDishContainer from "app/dashboard/components/menu/CreateDishContainer";
+import UpdateDishContainer from "app/dashboard/components/menu/UpdateDishContainer";
 
-export const HOME = 'HOME'
-export const SECTION = 'SECTION'
-export const CREATE_DISH = 'CREATE_DISH'
-export const UPDATE_DISH = 'UPDATE_DISH'
+export const HOME = "HOME";
+export const SECTION = "SECTION";
+export const CREATE_DISH = "CREATE_DISH";
+export const UPDATE_DISH = "UPDATE_DISH";
 
 const IndexContainer = () => {
-  const [currentView, setCurrentView] = useState(HOME)
-  const [selectedSection, setSelectedSection] = useState(null)
-  const [selectedDishId, setSelectedDishId] = useState(null)
-  let MenuView
+  const [currentView, setCurrentView] = useState(HOME);
+  const [selectedSection, setSelectedSection] = useState(null);
+  const [selectedDishId, setSelectedDishId] = useState(null);
+  let MenuView;
 
   switch (currentView) {
     case HOME:
-      MenuView = HomeContainer
+      MenuView = HomeContainer;
       break;
     case SECTION:
-      MenuView = SectionContainer
+      MenuView = SectionContainer;
       break;
     case CREATE_DISH:
-      MenuView = CreateDishContainer
+      MenuView = CreateDishContainer;
       break;
     case UPDATE_DISH:
-      MenuView = UpdateDishContainer
+      MenuView = UpdateDishContainer;
       break;
     default:
-      MenuView = HomeContainer
+      MenuView = HomeContainer;
       break;
   }
 
@@ -46,7 +46,7 @@ const IndexContainer = () => {
         setSelectedDishId={setSelectedDishId}
       />
     </Container>
-  )
-}
+  );
+};
 
-export default IndexContainer
+export default IndexContainer;

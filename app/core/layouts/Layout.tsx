@@ -1,13 +1,13 @@
 import Head from "next/head";
-import { ReactNode } from "react"
+import { ReactNode } from "react";
 
-import Appbar from 'app/core/components/appbar'
-import Footer from 'app/core/components/footer'
+import Appbar from "app/core/components/appbar";
+import Footer from "app/core/components/footer";
 
 type LayoutProps = {
-  title?: string
-  children: ReactNode
-}
+  title?: string;
+  children: ReactNode;
+};
 
 const Layout = ({ title, children }: LayoutProps) => {
   return (
@@ -17,12 +17,10 @@ const Layout = ({ title, children }: LayoutProps) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Appbar />
-      <main>
-        {children}
-      </main>
+      <main>{children}</main>
       <Footer />
     </>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;

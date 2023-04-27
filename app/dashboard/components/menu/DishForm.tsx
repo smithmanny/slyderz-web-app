@@ -1,14 +1,14 @@
-import PropTypes from 'prop-types'
-import InputAdornment from '@mui/material/InputAdornment';
+import PropTypes from "prop-types";
+import InputAdornment from "@mui/material/InputAdornment";
 
-import Form, { TextField } from "app/core/components/form"
-import { formatNumberToCurrency } from 'app/utils/time'
+import Form, { TextField } from "app/core/components/form";
+import { formatNumberToCurrency } from "app/utils/time";
 
 const DishForm = (props) => {
-  const initialValues = props.initialValues
+  const initialValues = props.initialValues;
 
   if (props.selectedDishId) {
-    initialValues['selectedDishId'] = props.selectedDishId;
+    initialValues["selectedDishId"] = props.selectedDishId;
   }
 
   return (
@@ -18,13 +18,13 @@ const DishForm = (props) => {
       initialValues={initialValues}
       mutation={{
         schema: props.mutation,
-        toVariables: values => ({
+        toVariables: (values) => ({
           ...values,
-          price: String(formatNumberToCurrency(values.price).replace('$', '')),
+          price: String(formatNumberToCurrency(values.price).replace("$", "")),
           sectionId: props.sectionId,
         }),
       }}
-      onSuccess={() => props.setCurrentView('SECTION')}
+      onSuccess={() => props.setCurrentView("SECTION")}
     >
       <TextField
         name="name"
@@ -43,19 +43,19 @@ const DishForm = (props) => {
         label="Dish Price"
         placeholder="22.00"
         type="number"
-        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+        inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
         InputProps={{
-          startAdornment: <InputAdornment position="start">$</InputAdornment>
+          startAdornment: <InputAdornment position="start">$</InputAdornment>,
         }}
       />
     </Form>
-  )
-}
+  );
+};
 
 DishForm.defaultProps = {
   initialValues: {},
   selectedDishId: null,
-}
+};
 
 DishForm.propTypes = {
   initialValues: PropTypes.object,
@@ -63,7 +63,7 @@ DishForm.propTypes = {
   submitText: PropTypes.string.isRequired,
   sectionId: PropTypes.string.isRequired,
   selectedDishId: PropTypes.number,
-  mutation: PropTypes.any.isRequired
-}
+  mutation: PropTypes.any.isRequired,
+};
 
-export default DishForm
+export default DishForm;

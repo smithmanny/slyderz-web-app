@@ -1,8 +1,8 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
-import GlobalStyles from '@mui/material/GlobalStyles';
-import createEmotionServer from '@emotion/server/create-instance';
+import GlobalStyles from "@mui/material/GlobalStyles";
+import createEmotionServer from "@emotion/server/create-instance";
 
-import createEmotionCache from "app/utils/createEmotionCache"
+import createEmotionCache from "app/utils/createEmotionCache";
 
 class MyDocument extends Document {
   render() {
@@ -10,7 +10,10 @@ class MyDocument extends Document {
       <Html lang="en">
         <Head>
           {/* Pinterest */}
-          <meta name="p:domain_verify" content="d9a0531c70e05a526b6dc638bb535a50" />
+          <meta
+            name="p:domain_verify"
+            content="d9a0531c70e05a526b6dc638bb535a50"
+          />
         </Head>
         <body>
           <Main />
@@ -18,8 +21,8 @@ class MyDocument extends Document {
           <GlobalStyles
             styles={{
               a: {
-                textDecoration: 'none'
-              }
+                textDecoration: "none",
+              },
             }}
           />
         </body>
@@ -28,7 +31,7 @@ class MyDocument extends Document {
   }
 }
 
-export default MyDocument
+export default MyDocument;
 
 // `getInitialProps` belongs to `_document` (instead of `_app`),
 // it's compatible with static-site generation (SSG).
@@ -76,7 +79,7 @@ MyDocument.getInitialProps = async (ctx) => {
   const emotionStyles = extractCriticalToChunks(initialProps.html);
   const emotionStyleTags = emotionStyles.styles.map((style) => (
     <style
-      data-emotion={`${style.key} ${style.ids.join(' ')}`}
+      data-emotion={`${style.key} ${style.ids.join(" ")}`}
       key={style.key}
       // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{ __html: style.css }}

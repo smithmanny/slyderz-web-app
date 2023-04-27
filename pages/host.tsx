@@ -2,17 +2,17 @@ import Link from "next/link";
 import { BlitzPage, Routes } from "@blitzjs/next";
 import { useSession } from "@blitzjs/auth";
 
-import Layout from "app/core/layouts/Layout"
+import Layout from "app/core/layouts/Layout";
 import AboutSection from "app/about/components/AboutSection";
 
-import ConsumerContainer from "app/core/components/shared/ConsumerContainer"
-import Grid from "app/core/components/shared/Grid"
-import Typography from "app/core/components/shared/Typography"
-import Box from "app/core/components/shared/Box"
+import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
+import Grid from "app/core/components/shared/Grid";
+import Typography from "app/core/components/shared/Typography";
+import Box from "app/core/components/shared/Box";
 import Button from "app/core/components/shared/Button";
 
 const Host: BlitzPage = () => {
-  const session = useSession()
+  const session = useSession();
   return (
     <ConsumerContainer>
       <Grid container spacing={2}>
@@ -26,7 +26,9 @@ const Host: BlitzPage = () => {
                 Showcase your cooking skills
               </Typography>
               <Typography variant="subtitle2">
-                Chefs have a platform to showcase their skills and create unique menus. Connect with new clients and grow your business with access to our customer base.
+                Chefs have a platform to showcase their skills and create unique
+                menus. Connect with new clients and grow your business with
+                access to our customer base.
               </Typography>
             </Box>
           </Grid>
@@ -36,7 +38,8 @@ const Host: BlitzPage = () => {
                 Flexibility. No Contracts.
               </Typography>
               <Typography variant="subtitle2">
-                Work on your own terms and enjoy the freedom to manage your business and grow your culinary career without any contracts.
+                Work on your own terms and enjoy the freedom to manage your
+                business and grow your culinary career without any contracts.
               </Typography>
             </Box>
           </Grid>
@@ -46,7 +49,8 @@ const Host: BlitzPage = () => {
                 Instant payments
               </Typography>
               <Typography variant="subtitle2">
-                With Slyderz, chefs receive instant payments after completing a booking. Say goodbye to waiting for payouts!
+                With Slyderz, chefs receive instant payments after completing a
+                booking. Say goodbye to waiting for payouts!
               </Typography>
             </Box>
           </Grid>
@@ -56,26 +60,25 @@ const Host: BlitzPage = () => {
           description="Slyderz provides a platform to showcase their talents, connect with new clients, and grow their business. Our chefs have access to a dashboard where they can manage their availability, create and update their menus, and track their bookings. Plus, our platform makes it easy for chefs to receive payment and manage their finances, so they can focus on what they do best - cooking delicious food."
           MainProps={{
             sx: {
-              my: 8
-            }
+              my: 8,
+            },
           }}
         />
 
         <Grid item xs={12} textAlign="center">
           <Typography variant="h4">Ready to get started?</Typography>
-          <Link href={session.userId ? Routes.BecomeAHost() : Routes.SignupPage()}>
-            <Button
-              label="Become a host"
-              sx={{ mt: 2 }}
-              >
-                Become a host
-              </Button>
+          <Link
+            href={session.userId ? Routes.BecomeAHost() : Routes.SignupPage()}
+          >
+            <Button label="Become a host" sx={{ mt: 2 }}>
+              Become a host
+            </Button>
           </Link>
         </Grid>
       </Grid>
     </ConsumerContainer>
-  )
-}
+  );
+};
 
-export default Host
-Host.getLayout = (page) => <Layout title="Become a host">{page}</Layout>
+export default Host;
+Host.getLayout = (page) => <Layout title="Become a host">{page}</Layout>;

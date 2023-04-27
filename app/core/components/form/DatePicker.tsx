@@ -1,11 +1,11 @@
-import { FunctionComponent } from 'react'
+import { FunctionComponent } from "react";
 import PropTypes from "prop-types";
-import { DatePicker as MuiDatePicker } from 'mui-rff';
-import 'date-fns';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker as MuiDatePicker } from "mui-rff";
+import "date-fns";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
-import Grid from '../shared/Grid'
+import Grid from "../shared/Grid";
 
 const DatePicker: FunctionComponent<any> = (props) => (
   <Grid item xs={props.xs} md={props.md}>
@@ -21,8 +21,8 @@ const DatePicker: FunctionComponent<any> = (props) => (
 );
 
 DatePicker.defaultProps = {
-  label: '',
-  name: '',
+  label: "",
+  name: "",
   xs: 12,
   required: false,
 };

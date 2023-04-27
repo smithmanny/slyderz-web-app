@@ -14,7 +14,7 @@ export const loggedOutRoutes = [
     name: "Register",
     route: Routes.SignupPage(),
   },
-]
+];
 export const loggedInRoutes = [
   {
     id: 0,

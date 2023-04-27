@@ -1,31 +1,28 @@
-import { Ctx } from "blitz"
-import db from "db"
-import * as z from "zod"
+import { Ctx } from "blitz";
+import db from "db";
+import * as z from "zod";
 
-export default async function fetchChefDishes(
-  input: z.infer<any>,
-  ctx: Ctx
-) {
-  const userId = ctx.session.userId
+export default async function fetchChefDishes(input: z.infer<any>, ctx: Ctx) {
+  const userId = ctx.session.userId;
 
   if (!userId) {
-    return false
+    return false;
   }
 
   const nearbyChefs = await db.chef.findFirst({
     where: { userId: userId },
     select: {
-      isOnboardingComplete: true
-    }
-  })
+      isOnboardingComplete: true,
+    },
+  });
 
   if (!nearbyChefs) {
-    return false
+    return false;
   }
 
   if (nearbyChefs.isOnboardingComplete) {
-    return true
+    return true;
   } else {
-    return false
+    return false;
   }
 }

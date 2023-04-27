@@ -2,68 +2,70 @@ import { useRouter } from "next/router";
 import { gSSP } from "app/blitz-server";
 import { useMutation } from "@blitzjs/rpc";
 import { BlitzPage, Routes } from "@blitzjs/next";
-import React from 'react'
+import React from "react";
 
-import loginMutation from "app/auth/mutations/login"
-import deleteAccountMutation from "app/account/mutations/deleteAccountMutation"
-import { Login } from "app/auth/validations"
-import { useCurrentUser } from "app/core/hooks/useCurrentUser"
+import loginMutation from "app/auth/mutations/login";
+import deleteAccountMutation from "app/account/mutations/deleteAccountMutation";
+import { Login } from "app/auth/validations";
+import { useCurrentUser } from "app/core/hooks/useCurrentUser";
 
-import Layout from "app/core/layouts/Layout"
+import Layout from "app/core/layouts/Layout";
 import Button from "app/core/components/shared/Button";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
-import Form, { TextField } from "app/core/components/form"
-import StripeCardElement from 'app/account/components/StripeCardElement'
+import Form, { TextField } from "app/core/components/form";
+import StripeCardElement from "app/account/components/StripeCardElement";
 import { getStripeServer } from "app/utils/getStripe";
 
-export const getServerSideProps = gSSP(async function getServerSideProps({ ctx }) {
-  const session = ctx?.session
-  const stripe = getStripeServer()
+export const getServerSideProps = gSSP(async function getServerSideProps({
+  ctx,
+}) {
+  const session = ctx?.session;
+  const stripe = getStripeServer();
 
   if (!session.userId || !session.stripeCustomerId) {
     return {
       redirect: {
-        destination: '/auth/login',
-        permanent: false
-      }
-    }
+        destination: "/auth/login",
+        permanent: false,
+      },
+    };
   }
 
   const paymentMethods = await stripe.paymentMethods.list({
     customer: session.stripeCustomerId,
-    type: 'card',
+    type: "card",
   });
 
   const setupIntent = await stripe.setupIntents.create({
     customer: session.stripeCustomerId,
-    payment_method_types: ['card'],
+    payment_method_types: ["card"],
     metadata: {
       userId: session.userId,
     },
-    usage: 'off_session'
+    usage: "off_session",
   });
 
   return {
     props: {
       setupIntent,
-      paymentMethods: paymentMethods.data
+      paymentMethods: paymentMethods.data,
     },
-  }
+  };
 });
 
 const Account: BlitzPage<any> = (props) => {
   const router = useRouter();
   const user = useCurrentUser();
   // TODO: Fix updating password
-  const [login] = useMutation(loginMutation)
+  const [login] = useMutation(loginMutation);
   const [deleteAccount] = useMutation(deleteAccountMutation, {
     onSuccess: () => {
-      return router.replace(Routes.Home())
-    }
-  })
-  const clientSecret = props.setupIntent.client_secret
+      return router.replace(Routes.Home());
+    },
+  });
+  const clientSecret = props.setupIntent.client_secret;
 
   const initialValues = {
     firstName: user?.firstName,
@@ -126,9 +128,9 @@ const Account: BlitzPage<any> = (props) => {
           initialValues={initialValues}
           mutation={{
             schema: login,
-            toVariables: values => ({
-              ...values
-            })
+            toVariables: (values) => ({
+              ...values,
+            }),
           }}
         >
           <Grid item xs={12}>
@@ -136,21 +138,21 @@ const Account: BlitzPage<any> = (props) => {
               <strong>Update Password</strong>
             </Typography>
           </Grid>
-            <TextField
-              name="password"
-              label="Current Password"
-              placeholder="Current Password"
-            />
-            <TextField
-              name="newPassword1"
-              label="New Password"
-              placeholder="New Password"
-            />
-            <TextField
-              name="newPassword2"
-              label="Confirm New Password"
-              placeholder="Confirm New Password"
-            />
+          <TextField
+            name="password"
+            label="Current Password"
+            placeholder="Current Password"
+          />
+          <TextField
+            name="newPassword1"
+            label="New Password"
+            placeholder="New Password"
+          />
+          <TextField
+            name="newPassword2"
+            label="Confirm New Password"
+            placeholder="Confirm New Password"
+          />
         </Form>
 
         {/* Update Account */}
@@ -159,9 +161,9 @@ const Account: BlitzPage<any> = (props) => {
           initialValues={initialValues}
           mutation={{
             schema: login,
-            toVariables: values => ({
-              ...values
-            })
+            toVariables: (values) => ({
+              ...values,
+            }),
           }}
         >
           <Grid item xs={12}>
@@ -208,9 +210,9 @@ const Account: BlitzPage<any> = (props) => {
         </Button>
       </ConsumerContainer>
     </React.Fragment>
-  )
-}
+  );
+};
 
-Account.getLayout = (page) => <Layout>{page}</Layout>
+Account.getLayout = (page) => <Layout>{page}</Layout>;
 
 export default Account;

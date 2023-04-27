@@ -1,17 +1,17 @@
 import { useMutation } from "@blitzjs/rpc";
-import React from 'react';
-import PropTypes from 'prop-types'
+import React from "react";
+import PropTypes from "prop-types";
 
-import createHoursMutation from "app/dashboard/mutations/createHoursMutation"
+import createHoursMutation from "app/dashboard/mutations/createHoursMutation";
 
-import { todAM, todPM, weekdays } from 'app/utils/time'
+import { todAM, todPM, weekdays } from "app/utils/time";
 
-import Grid from "app/core/components/shared/Grid"
-import Form, { Checkbox, Select } from "app/core/components/form"
-import Modal from 'app/core/components/shared/Modal'
+import Grid from "app/core/components/shared/Grid";
+import Form, { Checkbox, Select } from "app/core/components/form";
+import Modal from "app/core/components/shared/Modal";
 
 const CreateSectionModal = ({ refetch, show, onClose, ...props }) => {
-  const [createHours] = useMutation(createHoursMutation)
+  const [createHours] = useMutation(createHoursMutation);
   return (
     <Modal
       closeModal={onClose}
@@ -25,20 +25,16 @@ const CreateSectionModal = ({ refetch, show, onClose, ...props }) => {
         // schema={Login}
         mutation={{
           schema: createHours,
-          toVariables: values => ({
-            ...values
-          })
+          toVariables: (values) => ({
+            ...values,
+          }),
         }}
         onSuccess={() => {
           refetch();
           onClose();
         }}
       >
-        <Checkbox
-          label="Select Days"
-          name="daysOfWeek"
-          data={weekdays}
-        />
+        <Checkbox label="Select Days" name="daysOfWeek" data={weekdays} />
         <Select
           label="Start Time"
           name="startTime"
@@ -57,13 +53,13 @@ const CreateSectionModal = ({ refetch, show, onClose, ...props }) => {
         />
       </Form>
     </Modal>
-  )
-}
+  );
+};
 
 CreateSectionModal.propTypes = {
   show: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   refetch: PropTypes.func.isRequired,
-}
+};
 
 export default CreateSectionModal;

@@ -1,30 +1,34 @@
 import { Ctx } from "blitz";
 import randomstring from "randomstring";
 
-import { readableDate } from "app/utils/dateHelpers"
+import { readableDate } from "app/utils/dateHelpers";
 import sendSesEmail from "emails/utils/sendSesEmail";
-import db from "db"
-import { TRANSACTIONAL_EMAILS, CHEF_SERVICE_FEE, CONSUMER_SERVICE_FEE } from 'types'
+import db from "db";
+import {
+  TRANSACTIONAL_EMAILS,
+  CHEF_SERVICE_FEE,
+  CONSUMER_SERVICE_FEE,
+} from "types";
 
 export default async function CreateOrderMutation(input: any, ctx: Ctx) {
   const { eventDate, eventTime, paymentMethodId } = input;
-  let order
+  let order;
 
   await db.$transaction(async (db) => {
     if (!ctx.session.cart || ctx.session.cart.pendingCartItems.length === 0) {
-      throw new Error("Cart can't be empty")
+      throw new Error("Cart can't be empty");
     }
 
     if (ctx.session.stripeCustomerId === undefined || !paymentMethodId) {
-      throw Error("Wrong order data")
+      throw Error("Wrong order data");
     }
 
     // Create order
     const confirmationNumber = `SLY-${randomstring.generate({
-      charset: 'alphanumeric',
-      capitalization: 'uppercase',
+      charset: "alphanumeric",
+      capitalization: "uppercase",
       length: 7,
-    })}`
+    })}`;
 
     order = await db.order.create({
       data: {
@@ -35,12 +39,12 @@ export default async function CreateOrderMutation(input: any, ctx: Ctx) {
         eventTime,
         dishes: {
           createMany: {
-            data: ctx.session.cart.pendingCartItems.map(item => ({
+            data: ctx.session.cart.pendingCartItems.map((item) => ({
               dishId: item.dishId,
               chefId: item.chefId,
               quantity: item.quantity,
-            }))
-          }
+            })),
+          },
         },
         paymentMethodId,
         userId: Number(ctx.session.userId),
@@ -54,30 +58,30 @@ export default async function CreateOrderMutation(input: any, ctx: Ctx) {
           select: {
             user: {
               select: {
-                email: true
-              }
-            }
-          }
+                email: true,
+              },
+            },
+          },
         },
         user: {
           select: {
-            email: true
-          }
-        }
+            email: true,
+          },
+        },
       },
-    })
+    });
 
     // Send email
     if (order && order.confirmationNumber) {
-      const date = new Date(eventDate)
-      const acceptUrl = `${process.env.NEXT_PUBLIC_URL}/orders/${order.confirmationNumber}/confirm`
-      const denyUrl = `${process.env.NEXT_PUBLIC_URL}/orders/${order.confirmationNumber}/deny`
-      const consumerServiceFee = order.amount * CONSUMER_SERVICE_FEE
-      const chefServiceFee = order.amount * CHEF_SERVICE_FEE
+      const date = new Date(eventDate);
+      const acceptUrl = `${process.env.NEXT_PUBLIC_URL}/orders/${order.confirmationNumber}/confirm`;
+      const denyUrl = `${process.env.NEXT_PUBLIC_URL}/orders/${order.confirmationNumber}/deny`;
+      const consumerServiceFee = order.amount * CONSUMER_SERVICE_FEE;
+      const chefServiceFee = order.amount * CHEF_SERVICE_FEE;
 
       try {
         await sendSesEmail({
-          to: 'contact@slyderz.co',
+          to: "contact@slyderz.co",
           type: TRANSACTIONAL_EMAILS.newOrderConsumer,
           variables: {
             orderNumber: order.confirmationNumber,
@@ -88,10 +92,10 @@ export default async function CreateOrderMutation(input: any, ctx: Ctx) {
             orderServiceFee: consumerServiceFee,
             orderTotal: order.amount + consumerServiceFee,
             // orderItems: order.dishes,
-          }
-        })
+          },
+        });
         await sendSesEmail({
-          to: 'contact@slyderz.co',
+          to: "contact@slyderz.co",
           type: TRANSACTIONAL_EMAILS.newOrderChef,
           variables: {
             orderApproveUrl: acceptUrl,
@@ -104,11 +108,11 @@ export default async function CreateOrderMutation(input: any, ctx: Ctx) {
             orderServiceFee: chefServiceFee,
             orderTotal: order.amount + chefServiceFee,
             // orderItems: order.dishes,
-          }
-        })
-      } catch(err) {
-        console.log("Error sending email", err)
-        throw new Error("Sorry, your order can't be placed right now")
+          },
+        });
+      } catch (err) {
+        console.log("Error sending email", err);
+        throw new Error("Sorry, your order can't be placed right now");
       }
 
       // reset cart & total
@@ -116,10 +120,10 @@ export default async function CreateOrderMutation(input: any, ctx: Ctx) {
         cart: {
           pendingCartItems: [],
           total: 0,
-        }
-      })
+        },
+      });
     }
-  })
+  });
 
-  return order
+  return order;
 }

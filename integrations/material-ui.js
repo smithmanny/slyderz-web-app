@@ -1,5 +1,5 @@
-import { createTheme, responsiveFontSizes } from '@mui/material/styles';
-import { red } from '@mui/material/colors';
+import { createTheme, responsiveFontSizes } from "@mui/material/styles";
+import { red } from "@mui/material/colors";
 
 export { default } from "@mui/styles/makeStyles";
 export { styled } from "@mui/material/styles";
@@ -16,7 +16,7 @@ const MuiTheme = createTheme({
       main: "#FFF",
     },
     grey: {
-      main: '#f3f7f5'
+      main: "#f3f7f5",
     },
     error: red,
     // Used by `getContrastText()` to maximize the contrast between the background and
@@ -38,25 +38,25 @@ const MuiTheme = createTheme({
     },
     h3: {
       fontSize: 18,
-      fontWeight: 450
+      fontWeight: 450,
     },
     subtitle2: {
       fontWeight: 300,
-      fontSize: 16
+      fontSize: 16,
     },
     allVariants: {
-      letterSpacing: '1.2px',
-      lineHeight: 2
-    }
+      letterSpacing: "1.2px",
+      lineHeight: 2,
+    },
   },
   components: {
     MuiDatePicker: {
       styleOverrides: {
         root: {
-          backgroundColor: 'red',
+          backgroundColor: "red",
         },
       },
     },
-  }
+  },
 });
 export const theme = responsiveFontSizes(MuiTheme);

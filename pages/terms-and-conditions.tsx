@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import { BlitzPage } from "@blitzjs/next";
 
-import Layout from "app/core/layouts/Layout"
+import Layout from "app/core/layouts/Layout";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Typography from "app/core/components/shared/Typography";
 
@@ -327,6 +327,8 @@ const TermsAndCondition: BlitzPage = () => (
   </ConsumerContainer>
 );
 
-TermsAndCondition.getLayout = (page) => <Layout title="Terms & Conditions">{page}</Layout>
+TermsAndCondition.getLayout = (page) => (
+  <Layout title="Terms & Conditions">{page}</Layout>
+);
 
 export default TermsAndCondition;

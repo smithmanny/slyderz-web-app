@@ -2,26 +2,26 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useMutation } from "@blitzjs/rpc";
 import { Routes } from "@blitzjs/next";
-import React, { useState } from 'react';
-import ArrowBack from '@mui/icons-material/ArrowBack';
+import React, { useState } from "react";
+import ArrowBack from "@mui/icons-material/ArrowBack";
 
 import { styled } from "integrations/material-ui";
-import CreateOrderMutation from 'app/checkout/mutations/createOrderMutation'
+import CreateOrderMutation from "app/checkout/mutations/createOrderMutation";
 
-import Form, { Select } from 'app/core/components/form';
-import Alert from 'app/core/components/shared/Alert';
-import Button from "app/core/components/shared/Button"
-import CartSummary from 'app/core/components/cart/cartSummary'
-import Grid from 'app/core/components/shared/Grid';
-import Typography from 'app/core/components/shared/Typography'
+import Form, { Select } from "app/core/components/form";
+import Alert from "app/core/components/shared/Alert";
+import Button from "app/core/components/shared/Button";
+import CartSummary from "app/core/components/cart/cartSummary";
+import Grid from "app/core/components/shared/Grid";
+import Typography from "app/core/components/shared/Typography";
 
-const Section = styled('div')(({ theme }) => ({
-  alignItems: 'center',
-  display: 'flex',
+const Section = styled("div")(({ theme }) => ({
+  alignItems: "center",
+  display: "flex",
   marginBottom: theme.spacing(2),
 }));
 
-const Spinner = styled('div')({
+const Spinner = styled("div")({
   "&:before": {
     width: "10.4px",
     height: "20.4px",
@@ -32,7 +32,7 @@ const Spinner = styled('div')({
     WebkitTransformOrigin: "10.4px 10.2px",
     transformOrigin: "10.4px 10.2px",
     WebkitAnimation: "loading 2s infinite ease 1.5s",
-    animation: "loading 2s infinite ease 1.5s"
+    animation: "loading 2s infinite ease 1.5s",
   },
   "&:after": {
     width: "10.4px",
@@ -44,12 +44,12 @@ const Spinner = styled('div')({
     WebkitTransformOrigin: "0px 10.2px",
     transformOrigin: "0px 10.2px",
     WebkitAnimation: "loading 2s infinite ease",
-    animation: "loading 2s infinite ease"
+    animation: "loading 2s infinite ease",
   },
   "&:before &:after": {
     borderRadius: "50%",
     position: "absolute",
-    content: '""'
+    content: '""',
   },
   color: "#ffffff",
   fontSize: "22px",
@@ -64,39 +64,45 @@ const Spinner = styled('div')({
   transform: "translateZ(0)",
   "@keyframes loading": {
     "0%": { WebkitTransform: "rotate(0deg)", transform: "rotate(0deg)" },
-    "100%": { WebkitTransform: "rotate(360deg)", transform: "rotate(360deg)" }
+    "100%": { WebkitTransform: "rotate(360deg)", transform: "rotate(360deg)" },
   },
 });
 
 interface CheckoutPageTypes {
-  eventDate: Date
-  eventTime: Date
-  stripePaymentMethods: Array<any>
-  userId: Number
+  eventDate: Date;
+  eventTime: Date;
+  stripePaymentMethods: Array<any>;
+  userId: Number;
 }
 
-const CheckoutPage = ({ eventDate, eventTime, stripePaymentMethods }: CheckoutPageTypes) => {
+const CheckoutPage = ({
+  eventDate,
+  eventTime,
+  stripePaymentMethods,
+}: CheckoutPageTypes) => {
   const router = useRouter();
   const [processing, setProcessing] = useState(false);
-  const [createOrder] = useMutation(CreateOrderMutation)
+  const [createOrder] = useMutation(CreateOrderMutation);
 
   const handleSubmit = async (values) => {
     const orderBody = {
       eventDate,
       eventTime,
-      paymentMethodId: values?.paymentMethod
-    }
+      paymentMethodId: values?.paymentMethod,
+    };
 
     // TODO: Throw error
-    if (!values.paymentMethod) throw new Error('Select payment method')
+    if (!values.paymentMethod) throw new Error("Select payment method");
 
     setProcessing(true);
-    const fufilledOrder = await createOrder(orderBody)
+    const fufilledOrder = await createOrder(orderBody);
 
     if (fufilledOrder && fufilledOrder.confirmationNumber) {
-      await router.push(Routes.NewOrderConfirmationPage({
-        oid: fufilledOrder.confirmationNumber
-      }))
+      await router.push(
+        Routes.NewOrderConfirmationPage({
+          oid: fufilledOrder.confirmationNumber,
+        })
+      );
     }
   };
 
@@ -119,18 +125,20 @@ const CheckoutPage = ({ eventDate, eventTime, stripePaymentMethods }: CheckoutPa
       <Form
         onSubmit={handleSubmit}
         initialValues={{
-          paymentMethod: stripePaymentMethods[0]?.id
+          paymentMethod: stripePaymentMethods[0]?.id,
         }}
       >
         <Grid item xs={12}>
-          <Typography sx={{ mb: 2 }} variant="h5">Payment Info</Typography>
+          <Typography sx={{ mb: 2 }} variant="h5">
+            Payment Info
+          </Typography>
           {stripePaymentMethods.length > 0 && (
             <Select
               label="Select payment method"
               name="paymentMethod"
-              items={stripePaymentMethods.map(paymentMethod => ({
+              items={stripePaymentMethods.map((paymentMethod) => ({
                 key: paymentMethod.card.last4,
-                value: paymentMethod.id
+                value: paymentMethod.id,
               }))}
               variant="outlined"
               md={12}
@@ -141,10 +149,10 @@ const CheckoutPage = ({ eventDate, eventTime, stripePaymentMethods }: CheckoutPa
             <Button
               label="add-payment-method"
               variant="text"
-              onClick={e => {
-                e.preventDefault()
+              onClick={(e) => {
+                e.preventDefault();
 
-                return router.push(Routes.Account())
+                return router.push(Routes.Account());
               }}
             >
               Add Payment Method
@@ -173,11 +181,7 @@ const CheckoutPage = ({ eventDate, eventTime, stripePaymentMethods }: CheckoutPa
             }}
           >
             <span>
-              {processing ? (
-                <Spinner id="spinner"></Spinner>
-              ) : (
-                "Pay now"
-              )}
+              {processing ? <Spinner id="spinner"></Spinner> : "Pay now"}
             </span>
           </Button>
           {/* Show any error that happens when processing the payment */}
@@ -187,7 +191,7 @@ const CheckoutPage = ({ eventDate, eventTime, stripePaymentMethods }: CheckoutPa
         </Grid>
       </Form>
     </React.Fragment>
-  )
+  );
 
   return (
     <Grid container spacing={4}>
@@ -199,7 +203,7 @@ const CheckoutPage = ({ eventDate, eventTime, stripePaymentMethods }: CheckoutPa
         <CartSummary checkoutPage />
       </Grid>
     </Grid>
-  )
-}
+  );
+};
 
 export default CheckoutPage;

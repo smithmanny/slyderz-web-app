@@ -1,4 +1,4 @@
-import * as z from "zod"
+import * as z from "zod";
 
 export const MenuItem = z.object({
   id: z.string().uuid(),
@@ -6,11 +6,11 @@ export const MenuItem = z.object({
   description: z.string(),
   price: z.number(),
   quantity: z.number(),
-})
+});
 
 export const DestroyMenuItem = z.object({
   menuItemId: z.string().uuid(),
-})
+});
 
 export const CreateMenuItem = z.object({
   chefId: z.number(),
@@ -20,9 +20,9 @@ export const CreateMenuItem = z.object({
   price: z.number(),
   dishId: z.number(),
   quantity: z.number(),
-})
+});
 
 export const UpdateMenuItem = z.object({
   id: z.string().uuid(),
   quantity: z.number(),
-})
+});

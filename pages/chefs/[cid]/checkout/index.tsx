@@ -1,42 +1,49 @@
 import { gSSP } from "app/blitz-server";
 import { BlitzPage, Routes } from "@blitzjs/next";
-import React from 'react';
-import Stripe from 'stripe'
+import React from "react";
+import Stripe from "stripe";
 
 import Layout from "app/core/layouts/Layout";
-import ConsumerContainer from 'app/core/components/shared/ConsumerContainer';
-import CheckoutPage from 'app/chefs/components/checkout/CheckoutPage'
+import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
+import CheckoutPage from "app/chefs/components/checkout/CheckoutPage";
 import { getStripeServer } from "app/utils/getStripe";
 
 interface CheckoutTypes {
-  eventDate: Date
-  eventTime: Date
-  paymentMethods: any
-  paymentIntent: any
-  setupIntentId: Number
-  userId: Number
+  eventDate: Date;
+  eventTime: Date;
+  paymentMethods: any;
+  paymentIntent: any;
+  setupIntentId: Number;
+  userId: Number;
 }
 
-export const getServerSideProps = gSSP(async function getServerSideProps({ ctx, query }) {
-  const session = ctx?.session
-  const stripe = getStripeServer()
+export const getServerSideProps = gSSP(async function getServerSideProps({
+  ctx,
+  query,
+}) {
+  const session = ctx?.session;
+  const stripe = getStripeServer();
 
   if (!query.eventDate || !query.eventTime || !session.userId) {
     return {
       redirect: {
-        destination: '/',
-        permanent: false
-      }
-    }
+        destination: "/",
+        permanent: false,
+      },
+    };
   }
 
-  if (!session.cart?.total || !session.cart?.pendingCartItems || !session.stripeCustomerId) {
+  if (
+    !session.cart?.total ||
+    !session.cart?.pendingCartItems ||
+    !session.stripeCustomerId
+  ) {
     return {
       redirect: {
-        destination: '/',
-        permanent: false
-      }
-    }
+        destination: "/",
+        permanent: false,
+      },
+    };
   }
 
   const eventDate = query.eventDate;
@@ -44,7 +51,7 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ ctx, 
 
   const paymentMethods = await stripe.paymentMethods.list({
     customer: session.stripeCustomerId,
-    type: 'card',
+    type: "card",
   });
 
   return {
@@ -52,9 +59,9 @@ export const getServerSideProps = gSSP(async function getServerSideProps({ ctx, 
       eventDate,
       eventTime,
       userId: session.userId,
-      paymentMethods
+      paymentMethods,
     },
-  }
+  };
 });
 
 const Checkout: BlitzPage = (props: any) => {
@@ -68,14 +75,10 @@ const Checkout: BlitzPage = (props: any) => {
         userId={userId}
       />
     </ConsumerContainer>
-  )
-}
+  );
+};
 
-Checkout.authenticate = { redirectTo: Routes.LoginPage() }
-Checkout.getLayout = (page) => (
-  <Layout>
-    {page}
-  </Layout>
-)
+Checkout.authenticate = { redirectTo: Routes.LoginPage() };
+Checkout.getLayout = (page) => <Layout>{page}</Layout>;
 
 export default Checkout;

@@ -1,1 +1,1 @@
-export { default } from '@mui/icons-material/Delete';
+export { default } from "@mui/icons-material/Delete";

@@ -1,10 +1,10 @@
 import { BlitzPage } from "@blitzjs/next";
 
-import Layout from "app/core/layouts/Layout"
+import Layout from "app/core/layouts/Layout";
 
-import ConsumerContainer from "app/core/components/shared/ConsumerContainer"
-import Grid from "app/core/components/shared/Grid"
-import Typography from "app/core/components/shared/Typography"
+import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
+import Grid from "app/core/components/shared/Grid";
+import Typography from "app/core/components/shared/Typography";
 import Form, { TextField } from "app/core/components/form";
 
 const Contact: BlitzPage = () => {
@@ -24,8 +24,8 @@ const Contact: BlitzPage = () => {
         </Grid>
       </Grid>
     </ConsumerContainer>
-  )
-}
+  );
+};
 
-export default Contact
-Contact.getLayout = (page) => <Layout title="Contact | Slyderz">{page}</Layout>
+export default Contact;
+Contact.getLayout = (page) => <Layout title="Contact | Slyderz">{page}</Layout>;

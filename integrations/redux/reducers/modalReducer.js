@@ -2,13 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isModalOpen: false,
-  menuItemModalOpen: false
-}
+  menuItemModalOpen: false,
+};
 
 const modal = createSlice({
   name: "modal",
   initialState: {
-    ...initialState
+    ...initialState,
   },
   reducers: {
     openMenuItemModal: (state) => {

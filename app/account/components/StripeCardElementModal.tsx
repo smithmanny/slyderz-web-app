@@ -1,20 +1,20 @@
-import React, { useEffect, useState, useRef, FunctionComponent } from 'react';
+import React, { useEffect, useState, useRef, FunctionComponent } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import {
   PaymentElement,
   useStripe,
-  useElements
+  useElements,
 } from "@stripe/react-stripe-js";
 
-import Alert from 'app/core/components/shared/Alert';
-import Button from "app/core/components/shared/Button"
-import Modal from 'app/core/components/shared/Modal'
+import Alert from "app/core/components/shared/Alert";
+import Button from "app/core/components/shared/Button";
+import Modal from "app/core/components/shared/Modal";
 
 const promise = loadStripe("pk_test_GrN77dvsAhUuGliIXge1nUD8");
 
 interface DataType {
-  clientSecret: string
-  id: Number
+  clientSecret: string;
+  id: Number;
 }
 
 const StripeCard: FunctionComponent<any> = (props) => {
@@ -34,10 +34,10 @@ const StripeCard: FunctionComponent<any> = (props) => {
     const { error }: any = await stripe.confirmSetup({
       //`Elements` instance that was used to create the Payment Element
       elements,
-      redirect: 'if_required',
+      redirect: "if_required",
       confirmParams: {
         return_url: process.env.NEXT_PUBLIC_URL,
-      }
+      },
     });
 
     if (error) {
@@ -49,7 +49,7 @@ const StripeCard: FunctionComponent<any> = (props) => {
       // Your customer will be redirected to your `return_url`. For some payment
       // methods like iDEAL, your customer will be redirected to an intermediate
       // site first to authorize the payment, then redirected to the `return_url`.
-      props.onClose()
+      props.onClose();
     }
   };
 
@@ -60,12 +60,12 @@ const StripeCard: FunctionComponent<any> = (props) => {
         Save Card
       </Button>
     </React.Fragment>
-  )
-}
+  );
+};
 
 const StripeCardElementModal = ({ show, onClose, ...props }) => {
   const setupIntentId: any = useRef();
-  const [clientSecret, setClientSecret] = useState('');
+  const [clientSecret, setClientSecret] = useState("");
 
   useEffect(() => {
     async function createStripeSetupIntent() {
@@ -80,16 +80,16 @@ const StripeCardElementModal = ({ show, onClose, ...props }) => {
         });
         data = await res.json();
       } catch (err) {
-        console.error(err)
+        console.error(err);
       } finally {
         if (data) {
           setClientSecret(data.clientSecret);
-          setupIntentId.current = data.id
+          setupIntentId.current = data.id;
         }
       }
     }
 
-    createStripeSetupIntent().catch(e => console.log(e))
+    createStripeSetupIntent().catch((e) => console.log(e));
   }, []);
 
   return (
@@ -100,11 +100,9 @@ const StripeCardElementModal = ({ show, onClose, ...props }) => {
       title="Add Payment Method"
       {...props}
     >
-      {clientSecret && (
-        <StripeCard />
-      )}
+      {clientSecret && <StripeCard />}
     </Modal>
-  )
-}
+  );
+};
 
 export default StripeCardElementModal;

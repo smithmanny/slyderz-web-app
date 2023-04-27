@@ -1,10 +1,10 @@
-import { FunctionComponent } from 'react'
+import { FunctionComponent } from "react";
 import PropTypes from "prop-types";
-import { TimePicker as MuiTimePicker } from 'mui-rff';
-import 'date-fns';
-import DateFnsUtils from '@date-io/date-fns';
+import { TimePicker as MuiTimePicker } from "mui-rff";
+import "date-fns";
+import DateFnsUtils from "@date-io/date-fns";
 
-import Grid from '../shared/Grid'
+import Grid from "../shared/Grid";
 
 const TimePicker: FunctionComponent<any> = (props) => (
   <Grid item xs={props.xs} md={props.md}>
@@ -19,8 +19,8 @@ const TimePicker: FunctionComponent<any> = (props) => (
 );
 
 TimePicker.defaultProps = {
-  label: 'Pick a time',
-  name: '',
+  label: "Pick a time",
+  name: "",
   xs: 12,
   required: false,
 };

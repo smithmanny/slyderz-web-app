@@ -1,1 +1,1 @@
-export { default } from './hoursModal'
+export { default } from "./hoursModal";

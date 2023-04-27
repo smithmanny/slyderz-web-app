@@ -1,22 +1,22 @@
-import * as z from "zod"
+import * as z from "zod";
 
-const password = z.string().min(6).max(100)
+const password = z.string().min(6).max(100);
 
 export const Signup = z.object({
   email: z.string().email(),
   firstName: z.string(),
   lastName: z.string(),
   password,
-})
+});
 
 export const Login = z.object({
   email: z.string().email(),
-  password: password
-})
+  password: password,
+});
 
 export const ForgotPassword = z.object({
   email: z.string().email(),
-})
+});
 
 export const ResetPassword = z
   .object({
@@ -27,9 +27,9 @@ export const ResetPassword = z
   .refine((data) => data.password === data.passwordConfirmation, {
     message: "Passwords don't match",
     path: ["passwordConfirmation"], // set the path of the error
-  })
+  });
 
 export const ChangePassword = z.object({
   currentPassword: z.string(),
   newPassword: password,
-})
+});

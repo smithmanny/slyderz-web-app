@@ -1,1 +1,1 @@
-export { default } from '@mui/icons-material/ArrowBackIosNew';
+export { default } from "@mui/icons-material/ArrowBackIosNew";

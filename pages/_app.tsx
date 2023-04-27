@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import { Roboto_Serif } from 'next/font/google'
-import { AuthenticationError, AuthorizationError } from 'blitz'
+import { Roboto_Serif } from "next/font/google";
+import { AuthenticationError, AuthorizationError } from "blitz";
 import { withBlitz } from "app/blitz-client";
 import { useQueryErrorResetBoundary } from "@blitzjs/rpc";
 import {
@@ -15,36 +15,36 @@ import { Provider } from "react-redux";
 
 import store from "integrations/redux";
 import { theme } from "integrations/material-ui";
-import 'app/styles/base.css';
+import "app/styles/base.css";
 
-import LoginForm from "app/auth/components/LoginForm"
-import Box from "app/core/components/shared/Box"
-import CircularProgress from "app/core/components/shared/CircularProgress"
+import LoginForm from "app/auth/components/LoginForm";
+import Box from "app/core/components/shared/Box";
+import CircularProgress from "app/core/components/shared/CircularProgress";
 
-const roboto = Roboto_Serif({ subsets: ['latin'] })
+const roboto = Roboto_Serif({ subsets: ["latin"] });
 
 function LoadingIcon() {
   return (
     <Box
       sx={{
-        width: '100vw',
-        height: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
       <CircularProgress size={250} />
     </Box>
-  )
+  );
 }
 
 export default withBlitz(function App({ Component, pageProps }: AppProps) {
-  const getLayout = Component.getLayout || ((page) => page)
+  const getLayout = Component.getLayout || ((page) => page);
   pageProps = {
     ...pageProps,
-    className: roboto.className
-  }
+    className: roboto.className,
+  };
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
@@ -64,17 +64,20 @@ export default withBlitz(function App({ Component, pageProps }: AppProps) {
 
 function RootErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps) {
   if (error instanceof AuthenticationError) {
-    return <LoginForm onSuccess={resetErrorBoundary} />
+    return <LoginForm onSuccess={resetErrorBoundary} />;
   } else if (error instanceof AuthorizationError) {
     return (
       <ErrorComponent
         statusCode={error.statusCode}
         title="Sorry, you are not authorized to access this"
       />
-    )
+    );
   } else {
     return (
-      <ErrorComponent statusCode={error.statusCode || 400} title={error.message || error.name} />
-    )
+      <ErrorComponent
+        statusCode={error.statusCode || 400}
+        title={error.message || error.name}
+      />
+    );
   }
 }

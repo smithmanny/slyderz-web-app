@@ -1,11 +1,11 @@
-import { FunctionComponent } from 'react'
-import { TextField as MuiTextField, TextFieldProps } from "mui-rff"
+import { FunctionComponent } from "react";
+import { TextField as MuiTextField, TextFieldProps } from "mui-rff";
 
-import Grid from '../shared/Grid'
+import Grid from "../shared/Grid";
 
 interface TextProps extends TextFieldProps {
-  xs?: number
-  md?: number
+  xs?: number;
+  md?: number;
 }
 
 const TextField: FunctionComponent<TextProps> = (props) => (
@@ -16,6 +16,6 @@ const TextField: FunctionComponent<TextProps> = (props) => (
 
 TextField.defaultProps = {
   xs: 12,
-}
+};
 
 export default TextField;
