@@ -3,8 +3,8 @@ import { gSSP } from "app/blitz-server";
 
 import db from "db";
 import Layout from "app/core/layouts/Layout";
-
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
+import CircularProgress from "app/core/components/shared/CircularProgress";
 import { getStripeServer } from "app/utils/getStripe";
 
 export const getServerSideProps = gSSP(async function getServerSideProps({
@@ -101,7 +101,9 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
 });
 
 const BecomeAHost: BlitzPage = (props) => {
-  return <ConsumerContainer></ConsumerContainer>;
+  return <ConsumerContainer>
+    <CircularProgress />
+  </ConsumerContainer>;
 };
 
 export default BecomeAHost;
