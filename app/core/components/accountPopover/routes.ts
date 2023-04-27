@@ -9,7 +9,7 @@ export const loggedOutRoutes = [
     route: Routes.LoginPage(),
   },
   {
-    id: 0,
+    id: 1,
     icon: AddIcon,
     name: "Register",
     route: Routes.SignupPage(),

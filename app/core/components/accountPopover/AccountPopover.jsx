@@ -16,6 +16,7 @@ import { loggedInRoutes, loggedOutRoutes, onboardedRoutes } from "./routes";
 
 const AccountPopover = (props) => {
   const [logout] = useMutation(logoutMutation);
+  // TODO: Only load if user role is set to chef
   const [isChefOnboarded] = useQuery(isChefOnboardedQuery)
   const router = useRouter();
   const session = useSession()

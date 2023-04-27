@@ -32,7 +32,6 @@ export const LoginForm = (props: LoginFormProps) => {
       <Form
         submitText="Login"
         schema={Login}
-        initialValues={{ email: "", password: "" }}
         mutation={{
           schema: login,
           toVariables: values => ({
@@ -45,13 +44,13 @@ export const LoginForm = (props: LoginFormProps) => {
         <TextField name="password" label="Password" placeholder="Password" type="password" />
         <Grid item xs={12}>
           <Link href={Routes.ForgotPasswordPage()}>
-            <Typography>Forgot your password?</Typography>
+            <Typography color="#000">Forgot your password?</Typography>
           </Link>
         </Grid>
       </Form>
 
       <div style={{ marginTop: "1rem", color: '#000' }}>
-        Or <Link href={Routes.SignupPage()}>Sign Up</Link>
+        Or <Link href={Routes.SignupPage()} style={{ color: '#000' }}>Sign Up</Link>
       </div>
     </Box>
   )

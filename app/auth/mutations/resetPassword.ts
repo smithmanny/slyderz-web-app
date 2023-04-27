@@ -1,6 +1,6 @@
-import { hash256 } from "@blitzjs/auth";
-import { SecurePassword } from "@blitzjs/auth/secure-password";
-import { resolver } from "@blitzjs/rpc";
+import { hash256 } from "@blitzjs/auth"
+import { SecurePassword } from "@blitzjs/auth/secure-password"
+import { resolver } from "@blitzjs/rpc"
 import db from "db"
 import { ResetPassword } from "../validations"
 import login from "./login"
@@ -40,7 +40,9 @@ export default resolver.pipe(resolver.zod(ResetPassword), async ({ password, tok
   })
 
   // 6. Revoke all existing login sessions for this user
+  await ctx.session.$revokeAll()
   await db.session.deleteMany({ where: { userId: user.id } })
+  // TODO: Send reset-password email
 
   // 7. Now log the user in with the new credentials
   await login({ email: user.email, password }, ctx)

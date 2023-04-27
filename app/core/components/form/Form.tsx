@@ -26,7 +26,7 @@ export function Form<S extends z.ZodType<any, any>>({
   children,
   submitText,
   schema,
-  initialValues,
+  initialValues = {},
   mutation,
   toVariables,
   onSubmit,
@@ -69,12 +69,12 @@ export function Form<S extends z.ZodType<any, any>>({
       initialValues={initialValues}
       validate={validateZodSchema(schema)}
       onSubmit={_handleSubmit}
-      render={({ handleSubmit, submitting, submitError }) => (
+      render={({ handleSubmit, submitting, submitError, pristine }) => (
         <form onSubmit={handleSubmit} className="form" {...props}>
           <Grid container spacing={2}>
             {children}
 
-            {submitError && (
+            {(submitError) && (
               <Grid item sx={{ color: "red" }}>
                 {submitError}
               </Grid>
@@ -82,7 +82,7 @@ export function Form<S extends z.ZodType<any, any>>({
 
             {submitText && (
               <Grid item xs={12}>
-                <Button label="submit-text" disabled={submitting}>
+                <Button label="submit-text" disabled={submitting || pristine} type="submit">
                   {submitText}
                 </Button>
               </Grid>

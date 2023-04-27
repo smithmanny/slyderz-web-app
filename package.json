@@ -2,8 +2,6 @@
  "name": "slyderz",
  "version": "1.0.0",
  "scripts": {
-  "email-build": "mju --build -i ./emails/transactional/mjml -o ./emails/transactional/html",
-  "email-watch": "mju --watch -i ./emails/transactional/mjml -o .//emails/transactional/html",
   "dev": "blitz dev",
   "build": "NODE_ENV=production blitz build && prisma migrate deploy",
   "start": "blitz start",
@@ -15,10 +13,6 @@
  },
  "prisma": {
   "schema": "db/schema.prisma"
- },
- "prettier": {
-  "semi": false,
-  "printWidth": 100
  },
  "lint-staged": {
   "*.{js,ts,tsx}": [
@@ -42,8 +36,6 @@
   "@mui/x-date-pickers": "^5.0.0-beta.0",
   "@prisma/client": "^4.0.0",
   "@reduxjs/toolkit": "1.9.3",
-  "@sendgrid/client": "^7.7.0",
-  "@sendgrid/mail": "^7.6.0",
   "@stripe/react-stripe-js": "2.1.0",
   "@stripe/stripe-js": "1.52.0",
   "@types/node-mailjet": "^3.3.9",
@@ -82,6 +74,7 @@
   "eslint": "7.32.0",
   "eslint-config-next": "12.2.0",
   "eslint-config-prettier": "8.5.0",
+  "eslint-plugin-prettier": "^4.2.1",
   "husky": "7.0.4",
   "jest": "27.5.1",
   "lint-staged": "12.1.7",

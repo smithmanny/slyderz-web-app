@@ -1,9 +1,9 @@
-import { generateToken, hash256 } from "@blitzjs/auth";
-import { resolver } from "@blitzjs/rpc";
+import { generateToken, hash256 } from "@blitzjs/auth"
+import { resolver } from "@blitzjs/rpc"
 import db from "db"
-import sendSesEmail from "emails/utils/sendSesEmail";
+import sendSesEmail from "emails/utils/sendSesEmail"
 import { ForgotPassword } from "../validations"
-import { TRANSACTIONAL_EMAILS } from 'types'
+import { TRANSACTIONAL_EMAILS } from "types"
 
 const RESET_PASSWORD_TOKEN_EXPIRATION_IN_HOURS = 24
 
@@ -31,9 +31,15 @@ export default resolver.pipe(resolver.zod(ForgotPassword), async ({ email }) => 
         sentTo: user.email,
       },
     })
+
     // 6. Send the email
-    // TODO: Add forgotPasswordUrl to variables
-    await sendSesEmail({ to: user.email, type: TRANSACTIONAL_EMAILS.forgotPassword })
+    await sendSesEmail({
+      to: user.email,
+      type: TRANSACTIONAL_EMAILS.forgotPassword,
+      variables: {
+        resetPasswordUrl: `${process.env.NEXT_PUBLIC_URL}/auth/reset-password?token=${token}`,
+      },
+    })
   } else {
     // 7. If no user found wait the same time so attackers can't tell the difference
     await new Promise((resolve) => setTimeout(resolve, 750))

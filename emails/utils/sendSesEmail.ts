@@ -33,7 +33,7 @@ async function sendSesEmail({ to, type, variables = {} }: SendSesEmailType) {
       subject = 'Your order has been approved!'
       break;
     case TRANSACTIONAL_EMAILS.forgotPassword:
-      emailTemplate = './emails/transactional/views/reset-password.eta.mjml'
+      emailTemplate = './emails/transactional/views/forgot-password.eta.mjml'
       subject = 'Reset your Slyderz password'
       break;
     default:

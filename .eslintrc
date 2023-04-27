@@ -1,0 +1,40 @@
+// module.exports = require("@blitzjs/next/eslint")
+
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "extends": ["eslint-config-next", "prettier"],
+  "ignorePatterns": ["*.d.ts"],
+  "plugins": [
+    "@typescript-eslint",
+    "prettier"
+  ],
+  "settings": {
+    "next": {
+      "rootDir": ["./apps/*/", "./packages/*/"]
+    }
+  },
+  "rules": {
+    "@next/next/no-html-link-for-pages": "off",
+    "prettier/prettier": 2,
+    "prefer-const": "error"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.ts?(x)"],
+      "plugins": ["@typescript-eslint"],
+      "parserOptions": {
+        "project": "./tsconfig.json"
+      },
+      "rules": {
+        "@typescript-eslint/no-floating-promises": "error",
+        "no-use-before-define": "off",
+        "@typescript-eslint/no-use-before-define": ["off"],
+        "no-redeclare": "off",
+        "@typescript-eslint/no-redeclare": ["error"],
+        "react/display-name": "off",
+        "prettier/prettier": 2
+      }
+    }
+  ]
+}

@@ -1,61 +1,81 @@
-import Link from "next/link";
-import { useMutation } from "@blitzjs/rpc";
-import { useRouter } from "next/router";
-import { BlitzPage } from "@blitzjs/next";
+import Link from "next/link"
+import { useMutation } from "@blitzjs/rpc"
+import { BlitzPage } from "@blitzjs/next"
 import Layout from "app/core/layouts/Layout"
-import Form, { TextField, FORM_ERROR } from "app/core/components/form"
-import { ResetPassword } from "app/auth/validations"
-import resetPassword from "app/auth/mutations/resetPassword"
+import Form, { TextField } from "app/core/components/form"
+import ConsumerContainer from "app/core/components/shared/ConsumerContainer"
+import Typography from "app/core/components/shared/Typography"
 
-const ResetPasswordPage: BlitzPage = () => {
-  const query = useRouter().query;
+import resetPassword from "app/auth/mutations/resetPassword"
+import { AuthorizationError } from "blitz"
+import { gSSP } from "app/blitz-server"
+
+export const getServerSideProps = gSSP(async ({ ctx, query }) => {
+  const { session } = ctx
+
+  if (!query.token || session.userId) {
+    throw new AuthorizationError()
+  }
+  return {
+    props: {
+      token: query.token,
+    },
+  }
+})
+
+interface ResetPasswordTypes {
+  token: string
+}
+
+const ResetPasswordPage: BlitzPage<ResetPasswordTypes> = ({ token }) => {
   const [resetPasswordMutation, { isSuccess }] = useMutation(resetPassword)
 
   return (
-    <div>
-      <h1>Set a New Password</h1>
-
+    <ConsumerContainer maxWidth="sm">
       {isSuccess ? (
         <div>
-          <h2>Password Reset Successfully</h2>
-          <p>
+          <Typography variant="h5" fontWeight="bold" gutterBottom>
+            Password Reset Successfully
+          </Typography>
+          <Typography>
             Go to the <Link href="/">homepage</Link>
-          </p>
+          </Typography>
         </div>
       ) : (
-        <Form
-          submitText="Reset Password"
-          // schema={ResetPassword.omit({ token: true })}
-          initialValues={{ password: "", passwordConfirmation: "" }}
-          onSubmit={async (values) => {
-            try {
-              await resetPasswordMutation({ ...values, token: query.token as string })
-            } catch (error) {
-              if (error.name === "ResetPasswordError") {
-                return {
-                  [FORM_ERROR]: error.message,
-                }
-              } else {
-                return {
-                  [FORM_ERROR]: "Sorry, we had an unexpected error. Please try again.",
-                }
-              }
-            }
-          }}
-        >
-          <TextField name="password" label="New Password" type="password" />
-          <TextField
-            name="passwordConfirmation"
-            label="Confirm New Password"
-            type="password"
-          />
-        </Form>
+        <>
+          <Typography variant="h5" fontWeight="bold" gutterBottom>
+            Set a New Password
+          </Typography>
+          <Form
+            submitText="Reset Password"
+            mutation={{
+              schema: resetPasswordMutation,
+              toVariables: (values) => ({
+                ...values,
+                token,
+              }),
+            }}
+          >
+            <TextField name="password" label="New Password" type="password" />
+            <TextField name="passwordConfirmation" label="Confirm New Password" type="password" />
+            <TextField
+              sx={{ display: "none" }}
+              name="token"
+              label="Token"
+              value={token}
+              fieldProps={{
+                type: "hidden",
+              }}
+              hidden
+              disabled
+            />
+          </Form>
+        </>
       )}
-    </div>
+    </ConsumerContainer>
   )
 }
 
-// ResetPasswordPage.redirectAuthenticatedTo = "/"
 ResetPasswordPage.getLayout = (page) => <Layout title="Reset Your Password">{page}</Layout>
 
 export default ResetPasswordPage

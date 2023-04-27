@@ -54,7 +54,7 @@ export const SignupForm = (props: SignupFormProps) => {
       </Form>
 
       <div style={{ marginTop: "1rem", color: '#000' }}>
-        Or <Link href={Routes.LoginPage()}>Log In</Link>
+        Or <Link href={Routes.LoginPage()} style={{ color: '#000' }}>Log In</Link>
       </div>
     </Box>
   )
