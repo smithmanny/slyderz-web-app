@@ -17,7 +17,7 @@
 
 <mj-wrapper>
   <mj-section>
-    <mj-column>
+    <mj-column width="100%">
       <mj-text font-weight="bold">Subtotal: ${{= it.orderSubtotal }}</mj-text>
       <mj-text font-weight="bold">Service Fee: ${{= it.orderServiceFee }}</mj-text>
       <mj-text font-weight="bold">Total: ${{= it.orderTotal }}</mj-text>

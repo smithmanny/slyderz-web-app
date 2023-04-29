@@ -9,11 +9,11 @@ import { styled } from "integrations/material-ui";
 import CreateOrderMutation from "app/checkout/mutations/createOrderMutation";
 
 import Form, { Select } from "app/core/components/form";
-import Alert from "app/core/components/shared/Alert";
 import Button from "app/core/components/shared/Button";
 import CartSummary from "app/core/components/cart/cartSummary";
 import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
+import StripeCardElement from "app/stripe/components/StripeCardElement";
 
 const Section = styled("div")(({ theme }) => ({
   alignItems: "center",
@@ -69,6 +69,7 @@ const Spinner = styled("div")({
 });
 
 interface CheckoutPageTypes {
+  chefId: string;
   eventDate: Date;
   eventTime: Date;
   stripePaymentMethods: Array<any>;
@@ -76,6 +77,7 @@ interface CheckoutPageTypes {
 }
 
 const CheckoutPage = ({
+  chefId,
   eventDate,
   eventTime,
   stripePaymentMethods,
@@ -109,7 +111,7 @@ const CheckoutPage = ({
   const renderLeftContainer = () => (
     <React.Fragment>
       <Section>
-        <Link href="/chef/1">
+        <Link href={`/chefs/${chefId}`}>
           <Button
             label="go-back"
             buttonType="icon"
@@ -146,20 +148,31 @@ const CheckoutPage = ({
             />
           )}
           {stripePaymentMethods.length === 0 && (
-            <Button
-              label="add-payment-method"
-              variant="text"
-              onClick={(e) => {
-                e.preventDefault();
-
-                return router.push(Routes.Account());
-              }}
-            >
-              Add Payment Method
-            </Button>
+            <StripeCardElement />
           )}
-          <Button
-            disabled={processing}
+
+          {/* Show any error that happens when processing the payment */}
+          {/* {error && (
+            <Alert onClose={() => setError(null)} />
+          )} */}
+        </Grid>
+      </Form>
+    </React.Fragment>
+  );
+
+  return (
+    <Grid container spacing={4}>
+      {/* Left side */}
+      <Grid item xs={12} md={6}>
+        {renderLeftContainer()}
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <CartSummary
+          chefId={chefId}
+          checkoutPage
+        />
+        <Button
+            disabled={processing || !stripePaymentMethods[0]?.id}
             label="pay-now"
             sx={{
               background: "#5469d4",
@@ -184,23 +197,6 @@ const CheckoutPage = ({
               {processing ? <Spinner id="spinner"></Spinner> : "Pay now"}
             </span>
           </Button>
-          {/* Show any error that happens when processing the payment */}
-          {/* {error && (
-            <Alert onClose={() => setError(null)} />
-          )} */}
-        </Grid>
-      </Form>
-    </React.Fragment>
-  );
-
-  return (
-    <Grid container spacing={4}>
-      {/* Left side */}
-      <Grid item xs={12} md={6}>
-        {renderLeftContainer()}
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <CartSummary checkoutPage />
       </Grid>
     </Grid>
   );

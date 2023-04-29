@@ -3,6 +3,7 @@ import { gSSP } from "app/blitz-server";
 import { useMutation } from "@blitzjs/rpc";
 import { BlitzPage, Routes } from "@blitzjs/next";
 import React from "react";
+import { AuthenticationError } from "blitz";
 
 import loginMutation from "app/auth/mutations/login";
 import deleteAccountMutation from "app/account/mutations/deleteAccountMutation";
@@ -15,7 +16,8 @@ import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
 import Form, { TextField } from "app/core/components/form";
-import StripeCardElement from "app/account/components/StripeCardElement";
+import StripeCardElement from "app/stripe/components/StripeCardElement";
+import StripeSavedCards from "app/stripe/components/StripeSavedCards";
 import { getStripeServer } from "app/utils/getStripe";
 
 export const getServerSideProps = gSSP(async function getServerSideProps({
@@ -25,12 +27,7 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
   const stripe = getStripeServer();
 
   if (!session.userId || !session.stripeCustomerId) {
-    return {
-      redirect: {
-        destination: "/auth/login",
-        permanent: false,
-      },
-    };
+    throw new AuthenticationError()
   }
 
   const paymentMethods = await stripe.paymentMethods.list({
@@ -38,18 +35,8 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
     type: "card",
   });
 
-  const setupIntent = await stripe.setupIntents.create({
-    customer: session.stripeCustomerId,
-    payment_method_types: ["card"],
-    metadata: {
-      userId: session.userId,
-    },
-    usage: "off_session",
-  });
-
   return {
     props: {
-      setupIntent,
       paymentMethods: paymentMethods.data,
     },
   };
@@ -65,7 +52,7 @@ const Account: BlitzPage<any> = (props) => {
       return router.replace(Routes.Home());
     },
   });
-  const clientSecret = props.setupIntent.client_secret;
+  // const clientSecret = props.setupIntent.client_secret;
 
   const initialValues = {
     firstName: user?.firstName,
@@ -192,10 +179,11 @@ const Account: BlitzPage<any> = (props) => {
         <Typography variant="h6" sx={{ mt: 6 }} gutterBottom>
           <strong>Payment Methods</strong>
         </Typography>
-        <StripeCardElement
-          clientSecret={clientSecret}
-          paymentMethods={props.paymentMethods}
-        />
+        {props.paymentMethods.length > 0 ? (
+          <StripeSavedCards />
+        ) : (
+          <StripeCardElement />
+        )}
 
         {/* Delete Account */}
         <Typography variant="h6" sx={{ mt: 6 }} gutterBottom>

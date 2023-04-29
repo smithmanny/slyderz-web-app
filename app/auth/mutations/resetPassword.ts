@@ -4,6 +4,11 @@ import { resolver } from "@blitzjs/rpc";
 import db from "db";
 import { ResetPassword } from "../validations";
 import login from "./login";
+import {
+  TRANSACTIONAL_EMAILS,
+} from "types";
+
+import sendSesEmail from "emails/utils/sendSesEmail";
 
 export class ResetPasswordError extends Error {
   name = "ResetPasswordError";
@@ -44,9 +49,14 @@ export default resolver.pipe(
     // 6. Revoke all existing login sessions for this user
     await ctx.session.$revokeAll();
     await db.session.deleteMany({ where: { userId: user.id } });
-    // TODO: Send reset-password email
 
-    // 7. Now log the user in with the new credentials
+    // 7. Send reset-password email
+    await sendSesEmail({
+          to: "contact@slyderz.co",
+          type: TRANSACTIONAL_EMAILS.resetPassword,
+        });
+
+    // 8. Now log the user in with the new credentials
     await login({ email: user.email, password }, ctx);
 
     return true;

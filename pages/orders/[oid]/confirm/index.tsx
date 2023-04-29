@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import db from "db";
 
 import { readableDate } from "app/utils/dateHelpers";
-import { TRANSACTIONAL_EMAILS, CHEF_SERVICE_FEE } from "types";
+import { TRANSACTIONAL_EMAILS, CHEF_SERVICE_FEE, CONSUMER_SERVICE_FEE } from "types";
 import sendSesEmail from "emails/utils/sendSesEmail";
 
 import Box from "app/core/components/shared/Box";
@@ -87,19 +87,23 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
   }
 
   // Stripe amount must be in cents
-  const stripeAmount = Number(
-    (parseFloat(String(order.amount)) * 100).toString()
+  const consumerServiceFee = order.amount * CONSUMER_SERVICE_FEE
+  const stripeOrderAmount = Number(
+    (parseFloat(String(order.amount + consumerServiceFee)) * 100).toString()
+  );
+  const stripeApplicationFee = Number(
+    (parseFloat(String(order.amount * CHEF_SERVICE_FEE + (order.amount * CONSUMER_SERVICE_FEE))) * 100).toString()
   );
 
   const paymentIntent = await stripe.paymentIntents.create({
-    amount: stripeAmount,
+    amount: stripeOrderAmount,
     capture_method: "manual",
     currency: "usd",
     customer: order.user.stripeCustomerId,
     payment_method: order.paymentMethodId,
     off_session: true,
     confirm: true,
-    application_fee_amount: order.amount * CHEF_SERVICE_FEE,
+    application_fee_amount: stripeApplicationFee,
     transfer_data: {
       destination: order.chef.stripeAccountId,
     },
@@ -139,8 +143,8 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
       orderTime: order.eventTime,
       orderLocation: "",
       orderSubtotal: order.amount,
-      orderServiceFee: 3,
-      orderTotal: order.amount + 3,
+      orderServiceFee: consumerServiceFee,
+      orderTotal: order.amount + consumerServiceFee,
       // orderItems: order.dishes.map(d => ({
       //   id: String(d.id),
       //   quantity: d.quantity,

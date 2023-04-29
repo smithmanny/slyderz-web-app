@@ -7,7 +7,6 @@ import Box from "app/core/components/shared/Box";
 import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
 import MenuItemModal from "app/core/modals/MenuItemModal";
-import CartSummary from 'app/core/components/cart/cartSummary'
 
 const MuiCardMedia = styled(CardMedia)`
   & .MuiCardMedia-img {
@@ -43,7 +42,7 @@ const Menu = (props) => {
         }
       }}
     >
-      <Grid item xs={12} md={8}>
+      <Grid item xs={12}>
         <Grid container item spacing={2}>
           {dishes.map((item, index) => (
             <Grid key={index} item xs={12}>
@@ -75,12 +74,7 @@ const Menu = (props) => {
           ))}
         </Grid>
       </Grid>
-      <Grid item xs={12} md={4}>
-        <CartSummary
-          buttonText="Checkout"
-          dishes={dishes}
-        />
-      </Grid>
+
       {menuItem && (
         <MenuItemModal
          aria-labelledby="simple-modal-title"

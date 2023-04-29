@@ -8,9 +8,9 @@ import { useFormState } from 'react-final-form'
 import { styled } from "integrations/material-ui"
 import { formatNumberToCurrency } from "app/utils/time"
 import { convertDayToInt, todAM, todPM } from 'app/utils/time'
+import { CONSUMER_SERVICE_FEE } from "types";
 
 import Form, { DatePicker, Select } from 'app/core/components/form'
-import Box from 'app/core/components/shared/Box'
 import Button from 'app/core/components/shared/Button'
 import Grid from 'app/core/components/shared/Grid'
 import Typography from 'app/core/components/shared/Typography'
@@ -25,6 +25,7 @@ const CartItemsContainer = (props) => {
   const time = [...todAM, ...todPM]
   const selectedEventDate = formState.values?.eventDate
   const selectedDayOfWeek = selectedEventDate?.getDay()
+  const orderServiceFee = props.total * CONSUMER_SERVICE_FEE
   let startTime
   let startTimeIndex
   let endTime
@@ -88,12 +89,30 @@ const CartItemsContainer = (props) => {
 
       {props.cartItems?.length > 0 && (
         <Grid item xs={12}>
-          <Typography variant="h6" sx={{ mt: 4, fontWeight: '545' }}>Your Items</Typography>
+          <Typography variant="h6" sx={{ mt: 4, fontWeight: 'bold' }}>Your Items</Typography>
           <CartItems selectedCartItems={props.cartItems} />
-          <Typography variant="h6" sx={{ my: 4 }}>Total: {formatNumberToCurrency(props.total)}</Typography>
+
+          <Typography variant="subtitle1" sx={{ mt: 4, fontWeight: 'bold' }}>
+            Subtotal:
+            <span style={{ fontWeight: 'normal' }}>
+                {formatNumberToCurrency(props.total)}
+            </span>
+          </Typography>
+          <Typography variant="subtitle1" sx={{ my: 0, fontWeight: 'bold' }}>
+            Service Fee:
+            <span style={{ fontWeight: 'normal' }}>
+              {formatNumberToCurrency(orderServiceFee)}
+            </span>
+          </Typography>
+          <Typography variant="subtitle1" sx={{ mb: 4, fontWeight: 'bold' }}>
+            Total:
+            <span style={{ fontWeight: 'normal' }}>
+              {formatNumberToCurrency(props.total + orderServiceFee)}
+            </span>
+            </Typography>
           {props.buttonText && (
             <Link href={Routes.Checkout({
-              cid: 1,
+              cid: props.chefId,
               eventDate: selectedEventDate && new Date(selectedEventDate).toISOString(),
               eventTime: formState.values?.eventTime
             })}>
@@ -115,7 +134,7 @@ const CartItemsContainer = (props) => {
 
 const CartSummary = (props) => {
   const session = useSession();
-  const { checkoutPage, buttonText, dishes } = props;
+  const { chefId, checkoutPage, buttonText, dishes } = props;
   const cartItems = session?.cart?.pendingCartItems;
   const total = session?.cart?.total || 0;
   const hours = dishes[0]?.chef?.hours
@@ -129,6 +148,7 @@ const CartSummary = (props) => {
           </Grid>
         )}
         <CartItemsContainer
+          chefId={chefId}
           buttonText={buttonText}
           checkoutPage={checkoutPage}
           cartItems={cartItems}

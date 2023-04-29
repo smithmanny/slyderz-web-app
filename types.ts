@@ -129,4 +129,4 @@ export interface SendSesEmailType {
 }
 
 export const CHEF_SERVICE_FEE = 0.03;
-export const CONSUMER_SERVICE_FEE = 0.1;
+export const CONSUMER_SERVICE_FEE = 0.10;

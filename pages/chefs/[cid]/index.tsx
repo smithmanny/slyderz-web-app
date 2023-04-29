@@ -19,6 +19,7 @@ import TabPanel from "app/core/components/shared/TabPanel";
 import Tab from "app/core/components/shared/Tab";
 import Typography from "app/core/components/shared/Typography";
 import Layout from "app/core/layouts/Layout";
+import CartSummary from 'app/core/components/cart/cartSummary'
 
 const ChefProfileAvatar = styled(Avatar)`
   & .MuiAvatar-img {
@@ -43,6 +44,7 @@ export const ChefPage = (props) => {
 
   const { cid } = router.query;
   const [dishes] = useQuery(ChefDishesQuery, { chefId: Number(cid) });
+  console.log("ID", cid)
 
   return (
     <ConsumerContainer>
@@ -89,13 +91,22 @@ export const ChefPage = (props) => {
             </Tabs>
           </div>
         </Grid>
-        <Grid item xs>
+        <Grid container item xs={12} spacing={2}>
+          <Grid item xs>
           <TabPanel value={value} index={0}>
             <Menu dishes={dishes} />
           </TabPanel>
           <TabPanel value={value} index={1}>
             Item Two
           </TabPanel>
+          </Grid>
+          <Grid item md={4} xs={12}>
+            <CartSummary
+              buttonText="Checkout"
+              chefId={cid}
+              dishes={dishes}
+            />
+          </Grid>
         </Grid>
       </Grid>
     </ConsumerContainer>

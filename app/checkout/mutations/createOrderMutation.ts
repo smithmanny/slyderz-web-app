@@ -78,10 +78,8 @@ export default async function CreateOrderMutation(input: any, ctx: Ctx) {
       const denyUrl = `${process.env.NEXT_PUBLIC_URL}/orders/${order.confirmationNumber}/deny`;
       const consumerServiceFee = order.amount * CONSUMER_SERVICE_FEE;
       const chefServiceFee = order.amount * CHEF_SERVICE_FEE;
-
-      try {
-        await sendSesEmail({
-          to: "contact@slyderz.co",
+      const customerEmailParams = {
+          to: "contact@slyderz.co", //TODO: swap out with customer email
           type: TRANSACTIONAL_EMAILS.newOrderConsumer,
           variables: {
             orderNumber: order.confirmationNumber,
@@ -93,9 +91,9 @@ export default async function CreateOrderMutation(input: any, ctx: Ctx) {
             orderTotal: order.amount + consumerServiceFee,
             // orderItems: order.dishes,
           },
-        });
-        await sendSesEmail({
-          to: "contact@slyderz.co",
+        }
+      const chefEmailParams = {
+          to: "contact@slyderz.co", //TODO: swap out with chef email
           type: TRANSACTIONAL_EMAILS.newOrderChef,
           variables: {
             orderApproveUrl: acceptUrl,
@@ -109,11 +107,11 @@ export default async function CreateOrderMutation(input: any, ctx: Ctx) {
             orderTotal: order.amount + chefServiceFee,
             // orderItems: order.dishes,
           },
-        });
-      } catch (err) {
-        console.log("Error sending email", err);
-        throw new Error("Sorry, your order can't be placed right now");
-      }
+        }
+
+      Promise.all([sendSesEmail(customerEmailParams), sendSesEmail(chefEmailParams)])
+      .then(() => console.log('Order confirmation email sent'))
+      .catch((err) => console.log("Order confirmation email failed to send", err))
 
       // reset cart & total
       await ctx.session.$setPublicData({
