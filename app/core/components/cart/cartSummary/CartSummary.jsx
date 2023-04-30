@@ -1,7 +1,8 @@
-import Link from "next/link";
-import { Routes } from "@blitzjs/next";
-import { useSession } from "@blitzjs/auth";
 import React from 'react'
+import { useRouter } from 'next/router'
+import { Routes } from "@blitzjs/next";
+import { useMutation } from "@blitzjs/rpc";
+import { useSession, setPublicDataForUser } from "@blitzjs/auth";
 import PropTypes from 'prop-types'
 import { useFormState } from 'react-final-form'
 
@@ -9,6 +10,7 @@ import { styled } from "integrations/material-ui"
 import { formatNumberToCurrency } from "app/utils/time"
 import { convertDayToInt, todAM, todPM } from 'app/utils/time'
 import { CONSUMER_SERVICE_FEE } from "types";
+import createCartMutation from 'app/cart/mutations/createCartMutation';
 
 import Form, { DatePicker, Select } from 'app/core/components/form'
 import Button from 'app/core/components/shared/Button'
@@ -22,6 +24,8 @@ const Root = styled('div')({
 
 const CartItemsContainer = (props) => {
   const formState = useFormState()
+  const router = useRouter();
+  const [createCart] = useMutation(createCartMutation);
   const time = [...todAM, ...todPM]
   const selectedEventDate = formState.values?.eventDate
   const selectedDayOfWeek = selectedEventDate?.getDay()
@@ -111,20 +115,26 @@ const CartItemsContainer = (props) => {
             </span>
             </Typography>
           {props.buttonText && (
-            <Link href={Routes.Checkout({
-              cid: props.chefId,
-              eventDate: selectedEventDate && new Date(selectedEventDate).toISOString(),
-              eventTime: formState.values?.eventTime
-            })}>
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                disabled={(!selectedEventDate || !formState.values?.eventTime)}
-              >
-                {props.buttonText}
-              </Button>
-            </Link>
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              onClick={async() => {
+                try {
+                  await createCart({
+                    eventDate: selectedEventDate,
+                    eventTime: formState.values?.eventTime
+                  })
+
+                  router.push(Routes.Checkout({ cid: props.chefId }))
+                } catch(err) {
+                  console.log('Failed to create cart', err)
+                }
+              }}
+              disabled={(!selectedEventDate || !formState.values?.eventTime)}
+            >
+              {props.buttonText}
+            </Button>
           )}
         </Grid>
       )}
@@ -149,6 +159,7 @@ const CartSummary = (props) => {
         )}
         <CartItemsContainer
           chefId={chefId}
+          userId={session.userId}
           buttonText={buttonText}
           checkoutPage={checkoutPage}
           cartItems={cartItems}
@@ -162,12 +173,15 @@ const CartSummary = (props) => {
 
 CartSummary.defaultProps = {
   checkoutPage: false,
+  chefId: '',
   dishes: []
 }
 
-CartSummary.PropTypes = {
+CartSummary.propTypes = {
+  buttonText: PropTypes.string,
   checkoutPage: PropTypes.bool,
-  dishes: PropTypes.array,
+  chefId: PropTypes.any.isRequired,
+  dishes: PropTypes.array.isRequired,
 }
 
 export default CartSummary;

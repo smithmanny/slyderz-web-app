@@ -44,7 +44,6 @@ export const ChefPage = (props) => {
 
   const { cid } = router.query;
   const [dishes] = useQuery(ChefDishesQuery, { chefId: Number(cid) });
-  console.log("ID", cid)
 
   return (
     <ConsumerContainer>

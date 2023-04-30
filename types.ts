@@ -34,6 +34,8 @@ export interface EmailBodyResponseType {
   orderTotal: Number;
 }
 interface Cart {
+  eventDate?: Date | null;
+  eventTime?: string;
   pendingCartItems: Array<CartItem> | Array<any>;
   total: number;
 }

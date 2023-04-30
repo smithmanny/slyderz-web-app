@@ -1677,7 +1677,7 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@blitzjs/auth@^2.0.0-beta.3":
+"@blitzjs/auth@^2.0.0-beta.26":
   version "2.0.0-beta.26"
   resolved "https://registry.yarnpkg.com/@blitzjs/auth/-/auth-2.0.0-beta.26.tgz#9eef4de71b60d89b66acd93fd9653ab93a0df32d"
   integrity sha512-gggSgcH1kkGumgLWdKsQr/8NLjiaCVVBHNXNnBMgPj/EFsrvzZpjchhWhxNa5CiO25THRmdr12PO9do6Q98iUA==
@@ -1702,10 +1702,10 @@
     supports-color "8.1.1"
     url "0.11.0"
 
-"@blitzjs/generator@2.0.0-beta.25":
-  version "2.0.0-beta.25"
-  resolved "https://registry.yarnpkg.com/@blitzjs/generator/-/generator-2.0.0-beta.25.tgz#7997677e5ea6618713aa0e5700ec86205a586778"
-  integrity sha512-WHpAcPg66snX9Xr6VDeyQxeM5WPU9ezq9OgReKlw2/tPZAKxSaGKBnyPML0o5nwn+bm7D61mRoKDv38aHIaHnQ==
+"@blitzjs/generator@2.0.0-beta.26":
+  version "2.0.0-beta.26"
+  resolved "https://registry.yarnpkg.com/@blitzjs/generator/-/generator-2.0.0-beta.26.tgz#57e262a2e746d7466c413acf971c0d21396682d7"
+  integrity sha512-ruL0ynYpKQsxl6pW3GcwIfwar4Ct9hpI2XfPKjDBfGDKYs1P3tTDlBUWXZpXXuU+9ymO+H/ZaWbpo0y373rvoQ==
   dependencies:
     "@babel/core" "7.12.10"
     "@babel/plugin-transform-typescript" "7.12.1"
@@ -1735,7 +1735,7 @@
     vinyl "2.2.1"
     zod "3.20.2"
 
-"@blitzjs/next@^2.0.0-beta.3":
+"@blitzjs/next@^2.0.0-beta.26":
   version "2.0.0-beta.26"
   resolved "https://registry.yarnpkg.com/@blitzjs/next/-/next-2.0.0-beta.26.tgz#f73b9f191345bd63850ab3dc377a9ac90033b1d3"
   integrity sha512-GKTV4ovy4dHbIO09dILelWb/GM+c8n8i+R0376Vk4EbDpOdz+IkM/3BVYNU9bKKhtvniRxJaFurs0+ZyVaTTBA==
@@ -1748,7 +1748,7 @@
     superjson "1.11.0"
     supports-color "8.1.1"
 
-"@blitzjs/rpc@2.0.0-beta.26", "@blitzjs/rpc@^2.0.0-beta.3":
+"@blitzjs/rpc@2.0.0-beta.26", "@blitzjs/rpc@^2.0.0-beta.26":
   version "2.0.0-beta.26"
   resolved "https://registry.yarnpkg.com/@blitzjs/rpc/-/rpc-2.0.0-beta.26.tgz#11bbf04d4c209a8c7155df3b32813d56eb707f58"
   integrity sha512-9cKuLiOky4NOh457B5gbwFXHBykRTfpCDG/ili4JhYax3cyBgmVoIFg/oZAqXFMEUvS0/3OJ8T8dIpAMGJZOew==
@@ -3690,12 +3690,12 @@ bl@^4.0.3:
     inherits "^2.0.4"
     readable-stream "^3.4.0"
 
-blitz@2.0.0-beta.25:
-  version "2.0.0-beta.25"
-  resolved "https://registry.yarnpkg.com/blitz/-/blitz-2.0.0-beta.25.tgz#704fd8fd9e9186a9fe802f2a6ff6d7d1b29b9c28"
-  integrity sha512-ka1Fjmolu4r1OQdZFWmVz4I118Fyj2Y6XA0AY5eWkHr7Cpfx0jBKwifWhRhjLeV0zK0iwzdz8yarkBKg1Q7thA==
+blitz@2.0.0-beta.26:
+  version "2.0.0-beta.26"
+  resolved "https://registry.yarnpkg.com/blitz/-/blitz-2.0.0-beta.26.tgz#a088ec0242af63e02d0dffd9690fb1afa3852937"
+  integrity sha512-ypqAcAGkaKVi8NvJRkMTI7svDJ34a7dEuPsqEq1prhEL8T5RWOvVSeFEey+6PTzgz+pnnqh3gpGXuHRMREtkOg==
   dependencies:
-    "@blitzjs/generator" "2.0.0-beta.25"
+    "@blitzjs/generator" "2.0.0-beta.26"
     "@mrleebo/prisma-ast" "0.2.6"
     "@types/global-agent" "2.1.1"
     arg "5.0.1"

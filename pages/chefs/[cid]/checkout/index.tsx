@@ -1,15 +1,15 @@
 import React from "react";
 import { gSSP } from "app/blitz-server";
-import { BlitzPage, Routes } from "@blitzjs/next";
-import { useRouter } from "next/router";
-
+import { BlitzPage } from "@blitzjs/next";
 
 import Layout from "app/core/layouts/Layout";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import CheckoutPage from "app/chefs/components/checkout/CheckoutPage";
 import { getStripeServer } from "app/utils/getStripe";
+import CartEmpty from "app/checkout/components/CartEmpty";
 
 interface CheckoutTypes {
+  cart: any
   cid: string
   eventDate: Date;
   eventTime: Date;
@@ -26,31 +26,20 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
   const session = ctx?.session;
   const stripe = getStripeServer();
   const { cid } = query
-
-  if (!query.eventDate || !query.eventTime || !session.userId) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
+  const eventDate = session.cart?.eventDate
+  const eventTime = session.cart?.eventTime
 
   if (
-    !session.cart?.total ||
-    !session.cart?.pendingCartItems ||
-    !session.stripeCustomerId
+    !session.stripeCustomerId ||
+    !session.userId
   ) {
     return {
       redirect: {
-        destination: "/",
+        destination: '/auth/login',
         permanent: false,
       },
     };
   }
-
-  const eventDate = query.eventDate;
-  const eventTime = query.eventTime;
 
   const paymentMethods = await stripe.paymentMethods.list({
     customer: session.stripeCustomerId,
@@ -59,6 +48,7 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
 
   return {
     props: {
+      cart: session.cart,
       cid,
       eventDate,
       eventTime,
@@ -69,22 +59,26 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
 });
 
 const Checkout: BlitzPage = (props: any) => {
-  const { cid, eventDate, eventTime, paymentMethods, userId }: CheckoutTypes = props;
+  const { cart, cid, eventDate, eventTime, paymentMethods, userId }: CheckoutTypes = props;
+  const isCartEmpty = !cart?.pendingCartItems || !cart?.total
 
   return (
     <ConsumerContainer>
-      <CheckoutPage
-        eventDate={eventDate}
-        eventTime={eventTime}
-        stripePaymentMethods={paymentMethods.data}
-        userId={userId}
-        chefId={cid}
-      />
+      {isCartEmpty ? (
+        <CartEmpty />
+      ) : (
+        <CheckoutPage
+          eventDate={eventDate}
+          eventTime={eventTime}
+          stripePaymentMethods={paymentMethods.data}
+          userId={userId}
+          chefId={cid}
+        />
+      )}
     </ConsumerContainer>
   );
 };
 
-Checkout.authenticate = { redirectTo: Routes.LoginPage() };
 Checkout.getLayout = (page) => <Layout>{page}</Layout>;
 
 export default Checkout;

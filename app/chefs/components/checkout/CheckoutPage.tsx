@@ -92,7 +92,6 @@ const CheckoutPage = ({
       eventTime,
       paymentMethodId: values?.paymentMethod,
     };
-
     // TODO: Throw error
     if (!values.paymentMethod) throw new Error("Select payment method");
 

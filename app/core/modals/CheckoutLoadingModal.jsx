@@ -119,7 +119,7 @@ const MenuItemModal = ({ show, onClose, menuItem, ...props }) => {
         </Typography>
 
         <section>
-          <Typography variant="subtitle1" className={classes.sectionName}>What's Included:</Typography>
+          <Typography variant="subtitle1" className={classes.sectionName}>What&apos;s Included:</Typography>
           <Typography>3 Course meal</Typography>
         </section>
       </div>

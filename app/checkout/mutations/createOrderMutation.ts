@@ -116,6 +116,8 @@ export default async function CreateOrderMutation(input: any, ctx: Ctx) {
       // reset cart & total
       await ctx.session.$setPublicData({
         cart: {
+          eventDate: null,
+          eventTime: '',
           pendingCartItems: [],
           total: 0,
         },
