@@ -198,7 +198,7 @@ const Footer = () => {
           <Grid item xs={12}>
             <Grid container item xs={12} spacing={2} textAlign={{ xs: 'center', md: 'left' }}>
               <Grid item xs={12} md>
-                <Typography variant="h6">&#169; 2020 Slyderz LLC</Typography>
+                <Typography variant="h6" sx={{ color: '#FFF', fontWeight: 'bold' }}>&#169; 2023 Slyderz LLC</Typography>
               </Grid>
 
               <Grid item xs={12} md>

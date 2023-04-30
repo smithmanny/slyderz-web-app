@@ -68,7 +68,7 @@ const LoggedinLayout: BlitzPage = () => {
           }}
         >
           <Grid item xs={12}>
-            <Typography variant="h1" marginBottom={1}>
+            <Typography variant="h1" sx={{ fontWeight: 'bold' }} marginBottom={1}>
               Unforgettable Dining with Slyderz
             </Typography>
             <Typography variant="h6">
