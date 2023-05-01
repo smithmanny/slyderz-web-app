@@ -9,7 +9,7 @@ import { useAppSelector } from "integrations/redux";
 import { styled } from "integrations/material-ui";
 import CreateOrderMutation from "app/checkout/mutations/createOrderMutation";
 
-import Form, { Select } from "app/core/components/form";
+import Form, { Select, TextField } from "app/core/components/form";
 import Button from "app/core/components/shared/Button";
 import CartSummary from "app/core/components/cart/cartSummary";
 import Grid from "app/core/components/shared/Grid";
@@ -130,9 +130,41 @@ const CheckoutPage = ({
         }}
       >
         <Grid item xs={12}>
-          <Typography sx={{ mb: 2 }} variant="h5">
+          <Typography sx={{ fontWeight: 'bold' }} variant="h6">
+            Address
+          </Typography>
+        </Grid>
+        <TextField
+          name="address1"
+          label="Street name"
+        />
+        <TextField
+          name="address2"
+          label="Address cont..."
+        />
+        <TextField
+          name="city"
+          md={6}
+          label="City"
+        />
+        <TextField
+          name="state"
+          md={6}
+          disabled
+          label="State"
+          value="Georgia"
+        />
+        <TextField
+          name="zipcode"
+          md={6}
+          label="Zipcode"
+        />
+
+        <Grid item xs={12}>
+          <Typography sx={{ fontWeight: 'bold' }} variant="h6">
             Payment Info
           </Typography>
+        </Grid>
           {stripePaymentMethods.length > 0 && (
             <Select
               label="Select payment method"
@@ -154,7 +186,6 @@ const CheckoutPage = ({
           {/* {error && (
             <Alert onClose={() => setError(null)} />
           )} */}
-        </Grid>
       </Form>
     </React.Fragment>
   );

@@ -2,9 +2,10 @@ import React from 'react'
 import { useRouter } from 'next/router'
 import { Routes } from "@blitzjs/next";
 import { useMutation } from "@blitzjs/rpc";
-import { useSession, setPublicDataForUser } from "@blitzjs/auth";
+import { useSession } from "@blitzjs/auth";
 import PropTypes from 'prop-types'
 import { useFormState } from 'react-final-form'
+import { useSnackbar } from 'notistack'
 
 import { styled } from "integrations/material-ui"
 import { formatNumberToCurrency } from "app/utils/time"
@@ -23,6 +24,7 @@ const Root = styled('div')({
 });
 
 const CartItemsContainer = (props) => {
+  const { enqueueSnackbar } = useSnackbar()
   const formState = useFormState()
   const router = useRouter();
   const [createCart] = useMutation(createCartMutation);
@@ -120,6 +122,8 @@ const CartItemsContainer = (props) => {
               color="primary"
               size="large"
               onClick={async() => {
+                if (!props.userId) return enqueueSnackbar("Please log in", { variant: "error" })
+
                 try {
                   await createCart({
                     eventDate: selectedEventDate,

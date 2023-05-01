@@ -7,6 +7,7 @@ import {
 } from "react-final-form";
 import { FORM_ERROR } from "final-form";
 import * as z from "zod";
+import { useSnackbar } from 'notistack'
 
 import Button from "../shared/Button";
 import Grid from "../shared/Grid";
@@ -36,6 +37,7 @@ export function Form<S extends z.ZodType<any, any>>({
   onSuccess,
   ...props
 }: FormProps<S>) {
+  const { enqueueSnackbar } = useSnackbar()
   const _handleSubmit = (values, formApi, cb) => {
     async function handleMutation(variables) {
       try {
@@ -50,6 +52,7 @@ export function Form<S extends z.ZodType<any, any>>({
           // This error comes from Prisma
           return { email: "This email is already being used" };
         } else if (error instanceof AuthenticationError) {
+          // return enqueueSnackbar("Sorry, those credentials are invalid", { variant: "error" })
           return { [FORM_ERROR]: "Sorry, those credentials are invalid" };
         } else {
           return { [FORM_ERROR]: error.toString() };

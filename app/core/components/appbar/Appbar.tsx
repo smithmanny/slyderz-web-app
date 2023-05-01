@@ -11,6 +11,7 @@ import { default as MuiAppBar } from "@mui/material/AppBar";
 import Box from "app/core/components/shared/Box";
 import Typography from "app/core/components/shared/Typography";
 import { Container } from "@mui/material";
+import Button from "../shared/Button";
 
 const AccountPopover = dynamic(
   () => import("app/core/components/accountPopover"),
@@ -78,7 +79,10 @@ const Appbar = (props) => {
                   </Typography>
                 </Link>
 
-                <Stack direction="row" spacing={2}>
+                <Stack direction="row" spacing={2} alignItems="center">
+                  {/* <Button label="chef dashboard" variant="text">
+                    <Typography sx={{ color: "black", fontWeight: 600 }}>Your Dashboard</Typography>
+                  </Button> */}
                   <IconButton
                     aria-label="cart"
                     disableRipple

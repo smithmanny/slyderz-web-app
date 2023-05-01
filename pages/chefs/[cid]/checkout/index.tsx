@@ -8,7 +8,6 @@ import { useAppDispatch } from "integrations/redux";
 import Layout from "app/core/layouts/Layout";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import CheckoutPage from "app/chefs/components/checkout/CheckoutPage";
-import { getStripeServer } from "app/utils/getStripe";
 import CartEmpty from "app/checkout/components/CartEmpty";
 
 interface CheckoutTypes {
@@ -16,7 +15,6 @@ interface CheckoutTypes {
   cid: string
   eventDate: Date;
   eventTime: Date;
-  paymentMethods: any;
   paymentIntent: any;
   setupIntentId: Number;
   userId: Number;
@@ -27,7 +25,6 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
   query,
 }) {
   const session = ctx?.session;
-  const stripe = getStripeServer();
   const { cid } = query
   const eventDate = session.cart?.eventDate
   const eventTime = session.cart?.eventTime
@@ -44,11 +41,6 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
     };
   }
 
-  const paymentMethods = await stripe.paymentMethods.list({
-    customer: session.stripeCustomerId,
-    type: "card",
-  });
-
   return {
     props: {
       cart: session.cart,
@@ -56,13 +48,12 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
       eventDate,
       eventTime,
       userId: session.userId,
-      paymentMethods,
     },
   };
 });
 
 const Checkout: BlitzPage = (props: any) => {
-  const { cart, cid, eventDate, eventTime, paymentMethods, userId }: CheckoutTypes = props;
+  const { cart, cid, eventDate, eventTime, userId }: CheckoutTypes = props;
   const isCartEmpty = !cart?.pendingCartItems || !cart?.total
   const dispatch = useAppDispatch()
 

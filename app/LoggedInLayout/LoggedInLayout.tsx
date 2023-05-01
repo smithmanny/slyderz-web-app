@@ -77,7 +77,7 @@ const LoggedinLayout: BlitzPage = () => {
             </Typography>
 
             <Link href={Routes.About()}>
-              <Button sx={{ mt: 4 }} variant="outlined" label="learn-more">
+              <Button sx={{ mt: 4, textTransform: 'uppercase' }} variant="outlined" label="learn-more">
                 Learn More
               </Button>
             </Link>

@@ -12,6 +12,7 @@ import {
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Provider } from "react-redux";
+import { SnackbarProvider } from 'notistack'
 
 import store from "integrations/redux";
 import { theme } from "integrations/material-ui";
@@ -47,17 +48,25 @@ export default withBlitz(function App({ Component, pageProps }: AppProps) {
   };
   return (
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <ErrorBoundary
-          FallbackComponent={RootErrorFallback}
-          onReset={useQueryErrorResetBoundary().reset}
-        >
-          <Suspense fallback={<LoadingIcon />}>
-            {getLayout(<Component {...pageProps} />)}
-          </Suspense>
-        </ErrorBoundary>
-      </ThemeProvider>
+      <SnackbarProvider
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        preventDuplicate={true}
+      >
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <ErrorBoundary
+            FallbackComponent={RootErrorFallback}
+            onReset={useQueryErrorResetBoundary().reset}
+          >
+            <Suspense fallback={<LoadingIcon />}>
+              {getLayout(<Component {...pageProps} />)}
+            </Suspense>
+          </ErrorBoundary>
+        </ThemeProvider>
+      </SnackbarProvider>
     </Provider>
   );
 });

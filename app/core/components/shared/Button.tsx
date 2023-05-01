@@ -19,9 +19,13 @@ const Button: FC<ButtonType> = ({ children, buttonType, label, ...props }) => {
     default:
       return (
         <MuiButton
+          {...props}
           type={buttonType === "icon" ? "button" : "submit"}
           aria-label={label}
-          {...props}
+          sx={{
+            textTransform: 'none',
+            ...props.sx,
+          }}
         >
           {children}
         </MuiButton>

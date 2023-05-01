@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import React, { FunctionComponent } from "react";
 import PropTypes from "prop-types";
 import { DatePicker as MuiDatePicker } from "mui-rff";
 import "date-fns";
@@ -7,18 +7,21 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 import Grid from "../shared/Grid";
 
-const DatePicker: FunctionComponent<any> = (props) => (
-  <Grid item xs={props.xs} md={props.md}>
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <MuiDatePicker
-        label={props.label}
-        name={props.name}
-        required={props.required}
-        {...props}
-      />
-    </LocalizationProvider>
-  </Grid>
-);
+const DatePicker: FunctionComponent<any> = (props) => {
+  return (
+    <Grid item xs={props.xs} md={props.md}>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <MuiDatePicker
+          label={props.label}
+          name={props.name}
+          required={props.required}
+          desktopModeMediaQuery="@media (min-width: 2000px)"
+          {...props}
+        />
+      </LocalizationProvider>
+    </Grid>
+  );
+}
 
 DatePicker.defaultProps = {
   label: "",
