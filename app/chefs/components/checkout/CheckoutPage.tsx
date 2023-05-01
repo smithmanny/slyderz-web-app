@@ -5,6 +5,7 @@ import { Routes } from "@blitzjs/next";
 import React, { useState } from "react";
 import ArrowBack from "@mui/icons-material/ArrowBack";
 
+import { useAppSelector } from "integrations/redux";
 import { styled } from "integrations/material-ui";
 import CreateOrderMutation from "app/checkout/mutations/createOrderMutation";
 
@@ -72,7 +73,6 @@ interface CheckoutPageTypes {
   chefId: string;
   eventDate: Date;
   eventTime: Date;
-  stripePaymentMethods: Array<any>;
   userId: Number;
 }
 
@@ -80,11 +80,11 @@ const CheckoutPage = ({
   chefId,
   eventDate,
   eventTime,
-  stripePaymentMethods,
 }: CheckoutPageTypes) => {
   const router = useRouter();
   const [processing, setProcessing] = useState(false);
   const [createOrder] = useMutation(CreateOrderMutation);
+  const stripePaymentMethods = useAppSelector(state => state.paymentMethods.stripeCards)
 
   const handleSubmit = async (values) => {
     const orderBody = {
@@ -147,7 +147,7 @@ const CheckoutPage = ({
             />
           )}
           {stripePaymentMethods.length === 0 && (
-            <StripeCardElement />
+            <StripeCardElement chefId={chefId} />
           )}
 
           {/* Show any error that happens when processing the payment */}

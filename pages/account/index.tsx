@@ -1,14 +1,16 @@
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { gSSP } from "app/blitz-server";
 import { useMutation } from "@blitzjs/rpc";
 import { BlitzPage, Routes } from "@blitzjs/next";
-import React from "react";
 import { AuthenticationError } from "blitz";
 
 import loginMutation from "app/auth/mutations/login";
 import deleteAccountMutation from "app/account/mutations/deleteAccountMutation";
 import { Login } from "app/auth/validations";
 import { useCurrentUser } from "app/core/hooks/useCurrentUser";
+import { useAppSelector, useAppDispatch } from "integrations/redux";
+import { fetchStripePayments } from "integrations/redux/reducers/paymentMethods";
 
 import Layout from "app/core/layouts/Layout";
 import Button from "app/core/components/shared/Button";
@@ -18,26 +20,19 @@ import Typography from "app/core/components/shared/Typography";
 import Form, { TextField } from "app/core/components/form";
 import StripeCardElement from "app/stripe/components/StripeCardElement";
 import StripeSavedCards from "app/stripe/components/StripeSavedCards";
-import { getStripeServer } from "app/utils/getStripe";
 
 export const getServerSideProps = gSSP(async function getServerSideProps({
   ctx,
 }) {
   const session = ctx?.session;
-  const stripe = getStripeServer();
 
+  // TODO: Setup middleware to protect routes
   if (!session.userId || !session.stripeCustomerId) {
     throw new AuthenticationError()
   }
 
-  const paymentMethods = await stripe.paymentMethods.list({
-    customer: session.stripeCustomerId,
-    type: "card",
-  });
-
   return {
     props: {
-      paymentMethods: paymentMethods.data,
     },
   };
 });
@@ -45,6 +40,7 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
 const Account: BlitzPage<any> = (props) => {
   const router = useRouter();
   const user = useCurrentUser();
+  const dispatch = useAppDispatch()
   // TODO: Fix updating password
   const [login] = useMutation(loginMutation);
   const [deleteAccount] = useMutation(deleteAccountMutation, {
@@ -52,13 +48,19 @@ const Account: BlitzPage<any> = (props) => {
       return router.replace(Routes.Home());
     },
   });
-  // const clientSecret = props.setupIntent.client_secret;
+  const stripePaymentMethods = useAppSelector(state => state.paymentMethods.stripeCards)
 
   const initialValues = {
     firstName: user?.firstName,
     lastName: user?.lastName,
     email: user?.email,
   };
+
+  useEffect(() => {
+    dispatch(fetchStripePayments())
+    .unwrap()
+    .catch(err => console.log("Failed fetching payments", err))
+  }, [dispatch])
 
   // useEffect(() => {
   //   if (!stripe) {
@@ -179,8 +181,8 @@ const Account: BlitzPage<any> = (props) => {
         <Typography variant="h6" sx={{ mt: 6 }} gutterBottom>
           <strong>Payment Methods</strong>
         </Typography>
-        {props.paymentMethods.length > 0 ? (
-          <StripeSavedCards />
+        {stripePaymentMethods.length > 0 ? (
+          <StripeSavedCards paymentMethods={stripePaymentMethods} />
         ) : (
           <StripeCardElement />
         )}

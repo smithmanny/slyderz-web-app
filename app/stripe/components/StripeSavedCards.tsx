@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { FunctionComponent } from "react";
 import { useMutation } from "@blitzjs/rpc";
 
 import deletePaymentMethodMutation from "../../account/mutations/deletePaymentMethodMutation";
@@ -8,7 +8,11 @@ import Box from "app/core/components/shared/Box";
 import Button from "app/core/components/shared/Button";
 import Typography from "app/core/components/shared/Typography";
 
-const StripeSavedCards = (props) => {
+import { StripePaymentType } from "integrations/redux/reducers/paymentMethods";
+interface StripeSavedCardsType {
+  paymentMethods: Array<StripePaymentType>
+}
+function StripeSavedCards(props: StripeSavedCardsType) {
   const { paymentMethods } = props;
   const router = useRouter();
   const [deletePaymentMethod] = useMutation(deletePaymentMethodMutation, {
@@ -18,33 +22,35 @@ const StripeSavedCards = (props) => {
   });
 
   return (
-    paymentMethods.map((stripePaymentMethod) => (
-      <Box
-        key={stripePaymentMethod.id}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          mb: 1,
-        }}
-      >
-        <Typography>{stripePaymentMethod.card.last4}</Typography>
+    <React.Fragment>
+      {paymentMethods.map((stripePaymentMethod) => (
         <Box
+          key={stripePaymentMethod.id}
           sx={{
-            display: 'flex',
-            alignItems: 'center',
-            ml: 5
+            display: "flex",
+            alignItems: "center",
+            mb: 1,
           }}
         >
-          <Button
-            label="delete"
-            variant="text"
-            onClick={() => deletePaymentMethod(stripePaymentMethod.id)}
+          <Typography>{stripePaymentMethod.card.last4}</Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              ml: 5
+            }}
           >
-            Delete
-          </Button>
+            <Button
+              label="delete"
+              variant="text"
+              onClick={() => deletePaymentMethod(stripePaymentMethod.id)}
+            >
+              Delete
+            </Button>
+          </Box>
         </Box>
-      </Box>
-    ))
+      ))}
+    </React.Fragment>
   )
 };
 

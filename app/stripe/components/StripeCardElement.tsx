@@ -29,11 +29,14 @@ const StripeCard: FunctionComponent<any> = (props) => {
       return;
     }
 
+    const returnUrl = props.chefId ? `${process.env.NEXT_PUBLIC_URL}/chefs/${props.chefId}/checkout`
+    : `${process.env.NEXT_PUBLIC_URL}/account`
+
     const { error }: any = await stripe.confirmSetup({
       //`Elements` instance that was used to create the Payment Element
       elements,
       confirmParams: {
-        return_url: `${process.env.NEXT_PUBLIC_URL}/account`,
+        return_url: returnUrl,
       },
     });
 
@@ -59,8 +62,11 @@ const StripeCard: FunctionComponent<any> = (props) => {
     </React.Fragment>
   );
 };
+interface StripeCardElementType {
+  chefId?: string
+}
 
-const StripeCardElement = (props) => {
+const StripeCardElement = (props: StripeCardElementType) => {
   const [setupIntent, {
     isLoading
   }] = useQuery(createSetupIntentQuery, {})
@@ -79,7 +85,7 @@ const StripeCardElement = (props) => {
     <React.Fragment>
       {setupIntent.client_secret && (
         <Elements options={options} stripe={promise}>
-          <StripeCard />
+          <StripeCard chefId={props.chefId} />
         </Elements>
       )}
     </React.Fragment>

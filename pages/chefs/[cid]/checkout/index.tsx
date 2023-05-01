@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { gSSP } from "app/blitz-server";
 import { BlitzPage } from "@blitzjs/next";
+
+import { fetchStripePayments } from "integrations/redux/reducers/paymentMethods";
+import { useAppDispatch } from "integrations/redux";
 
 import Layout from "app/core/layouts/Layout";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
@@ -61,6 +64,13 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
 const Checkout: BlitzPage = (props: any) => {
   const { cart, cid, eventDate, eventTime, paymentMethods, userId }: CheckoutTypes = props;
   const isCartEmpty = !cart?.pendingCartItems || !cart?.total
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(fetchStripePayments())
+    .unwrap()
+    .catch(err => console.log("Failed fetching payments", err))
+  }, [dispatch])
 
   return (
     <ConsumerContainer>
@@ -70,7 +80,6 @@ const Checkout: BlitzPage = (props: any) => {
         <CheckoutPage
           eventDate={eventDate}
           eventTime={eventTime}
-          stripePaymentMethods={paymentMethods.data}
           userId={userId}
           chefId={cid}
         />
