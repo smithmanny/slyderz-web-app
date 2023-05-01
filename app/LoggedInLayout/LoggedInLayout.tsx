@@ -24,7 +24,7 @@ const NearbyChefs = (props) => {
           lg={2}
         >
           <Link href={Routes.ChefPage({ cid: chef.id })}>
-            <Card sx={{ maxWidth: 245 }}>
+            <Card sx={{ maxWidth: 245, margin: 'auto' }}>
               <CardMedia
                 image="/headshot.jpeg"
                 title="Chef dish"

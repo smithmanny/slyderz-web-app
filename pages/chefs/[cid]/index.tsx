@@ -90,21 +90,21 @@ export const ChefPage = (props) => {
             </Tabs>
           </div>
         </Grid>
-        <Grid container item xs={12} spacing={2}>
-          <Grid item xs>
-          <TabPanel value={value} index={0}>
-            <Menu dishes={dishes} />
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            Item Two
-          </TabPanel>
-          </Grid>
+        <Grid container item xs={12} spacing={2} direction="row-reverse">
           <Grid item md={4} xs={12}>
             <CartSummary
               buttonText="Checkout"
               chefId={cid}
               dishes={dishes}
             />
+          </Grid>
+          <Grid item xs>
+            <TabPanel value={value} index={0}>
+              <Menu dishes={dishes} />
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+              Item Two
+            </TabPanel>
           </Grid>
         </Grid>
       </Grid>
