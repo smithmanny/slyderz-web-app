@@ -1,10 +1,11 @@
+import { ReactNode } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import PropTypes from "prop-types";
 import { default as MuiAppBar } from "@mui/material/AppBar";
 
 import { theme } from "integrations/material-ui";
+import type { Breakpoint } from "@mui/material";
 
-import Button from "app/core/components/shared/Button";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "app/core/components/shared/IconButton";
 import Dialog from "@mui/material/Dialog";
@@ -13,19 +14,30 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Toolbar from "@mui/material/Toolbar";
 
-const Modal = ({ actions, children, size, title, show, closeModal }) => {
+
+interface ModalType {
+  actions?: any
+  children: ReactNode
+  size?: Breakpoint
+  title?: string
+  show: boolean
+  closeModal: () => void
+}
+
+const Modal = ({ actions, children, size, title, show, closeModal }: ModalType) => {
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
     <Dialog
-      aria-labelledby="simple-modal-title"
-      aria-describedby="simple-modal-description"
+      aria-labelledby={title || "slyderz-modal-title"}
+      aria-describedby="slyderz-modal-description"
       fullWidth={true}
       fullScreen={fullScreen}
       maxWidth={size}
       open={show}
       onClose={closeModal}
       scroll="paper"
+      disablePortal
     >
       <MuiAppBar
         color="transparent"
@@ -43,9 +55,15 @@ const Modal = ({ actions, children, size, title, show, closeModal }) => {
           </IconButton>
         </Toolbar>
       </MuiAppBar>
-      {title && <DialogTitle id="modal-title">{title}</DialogTitle>}
-      <DialogContent>{children}</DialogContent>
-      {actions && <DialogActions>{actions}</DialogActions>}
+      {title && <DialogTitle id={title || "slyderz-modal-title"} sx={{ fontWeight: 'bold' }}>{title}</DialogTitle>}
+      <DialogContent sx={{ minHeight: '500px'}}>
+        {children}
+      </DialogContent>
+      {actions && (
+        <DialogActions>
+          {actions}
+        </DialogActions>
+      )}
     </Dialog>
   );
 };

@@ -1,8 +1,8 @@
+import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useMutation } from "@blitzjs/rpc";
 import { Routes } from "@blitzjs/next";
-import React, { useState } from "react";
 import ArrowBack from "@mui/icons-material/ArrowBack";
 
 import { useAppSelector } from "integrations/redux";
@@ -74,12 +74,14 @@ interface CheckoutPageTypes {
   eventDate: Date;
   eventTime: Date;
   userId: Number;
+  openAddressModal: () => void
 }
 
 const CheckoutPage = ({
   chefId,
   eventDate,
   eventTime,
+  openAddressModal
 }: CheckoutPageTypes) => {
   const router = useRouter();
   const [processing, setProcessing] = useState(false);
@@ -133,8 +135,19 @@ const CheckoutPage = ({
           <Typography sx={{ fontWeight: 'bold' }} variant="h6">
             Address
           </Typography>
+
+          <Button
+            label="Add address"
+            onClick={e => {
+              e.preventDefault()
+              e.stopPropagation();
+              openAddressModal()
+            }}
+          >
+            Add Address
+          </Button>
         </Grid>
-        <TextField
+        {/* <TextField
           name="address1"
           label="Street name"
         />
@@ -158,7 +171,7 @@ const CheckoutPage = ({
           name="zipcode"
           md={6}
           label="Zipcode"
-        />
+        /> */}
 
         <Grid item xs={12}>
           <Typography sx={{ fontWeight: 'bold' }} variant="h6">
@@ -232,4 +245,4 @@ const CheckoutPage = ({
   );
 };
 
-export default CheckoutPage;
+export default React.memo(CheckoutPage)

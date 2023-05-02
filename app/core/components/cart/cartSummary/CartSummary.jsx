@@ -118,7 +118,7 @@ const CartItemsContainer = (props) => {
               {formatNumberToCurrency(props.total + orderServiceFee)}
             </span>
             </Typography>
-          {(props.buttonText && props.isCheckoutPage) && (
+          {(props.buttonText && !props.isCheckoutPage) && (
             <Button
               variant="contained"
               color="primary"

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { gSSP } from "app/blitz-server";
 import { BlitzPage } from "@blitzjs/next";
 
@@ -9,6 +9,7 @@ import Layout from "app/core/layouts/Layout";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import CheckoutPage from "app/chefs/components/checkout/CheckoutPage";
 import CartEmpty from "app/checkout/components/CartEmpty";
+import AddAddressModal from "app/core/modals/AddAddressModal";
 
 interface CheckoutTypes {
   cart: any
@@ -56,6 +57,10 @@ const Checkout: BlitzPage = (props: any) => {
   const { cart, cid, eventDate, eventTime, userId }: CheckoutTypes = props;
   const isCartEmpty = !cart?.pendingCartItems || !cart?.total
   const dispatch = useAppDispatch()
+  const [showAddressModal, setShowAddressModal] = useState(false);
+  const closeAddressModal = useCallback(() => setShowAddressModal(false), [])
+  const openAddressModal = useCallback(() => setShowAddressModal(true), [])
+  console.log("CHECKOUT_INDEX_REFRESH")
 
   useEffect(() => {
     dispatch(fetchStripePayments())
@@ -68,12 +73,20 @@ const Checkout: BlitzPage = (props: any) => {
       {isCartEmpty ? (
         <CartEmpty />
       ) : (
-        <CheckoutPage
-          eventDate={eventDate}
-          eventTime={eventTime}
-          userId={userId}
-          chefId={cid}
-        />
+        <React.Fragment>
+          <CheckoutPage
+            eventDate={eventDate}
+            eventTime={eventTime}
+            userId={userId}
+            chefId={cid}
+            openAddressModal={openAddressModal}
+          />
+          <AddAddressModal
+            show={showAddressModal}
+            onClose={closeAddressModal}
+            title="Add Address"
+          />
+        </React.Fragment>
       )}
     </ConsumerContainer>
   );

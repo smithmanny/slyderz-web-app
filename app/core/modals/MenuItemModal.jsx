@@ -1,6 +1,6 @@
+import React, { useState } from 'react';
 import Image from "next/image";
 import { useMutation } from "@blitzjs/rpc";
-import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types'
 
@@ -23,10 +23,6 @@ const LogoContainer = styled('div')(({ theme }) => ({
     height: "250px",
     width: '100%'
 }))
-
-const ModalContainer = styled('div')({
-  minHeight: "500px"
-})
 
 const MenuItemModal = ({ show, onClose, menuItem, ...props }) => {
   const [addMenuItemToCart] = useMutation(addMenuItemToCartMutation);
@@ -97,7 +93,7 @@ const MenuItemModal = ({ show, onClose, menuItem, ...props }) => {
       )}
       {...props}
     >
-      <ModalContainer>
+      <React.Fragment>
         <LogoContainer>
           <Image src="/logo.png" layout="fill" alt="Logo" />
         </LogoContainer>
@@ -123,7 +119,7 @@ const MenuItemModal = ({ show, onClose, menuItem, ...props }) => {
         </Typography>
           <Typography>3 Course meal</Typography>
         </section>
-      </ModalContainer>
+      </React.Fragment>
     </Modal>
   )
 }
