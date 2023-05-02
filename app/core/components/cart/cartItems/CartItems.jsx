@@ -17,7 +17,7 @@ const QuantityContainer = styled('div')({
   display: "flex",
 })
 
-const CartItems = ({ selectedCartItems }) => {
+const CartItems = ({ isCheckoutPage, selectedCartItems }) => {
   const [destroyMenuItem] = useMutation(destroyMenuItemMutation);
   const [decreaseMenuItemQuantity] = useMutation(decreaseMenuItemQuantityMutation);
   const [increaseMenuItemQuantity] = useMutation(increaseMenuItemQuantityMutation);
@@ -59,13 +59,15 @@ const CartItems = ({ selectedCartItems }) => {
           </Typography>
         </Grid>
       </Grid>
-      <Button
-        variant="text"
-        size="small"
-        onClick={() => destroyMenuItem({ menuItemId: item.id })}
+      {!isCheckoutPage && (
+        <Button
+          variant="text"
+          size="small"
+          onClick={() => destroyMenuItem({ menuItemId: item.id })}
         >
           Delete
         </Button>
+      )}
       <Divider />
     </span>
   ));

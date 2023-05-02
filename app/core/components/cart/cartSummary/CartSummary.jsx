@@ -26,7 +26,6 @@ const Root = styled('div')({
 const CartItemsContainer = (props) => {
   const { enqueueSnackbar } = useSnackbar()
   const formState = useFormState()
-  const router = useRouter();
   const [createCart] = useMutation(createCartMutation);
   const time = [...todAM, ...todPM]
   const selectedEventDate = formState.values?.eventDate
@@ -67,7 +66,7 @@ const CartItemsContainer = (props) => {
 
   return (
     <React.Fragment>
-      {!props.checkoutPage && (
+      {!props.isCheckoutPage && (
         <React.Fragment>
           <DatePicker
             name="eventDate"
@@ -96,7 +95,10 @@ const CartItemsContainer = (props) => {
       {props.cartItems?.length > 0 && (
         <Grid item xs={12}>
           <Typography variant="h6" sx={{ mt: 4, fontWeight: 'bold' }}>Your Items</Typography>
-          <CartItems selectedCartItems={props.cartItems} />
+          <CartItems
+            selectedCartItems={props.cartItems}
+            isCheckoutPage={props.isCheckoutPage}
+          />
 
           <Typography variant="subtitle1" sx={{ mt: 4, fontWeight: 'bold' }}>
             Subtotal:
@@ -116,7 +118,7 @@ const CartItemsContainer = (props) => {
               {formatNumberToCurrency(props.total + orderServiceFee)}
             </span>
             </Typography>
-          {props.buttonText && (
+          {(props.buttonText && props.isCheckoutPage) && (
             <Button
               variant="contained"
               color="primary"
@@ -130,7 +132,7 @@ const CartItemsContainer = (props) => {
                     eventTime: formState.values?.eventTime
                   })
 
-                  router.push(Routes.Checkout({ cid: props.chefId }))
+                  props.router.push(Routes.Checkout({ cid: props.chefId }))
                 } catch(err) {
                   console.log('Failed to create cart', err)
                 }
@@ -147,16 +149,18 @@ const CartItemsContainer = (props) => {
 }
 
 const CartSummary = (props) => {
-  const session = useSession();
   const { chefId, checkoutPage, buttonText, dishes } = props;
+  const session = useSession();
+  const router = useRouter();
   const cartItems = session?.cart?.pendingCartItems;
   const total = session?.cart?.total || 0;
   const hours = dishes[0]?.chef?.hours
+  const isCheckoutPage = router.asPath.includes('checkout')
 
   return (
     <Root>
       <Form>
-        {buttonText && (
+        {(buttonText && !isCheckoutPage) && (
           <Grid item>
             <Typography fontWeight="550" variant="h5">Your Reservation</Typography>
           </Grid>
@@ -169,6 +173,8 @@ const CartSummary = (props) => {
           cartItems={cartItems}
           hours={hours}
           total={total}
+          router={router}
+          isCheckoutPage={isCheckoutPage}
         />
       </Form>
     </Root>
