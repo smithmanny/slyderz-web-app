@@ -11,7 +11,7 @@ export interface StripePaymentType {
   }
 }
 
-type AddAddressType = {
+export type AddAddressType = {
   address1: string
   address2: string
   city: string

@@ -8,6 +8,7 @@ import ArrowBack from "@mui/icons-material/ArrowBack";
 import { useAppSelector } from "integrations/redux";
 import { styled } from "integrations/material-ui";
 import CreateOrderMutation from "app/checkout/mutations/createOrderMutation";
+import { AddAddressType } from "integrations/redux/reducers/userReduer";
 
 import Form, { Select } from "app/core/components/form";
 import Button from "app/core/components/shared/Button";
@@ -144,7 +145,7 @@ const CheckoutPage = ({
               <Select
                 label="Select event address"
                 name="selectedAddress"
-                items={[address].map((addy) => ({
+                  items={[address].map((addy: AddAddressType) => ({
                   key: addy.address1,
                   value: addy,
                 }))}
