@@ -56,11 +56,11 @@ const Modal = ({ actions, children, size, title, show, closeModal }: ModalType) 
         </Toolbar>
       </MuiAppBar>
       {title && <DialogTitle id={title || "slyderz-modal-title"} sx={{ fontWeight: 'bold' }}>{title}</DialogTitle>}
-      <DialogContent sx={{ minHeight: '500px'}}>
+      <DialogContent sx={{ minHeight: '300px' }}>
         {children}
       </DialogContent>
       {actions && (
-        <DialogActions>
+        <DialogActions sx={{ mb: 2, mr: 2 }}>
           {actions}
         </DialogActions>
       )}

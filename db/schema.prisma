@@ -7,7 +7,7 @@ datasource db {
 }
 
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 // --------------------------------------
@@ -16,6 +16,20 @@ enum RoleType {
   ADMIN
   CHEF
   USER
+}
+
+model Address {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  address1  String
+  address2  String?
+  city      String
+  state     String
+  zipcode   String
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @unique
 }
 
 model User {
@@ -29,6 +43,7 @@ model User {
   stripeCustomerId String   @unique
   role             RoleType @default(USER)
 
+  address  Address?
   tokens   Token[]
   sessions Session[]
   chef     Chef?
@@ -71,19 +86,19 @@ enum TokenType {
 
 // Chef section
 model Chef {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  stripeAccountId String
-  isOnboardingComplete Boolean @default(false)
+  id                   Int      @id @default(autoincrement())
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  stripeAccountId      String
+  isOnboardingComplete Boolean  @default(false)
 
-  user     User      @relation(fields: [userId], references: [id])
-  userId   Int
-  orders   Order[]
+  user       User         @relation(fields: [userId], references: [id])
+  userId     Int
+  orders     Order[]
   orderItems OrderItems[]
-  dishes   Dish[]
-  sections Section[]
-  hours    Hours[]
+  dishes     Dish[]
+  sections   Section[]
+  hours      Hours[]
 
   @@unique([userId])
 }
@@ -99,12 +114,12 @@ enum DaysOfWeekTypeEnum {
 }
 
 model Hours {
-  id                 Int      @id @default(autoincrement())
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-  daysOfWeek         DaysOfWeekTypeEnum[]
-  startTime          String?
-  endTime            String?
+  id         Int                  @id @default(autoincrement())
+  createdAt  DateTime             @default(now())
+  updatedAt  DateTime             @updatedAt
+  daysOfWeek DaysOfWeekTypeEnum[]
+  startTime  String?
+  endTime    String?
 
   chef   Chef @relation(fields: [chefId], references: [id])
   chefId Int
@@ -131,11 +146,11 @@ model Dish {
   name        String
   price       Decimal  @db.Decimal(5, 2)
 
-  section   Section @relation(fields: [sectionId], references: [id])
-  sectionId Int
-  chef      Chef    @relation(fields: [chefId], references: [id])
-  chefId    Int
-  orderItems      OrderItems[]
+  section    Section      @relation(fields: [sectionId], references: [id])
+  sectionId  Int
+  chef       Chef         @relation(fields: [chefId], references: [id])
+  chefId     Int
+  orderItems OrderItems[]
 
   @@unique([name, chefId])
 }
@@ -148,17 +163,17 @@ enum OrderStatus {
 }
 
 model OrderItems {
-  id                 Int         @id @default(autoincrement())
-  createdAt          DateTime    @default(now())
-  updatedAt          DateTime    @updatedAt
-  quantity             Int
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  quantity  Int
 
-  dish      Dish    @relation(fields: [dishId], references: [id])
-  dishId    Int
-  order   Order   @relation(fields: [orderId], references: [id])
+  dish    Dish  @relation(fields: [dishId], references: [id])
+  dishId  Int
+  order   Order @relation(fields: [orderId], references: [id])
   orderId Int
-  chef   Chef   @relation(fields: [chefId], references: [id])
-  chefId Int
+  chef    Chef  @relation(fields: [chefId], references: [id])
+  chefId  Int
 }
 
 model Order {
@@ -167,14 +182,14 @@ model Order {
   updatedAt          DateTime    @updatedAt
   amount             Int
   confirmationNumber String      @unique
-  paymentMethodId String
-  eventDate DateTime
-  eventTime String
+  paymentMethodId    String
+  eventDate          DateTime
+  eventTime          String
   orderStatus        OrderStatus @default(PENDING)
 
-  user   User   @relation(fields: [userId], references: [id])
+  user   User         @relation(fields: [userId], references: [id])
   userId Int
-  chef   Chef   @relation(fields: [chefId], references: [id])
+  chef   Chef         @relation(fields: [chefId], references: [id])
   chefId Int
   dishes OrderItems[]
 }

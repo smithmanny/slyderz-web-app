@@ -8,7 +8,7 @@ import Box from "app/core/components/shared/Box";
 import Button from "app/core/components/shared/Button";
 import Typography from "app/core/components/shared/Typography";
 
-import { StripePaymentType } from "integrations/redux/reducers/paymentMethods";
+import { StripePaymentType } from "integrations/redux/reducers/userReduer";
 interface StripeSavedCardsType {
   paymentMethods: Array<StripePaymentType>
 }

@@ -12,6 +12,11 @@ import { useSnackbar } from 'notistack'
 import Button from "../shared/Button";
 import Grid from "../shared/Grid";
 
+type FormMutationType = {
+  schema: any
+  toVariables: (object) => void
+}
+
 export interface FormProps<S extends z.ZodType<any, any>>
   extends Omit<PropsWithoutRef<JSX.IntrinsicElements["form"]>, "onSubmit"> {
   /** All your form fields */
@@ -21,7 +26,7 @@ export interface FormProps<S extends z.ZodType<any, any>>
   schema?: S;
   onSubmit?: FinalFormProps<z.infer<S>>["onSubmit"];
   initialValues?: FinalFormProps<z.infer<S>>["initialValues"];
-  mutation?: any;
+  mutation?: FormMutationType;
   toVariables?: Function;
   onSuccess?: Function;
 }
@@ -38,13 +43,15 @@ export function Form<S extends z.ZodType<any, any>>({
   ...props
 }: FormProps<S>) {
   const { enqueueSnackbar } = useSnackbar()
-  const _handleSubmit = (values, formApi, cb) => {
-    async function handleMutation(variables) {
+  const _handleSubmit = async(values, formApi, cb) => {
+    if (mutation && mutation.toVariables) {
+      const variables = mutation.toVariables(values);
+
       try {
-        await mutation.schema(variables);
+        const data = await mutation.schema(variables);
 
         if (typeof onSuccess === "function") {
-          return onSuccess(variables);
+          return onSuccess(data);
         }
       } catch (error) {
         console.log(`Error submitting form ${JSON.stringify(error)}`);
@@ -58,11 +65,6 @@ export function Form<S extends z.ZodType<any, any>>({
           return { [FORM_ERROR]: error.toString() };
         }
       }
-    }
-
-    if (mutation && mutation.toVariables) {
-      const variables = mutation.toVariables(values);
-      return handleMutation(variables);
     }
 
     if (typeof onSubmit === "function") {

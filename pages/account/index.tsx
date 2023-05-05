@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useRouter } from "next/router";
 import { gSSP } from "app/blitz-server";
 import { useMutation } from "@blitzjs/rpc";
@@ -9,8 +9,7 @@ import loginMutation from "app/auth/mutations/login";
 import deleteAccountMutation from "app/account/mutations/deleteAccountMutation";
 import { Login } from "app/auth/validations";
 import { useCurrentUser } from "app/core/hooks/useCurrentUser";
-import { useAppSelector, useAppDispatch } from "integrations/redux";
-import { fetchStripePayments } from "integrations/redux/reducers/paymentMethods";
+import { useAppSelector } from "integrations/redux";
 
 import Layout from "app/core/layouts/Layout";
 import Button from "app/core/components/shared/Button";
@@ -40,7 +39,6 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
 const Account: BlitzPage<any> = (props) => {
   const router = useRouter();
   const user = useCurrentUser();
-  const dispatch = useAppDispatch()
   // TODO: Fix updating password
   const [login] = useMutation(loginMutation);
   const [deleteAccount] = useMutation(deleteAccountMutation, {
@@ -48,19 +46,13 @@ const Account: BlitzPage<any> = (props) => {
       return router.replace(Routes.Home());
     },
   });
-  const stripePaymentMethods = useAppSelector(state => state.paymentMethods.stripeCards)
+  const stripePaymentMethods = useAppSelector(state => state.user.stripeCards)
 
   const initialValues = {
     firstName: user?.firstName,
     lastName: user?.lastName,
     email: user?.email,
   };
-
-  useEffect(() => {
-    dispatch(fetchStripePayments())
-    .unwrap()
-    .catch(err => console.log("Failed fetching payments", err))
-  }, [dispatch])
 
   // useEffect(() => {
   //   if (!stripe) {

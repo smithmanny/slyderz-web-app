@@ -9,7 +9,7 @@ import { useAppSelector } from "integrations/redux";
 import { styled } from "integrations/material-ui";
 import CreateOrderMutation from "app/checkout/mutations/createOrderMutation";
 
-import Form, { Select, TextField } from "app/core/components/form";
+import Form, { Select } from "app/core/components/form";
 import Button from "app/core/components/shared/Button";
 import CartSummary from "app/core/components/cart/cartSummary";
 import Grid from "app/core/components/shared/Grid";
@@ -86,7 +86,9 @@ const CheckoutPage = ({
   const router = useRouter();
   const [processing, setProcessing] = useState(false);
   const [createOrder] = useMutation(CreateOrderMutation);
-  const stripePaymentMethods = useAppSelector(state => state.paymentMethods.stripeCards)
+  const stripePaymentMethods = useAppSelector(state => state.user.stripeCards)
+  const address = useAppSelector(state => state.user.address)
+  const isAddressEmpty = Object.keys(address).length === 0
 
   const handleSubmit = async (values) => {
     const orderBody = {
@@ -129,49 +131,51 @@ const CheckoutPage = ({
         onSubmit={handleSubmit}
         initialValues={{
           paymentMethod: stripePaymentMethods[0]?.id,
+          selectedAddress: address
         }}
       >
         <Grid item xs={12}>
-          <Typography sx={{ fontWeight: 'bold' }} variant="h6">
-            Address
-          </Typography>
+          {!isAddressEmpty ?
+          (
+            <>
+              <Typography sx={{ fontWeight: 'bold' }} variant="h6" gutterBottom>
+                Location Info
+              </Typography>
+              <Select
+                label="Select event address"
+                name="selectedAddress"
+                items={[address].map((addy) => ({
+                  key: addy.address1,
+                  value: addy,
+                }))}
+                variant="outlined"
+                md={12}
+                required
+              />
+            </>
+          )
+          :
+          (
+            <>
+              <Typography sx={{ fontWeight: 'bold' }} variant="h6">
+                Address
+              </Typography>
 
-          <Button
-            label="Add address"
-            onClick={e => {
-              e.preventDefault()
-              e.stopPropagation();
-              openAddressModal()
-            }}
-          >
-            Add Address
-          </Button>
+              <Button
+                label="Add address"
+                variant="outlined"
+                onClick={e => {
+                  e.preventDefault()
+                  e.stopPropagation();
+                  openAddressModal()
+                }}
+              >
+                Add Address
+              </Button>
+            </>
+          )
+        }
         </Grid>
-        {/* <TextField
-          name="address1"
-          label="Street name"
-        />
-        <TextField
-          name="address2"
-          label="Address cont..."
-        />
-        <TextField
-          name="city"
-          md={6}
-          label="City"
-        />
-        <TextField
-          name="state"
-          md={6}
-          disabled
-          label="State"
-          value="Georgia"
-        />
-        <TextField
-          name="zipcode"
-          md={6}
-          label="Zipcode"
-        /> */}
 
         <Grid item xs={12}>
           <Typography sx={{ fontWeight: 'bold' }} variant="h6">

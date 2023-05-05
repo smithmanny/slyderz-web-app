@@ -1,12 +1,12 @@
-import { combineReducers, configureStore, createAsyncThunk } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import type { TypedUseSelectorHook } from "react-redux"
 
 import modals from "./reducers/modalReducer";
-import paymentMethods from "./reducers/paymentMethods";
+import user from "./reducers/userReduer";
 
 const store = configureStore({
-  reducer: combineReducers({ modals, paymentMethods }),
+  reducer: combineReducers({ modals, user }),
 });
 
 export type RootState = ReturnType<typeof store.getState>

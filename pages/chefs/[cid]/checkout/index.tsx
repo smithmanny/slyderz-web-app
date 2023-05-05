@@ -1,9 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { gSSP } from "app/blitz-server";
 import { BlitzPage } from "@blitzjs/next";
-
-import { fetchStripePayments } from "integrations/redux/reducers/paymentMethods";
-import { useAppDispatch } from "integrations/redux";
 
 import Layout from "app/core/layouts/Layout";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
@@ -56,17 +53,9 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
 const Checkout: BlitzPage = (props: any) => {
   const { cart, cid, eventDate, eventTime, userId }: CheckoutTypes = props;
   const isCartEmpty = !cart?.pendingCartItems || !cart?.total
-  const dispatch = useAppDispatch()
   const [showAddressModal, setShowAddressModal] = useState(false);
   const closeAddressModal = useCallback(() => setShowAddressModal(false), [])
   const openAddressModal = useCallback(() => setShowAddressModal(true), [])
-  console.log("CHECKOUT_INDEX_REFRESH")
-
-  useEffect(() => {
-    dispatch(fetchStripePayments())
-    .unwrap()
-    .catch(err => console.log("Failed fetching payments", err))
-  }, [dispatch])
 
   return (
     <ConsumerContainer>

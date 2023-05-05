@@ -1,4 +1,5 @@
-import { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
+import { useSession } from "@blitzjs/auth"
 import { Roboto_Serif } from "next/font/google";
 import { AuthenticationError, AuthorizationError } from "blitz";
 import { withBlitz } from "app/blitz-client";
@@ -16,11 +17,14 @@ import { SnackbarProvider } from 'notistack'
 
 import store from "integrations/redux";
 import { theme } from "integrations/material-ui";
-import "app/styles/base.css";
+import { useAppDispatch } from "integrations/redux";
+import { fetchUserData } from "integrations/redux/reducers/userReduer";
 
 import LoginForm from "app/auth/components/LoginForm";
 import Box from "app/core/components/shared/Box";
 import CircularProgress from "app/core/components/shared/CircularProgress";
+
+import "app/styles/base.css";
 
 const roboto = Roboto_Serif({ subsets: ["latin"] });
 
@@ -40,12 +44,29 @@ function LoadingIcon() {
   );
 }
 
+function SlyderzWrapper({ children }) {
+  const session = useSession()
+  const dispatch = useAppDispatch()
+  const userId = session.userId
+
+   useEffect(() => {
+    if (userId) {
+      dispatch(fetchUserData())
+       .unwrap()
+       .catch(err => console.log("Failed fetching initial data", err))
+    }
+
+  }, [userId, dispatch])
+  return children
+}
+
 export default withBlitz(function App({ Component, pageProps }: AppProps) {
   const getLayout = Component.getLayout || ((page) => page);
   pageProps = {
     ...pageProps,
     className: roboto.className,
   };
+
   return (
     <Provider store={store}>
       <SnackbarProvider
@@ -62,7 +83,9 @@ export default withBlitz(function App({ Component, pageProps }: AppProps) {
             onReset={useQueryErrorResetBoundary().reset}
           >
             <Suspense fallback={<LoadingIcon />}>
-              {getLayout(<Component {...pageProps} />)}
+              <SlyderzWrapper>
+                {getLayout(<Component {...pageProps} />)}
+              </SlyderzWrapper>
             </Suspense>
           </ErrorBoundary>
         </ThemeProvider>
