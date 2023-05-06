@@ -1,7 +1,17 @@
 import { Routes } from "@blitzjs/next";
 import AddIcon from "@mui/icons-material/Add";
 
-export const loggedOutRoutes = [
+interface LoggedOutRouteType {
+  id: number
+  icon: any
+  name: string
+  route: any
+}
+
+interface LoggedInRouteType extends Partial<LoggedOutRouteType> {}
+interface OnboarderdRouteType extends LoggedInRouteType {}
+
+export const loggedOutRoutes: Array<LoggedOutRouteType> = [
   {
     id: 0,
     icon: AddIcon,
@@ -15,7 +25,7 @@ export const loggedOutRoutes = [
     route: Routes.SignupPage(),
   },
 ];
-export const loggedInRoutes = [
+export const loggedInRoutes: Array<LoggedInRouteType> = [
   {
     id: 0,
     name: "Account",
@@ -27,7 +37,7 @@ export const loggedInRoutes = [
     route: Routes.Host(),
   },
 ];
-export const onboardedRoutes = [
+export const onboardedRoutes: Array<OnboarderdRouteType> = [
   {
     id: 0,
     name: "Account",

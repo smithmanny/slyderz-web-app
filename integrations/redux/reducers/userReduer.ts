@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from '@reduxjs/toolkit'
 import createAsyncThunk from "../useCreateAppAsyncThunk";
 
-export const createAppAsyncThunk:any = createAsyncThunk()
+const createAppAsyncThunk = createAsyncThunk()
 
 export interface StripePaymentType {
   id: string
@@ -19,7 +19,7 @@ export type AddAddressType = {
   zipcode: number
 }
 
-type ChefType = {
+export type ChefType = {
   isChef: boolean
   isChefProfileComplete: boolean
 }
@@ -27,12 +27,16 @@ type ChefType = {
 interface InitialStateType {
   address: {} | AddAddressType
   stripeCards: Array<StripePaymentType>
-  chef: null | ChefType
+  chef: ChefType
 }
 
 type FetchUserDataType = {
   paymentMethods: Array<StripePaymentType>
   address: AddAddressType
+  chefStatus: {
+    isChef: boolean
+    isChefProfileComplete: boolean
+  }
 }
 export const fetchUserData = createAppAsyncThunk(
   'user/fetchUserData',
@@ -50,7 +54,10 @@ export const fetchUserData = createAppAsyncThunk(
 const initialState: InitialStateType = {
   address: {},
   stripeCards: [],
-  chef: null,
+  chef: {
+    isChef: false,
+    isChefProfileComplete: false
+  },
 }
 
 const userSlice = createSlice({
@@ -71,6 +78,11 @@ const userSlice = createSlice({
       if (action.payload) {
         state.stripeCards = action.payload.paymentMethods
         state.address = action.payload.address
+
+        if (action.payload.chefStatus.isChef) {
+          state.chef.isChef = action.payload.chefStatus.isChef
+          state.chef.isChefProfileComplete = action.payload.chefStatus.isChefProfileComplete
+        }
       }
     })
   }

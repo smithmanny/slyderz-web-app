@@ -6,6 +6,7 @@ import Stack from "@mui/material/Stack";
 import PersonIcon from "@mui/icons-material/Person";
 import Toolbar from "@mui/material/Toolbar";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
+import { useAppSelector } from "integrations/redux";
 import { default as MuiAppBar } from "@mui/material/AppBar";
 
 import Box from "app/core/components/shared/Box";
@@ -38,6 +39,7 @@ function ElevationScroll(props) {
 
 const Appbar = (props) => {
   const [accountAnchorEl, setAccountAnchorEl] = useState(null);
+  const chef = useAppSelector(state => state.user.chef)
   const isAccountOpen = Boolean(accountAnchorEl);
   const accountId = isAccountOpen ? "account-popover" : null;
 
@@ -80,9 +82,11 @@ const Appbar = (props) => {
                 </Link>
 
                 <Stack direction="row" spacing={2} alignItems="center">
-                  {/* <Button label="chef dashboard" variant="text">
-                    <Typography sx={{ color: "black", fontWeight: 600 }}>Your Dashboard</Typography>
-                  </Button> */}
+                  {chef.isChefProfileComplete && (
+                    <Button label="chef dashboard" variant="text">
+                      <Typography sx={{ color: "black", fontWeight: 600 }}>Your Dashboard</Typography>
+                    </Button>
+                  )}
                   <IconButton
                     aria-label="cart"
                     disableRipple
@@ -97,6 +101,7 @@ const Appbar = (props) => {
                     open={isAccountOpen}
                     onClose={closeAccountModal}
                     anchorEl={accountAnchorEl}
+                    chef={chef}
                   />
                 </Stack>
               </Box>

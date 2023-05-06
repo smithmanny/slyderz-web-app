@@ -1,23 +1,29 @@
 import { useRouter } from "next/router";
 import { useSession } from "@blitzjs/auth";
-import { useMutation, useQuery } from "@blitzjs/rpc";
+import { useMutation } from "@blitzjs/rpc";
 import PropTypes from "prop-types";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import PersonIcon from "@mui/icons-material/Person";
 
 import logoutMutation from 'app/auth/mutations/logout';
-import isChefOnboardedQuery from 'app/chefs/queries/isChefOnboarded'
 import Popover from "app/core/components/shared/Popover";
 import { loggedInRoutes, loggedOutRoutes, onboardedRoutes } from "./routes";
+import { ChefType } from "integrations/redux/reducers/userReduer";
 
-const AccountPopover = (props) => {
+interface AccountPopver {
+  id: string | null
+  open: boolean
+  onClose: () => void
+  anchorEl: any
+  chef: ChefType
+}
+
+const AccountPopover = (props: AccountPopver) => {
+  const { chef, onClose, ...rest } = props
   const [logout] = useMutation(logoutMutation);
-  // TODO: Only load if user role is set to chef
-  const [isChefOnboarded] = useQuery(isChefOnboardedQuery)
   const router = useRouter();
   const session = useSession()
 
@@ -28,25 +34,29 @@ const AccountPopover = (props) => {
       chefOnboarded: onboardedRoutes,
     }
 
-    if (session.userId && !isChefOnboarded) {
+    if (session.userId && !chef.isChef) {
       return routes.loggedIn
     }
 
-    if (session.userId && isChefOnboarded) {
+    if (session.userId && chef.isChefProfileComplete) {
       return routes.chefOnboarded
     }
 
     return routes.loggedOut
   }
 
-  const handlePopoverClick = (route) => {
-    router.push(route)
-    props.onClose();
+  const handlePopoverClick = async(route) => {
+    await router.push(route)
+    onClose();
   }
 
   const routes = fetchListItems()
   return (
-    <Popover {...props}>
+    <Popover
+      onClose={onClose}
+      name="slyderz-account-popover"
+      {...rest}
+    >
       <List
         sx={{
           width: 225

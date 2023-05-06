@@ -36,10 +36,35 @@ async function getAddress() {
   return user.address
 }
 
+async function getChefStatus(session) {
+  const userId = session.userId;
+
+  const chef = await db.chef.findFirst({
+    where: { userId: userId },
+    select: {
+      isOnboardingComplete: true,
+    },
+  });
+
+  if (!chef) {
+    return { isChef: false, isChefProfileComplete: false }
+  }
+
+  if (!!chef.isOnboardingComplete) {
+    return { isChef: true, isChefProfileComplete: true }
+  } else {
+    return { isChef: true, isChefProfileComplete: false }
+  }
+}
+
 const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
   const { session } = ctx;
   const stripePayments = getStripePayments(session)
-  const [paymentMethods, address] = await Promise.all([stripePayments, getAddress()])
+  const userAddress = getAddress()
+  const chefStatus = getChefStatus(session)
+  const [paymentMethods, address, checkUserChefStatus] = await Promise.all([
+    stripePayments, userAddress, chefStatus
+  ])
 
   res.statusCode = 200;
   res.setHeader("Content-Type", "application/json");
@@ -47,6 +72,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
     JSON.stringify({
       address,
       paymentMethods: paymentMethods.data,
+      chefStatus: checkUserChefStatus
     })
   );
 };
