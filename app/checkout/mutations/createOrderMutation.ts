@@ -1,5 +1,6 @@
 import { Ctx } from "blitz";
 import randomstring from "randomstring";
+import { Prisma } from '@prisma/client'
 
 import { readableDate } from "app/utils/dateHelpers";
 import sendSesEmail from "emails/utils/sendSesEmail";
@@ -10,8 +11,22 @@ import {
   CONSUMER_SERVICE_FEE,
 } from "types";
 
-export default async function CreateOrderMutation(input: any, ctx: Ctx) {
-  const { eventDate, eventTime, paymentMethodId } = input;
+interface LocationType {
+  address1: string
+  address2: string
+  state: string
+  city: string
+  zipcode: string
+}
+interface InputType {
+  address: LocationType
+  eventDate: Date;
+  eventTime: string;
+  paymentMethodId: string;
+}
+
+export default async function CreateOrderMutation(input: InputType, ctx: Ctx) {
+  const { address, eventDate, eventTime, paymentMethodId } = input;
   let order;
 
   await db.$transaction(async (db) => {
@@ -35,6 +50,11 @@ export default async function CreateOrderMutation(input: any, ctx: Ctx) {
         amount: Number(ctx.session.cart?.total),
         chefId: ctx.session.cart.pendingCartItems[0].chefId,
         confirmationNumber,
+        address1: address.address1,
+        address2: address.address2,
+        state: address.state,
+        city: address.city,
+        zipcode: address.zipcode,
         eventDate,
         eventTime,
         dishes: {
@@ -54,6 +74,11 @@ export default async function CreateOrderMutation(input: any, ctx: Ctx) {
         dishes: true,
         confirmationNumber: true,
         id: true,
+        address1: true,
+        address2: true,
+        state: true,
+        city: true,
+        zipcode: true,
         chef: {
           select: {
             user: {
@@ -78,6 +103,7 @@ export default async function CreateOrderMutation(input: any, ctx: Ctx) {
       const denyUrl = `${process.env.NEXT_PUBLIC_URL}/orders/${order.confirmationNumber}/deny`;
       const consumerServiceFee = order.amount * CONSUMER_SERVICE_FEE;
       const chefServiceFee = order.amount * CHEF_SERVICE_FEE;
+      const address = `${order.address1} ${order.city}, ${order.state} ${order.zipcode}`
       const customerEmailParams = {
           to: "contact@slyderz.co", //TODO: swap out with customer email
           type: TRANSACTIONAL_EMAILS.newOrderConsumer,
@@ -85,7 +111,7 @@ export default async function CreateOrderMutation(input: any, ctx: Ctx) {
             orderNumber: order.confirmationNumber,
             orderDate: readableDate(date),
             orderTime: eventTime,
-            orderLocation: "",
+            orderLocation: address,
             orderSubtotal: order.amount,
             orderServiceFee: consumerServiceFee,
             orderTotal: order.amount + consumerServiceFee,
@@ -101,7 +127,7 @@ export default async function CreateOrderMutation(input: any, ctx: Ctx) {
             orderNumber: order.confirmationNumber,
             orderDate: readableDate(date),
             orderTime: eventTime,
-            orderLocation: "",
+            orderLocation: address,
             orderSubtotal: order.amount,
             orderServiceFee: chefServiceFee,
             orderTotal: order.amount + chefServiceFee,

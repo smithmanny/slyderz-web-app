@@ -183,6 +183,11 @@ model Order {
   amount             Int
   confirmationNumber String      @unique
   paymentMethodId    String
+  address1           String
+  address2           String?
+  city               String
+  state              String
+  zipcode            String
   eventDate          DateTime
   eventTime          String
   orderStatus        OrderStatus @default(PENDING)

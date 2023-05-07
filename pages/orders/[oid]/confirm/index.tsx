@@ -39,6 +39,11 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
     select: {
       amount: true,
       confirmationNumber: true,
+      address1: true,
+      address2: true,
+      state: true,
+      city: true,
+      zipcode: true,
       eventDate: true,
       eventTime: true,
       id: true,
@@ -133,6 +138,7 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
   });
 
   const eventDate = new Date(order.eventDate);
+  const address = `${order.address1} ${order.city}, ${order.state} ${order.zipcode}`
 
   await sendSesEmail({
     to: "contact@slyderz.co",
@@ -141,7 +147,7 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
       orderNumber: order.confirmationNumber,
       orderDate: readableDate(eventDate),
       orderTime: order.eventTime,
-      orderLocation: "",
+      orderLocation: address,
       orderSubtotal: order.amount,
       orderServiceFee: consumerServiceFee,
       orderTotal: order.amount + consumerServiceFee,

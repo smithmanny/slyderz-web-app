@@ -69,7 +69,7 @@ export const weekdays = [
   },
 ];
 
-export const convertDayToInt = (day: string) => {
+export const convertDayToInt = (day: string): number => {
   const daysOfWeek = {
     SUNDAY: 0,
     MONDAY: 1,

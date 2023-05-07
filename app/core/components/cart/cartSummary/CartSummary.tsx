@@ -28,9 +28,9 @@ const CartItemsContainer = (props) => {
   const formState = useFormState()
   const [createCart] = useMutation(createCartMutation);
   const time = [...todAM, ...todPM]
-  const selectedEventDate = formState.values?.eventDate
-  const selectedDayOfWeek = selectedEventDate?.getDay()
-  const orderServiceFee = props.total * CONSUMER_SERVICE_FEE
+  const selectedEventDate: Date = formState.values?.eventDate
+  const selectedDayOfWeek: number = selectedEventDate?.getDay()
+  const orderServiceFee: number = props.total * CONSUMER_SERVICE_FEE
   let startTime
   let startTimeIndex
   let endTime
@@ -38,8 +38,8 @@ const CartItemsContainer = (props) => {
   let availableTime
 
   const disableDaysOff = (date) => {
-    const daysOfWeek = [0, 1, 2, 3, 4, 5, 6]
-    const workingDays = []
+    const daysOfWeek: Array<number> = [0, 1, 2, 3, 4, 5, 6]
+    const workingDays: Array<number> = []
 
     props.hours.map(hourBlock => hourBlock.daysOfWeek.map(day => {
       const matchedDay = convertDayToInt(day)
@@ -120,10 +120,14 @@ const CartItemsContainer = (props) => {
             </Typography>
           {(props.buttonText && !props.isCheckoutPage) && (
             <Button
+              label="Add to cart"
               variant="contained"
               color="primary"
               size="large"
-              onClick={async() => {
+              onClick={async(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+
                 if (!props.userId) return enqueueSnackbar("Please log in", { variant: "error" })
 
                 try {
@@ -132,7 +136,7 @@ const CartItemsContainer = (props) => {
                     eventTime: formState.values?.eventTime
                   })
 
-                  props.router.push(Routes.Checkout({ cid: props.chefId }))
+                  await props.router.push(Routes.Checkout({ cid: props.chefId }))
                 } catch(err) {
                   console.log('Failed to create cart', err)
                 }

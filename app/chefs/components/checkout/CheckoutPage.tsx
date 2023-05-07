@@ -12,16 +12,11 @@ import { AddAddressType } from "integrations/redux/reducers/userReduer";
 
 import Form, { Select } from "app/core/components/form";
 import Button from "app/core/components/shared/Button";
+import Box from "app/core/components/shared/Box";
 import CartSummary from "app/core/components/cart/cartSummary";
 import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
 import StripeCardElement from "app/stripe/components/StripeCardElement";
-
-const Section = styled("div")(({ theme }) => ({
-  alignItems: "center",
-  display: "flex",
-  marginBottom: theme.spacing(2),
-}));
 
 const Spinner = styled("div")({
   "&:before": {
@@ -73,9 +68,17 @@ const Spinner = styled("div")({
 interface CheckoutPageTypes {
   chefId: string;
   eventDate: Date;
-  eventTime: Date;
+  eventTime: string;
   userId: Number;
   openAddressModal: () => void
+}
+
+interface LocationType {
+  address1: string
+  address2: string
+  state: string
+  city: string
+  zipcode: string
 }
 
 const CheckoutPage = ({
@@ -92,7 +95,9 @@ const CheckoutPage = ({
   const isAddressEmpty = Object.keys(address).length === 0
 
   const handleSubmit = async (values) => {
+    const location: LocationType = values.selectedAddress
     const orderBody = {
+      address: location,
       eventDate,
       eventTime,
       paymentMethodId: values?.paymentMethod,
@@ -114,7 +119,13 @@ const CheckoutPage = ({
 
   const renderLeftContainer = () => (
     <React.Fragment>
-      <Section>
+      <Box
+        sx={{
+          alignItems: "center",
+          display: "flex",
+          marginBottom: 2,
+        }}
+      >
         <Link href={`/chefs/${chefId}`}>
           <Button
             label="go-back"
@@ -127,8 +138,9 @@ const CheckoutPage = ({
             <ArrowBack />
           </Button>
         </Link>
-      </Section>
+      </Box>
       <Form
+        id="slyderz-checkout-form"
         onSubmit={handleSubmit}
         initialValues={{
           paymentMethod: stripePaymentMethods[0]?.id,
@@ -222,6 +234,8 @@ const CheckoutPage = ({
         <Button
             disabled={processing || !stripePaymentMethods[0]?.id}
             label="pay-now"
+            type="submit"
+            form="slyderz-checkout-form"
             sx={{
               background: "#5469d4",
               fontFamily: "Arial, sans-serif",

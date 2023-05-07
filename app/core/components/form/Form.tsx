@@ -43,7 +43,8 @@ export function Form<S extends z.ZodType<any, any>>({
   ...props
 }: FormProps<S>) {
   const { enqueueSnackbar } = useSnackbar()
-  const _handleSubmit = async(values, formApi, cb) => {
+  async function _handleSubmit(values, formApi, cb) {
+    console.log("FORM DIDN'T ON_SUBMIT RAN")
     if (mutation && mutation.toVariables) {
       const variables = mutation.toVariables(values);
 
@@ -66,8 +67,9 @@ export function Form<S extends z.ZodType<any, any>>({
         }
       }
     }
-
+    console.log("FORM DIDN'T ON_SUBMIT RAN")
     if (typeof onSubmit === "function") {
+      console.log("FORM ON_SUBMIT RAN")
       return onSubmit(values, formApi, cb);
     }
   };
