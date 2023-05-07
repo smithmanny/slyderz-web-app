@@ -12,7 +12,7 @@ interface CheckoutTypes {
   cart: any
   cid: string
   eventDate: Date;
-  eventTime: Date;
+  eventTime: string;
   paymentIntent: any;
   setupIntentId: Number;
   userId: Number;
