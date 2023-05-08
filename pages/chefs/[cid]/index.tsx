@@ -43,7 +43,9 @@ export const ChefPage = (props) => {
   };
 
   const { cid } = router.query;
-  const [dishes] = useQuery(ChefDishesQuery, { chefId: Number(cid) });
+  const [data, { isLoading }] = useQuery(ChefDishesQuery, { chefId: Number(cid) });
+
+  if (isLoading) return null
 
   return (
     <ConsumerContainer>
@@ -95,12 +97,12 @@ export const ChefPage = (props) => {
             <CartSummary
               buttonText="Checkout"
               chefId={cid}
-              dishes={dishes}
+              dishes={data.dishes}
             />
           </Grid>
           <Grid item xs>
             <TabPanel value={value} index={0}>
-              <Menu dishes={dishes} />
+              <Menu dishes={data.dishes} />
             </TabPanel>
             <TabPanel value={value} index={1}>
               Item Two
@@ -112,6 +114,6 @@ export const ChefPage = (props) => {
   );
 };
 
-ChefPage.getLayout = (page) => <Layout title="Dashboard">{page}</Layout>;
+ChefPage.getLayout = (page) => <Layout>{page}</Layout>;
 
 export default ChefPage;

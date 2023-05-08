@@ -1,4 +1,6 @@
 import React, { useState, useCallback } from "react";
+import { useRouter } from "next/router";
+import { Routes } from "@blitzjs/next";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import IconButton from "@mui/material/IconButton";
@@ -42,13 +44,19 @@ const Appbar = (props) => {
   const chef = useAppSelector(state => state.user.chef)
   const isAccountOpen = Boolean(accountAnchorEl);
   const accountId = isAccountOpen ? "account-popover" : null;
+  const router = useRouter()
 
   const closeAccountModal = useCallback(() => {
     setAccountAnchorEl(null);
   }, []);
+
   const handleAccountModalClick = (event) => {
     setAccountAnchorEl(event.currentTarget);
   };
+
+  const navigateToDashboard = useCallback(async() => {
+    await router.push(Routes.Dashboard())
+  }, [router])
 
   return (
     <>
@@ -83,7 +91,11 @@ const Appbar = (props) => {
 
                 <Stack direction="row" spacing={2} alignItems="center">
                   {chef.isChefProfileComplete && (
-                    <Button label="chef dashboard" variant="text">
+                    <Button
+                      label="chef dashboard"
+                      variant="text"
+                      onClick={navigateToDashboard}
+                    >
                       <Typography sx={{ color: "black", fontWeight: 600 }}>Your Dashboard</Typography>
                     </Button>
                   )}
