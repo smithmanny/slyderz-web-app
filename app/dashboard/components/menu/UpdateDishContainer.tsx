@@ -34,6 +34,7 @@ const UpdateDishContainer = (props) => {
     description: dish.description,
     name: dish.name,
     price: dish.price,
+    selectedDishId,
   };
 
   const goBackFunc = () => {
@@ -49,7 +50,6 @@ const UpdateDishContainer = (props) => {
           submitText="Update Dish"
           sectionId={selectedSection.id}
           setCurrentView={setCurrentView}
-          selectedDishId={selectedDishId}
         />
       </Grid>
     </MenuLayout>

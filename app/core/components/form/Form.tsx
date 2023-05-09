@@ -1,21 +1,19 @@
 import { ReactNode, PropsWithoutRef } from "react";
 import { AuthenticationError, validateZodSchema } from "blitz";
-import PropTypes from "prop-types";
 import {
   Form as FinalForm,
   FormProps as FinalFormProps,
 } from "react-final-form";
 import { FORM_ERROR } from "final-form";
 import * as z from "zod";
-import { useSnackbar } from 'notistack'
 
 import Button from "../shared/Button";
 import Grid from "../shared/Grid";
 
 type FormMutationType = {
-  schema: any
-  toVariables: (object) => void
-}
+  schema: any;
+  toVariables: (object) => void;
+};
 
 export interface FormProps<S extends z.ZodType<any, any>>
   extends Omit<PropsWithoutRef<JSX.IntrinsicElements["form"]>, "onSubmit"> {
@@ -42,9 +40,7 @@ export function Form<S extends z.ZodType<any, any>>({
   onSuccess,
   ...props
 }: FormProps<S>) {
-  const { enqueueSnackbar } = useSnackbar()
   async function _handleSubmit(values, formApi, cb) {
-    console.log("FORM DIDN'T ON_SUBMIT RAN")
     if (mutation && mutation.toVariables) {
       const variables = mutation.toVariables(values);
 
@@ -67,12 +63,11 @@ export function Form<S extends z.ZodType<any, any>>({
         }
       }
     }
-    console.log("FORM DIDN'T ON_SUBMIT RAN")
+
     if (typeof onSubmit === "function") {
-      console.log("FORM ON_SUBMIT RAN")
       return onSubmit(values, formApi, cb);
     }
-  };
+  }
 
   return (
     <FinalForm
@@ -107,20 +102,5 @@ export function Form<S extends z.ZodType<any, any>>({
     />
   );
 }
-
-Form.defaultProps = {
-  mutation: {},
-  onSuccess: () => {},
-};
-
-Form.propTypes = {
-  submitText: PropTypes.string,
-  children: PropTypes.any.isRequired,
-  mutation: PropTypes.shape({
-    schema: PropTypes.any,
-    toVariables: PropTypes.func,
-  }),
-  onSuccess: PropTypes.func,
-};
 
 export default Form;
