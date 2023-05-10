@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect } from "react";
-import { useSession } from "@blitzjs/auth"
+import { useSession } from "@blitzjs/auth";
 import { Roboto_Serif } from "next/font/google";
 import { AuthenticationError, AuthorizationError } from "blitz";
 import { withBlitz } from "app/blitz-client";
@@ -13,7 +13,7 @@ import {
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Provider } from "react-redux";
-import { SnackbarProvider } from 'notistack'
+import { SnackbarProvider } from "notistack";
 
 import store from "integrations/redux";
 import { theme } from "integrations/material-ui";
@@ -45,34 +45,29 @@ function LoadingIcon() {
 }
 
 function SlyderzWrapper({ children }) {
-  const session = useSession()
-  const dispatch = useAppDispatch()
-  const userId = session.userId
+  const session = useSession();
+  const dispatch = useAppDispatch();
+  const userId = session.userId;
 
-   useEffect(() => {
+  useEffect(() => {
     if (userId) {
       dispatch(fetchUserData())
-       .unwrap()
-       .catch(err => console.log("Failed fetching initial data", err))
+        .unwrap()
+        .catch((err) => console.log("Failed fetching initial data", err));
     }
-
-  }, [userId, dispatch])
-  return children
+  }, [userId, dispatch]);
+  return children;
 }
 
 export default withBlitz(function App({ Component, pageProps }: AppProps) {
   const getLayout = Component.getLayout || ((page) => page);
-  pageProps = {
-    ...pageProps,
-    className: roboto.className,
-  };
 
   return (
     <Provider store={store}>
       <SnackbarProvider
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
+          vertical: "bottom",
+          horizontal: "center",
         }}
         preventDuplicate={true}
       >
@@ -84,7 +79,11 @@ export default withBlitz(function App({ Component, pageProps }: AppProps) {
           >
             <Suspense fallback={<LoadingIcon />}>
               <SlyderzWrapper>
-                {getLayout(<Component {...pageProps} />)}
+                {getLayout(
+                  <div className={roboto.className}>
+                    <Component {...pageProps} />
+                  </div>
+                )}
               </SlyderzWrapper>
             </Suspense>
           </ErrorBoundary>

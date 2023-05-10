@@ -4,9 +4,9 @@ import db from "db";
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
-async function getStripePayments(session) {
-  const stripe = getStripeServer();
+const stripe = getStripeServer();
 
+async function getStripePayments(session) {
   const paymentMethods = await stripe.paymentMethods.list({
     customer: session.stripeCustomerId,
     type: "card",

@@ -8,7 +8,13 @@ interface ButtonType extends ButtonProps {
   buttonType?: string;
 }
 
-const Button: FC<ButtonType> = ({ children, buttonType, label, ...props }) => {
+const Button: FC<ButtonType> = ({
+  children,
+  buttonType,
+  label,
+  type,
+  ...props
+}) => {
   switch (buttonType) {
     case "icon":
       return (
@@ -19,13 +25,13 @@ const Button: FC<ButtonType> = ({ children, buttonType, label, ...props }) => {
     default:
       return (
         <MuiButton
-          {...props}
-          type={buttonType === "icon" ? "button" : "submit"}
+          type={type || "submit"}
           aria-label={label}
           sx={{
-            textTransform: 'none',
+            textTransform: "none",
             ...props.sx,
           }}
+          {...props}
         >
           {children}
         </MuiButton>

@@ -1,6 +1,8 @@
 import { api } from "app/blitz-server";
 import { NextApiRequest, NextApiResponse } from "next";
-import { v2 as cloudinary } from "cloudinary"
+import getCloudinary from "app/utils/getCloudinary";
+
+const cloudinary = getCloudinary()
 
 const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
   const { body } = req;

@@ -4,14 +4,16 @@ import { gSSP } from "app/blitz-server";
 import db from "db";
 import Layout from "app/core/layouts/Layout";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
-import CircularProgress from "app/core/components/shared/CircularProgress";
+import Typography from "app/core/components/shared/Typography";
 import { getStripeServer } from "app/utils/getStripe";
+import ChefOnboarded from "app/becomeAHost/components/ChefOnboarded";
+
+const stripe = getStripeServer();
 
 export const getServerSideProps = gSSP(async function getServerSideProps({
   ctx,
 }) {
   const session = ctx?.session;
-  const stripe = getStripeServer();
 
   if (!session.userId) {
     return {
@@ -37,25 +39,21 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
   });
 
   let stripeAccountUrl: string = "";
+  let isStripeOnboardingComplete: boolean = false;
 
   if (user.chef?.stripeAccountId) {
     const account = await stripe.accounts.retrieve(user.chef.stripeAccountId);
 
-    // User can receive payments
+    // Stripe onboarding is complete and user can receive payments
     if (account.charges_enabled) {
+      isStripeOnboardingComplete = true;
+
       await db.chef.update({
         where: { id: user.chef.id },
         data: {
           isOnboardingComplete: true,
         },
       });
-
-      return {
-        redirect: {
-          destination: "/",
-          permanent: false,
-        },
-      };
     }
 
     const accountLink = await stripe.accountLinks.create({
@@ -68,42 +66,55 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
     stripeAccountUrl = accountLink.url;
   } else {
     // Create a stripe account and save id to chef
-    const account = await stripe.accounts.create({
+    const stripeAccount = await stripe.accounts.create({
       type: "express",
       country: "US",
       email: user.email,
       default_currency: "USD",
     });
 
-    await db.chef.create({
+    const chef = await db.chef.create({
       data: {
-        stripeAccountId: account.id,
+        stripeAccountId: stripeAccount.id,
         userId: user.id,
       },
     });
 
-    const accountLink = await stripe.accountLinks.create({
-      account: account.id,
+    const createAccountLink = await stripe.accountLinks.create({
+      account: stripeAccount.id,
       refresh_url: "http://localhost:3000/api/stripe/reauth",
       return_url: "http://localhost:3000/become-a-host",
       type: "account_onboarding",
     });
 
+    const [_, accountLink] = await Promise.all([chef, createAccountLink]);
+
     stripeAccountUrl = accountLink.url;
   }
 
   return {
-    redirect: {
-      destination: stripeAccountUrl,
-      permanent: false,
+    props: {
+      isStripeOnboardingComplete,
+      stripeAccountUrl,
     },
   };
 });
 
-const BecomeAHost: BlitzPage = (props) => {
-  return <ConsumerContainer>
-    <CircularProgress />
-  </ConsumerContainer>;
+interface BecomeAHostPropTypes {
+  stripeAccountUrl: string;
+  isStripeOnboardingComplete: boolean;
+}
+
+const BecomeAHost: BlitzPage = (props: BecomeAHostPropTypes) => {
+  return (
+    <ConsumerContainer maxWidth="md">
+      {props.isStripeOnboardingComplete ? (
+        <ChefOnboarded stripeAccountUrl={props.stripeAccountUrl} />
+      ) : (
+        <Typography>Edit Stripe Account</Typography>
+      )}
+    </ConsumerContainer>
+  );
 };
 
 export default BecomeAHost;

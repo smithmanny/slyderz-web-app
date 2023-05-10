@@ -3,7 +3,11 @@ import { useRouter } from "next/router";
 import db from "db";
 
 import { readableDate } from "app/utils/dateHelpers";
-import { TRANSACTIONAL_EMAILS, CHEF_SERVICE_FEE, CONSUMER_SERVICE_FEE } from "types";
+import {
+  TRANSACTIONAL_EMAILS,
+  CHEF_SERVICE_FEE,
+  CONSUMER_SERVICE_FEE,
+} from "types";
 import sendSesEmail from "emails/utils/sendSesEmail";
 
 import Box from "app/core/components/shared/Box";
@@ -15,12 +19,12 @@ import OrderItems from "app/orders/components/OrderItems";
 import Divider from "app/core/components/shared/Divider";
 import { getStripeServer } from "app/utils/getStripe";
 
+const stripe = getStripeServer();
 export const getServerSideProps = gSSP(async function getServerSideProps({
   req,
   res,
   params,
 }) {
-  const stripe = getStripeServer();
   const confirmationNumber = String(params?.oid);
 
   if (!confirmationNumber) {
@@ -92,12 +96,18 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
   }
 
   // Stripe amount must be in cents
-  const consumerServiceFee = order.amount * CONSUMER_SERVICE_FEE
+  const consumerServiceFee = order.amount * CONSUMER_SERVICE_FEE;
   const stripeOrderAmount = Number(
     (parseFloat(String(order.amount + consumerServiceFee)) * 100).toString()
   );
   const stripeApplicationFee = Number(
-    (parseFloat(String(order.amount * CHEF_SERVICE_FEE + (order.amount * CONSUMER_SERVICE_FEE))) * 100).toString()
+    (
+      parseFloat(
+        String(
+          order.amount * CHEF_SERVICE_FEE + order.amount * CONSUMER_SERVICE_FEE
+        )
+      ) * 100
+    ).toString()
   );
 
   const paymentIntent = await stripe.paymentIntents.create({
@@ -138,7 +148,7 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
   });
 
   const eventDate = new Date(order.eventDate);
-  const address = `${order.address1} ${order.city}, ${order.state} ${order.zipcode}`
+  const address = `${order.address1} ${order.city}, ${order.state} ${order.zipcode}`;
 
   await sendSesEmail({
     to: "contact@slyderz.co",

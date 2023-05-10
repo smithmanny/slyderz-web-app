@@ -28,15 +28,16 @@ const DishForm = (props) => {
       onSuccess={() => props.setCurrentView("SECTION")}
     >
       <CldUploadWidget
-        signatureEndpoint="/api/sign-cloudinary-params"
+        // signatureEndpoint="/api/sign-cloudinary-params"
         uploadPreset="chef_profile_pic"
         onUpload={(error, result, widget) => {
           if (error) {
             console.log("ERROR UPLOADING IMAGE", error);
           }
           console.log("UPLOADED", result);
+          console.log("WIDGET", widget);
           // setResource(result?.info); // Updating local state with asset details
-          widget.close(); // Close widget immediately after successful upload
+          // widget.close(); // Close widget immediately after successful upload
         }}
         options={{
           cropping: true,

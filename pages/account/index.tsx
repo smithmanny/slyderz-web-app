@@ -1,9 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { gSSP } from "app/blitz-server";
 import { useMutation } from "@blitzjs/rpc";
 import { BlitzPage, Routes } from "@blitzjs/next";
-import { AuthenticationError } from "blitz";
 
 import loginMutation from "app/auth/mutations/login";
 import deleteAccountMutation from "app/account/mutations/deleteAccountMutation";
@@ -20,22 +18,6 @@ import Form, { TextField } from "app/core/components/form";
 import StripeCardElement from "app/stripe/components/StripeCardElement";
 import StripeSavedCards from "app/stripe/components/StripeSavedCards";
 
-export const getServerSideProps = gSSP(async function getServerSideProps({
-  ctx,
-}) {
-  const session = ctx?.session;
-
-  // TODO: Setup middleware to protect routes
-  if (!session.userId || !session.stripeCustomerId) {
-    throw new AuthenticationError()
-  }
-
-  return {
-    props: {
-    },
-  };
-});
-
 const Account: BlitzPage<any> = (props) => {
   const router = useRouter();
   const user = useCurrentUser();
@@ -46,7 +28,9 @@ const Account: BlitzPage<any> = (props) => {
       return router.replace(Routes.Home());
     },
   });
-  const stripePaymentMethods = useAppSelector(state => state.user.stripeCards)
+  const stripePaymentMethods = useAppSelector(
+    (state) => state.user.stripeCards
+  );
 
   const initialValues = {
     firstName: user?.firstName,

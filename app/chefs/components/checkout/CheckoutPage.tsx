@@ -70,32 +70,34 @@ interface CheckoutPageTypes {
   eventDate: Date;
   eventTime: string;
   userId: Number;
-  openAddressModal: () => void
+  openAddressModal: () => void;
 }
 
 interface LocationType {
-  address1: string
-  address2: string
-  state: string
-  city: string
-  zipcode: string
+  address1: string;
+  address2: string;
+  state: string;
+  city: string;
+  zipcode: string;
 }
 
 const CheckoutPage = ({
   chefId,
   eventDate,
   eventTime,
-  openAddressModal
+  openAddressModal,
 }: CheckoutPageTypes) => {
   const router = useRouter();
   const [processing, setProcessing] = useState(false);
   const [createOrder] = useMutation(CreateOrderMutation);
-  const stripePaymentMethods = useAppSelector(state => state.user.stripeCards)
-  const address = useAppSelector(state => state.user.address)
-  const isAddressEmpty = Object.keys(address).length === 0
+  const stripePaymentMethods = useAppSelector(
+    (state) => state.user.stripeCards
+  );
+  const address = useAppSelector((state) => state.user.address);
+  const isAddressEmpty = Object.keys(address).length === 0;
 
   const handleSubmit = async (values) => {
-    const location: LocationType = values.selectedAddress
+    const location: LocationType = values.selectedAddress;
     const orderBody = {
       address: location,
       eventDate,
@@ -134,6 +136,7 @@ const CheckoutPage = ({
               padding: 0,
               mr: 1,
             }}
+            type="button"
           >
             <ArrowBack />
           </Button>
@@ -144,20 +147,19 @@ const CheckoutPage = ({
         onSubmit={handleSubmit}
         initialValues={{
           paymentMethod: stripePaymentMethods[0]?.id,
-          selectedAddress: address
+          selectedAddress: address,
         }}
       >
         <Grid item xs={12}>
-          {!isAddressEmpty ?
-          (
+          {!isAddressEmpty ? (
             <>
-              <Typography sx={{ fontWeight: 'bold' }} variant="h6" gutterBottom>
+              <Typography sx={{ fontWeight: "bold" }} variant="h6" gutterBottom>
                 Location Info
               </Typography>
               <Select
                 label="Select event address"
                 name="selectedAddress"
-                  items={[address].map((addy: AddAddressType) => ({
+                items={[address].map((addy: AddAddressType) => ({
                   key: addy.address1,
                   value: addy,
                 }))}
@@ -166,54 +168,51 @@ const CheckoutPage = ({
                 required
               />
             </>
-          )
-          :
-          (
+          ) : (
             <>
-              <Typography sx={{ fontWeight: 'bold' }} variant="h6">
+              <Typography sx={{ fontWeight: "bold" }} variant="h6">
                 Address
               </Typography>
 
               <Button
                 label="Add address"
                 variant="outlined"
-                onClick={e => {
-                  e.preventDefault()
+                onClick={(e) => {
+                  e.preventDefault();
                   e.stopPropagation();
-                  openAddressModal()
+                  openAddressModal();
                 }}
               >
                 Add Address
               </Button>
             </>
-          )
-        }
+          )}
         </Grid>
 
         <Grid item xs={12}>
-          <Typography sx={{ fontWeight: 'bold' }} variant="h6">
+          <Typography sx={{ fontWeight: "bold" }} variant="h6">
             Payment Info
           </Typography>
         </Grid>
-          {stripePaymentMethods.length > 0 && (
-            <Select
-              label="Select payment method"
-              name="paymentMethod"
-              items={stripePaymentMethods.map((paymentMethod) => ({
-                key: paymentMethod.card.last4,
-                value: paymentMethod.id,
-              }))}
-              variant="outlined"
-              md={12}
-              required
-            />
-          )}
-          {stripePaymentMethods.length === 0 && (
-            <StripeCardElement chefId={chefId} />
-          )}
+        {stripePaymentMethods.length > 0 && (
+          <Select
+            label="Select payment method"
+            name="paymentMethod"
+            items={stripePaymentMethods.map((paymentMethod) => ({
+              key: paymentMethod.card.last4,
+              value: paymentMethod.id,
+            }))}
+            variant="outlined"
+            md={12}
+            required
+          />
+        )}
+        {stripePaymentMethods.length === 0 && (
+          <StripeCardElement chefId={chefId} />
+        )}
 
-          {/* Show any error that happens when processing the payment */}
-          {/* {error && (
+        {/* Show any error that happens when processing the payment */}
+        {/* {error && (
             <Alert onClose={() => setError(null)} />
           )} */}
       </Form>
@@ -227,41 +226,38 @@ const CheckoutPage = ({
         {renderLeftContainer()}
       </Grid>
       <Grid item xs={12} md={6}>
-        <CartSummary
-          chefId={chefId}
-          checkoutPage
-        />
+        <CartSummary chefId={chefId} checkoutPage />
         <Button
-            disabled={processing || !stripePaymentMethods[0]?.id}
-            label="pay-now"
-            type="submit"
-            form="slyderz-checkout-form"
-            sx={{
-              background: "#5469d4",
-              fontFamily: "Arial, sans-serif",
-              color: "#ffffff",
-              borderRadius: "0 0 4px 4px",
-              border: "0",
-              padding: "12px 16px",
-              fontWeight: 600,
-              cursor: "pointer",
-              transition: "all 0.2s ease",
-              boxShadow: "0px 4px 5.5px 0px rgba(0, 0, 0, 0.07)",
-              mt: 2,
-              width: "100%",
-              "&:disabled": {
-                opacity: 0.5,
-                cursor: "default",
-              },
-            }}
-          >
-            <span>
-              {processing ? <Spinner id="spinner"></Spinner> : "Pay now"}
-            </span>
-          </Button>
+          disabled={processing || !stripePaymentMethods[0]?.id}
+          label="pay-now"
+          type="submit"
+          form="slyderz-checkout-form"
+          sx={{
+            background: "#5469d4",
+            fontFamily: "Arial, sans-serif",
+            color: "#ffffff",
+            borderRadius: "0 0 4px 4px",
+            border: "0",
+            padding: "12px 16px",
+            fontWeight: 600,
+            cursor: "pointer",
+            transition: "all 0.2s ease",
+            boxShadow: "0px 4px 5.5px 0px rgba(0, 0, 0, 0.07)",
+            mt: 2,
+            width: "100%",
+            "&:disabled": {
+              opacity: 0.5,
+              cursor: "default",
+            },
+          }}
+        >
+          <span>
+            {processing ? <Spinner id="spinner"></Spinner> : "Pay now"}
+          </span>
+        </Button>
       </Grid>
     </Grid>
   );
 };
 
-export default React.memo(CheckoutPage)
+export default React.memo(CheckoutPage);

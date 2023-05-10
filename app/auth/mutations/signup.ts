@@ -9,10 +9,11 @@ import { getStripeServer } from "app/utils/getStripe";
 import { mailjet, mailjetClient } from "app/utils/getMailjet";
 import sendSesEmail from "emails/utils/sendSesEmail";
 
+const stripe = getStripeServer();
+
 export default resolver.pipe(
   resolver.zod(Signup),
   async ({ email, firstName, lastName, password }, ctx) => {
-    const stripe = getStripeServer();
     const hashedPassword = await SecurePassword.hash(password);
     const userExists = await db.user.findFirst({
       where: {

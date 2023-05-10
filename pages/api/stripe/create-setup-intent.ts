@@ -2,9 +2,10 @@ import { api } from "app/blitz-server";
 import { getStripeServer } from "app/utils/getStripe";
 import { NextApiRequest, NextApiResponse } from "next";
 
+const stripe = getStripeServer();
+
 const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
   const { session } = ctx;
-  const stripe = getStripeServer();
 
   if (session.stripeCustomerId === undefined) {
     throw Error("No customer was provided");
