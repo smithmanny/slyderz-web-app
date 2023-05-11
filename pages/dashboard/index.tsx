@@ -44,6 +44,16 @@ export const Dashboard = (props) => {
   const matches = useMediaQuery(theme.breakpoints.down("md"));
   const [value, setValue] = React.useState(0);
 
+  // TODO: Handle flow from stripe -> dashboard and when users click on dashboard link
+  // 1. check if user is a chef
+  // 2. check if user finished onboarding
+  // a. stripe account setup for payments
+  // b. user uploads profile picture
+  // c. user adds description to profile
+  // d. user uploads food handler card
+  // e. admin reviews and approve chef
+  // 3. if user did not finish onboarding show onboarind flow
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };

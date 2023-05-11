@@ -1,10 +1,12 @@
-import Link from "next/link";
-import { BlitzPage, Routes } from "@blitzjs/next";
-import { useSession } from "@blitzjs/auth";
+import { useRouter } from "next/router";
+import { BlitzPage } from "@blitzjs/next";
+import { useMutation } from "@blitzjs/rpc";
+import { useSnackbar } from "notistack";
+
+import createChefMutation from "app/chefs/mutations/createChefMutation";
 
 import Layout from "app/core/layouts/Layout";
 import AboutSection from "app/about/components/AboutSection";
-
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
@@ -12,7 +14,18 @@ import Box from "app/core/components/shared/Box";
 import Button from "app/core/components/shared/Button";
 
 const Host: BlitzPage = () => {
-  const session = useSession();
+  const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+  const [createChef] = useMutation(createChefMutation, {
+    onSuccess: async (url) => {
+      await router.push(url);
+    },
+    onError: (err: Error) => {
+      return enqueueSnackbar(err.message, { variant: "error" });
+    },
+  });
+
+  const handleCreateChef = async () => await createChef();
   return (
     <ConsumerContainer>
       <Grid container spacing={2}>
@@ -67,13 +80,13 @@ const Host: BlitzPage = () => {
 
         <Grid item xs={12} textAlign="center">
           <Typography variant="h4">Ready to get started?</Typography>
-          <Link
-            href={session.userId ? Routes.BecomeAHost() : Routes.SignupPage()}
+          <Button
+            label="Become a host"
+            sx={{ mt: 2 }}
+            onClick={handleCreateChef}
           >
-            <Button label="Become a host" sx={{ mt: 2 }}>
-              Become a host
-            </Button>
-          </Link>
+            Become a host
+          </Button>
         </Grid>
       </Grid>
     </ConsumerContainer>
