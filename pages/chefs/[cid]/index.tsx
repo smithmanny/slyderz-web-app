@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import { useQuery } from "@blitzjs/rpc";
 import { useRouter } from "next/router";
@@ -19,7 +17,7 @@ import TabPanel from "app/core/components/shared/TabPanel";
 import Tab from "app/core/components/shared/Tab";
 import Typography from "app/core/components/shared/Typography";
 import Layout from "app/core/layouts/Layout";
-import CartSummary from 'app/core/components/cart/cartSummary'
+import CartSummary from "app/core/components/cart/cartSummary";
 
 const ChefProfileAvatar = styled(Avatar)`
   & .MuiAvatar-img {
@@ -43,9 +41,11 @@ export const ChefPage = (props) => {
   };
 
   const { cid } = router.query;
-  const [data, { isLoading }] = useQuery(ChefDishesQuery, { chefId: Number(cid) });
+  const [data, { isLoading }] = useQuery(ChefDishesQuery, {
+    chefId: Number(cid),
+  });
 
-  if (isLoading) return null
+  if (isLoading) return null;
 
   return (
     <ConsumerContainer>
@@ -73,13 +73,15 @@ export const ChefPage = (props) => {
             <ChefProfileAvatar
               alt="Remy Sharp"
               sx={{
-                height: 75,
-                width: 75,
+                height: 100,
+                width: 100,
                 mb: 2,
               }}
               src="/profile_pic.jpeg"
             />
-            <Typography variant="h1">Shakhor Smith</Typography>
+            <Typography variant="h1" fontWeight="bold">
+              Shakhor Smith
+            </Typography>
 
             <Tabs
               value={value}
@@ -97,7 +99,7 @@ export const ChefPage = (props) => {
             <CartSummary
               buttonText="Checkout"
               chefId={cid}
-              dishes={data.dishes}
+              hours={data.hours}
             />
           </Grid>
           <Grid item xs>

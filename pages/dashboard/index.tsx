@@ -1,8 +1,11 @@
 import React from "react";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import dynamic from "next/dynamic";
 
-import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
+import { useAppSelector } from "integrations/redux";
+import { NoSSrConsumerContainer } from "app/core/components/shared/ConsumerContainer";
+
 import Grid from "app/core/components/shared/Grid";
 import Tabs from "app/core/components/shared/Tabs";
 import Tab from "app/core/components/shared/Tab";
@@ -10,11 +13,24 @@ import Layout from "app/core/layouts/Layout";
 import IndexContainer from "app/dashboard/components/menu/IndexContainer";
 import HoursContainer from "app/dashboard/components/hours/HoursContainer";
 
+const DynamicOnboarding = dynamic(() => import("app/onboarding"), {
+  ssr: false,
+});
+
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
 }
+// TODO: Handle flow from stripe -> dashboard and when users click on dashboard link
+// 1. check if user is a chef
+// 2. check if user finished onboarding
+// a. stripe account setup for payments
+// b. user uploads profile picture
+// c. user adds description to profile
+// d. user uploads food handler card
+// e. admin reviews and approve chef
+// 3. if user did not finish onboarding show onboarind flow
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -43,23 +59,20 @@ export const Dashboard = (props) => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("md"));
   const [value, setValue] = React.useState(0);
-
-  // TODO: Handle flow from stripe -> dashboard and when users click on dashboard link
-  // 1. check if user is a chef
-  // 2. check if user finished onboarding
-  // a. stripe account setup for payments
-  // b. user uploads profile picture
-  // c. user adds description to profile
-  // d. user uploads food handler card
-  // e. admin reviews and approve chef
-  // 3. if user did not finish onboarding show onboarind flow
+  const isChefProfileComplete = useAppSelector(
+    (state) => state.user.chef.isChefProfileComplete
+  );
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
+  if (isChefProfileComplete) {
+    return <DynamicOnboarding />;
+  }
+
   return (
-    <ConsumerContainer>
+    <NoSSrConsumerContainer>
       <Grid container spacing={4}>
         <Grid item xs={12} md={4}>
           <Tabs
@@ -83,7 +96,7 @@ export const Dashboard = (props) => {
           </TabPanel>
         </Grid>
       </Grid>
-    </ConsumerContainer>
+    </NoSSrConsumerContainer>
   );
 };
 

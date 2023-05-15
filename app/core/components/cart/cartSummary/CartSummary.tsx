@@ -7,21 +7,17 @@ import PropTypes from "prop-types";
 import { useFormState } from "react-final-form";
 import { useSnackbar } from "notistack";
 
-import { styled } from "integrations/material-ui";
 import { formatNumberToCurrency } from "app/utils/time";
 import { convertDayToInt, todAM, todPM } from "app/utils/time";
 import { CONSUMER_SERVICE_FEE } from "types";
-import createCartMutation from "app/chefs/mutations/createChefMutation";
+import createCartMutation from "app/cart/mutations/createCartMutation";
 
 import Form, { DatePicker, Select } from "app/core/components/form";
 import Button from "app/core/components/shared/Button";
+import Box from "app/core/components/shared/Box";
 import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
 import CartItems from "../cartItems";
-
-const Root = styled("div")({
-  padding: 2,
-});
 
 const CartItemsContainer = (props) => {
   const { enqueueSnackbar } = useSnackbar();
@@ -162,16 +158,15 @@ const CartItemsContainer = (props) => {
 };
 
 const CartSummary = (props) => {
-  const { chefId, checkoutPage, buttonText, dishes } = props;
+  const { chefId, checkoutPage, buttonText, hours } = props;
   const session = useSession();
   const router = useRouter();
   const cartItems = session?.cart?.pendingCartItems;
   const total = session?.cart?.total || 0;
-  const hours = dishes[0]?.chef?.hours;
   const isCheckoutPage = router.asPath.includes("checkout");
 
   return (
-    <Root>
+    <Box sx={{ p: 2 }}>
       <Form>
         {buttonText && !isCheckoutPage && (
           <Grid item>
@@ -192,21 +187,21 @@ const CartSummary = (props) => {
           isCheckoutPage={isCheckoutPage}
         />
       </Form>
-    </Root>
+    </Box>
   );
 };
 
 CartSummary.defaultProps = {
   checkoutPage: false,
   chefId: "",
-  dishes: [],
+  hours: [],
 };
 
 CartSummary.propTypes = {
   buttonText: PropTypes.string,
   checkoutPage: PropTypes.bool,
   chefId: PropTypes.any.isRequired,
-  dishes: PropTypes.array.isRequired,
+  hours: PropTypes.array.isRequired,
 };
 
 export default CartSummary;

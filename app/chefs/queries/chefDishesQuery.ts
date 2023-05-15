@@ -6,7 +6,7 @@ const GetChefData = z.object({
   chefId: z.number(),
 });
 
-export default async function fetchChefData(input: z.infer<any>, ctx: Ctx) {
+export default async function chefDishesQuery(input: z.infer<any>, ctx: Ctx) {
   const data = GetChefData.parse(input);
 
   const chef = await db.chef.findFirstOrThrow({

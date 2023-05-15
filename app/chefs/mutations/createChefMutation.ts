@@ -6,7 +6,7 @@ import db from "db";
 
 const stripe = getStripeServer();
 
-export default async function becomeAHostMutation(
+export default async function createChefMutation(
   input: any,
   ctx: Ctx
 ) {

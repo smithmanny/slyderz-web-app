@@ -16,12 +16,13 @@ const DatePicker: FunctionComponent<any> = (props) => {
           name={props.name}
           required={props.required}
           desktopModeMediaQuery="@media (min-width: 2000px)"
+          closeOnSelect
           {...props}
         />
       </LocalizationProvider>
     </Grid>
   );
-}
+};
 
 DatePicker.defaultProps = {
   label: "",

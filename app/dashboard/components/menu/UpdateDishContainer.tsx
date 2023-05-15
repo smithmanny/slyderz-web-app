@@ -1,5 +1,3 @@
-"use client";
-
 import { useMutation, useQuery } from "@blitzjs/rpc";
 import PropTypes from "prop-types";
 
@@ -27,7 +25,11 @@ const UpdateDishContainer = (props) => {
   const [updateDish] = useMutation(updateDishMutation);
 
   if (isLoading || !dish) {
-    return "Loading";
+    return (
+      <>
+        <h1>Loading</h1>
+      </>
+    );
   }
 
   const initialValues = {

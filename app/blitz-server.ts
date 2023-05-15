@@ -1,4 +1,4 @@
-import { BlitzLogger } from "blitz";
+import { BlitzLogger, BlitzServerMiddleware } from "blitz";
 import { setupBlitzServer } from "@blitzjs/next";
 import { AuthServerPlugin, PrismaStorage } from "@blitzjs/auth";
 import { simpleRolesIsAuthorized } from "@blitzjs/auth";
@@ -16,5 +16,17 @@ export const { gSSP, gSP, api } = setupBlitzServer({
       storage: PrismaStorage(db),
       isAuthorized: simpleRolesIsAuthorized,
     }),
+    // BlitzServerMiddleware(async (req, res, next) => {
+    //   const publicData = res.blitzCtx.session._kernel.publicData
+    //   console.log("RES", res.blitzCtx.session._kernel.publicData)
+    //   const canVisitRoute = req.headers.referer?.endsWith('dashboard')
+
+    //   if (publicData.role !== 'USER') {
+    //     console.log('WRONG USER')
+    //     console.log(res.url)
+    //   }
+
+    //   await next()
+    // })
   ],
 });

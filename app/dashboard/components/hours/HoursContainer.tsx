@@ -1,7 +1,6 @@
-"use client";
-
-import { useMutation, useQuery } from "@blitzjs/rpc";
 import React, { useState, useCallback } from "react";
+import dynamic from "next/dynamic";
+import { useMutation, useQuery } from "@blitzjs/rpc";
 
 import destroyHoursMutation from "app/dashboard/mutations/destroyHoursMutation";
 import chefHoursQuery from "../../queries/hoursQuery";
@@ -15,7 +14,8 @@ import Grid from "app/core/components/shared/Grid";
 import Stack from "app/core/components/shared/Stack";
 import Typography from "app/core/components/shared/Typography";
 import Button from "app/core/components/shared/Button";
-import CreateHoursModal from "./modal";
+
+const DynamicCreateHoursModal = dynamic(() => import("./modal/hoursModal"));
 
 const HoursContainer = () => {
   const [showHoursModal, setShowHoursModal] = useState(false);
@@ -93,7 +93,7 @@ const HoursContainer = () => {
           </Grid>
         ))}
       </Grid>
-      <CreateHoursModal
+      <DynamicCreateHoursModal
         show={showHoursModal}
         refetch={refetch}
         onClose={closeHoursModal}

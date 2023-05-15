@@ -1,10 +1,21 @@
 import React, { useState } from "react";
+import dynamic from "next/dynamic";
 
 import Container from "app/core/components/shared/Container";
 import HomeContainer from "app/dashboard/components/menu/HomeContainer";
-import SectionContainer from "app/dashboard/components/menu/SectionContainer";
-import CreateDishContainer from "app/dashboard/components/menu/CreateDishContainer";
-import UpdateDishContainer from "app/dashboard/components/menu/UpdateDishContainer";
+
+const DynamicSectionContainer = dynamic(
+  () => import("app/dashboard/components/menu/SectionContainer"),
+  { ssr: false }
+);
+const DynamicCreateDishContainer = dynamic(
+  () => import("app/dashboard/components/menu/SectionContainer"),
+  { ssr: false }
+);
+const DynamicUpdateDishContainer = dynamic(
+  () => import("app/dashboard/components/menu/UpdateDishContainer"),
+  { ssr: false }
+);
 
 export const HOME = "HOME";
 export const SECTION = "SECTION";
@@ -22,13 +33,13 @@ const IndexContainer = () => {
       MenuView = HomeContainer;
       break;
     case SECTION:
-      MenuView = SectionContainer;
+      MenuView = DynamicSectionContainer;
       break;
     case CREATE_DISH:
-      MenuView = CreateDishContainer;
+      MenuView = DynamicCreateDishContainer;
       break;
     case UPDATE_DISH:
-      MenuView = UpdateDishContainer;
+      MenuView = DynamicUpdateDishContainer;
       break;
     default:
       MenuView = HomeContainer;
