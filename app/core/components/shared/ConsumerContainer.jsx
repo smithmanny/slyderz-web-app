@@ -1,5 +1,5 @@
 import Container from './Container'
-import NoSSR from '../NoSSR'
+import NoSSR from '../NoSsr'
 
 export const NoSSrConsumerContainer = ({ children, ...props }) => {
   return (

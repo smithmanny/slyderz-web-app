@@ -48,5 +48,5 @@ const About: BlitzPage = () => {
   );
 };
 
-export default About;
 About.getLayout = (page) => <Layout title="About | Slyderz">{page}</Layout>;
+export default About;
