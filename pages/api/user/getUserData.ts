@@ -42,6 +42,7 @@ async function getChefStatus(session) {
   const chef = await db.chef.findFirst({
     where: { userId: userId },
     select: {
+      stripeAccountId: true,
       isOnboardingComplete: true,
     },
   });
@@ -66,15 +67,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
     stripePayments, userAddress, chefStatus
   ])
 
-  res.statusCode = 200;
-  res.setHeader("Content-Type", "application/json");
-  res.end(
-    JSON.stringify({
-      address,
-      paymentMethods: paymentMethods.data,
-      chefStatus: checkUserChefStatus
-    })
-  );
+  res.status(200).json({
+    address,
+    paymentMethods: paymentMethods.data,
+    chefStatus: checkUserChefStatus
+  })
 };
 
 export default api(handler);

@@ -1,9 +1,9 @@
 import { SessionContext, SimpleRolesIsAuthorized } from "@blitzjs/auth";
 import { User } from "db";
 
-// Note: You should switch to Postgres and then use a DB enum for role type
 export type Role = "ADMIN" | "USER" | "CHEF";
-
+export const CHEF_SERVICE_FEE = 0.03;
+export const CONSUMER_SERVICE_FEE = 0.10;
 export interface CartItem {
   chefId: number;
   id: string;
@@ -54,6 +54,8 @@ declare module "@blitzjs/auth" {
     };
   }
 }
+
+// Email section
 
 export interface SESParamsType {
   subject: string;
@@ -129,6 +131,3 @@ export interface SendSesEmailType {
   type: string;
   variables?: SendSesObjectType;
 }
-
-export const CHEF_SERVICE_FEE = 0.03;
-export const CONSUMER_SERVICE_FEE = 0.10;

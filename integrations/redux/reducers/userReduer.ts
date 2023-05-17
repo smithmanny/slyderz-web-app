@@ -19,12 +19,20 @@ export type AddAddressType = {
   zipcode: number
 }
 
+type SetLoadingStateType = {
+  loading: boolean
+}
+
+type OnboardingStateType = "SETUP_STRIPE" | "UPLOAD_PROFILE_PHOTO" | "COMPLETE_SERVSAFE" | "ADD_PROFILE_DESCRIPTION"
+
 export type ChefType = {
   isChef: boolean
   isChefProfileComplete: boolean
+  onboardingState: OnboardingStateType
 }
 
 interface InitialStateType {
+  loading: boolean
   address: {} | AddAddressType
   stripeCards: Array<StripePaymentType>
   chef: ChefType
@@ -38,25 +46,15 @@ type FetchUserDataType = {
     isChefProfileComplete: boolean
   }
 }
-export const fetchUserData = createAppAsyncThunk(
-  'user/fetchUserData',
-  async (_, { getState }) => {
-    try {
-      const res = await fetch('/api/user/getUserData')
-      const body = await res.json()
-      return body as FetchUserDataType
-    } catch (err) {
-      console.log(err)
-    }
-  }
-)
 
 const initialState: InitialStateType = {
+  loading: false,
   address: {},
   stripeCards: [],
   chef: {
     isChef: false,
-    isChefProfileComplete: false
+    isChefProfileComplete: false,
+    onboardingState: "SETUP_STRIPE"
   },
 }
 
@@ -71,6 +69,9 @@ const userSlice = createSlice({
     },
     addAddress: (state, action: PayloadAction<AddAddressType>) => {
       state.address = action.payload
+    },
+    setLoadingState: (state, action: PayloadAction<SetLoadingStateType>) => {
+      state.loading = action.payload.loading
     },
   },
   extraReducers: (builders) => {
@@ -87,6 +88,23 @@ const userSlice = createSlice({
     })
   }
 });
+
+export const fetchUserData = createAppAsyncThunk(
+  'user/fetchUserData',
+  async (_, { dispatch }) => {
+    dispatch(userSlice.actions.setLoadingState({ loading: true }))
+
+    try {
+      const res = await fetch('/api/user/getUserData')
+      const body = await res.json()
+      return body as FetchUserDataType
+    } catch (err) {
+      console.log(err)
+    } finally {
+      dispatch(userSlice.actions.setLoadingState({ loading: false }))
+    }
+  }
+)
 
 // Extract the action creators object and the reducer
 const { actions, reducer } = userSlice;

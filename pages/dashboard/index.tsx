@@ -59,15 +59,15 @@ export const Dashboard = (props) => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("md"));
   const [value, setValue] = React.useState(0);
-  const isChefProfileComplete = useAppSelector(
-    (state) => state.user.chef.isChefProfileComplete
-  );
+  const user = useAppSelector((state) => state.user);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
-  if (isChefProfileComplete) {
+  if (user.loading) return <h1>LOADING</h1>;
+
+  if (user.chef.isChefProfileComplete) {
     return <DynamicOnboarding />;
   }
 

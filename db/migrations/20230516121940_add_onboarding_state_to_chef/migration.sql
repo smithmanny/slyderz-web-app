@@ -1,0 +1,5 @@
+-- CreateEnum
+CREATE TYPE "OnboardingState" AS ENUM ('SETUP_STRIPE', 'UPLOAD_PROFILE_PHOTO', 'COMPLETE_SERVSAFE', 'ADD_PROFILE_DESCRIPTION', 'DONE');
+
+-- AlterTable
+ALTER TABLE "Chef" ADD COLUMN     "onboardingState" "OnboardingState" NOT NULL DEFAULT 'SETUP_STRIPE';

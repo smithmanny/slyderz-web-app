@@ -33,7 +33,7 @@ export default async function createAccountLinkMutation(
     const accountLink = await stripe.accountLinks.create({
       account: user.chef.stripeAccountId,
       refresh_url: "http://localhost:3000/api/stripe/reauth",
-      return_url: "http://localhost:3000/dashboard/onboarding",
+      return_url: "http://localhost:3000/dashboard",
       type: "account_onboarding",
     });
     return accountLink.url

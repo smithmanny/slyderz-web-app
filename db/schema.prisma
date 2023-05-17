@@ -10,8 +10,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// --------------------------------------
-
 enum RoleType {
   ADMIN
   CHEF
@@ -42,6 +40,7 @@ model User {
   hashedPassword   String?
   stripeCustomerId String   @unique
   role             RoleType @default(USER)
+  headshotUrl      String?
 
   address  Address?
   tokens   Token[]
@@ -84,7 +83,14 @@ enum TokenType {
   RESET_PASSWORD
 }
 
-// Chef section
+enum OnboardingState {
+  SETUP_STRIPE
+  UPLOAD_HEADSHOT
+  COMPLETE_SERVSAFE
+  ADD_PROFILE_DESCRIPTION
+  DONE
+}
+
 model Chef {
   id                   Int      @id @default(autoincrement())
   createdAt            DateTime @default(now())
@@ -99,6 +105,7 @@ model Chef {
   dishes     Dish[]
   sections   Section[]
   hours      Hours[]
+  onboardingState OnboardingState @default(SETUP_STRIPE)
 
   @@unique([userId])
 }

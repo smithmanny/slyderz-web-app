@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { useQuery, useMutation } from "@blitzjs/rpc";
+import { useRouter } from "next/router";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
@@ -9,29 +11,43 @@ import { NoSSrConsumerContainer } from "app/core/components/shared/ConsumerConta
 import Box from "app/core/components/shared/Box";
 import Typography from "app/core/components/shared/Typography";
 
+import { OnboardingState } from "db";
+import fetchChefOnboardingStateQuery from "./queries/fetchChefOnboardingStateQuery";
+import createAccountLinkMutation from "app/stripe/mutations/createAccountLinkMutation";
+
+import UploadHeadshot from "./components/UplaodHeadshot";
+
 interface StepsType {
+  id: OnboardingState;
   label: string;
-  description: string;
   buttonText?: string;
+  description: string;
+  component?: React.ReactNode;
 }
 
 const steps: Array<StepsType> = [
   {
+    id: "SETUP_STRIPE",
     label: "Setup Stripe account",
     description:
       "We know that time is money, so we make it easy for you to get paid for your work. Once you complete an event, we'll send you an instant payment directly to your linked bank account. We use Stripe, a secure payment processing platform, to ensure that your payments are processed quickly and safely.",
     buttonText: "Finish linking bank account",
   },
   {
-    label: "Upload profile picture",
-    description: "Please upload a headshot with a solid background.",
+    id: "UPLOAD_HEADSHOT",
+    label: "Upload Headshot",
+    component: <UploadHeadshot />,
+    description:
+      "Please upload a headshot with a solid background. Supported file types: .jpg, .png, .jpeg",
   },
   {
+    id: "COMPLETE_SERVSAFE",
     label: "Complete ServSafe Food Handler card",
     description:
       "We'll email you a code to complete your ServSafe Food Handler card to ensure proper food handling and safety.",
   },
   {
+    id: "ADD_PROFILE_DESCRIPTION",
     label: "Add profile description",
     description: "Add a profile description to tell everyone more about you.",
   },
@@ -39,14 +55,31 @@ const steps: Array<StepsType> = [
 
 export default function Onboarding() {
   const [activeStep, setActiveStep] = useState(0);
+  const router = useRouter();
+  const [onboardingState] = useQuery(fetchChefOnboardingStateQuery, null);
+  const [createStripeAccountLink] = useMutation(createAccountLinkMutation);
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  useEffect(() => {
+    switch (onboardingState) {
+      case "UPLOAD_HEADSHOT":
+        setActiveStep(1);
+        break;
+      case "COMPLETE_SERVSAFE":
+        setActiveStep(2);
+        break;
+    }
+  }, [onboardingState]);
+
+  const handleNext = async (step: StepsType) => {
+    if (step.id === "SETUP_STRIPE") {
+      const stripeAccountUrl = await createStripeAccountLink();
+      return router.push(stripeAccountUrl);
+    }
   };
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     setActiveStep(0);
-  };
+  }, []);
 
   return (
     <NoSSrConsumerContainer maxWidth="sm">
@@ -66,19 +99,21 @@ export default function Onboarding() {
               {step.label}
             </StepLabel>
             <StepContent>
-              <Typography>{step.description}</Typography>
-              <Box sx={{ mb: 2 }}>
-                <Button
-                  label="continue onboarding"
-                  variant="contained"
-                  onClick={handleNext}
-                  sx={{ mt: 1, mr: 1 }}
-                >
-                  {index === steps.length - 1
-                    ? "Finish"
-                    : step.buttonText || "Continue"}
-                </Button>
-              </Box>
+              {step.component || <Typography>{step.description}</Typography>}
+              {step.id !== "UPLOAD_HEADSHOT" && (
+                <Box sx={{ mb: 2 }}>
+                  <Button
+                    label="continue onboarding"
+                    variant="contained"
+                    onClick={() => handleNext(step)}
+                    sx={{ mt: 1, mr: 1 }}
+                  >
+                    {index === steps.length - 1
+                      ? "Finish"
+                      : step.buttonText || "Continue"}
+                  </Button>
+                </Box>
+              )}
             </StepContent>
           </Step>
         ))}
