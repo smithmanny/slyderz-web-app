@@ -40,7 +40,8 @@ model User {
   hashedPassword   String?
   stripeCustomerId String   @unique
   role             RoleType @default(USER)
-  headshotUrl      String?
+  headshotUrl      String   @default("")
+  headhshotPublicId String  @default("")
 
   address  Address?
   tokens   Token[]

@@ -3,20 +3,35 @@ import { CldUploadWidget, CldImage } from "next-cloudinary";
 import { useMutation } from "@blitzjs/rpc";
 
 import completeOnboardingHeadshotMutation from "../mutations/completeOnboardingHeadshotMutation";
+import destroyCloudinaryImageMutation from "app/cloudinary/mutations/destroyCloudinaryImageMutation";
 
 import Button from "app/core/components/shared/Button";
 import Stack from "app/core/components/shared/Stack";
 import Typography from "app/core/components/shared/Typography";
 
+type CloudinaryImageType = {
+  url: string;
+  publicId: string;
+};
 interface UploadHeadshotPreviewType {
-  headshotUrl: string;
+  cloudinaryImage: CloudinaryImageType;
+  setCloudinaryImage: (arg0: null) => void;
 }
 
 function UploadHeadshotPreview(props: UploadHeadshotPreviewType) {
+  const { url, publicId } = props.cloudinaryImage;
   const [uploadHeadshot] = useMutation(completeOnboardingHeadshotMutation);
+  const [destroyCloudinaryImage] = useMutation(destroyCloudinaryImageMutation, {
+    onSuccess: () => props.setCloudinaryImage(null),
+    onError: (err) => console.log(err),
+  });
 
   const handleUploadingHeadshot = async () => {
-    await uploadHeadshot({ url: props.headshotUrl });
+    await uploadHeadshot({ url });
+  };
+
+  const handleDestroyingImage = async () => {
+    await destroyCloudinaryImage({ publicId });
   };
   return (
     <>
@@ -24,7 +39,7 @@ function UploadHeadshotPreview(props: UploadHeadshotPreviewType) {
         <CldImage
           width="320"
           height="320"
-          src={props.headshotUrl}
+          src={url}
           sizes="100vw"
           alt="chef headshot"
         />
@@ -33,7 +48,7 @@ function UploadHeadshotPreview(props: UploadHeadshotPreviewType) {
         <Button
           label="continue onboarding"
           variant="outlined"
-          onClick={handleUploadingHeadshot}
+          onClick={handleDestroyingImage}
           sx={{ mt: 1, mr: 1 }}
         >
           Replace
@@ -52,10 +67,14 @@ function UploadHeadshotPreview(props: UploadHeadshotPreviewType) {
 }
 
 function UploadHeadshot() {
-  const [headshotUrl, setHeadshotUrl] = useState<string>("");
-  console.log("HEADSHOT_URL", headshotUrl);
-  return headshotUrl ? (
-    <UploadHeadshotPreview headshotUrl={headshotUrl} />
+  const [cloudinaryImage, setCloudinaryImage] =
+    useState<CloudinaryImageType | null>(null);
+
+  return cloudinaryImage ? (
+    <UploadHeadshotPreview
+      cloudinaryImage={cloudinaryImage}
+      setCloudinaryImage={setCloudinaryImage}
+    />
   ) : (
     <>
       <Typography>Please upload a headshot with a solid background.</Typography>
@@ -64,7 +83,10 @@ function UploadHeadshot() {
         onError={(err) => console.log("ERROR uploading headshot", err)}
         onUpload={(res) => {
           console.log(res);
-          setHeadshotUrl(res?.info.secure_url);
+          setCloudinaryImage({
+            url: res?.info.secure_url,
+            publicId: res?.info.public_id,
+          });
         }}
         options={{
           cropping: true,
@@ -73,10 +95,9 @@ function UploadHeadshot() {
           minImageWidth: 250,
           sources: ["local"],
           resourceType: "image",
-          // clientAllowedFormats: ["webp", "jpg", "jpeg", "png"],
         }}
       >
-        {({ open }) => {
+        {({ open, isLoading }) => {
           function handleOnClick(e) {
             e.preventDefault();
             open();
@@ -87,7 +108,7 @@ function UploadHeadshot() {
               variant="contained"
               onClick={handleOnClick}
               sx={{ mt: 1, mr: 1 }}
-              // disabled={isLoading}
+              disabled={isLoading}
             >
               Upload Headshot
             </Button>

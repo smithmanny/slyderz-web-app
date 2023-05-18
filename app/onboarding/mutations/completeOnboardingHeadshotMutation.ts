@@ -18,18 +18,18 @@ export default async function completeOnboardingHeadshotMutation(
   if (!userId) {
     throw new AuthorizationError("User not found");
   }
-  console.log("URL", data.url);
-  // const user = await db.user.update({
-  //   where: { id: userId },
-  //   data: {
-  //     headshotUrl: data.url,
-  //     chef: {
-  //       update: {
-  //         onboardingState: "COMPLETE_SERVSAFE",
-  //       },
-  //     },
-  //   },
-  // });
 
-  // return user;
+  const user = await db.user.update({
+    where: { id: userId },
+    data: {
+      headshotUrl: data.url,
+      chef: {
+        update: {
+          onboardingState: "COMPLETE_SERVSAFE",
+        },
+      },
+    },
+  });
+
+  return user;
 }
