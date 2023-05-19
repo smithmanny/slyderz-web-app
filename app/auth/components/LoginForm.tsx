@@ -42,8 +42,14 @@ export const LoginForm = (props: LoginFormProps) => {
         }}
         {...props}
       >
-        <TextField name="email" label="Email" placeholder="Email" />
         <TextField
+          autoComplete="email"
+          name="email"
+          label="Email"
+          placeholder="Email"
+        />
+        <TextField
+          autoComplete="current-password"
           name="password"
           label="Password"
           placeholder="Password"

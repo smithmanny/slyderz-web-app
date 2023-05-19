@@ -49,14 +49,26 @@ export const SignupForm = (props: SignupFormProps) => {
       >
         <Grid container item xs={12} spacing={2}>
           <TextField
+            autoComplete="given-name"
             label="First Name"
             name="firstName"
             required={true}
             md={6}
           />
-          <TextField label="Last Name" name="lastName" required={true} md={6} />
+          <TextField
+            autoComplete="family-name"
+            label="Last Name"
+            name="lastName"
+            required={true}
+            md={6}
+          />
         </Grid>
-        <TextField label="Email" name="email" required={true} />
+        <TextField
+          autoComplete="email"
+          label="Email"
+          name="email"
+          required={true}
+        />
         <TextField
           label="Password"
           name="password"

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { CldUploadWidget, CldImage } from "next-cloudinary";
-import { useMutation } from "@blitzjs/rpc";
+import { useMutation, invalidateQuery } from "@blitzjs/rpc";
 
 import completeOnboardingHeadshotMutation from "../mutations/completeOnboardingHeadshotMutation";
 import destroyCloudinaryImageMutation from "app/cloudinary/mutations/destroyCloudinaryImageMutation";
+import fetchChefOnboardingStateQuery from "app/onboarding/queries/fetchChefOnboardingStateQuery";
 
 import Button from "app/core/components/shared/Button";
 import Stack from "app/core/components/shared/Stack";
@@ -20,14 +21,18 @@ interface UploadHeadshotPreviewType {
 
 function UploadHeadshotPreview(props: UploadHeadshotPreviewType) {
   const { url, publicId } = props.cloudinaryImage;
-  const [uploadHeadshot] = useMutation(completeOnboardingHeadshotMutation);
+  const [uploadHeadshot] = useMutation(completeOnboardingHeadshotMutation, {
+    onSuccess: async () => {
+      await invalidateQuery(fetchChefOnboardingStateQuery);
+    },
+  });
   const [destroyCloudinaryImage] = useMutation(destroyCloudinaryImageMutation, {
     onSuccess: () => props.setCloudinaryImage(null),
     onError: (err) => console.log(err),
   });
 
   const handleUploadingHeadshot = async () => {
-    await uploadHeadshot({ url });
+    await uploadHeadshot({ url, publicId });
   };
 
   const handleDestroyingImage = async () => {
@@ -66,7 +71,10 @@ function UploadHeadshotPreview(props: UploadHeadshotPreviewType) {
   );
 }
 
-function UploadHeadshot() {
+interface UploadHeadshotType {
+  description?: string;
+}
+function UploadHeadshot(props: UploadHeadshotType) {
   const [cloudinaryImage, setCloudinaryImage] =
     useState<CloudinaryImageType | null>(null);
 
@@ -77,7 +85,7 @@ function UploadHeadshot() {
     />
   ) : (
     <>
-      <Typography>Please upload a headshot with a solid background.</Typography>
+      <Typography>{props.description}</Typography>
       <CldUploadWidget
         uploadPreset="chef_profile_pic"
         onError={(err) => console.log("ERROR uploading headshot", err)}

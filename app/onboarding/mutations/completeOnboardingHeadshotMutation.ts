@@ -5,6 +5,7 @@ import db from "db";
 
 const UploadHeadshotUrl = z.object({
   url: z.string(),
+  publicId: z.string(),
 });
 
 export default async function completeOnboardingHeadshotMutation(
@@ -19,10 +20,11 @@ export default async function completeOnboardingHeadshotMutation(
     throw new AuthorizationError("User not found");
   }
 
-  const user = await db.user.update({
+  await db.user.update({
     where: { id: userId },
     data: {
       headshotUrl: data.url,
+      headhshotPublicId: data.publicId,
       chef: {
         update: {
           onboardingState: "COMPLETE_SERVSAFE",
@@ -31,5 +33,5 @@ export default async function completeOnboardingHeadshotMutation(
     },
   });
 
-  return user;
+  return true;
 }

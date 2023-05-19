@@ -16,9 +16,25 @@ const Contact: BlitzPage = () => {
         </Grid>
         <Grid item xs={12}>
           <Form submitText="Submit">
-            <TextField name="firstName" label="First Name" md={6} />
-            <TextField name="lastName" label="Last Name" md={6} />
-            <TextField name="email" label="Email" md={12} type="email" />
+            <TextField
+              autoComplete="given-name"
+              name="firstName"
+              label="First Name"
+              md={6}
+            />
+            <TextField
+              autoComplete="family-name"
+              name="lastName"
+              label="Last Name"
+              md={6}
+            />
+            <TextField
+              autoComplete="email"
+              name="email"
+              label="Email"
+              md={12}
+              type="email"
+            />
             <TextField name="message" label="Message" md={12} multiline />
           </Form>
         </Grid>

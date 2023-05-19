@@ -16,6 +16,7 @@ import fetchChefOnboardingStateQuery from "./queries/fetchChefOnboardingStateQue
 import createAccountLinkMutation from "app/stripe/mutations/createAccountLinkMutation";
 
 import UploadHeadshot from "./components/UplaodHeadshot";
+import ProfileDescription from "./components/ProfileDescription";
 
 interface StepsType {
   id: OnboardingState;
@@ -28,30 +29,35 @@ interface StepsType {
 const steps: Array<StepsType> = [
   {
     id: "SETUP_STRIPE",
-    label: "Setup Stripe account",
+    label: "Setup stripe account",
     description:
       "We know that time is money, so we make it easy for you to get paid for your work. Once you complete an event, we'll send you an instant payment directly to your linked bank account. We use Stripe, a secure payment processing platform, to ensure that your payments are processed quickly and safely.",
     buttonText: "Finish linking bank account",
   },
   {
     id: "UPLOAD_HEADSHOT",
-    label: "Upload Headshot",
+    label: "Upload headshot",
     component: <UploadHeadshot />,
     description:
       "Please upload a headshot with a solid background. Supported file types: .jpg, .png, .jpeg",
   },
   {
     id: "COMPLETE_SERVSAFE",
-    label: "Complete ServSafe Food Handler card",
+    label: "Complete ServSafe food handler certification",
     description:
       "We'll email you a code to complete your ServSafe Food Handler card to ensure proper food handling and safety.",
   },
   {
     id: "ADD_PROFILE_DESCRIPTION",
     label: "Add profile description",
+    component: <ProfileDescription />,
     description: "Add a profile description to tell everyone more about you.",
   },
 ];
+
+const OnboardingStep = (children: any, description: string) => {
+  return React.cloneElement(children, { description });
+};
 
 export default function Onboarding() {
   const [activeStep, setActiveStep] = useState(0);
@@ -75,6 +81,8 @@ export default function Onboarding() {
       const stripeAccountUrl = await createStripeAccountLink();
       return router.push(stripeAccountUrl);
     }
+
+    setActiveStep((prev) => prev + 1);
   };
 
   const handleReset = useCallback(() => {
@@ -95,12 +103,21 @@ export default function Onboarding() {
                   <Typography variant="caption">Last step</Typography>
                 ) : null
               }
+              sx={{
+                ".MuiStepLabel-label": {
+                  fontWeight: "550",
+                },
+              }}
             >
               {step.label}
             </StepLabel>
             <StepContent>
-              {step.component || <Typography>{step.description}</Typography>}
-              {step.id !== "UPLOAD_HEADSHOT" && (
+              {step.component ? (
+                OnboardingStep(step.component, step.description)
+              ) : (
+                <Typography variant="body2">{step.description}</Typography>
+              )}
+              {!Object.hasOwn(step, "component") && (
                 <Box sx={{ mb: 2 }}>
                   <Button
                     label="continue onboarding"

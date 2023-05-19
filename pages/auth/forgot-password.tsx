@@ -45,7 +45,12 @@ const ForgotPasswordPage: BlitzPage = () => {
               }),
             }}
           >
-            <TextField name="email" label="Email" placeholder="Email" />
+            <TextField
+              autoComplete="email"
+              name="email"
+              label="Email"
+              placeholder="Email"
+            />
           </Form>
         </>
       )}
