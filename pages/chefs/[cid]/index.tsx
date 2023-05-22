@@ -44,8 +44,8 @@ export const ChefPage = (props) => {
   const [data, { isLoading }] = useQuery(ChefDishesQuery, {
     chefId: Number(cid),
   });
-
   if (isLoading) return null;
+  const chefName = `${data?.user?.firstName} ${data?.user?.lastName}`;
 
   return (
     <ConsumerContainer>
@@ -59,7 +59,7 @@ export const ChefPage = (props) => {
               position: "relative",
             }}
           >
-            <Image src={Logo} layout="fill" objectFit="cover" alt="Logo" />
+            <Image src={Logo} alt="Logo" />
           </div>
         </Grid>
         <Grid item xs={12}>
@@ -80,7 +80,7 @@ export const ChefPage = (props) => {
               src="/profile_pic.jpeg"
             />
             <Typography variant="h1" fontWeight="bold">
-              Shakhor Smith
+              {chefName}
             </Typography>
 
             <Tabs

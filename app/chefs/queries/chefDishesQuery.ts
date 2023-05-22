@@ -16,6 +16,12 @@ export default async function chefDishesQuery(input: z.infer<any>, ctx: Ctx) {
     select: {
       dishes: true,
       hours: true,
+      user: {
+        select: {
+          firstName: true,
+          lastName: true
+        }
+      }
     },
   })
 
