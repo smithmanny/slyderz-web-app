@@ -1,20 +1,11 @@
 import React, { Suspense, useEffect } from "react";
-import { useSession } from "@blitzjs/auth";
 import { Roboto_Serif } from "next/font/google";
-import { AuthenticationError, AuthorizationError } from "blitz";
-import { withBlitz } from "app/blitz-client";
-import { useQueryErrorResetBoundary } from "@blitzjs/rpc";
-import {
-  AppProps,
-  ErrorBoundary,
-  ErrorComponent,
-  ErrorFallbackProps,
-} from "@blitzjs/next";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Provider } from "react-redux";
 import { SnackbarProvider } from "notistack";
 
+import { trpc } from "server/utils/trpc";
 import store from "integrations/redux";
 import { theme } from "integrations/material-ui";
 import { useAppDispatch } from "integrations/redux";
@@ -45,9 +36,9 @@ function LoadingIcon() {
 }
 
 function SlyderzWrapper({ children }) {
-  const session = useSession();
   const dispatch = useAppDispatch();
-  const userId = session.userId;
+  // TODO:: Add session and check for user
+  const userId = 1;
 
   useEffect(() => {
     if (userId) {
@@ -59,7 +50,7 @@ function SlyderzWrapper({ children }) {
   return children;
 }
 
-export default withBlitz(function App({ Component, pageProps }: AppProps) {
+function Slyderz({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page);
 
   return (
@@ -73,42 +64,19 @@ export default withBlitz(function App({ Component, pageProps }: AppProps) {
       >
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <ErrorBoundary
-            FallbackComponent={RootErrorFallback}
-            onReset={useQueryErrorResetBoundary().reset}
-          >
-            <Suspense fallback={<LoadingIcon />}>
-              <SlyderzWrapper>
-                {getLayout(
-                  <div className={roboto.className}>
-                    <Component {...pageProps} />
-                  </div>
-                )}
-              </SlyderzWrapper>
-            </Suspense>
-          </ErrorBoundary>
+          <Suspense fallback={<LoadingIcon />}>
+            <SlyderzWrapper>
+              {getLayout(
+                <div className={roboto.className}>
+                  <Component {...pageProps} />
+                </div>
+              )}
+            </SlyderzWrapper>
+          </Suspense>
         </ThemeProvider>
       </SnackbarProvider>
     </Provider>
   );
-});
-
-function RootErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps) {
-  if (error instanceof AuthenticationError) {
-    return <LoginForm onSuccess={resetErrorBoundary} />;
-  } else if (error instanceof AuthorizationError) {
-    return (
-      <ErrorComponent
-        statusCode={error.statusCode}
-        title="Sorry, you are not authorized to access this"
-      />
-    );
-  } else {
-    return (
-      <ErrorComponent
-        statusCode={error.statusCode || 400}
-        title={error.message || error.name}
-      />
-    );
-  }
 }
+
+export default trpc.withTRPC(Slyderz);
