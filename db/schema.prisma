@@ -17,7 +17,7 @@ enum RoleType {
 }
 
 model Address {
-  id        Int      @id @default(autoincrement())
+  id        String       @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   address1  String
@@ -27,22 +27,43 @@ model Address {
   zipcode   String
 
   user   User @relation(fields: [userId], references: [id])
-  userId Int  @unique
+  userId String  @unique
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
 }
 
 model User {
-  id               Int      @id @default(autoincrement())
+  id               String       @id @default(cuid())
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
   firstName        String
   lastName         String
   email            String   @unique
+  emailVerified DateTime?
+  image         String?
+  imagePublicId String?
   hashedPassword   String?
   stripeCustomerId String   @unique
   role             RoleType @default(USER)
-  headshotUrl      String   @default("")
-  headhshotPublicId String  @default("")
 
+  accounts  Account[]
   address  Address?
   tokens   Token[]
   sessions Session[]
@@ -50,8 +71,16 @@ model User {
   orders   Order[]
 }
 
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
 model Session {
-  id                 Int       @id @default(autoincrement())
+  id                 String       @id @default(cuid())
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
   expiresAt          DateTime?
@@ -61,12 +90,12 @@ model Session {
   publicData         String?
   privateData        String?
 
-  user   User? @relation(fields: [userId], references: [id])
-  userId Int?
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 }
 
 model Token {
-  id          Int       @id @default(autoincrement())
+  id          String       @id @default(cuid())
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   hashedToken String
@@ -75,7 +104,7 @@ model Token {
   sentTo      String
 
   user   User @relation(fields: [userId], references: [id])
-  userId Int
+  userId String
 
   @@unique([hashedToken, type])
 }
@@ -93,14 +122,14 @@ enum OnboardingState {
 }
 
 model Chef {
-  id                   Int      @id @default(autoincrement())
+  id                   String       @id @default(cuid())
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
   stripeAccountId      String
   isOnboardingComplete Boolean  @default(false)
 
   user       User         @relation(fields: [userId], references: [id])
-  userId     Int
+  userId     String
   orders     Order[]
   orderItems OrderItems[]
   dishes     Dish[]
@@ -122,7 +151,7 @@ enum DaysOfWeekTypeEnum {
 }
 
 model Hours {
-  id         Int                  @id @default(autoincrement())
+  id         String       @id @default(cuid())
   createdAt  DateTime             @default(now())
   updatedAt  DateTime             @updatedAt
   daysOfWeek DaysOfWeekTypeEnum[]
@@ -130,24 +159,24 @@ model Hours {
   endTime    String?
 
   chef   Chef @relation(fields: [chefId], references: [id])
-  chefId Int
+  chefId String
 }
 
 model Section {
-  id        Int      @id @default(autoincrement())
+  id        String       @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   name      String   @unique
 
   dishes Dish[]
   chef   Chef   @relation(fields: [chefId], references: [id])
-  chefId Int
+  chefId String
 
   @@unique([name, chefId])
 }
 
 model Dish {
-  id          Int      @id @default(autoincrement())
+  id          String       @id @default(cuid())
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   description String
@@ -155,9 +184,9 @@ model Dish {
   price       Decimal  @db.Decimal(5, 2)
 
   section    Section      @relation(fields: [sectionId], references: [id])
-  sectionId  Int
+  sectionId  String
   chef       Chef         @relation(fields: [chefId], references: [id])
-  chefId     Int
+  chefId     String
   orderItems OrderItems[]
 
   @@unique([name, chefId])
@@ -171,21 +200,21 @@ enum OrderStatus {
 }
 
 model OrderItems {
-  id        Int      @id @default(autoincrement())
+  id        String       @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   quantity  Int
 
   dish    Dish  @relation(fields: [dishId], references: [id])
-  dishId  Int
+  dishId  String
   order   Order @relation(fields: [orderId], references: [id])
-  orderId Int
+  orderId String
   chef    Chef  @relation(fields: [chefId], references: [id])
-  chefId  Int
+  chefId  String
 }
 
 model Order {
-  id                 Int         @id @default(autoincrement())
+  id                 String       @id @default(cuid())
   createdAt          DateTime    @default(now())
   updatedAt          DateTime    @updatedAt
   amount             Int
@@ -201,8 +230,8 @@ model Order {
   orderStatus        OrderStatus @default(PENDING)
 
   user   User         @relation(fields: [userId], references: [id])
-  userId Int
+  userId String
   chef   Chef         @relation(fields: [chefId], references: [id])
-  chefId Int
+  chefId String
   dishes OrderItems[]
 }

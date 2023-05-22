@@ -4,6 +4,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Provider } from "react-redux";
 import { SnackbarProvider } from "notistack";
+import { SessionProvider } from "next-auth/react";
 
 import { trpc } from "server/utils/trpc";
 import store from "integrations/redux";
@@ -50,32 +51,38 @@ function SlyderzWrapper({ children }) {
   return children;
 }
 
-function Slyderz({ Component, pageProps }) {
+function Slyderz({ Component, pageProps: { session, ...pageProps } }) {
   const getLayout = Component.getLayout || ((page) => page);
 
   return (
-    <Provider store={store}>
-      <SnackbarProvider
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "center",
-        }}
-        preventDuplicate={true}
-      >
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Suspense fallback={<LoadingIcon />}>
-            <SlyderzWrapper>
-              {getLayout(
-                <div className={roboto.className}>
-                  <Component {...pageProps} />
-                </div>
-              )}
-            </SlyderzWrapper>
-          </Suspense>
-        </ThemeProvider>
-      </SnackbarProvider>
-    </Provider>
+    <SessionProvider
+      session={session}
+      // Re-fetches session when window is focused
+      refetchOnWindowFocus={true}
+    >
+      <Provider store={store}>
+        <SnackbarProvider
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
+          }}
+          preventDuplicate={true}
+        >
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Suspense fallback={<LoadingIcon />}>
+              <SlyderzWrapper>
+                {getLayout(
+                  <div className={roboto.className}>
+                    <Component {...pageProps} />
+                  </div>
+                )}
+              </SlyderzWrapper>
+            </Suspense>
+          </ThemeProvider>
+        </SnackbarProvider>
+      </Provider>
+    </SessionProvider>
   );
 }
 
