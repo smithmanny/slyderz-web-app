@@ -35,8 +35,7 @@ export const SignupForm = (props: SignupFormProps) => {
         schema={Signup}
         initialValues={{
           email: "",
-          firstName: "",
-          lastName: "",
+          name: "",
           password: "",
         }}
         mutation={{
@@ -51,14 +50,7 @@ export const SignupForm = (props: SignupFormProps) => {
           <TextField
             autoComplete="given-name"
             label="First Name"
-            name="firstName"
-            required={true}
-            md={6}
-          />
-          <TextField
-            autoComplete="family-name"
-            label="Last Name"
-            name="lastName"
+            name="name"
             required={true}
             md={6}
           />

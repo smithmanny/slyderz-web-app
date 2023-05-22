@@ -7,7 +7,7 @@ export default async function fetchNearbyChefs(input: z.infer<any>, ctx: Ctx) {
     include: {
       user: {
         select: {
-          firstName: true,
+          name: true,
         },
       },
     },

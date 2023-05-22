@@ -45,7 +45,8 @@ export const ChefPage = (props) => {
     chefId: Number(cid),
   });
   if (isLoading) return null;
-  const chefName = `${data?.user?.firstName} ${data?.user?.lastName}`;
+
+  const chefName = data?.user?.name;
 
   return (
     <ConsumerContainer>

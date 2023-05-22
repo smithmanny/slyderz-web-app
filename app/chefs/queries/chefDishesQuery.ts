@@ -3,7 +3,7 @@ import db from "db";
 import * as z from "zod";
 
 const GetChefData = z.object({
-  chefId: z.number(),
+  chefId: z.string(),
 });
 
 export default async function chefDishesQuery(input: z.infer<any>, ctx: Ctx) {
@@ -18,8 +18,7 @@ export default async function chefDishesQuery(input: z.infer<any>, ctx: Ctx) {
       hours: true,
       user: {
         select: {
-          firstName: true,
-          lastName: true
+          name: true,
         }
       }
     },

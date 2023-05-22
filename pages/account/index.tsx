@@ -33,8 +33,7 @@ const Account: BlitzPage<any> = (props) => {
   );
 
   const initialValues = {
-    firstName: user?.firstName,
-    lastName: user?.lastName,
+    name: user?.name,
     email: user?.email,
   };
 
@@ -139,16 +138,9 @@ const Account: BlitzPage<any> = (props) => {
           <Grid item container spacing={2}>
             <TextField
               disabled
-              name="firstName"
-              label="First Name"
+              name="name"
+              label="Name"
               placeholder="First Name"
-              md={6}
-            />
-            <TextField
-              disabled
-              name="lastName"
-              label="Last Name"
-              placeholder="Last Name"
               md={6}
             />
           </Grid>

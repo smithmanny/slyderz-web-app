@@ -79,7 +79,7 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
           id: true,
           email: true,
           stripeCustomerId: true,
-          firstName: true,
+          name: true,
         },
       },
     },

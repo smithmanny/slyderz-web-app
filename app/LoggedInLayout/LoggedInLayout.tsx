@@ -16,7 +16,7 @@ const NearbyChefs = (props) => {
     <>
       {nearbyChefs.map((chef, index) => (
         <Grid
-          key={`${chef.user.firstName}-${index}`}
+          key={`${chef.user.name}-${index}`}
           item
           xs={12}
           sm={6}
@@ -24,7 +24,7 @@ const NearbyChefs = (props) => {
           lg={2}
         >
           <Link href={Routes.ChefPage({ cid: chef.id })}>
-            <Card sx={{ maxWidth: 245, margin: 'auto' }}>
+            <Card sx={{ maxWidth: 245, margin: "auto" }}>
               <CardMedia
                 image="/headshot.jpeg"
                 title="Chef dish"
@@ -39,7 +39,7 @@ const NearbyChefs = (props) => {
               />
               <CardContent>
                 <Typography variant="body1">BBQ • Atlanta</Typography>
-                <Typography variant="h6">{chef.user.firstName}</Typography>
+                <Typography variant="h6">{chef.user.name}</Typography>
                 <Typography variant="subtitle2">
                   Starting at $17/person
                 </Typography>
@@ -68,7 +68,11 @@ const LoggedinLayout: BlitzPage = () => {
           }}
         >
           <Grid item xs={12}>
-            <Typography variant="h1" sx={{ fontWeight: 'bold' }} marginBottom={1}>
+            <Typography
+              variant="h1"
+              sx={{ fontWeight: "bold" }}
+              marginBottom={1}
+            >
               Unforgettable Dining with Slyderz
             </Typography>
             <Typography variant="h6">
@@ -77,7 +81,11 @@ const LoggedinLayout: BlitzPage = () => {
             </Typography>
 
             <Link href={Routes.About()}>
-              <Button sx={{ mt: 4, textTransform: 'uppercase' }} variant="outlined" label="learn-more">
+              <Button
+                sx={{ mt: 4, textTransform: "uppercase" }}
+                variant="outlined"
+                label="learn-more"
+              >
                 Learn More
               </Button>
             </Link>

@@ -13,7 +13,7 @@ const stripe = getStripeServer();
 
 export default resolver.pipe(
   resolver.zod(Signup),
-  async ({ email, firstName, lastName, password }, ctx) => {
+  async ({ email, name, password }, ctx) => {
     const hashedPassword = await SecurePassword.hash(password);
     const userExists = await db.user.findFirst({
       where: {
@@ -28,22 +28,20 @@ export default resolver.pipe(
     const createUser = async () => {
       const stripeCustomer = await stripe.customers.create({
         email,
-        name: `${firstName} ${lastName}`,
+        name
       });
 
       const user = await db.user.create({
         data: {
           email: email.toLowerCase(),
-          firstName,
-          lastName,
+          name,
           hashedPassword,
           role: "USER",
           stripeCustomerId: stripeCustomer.id,
         },
         select: {
           id: true,
-          firstName: true,
-          lastName: true,
+          name: true,
           email: true,
           role: true,
           stripeCustomerId: true,
@@ -56,7 +54,7 @@ export default resolver.pipe(
     const createMailjetContact = async (user) => {
       const body: Contact.PostContactBody = {
         IsExcludedFromCampaigns: false,
-        Name: firstName,
+        Name: name,
         Email: email,
       };
       let contact: LibraryResponse<Contact.GetContactResponse>;
