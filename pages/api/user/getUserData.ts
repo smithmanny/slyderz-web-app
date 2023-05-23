@@ -1,4 +1,3 @@
-import { api } from "app/blitz-server";
 import { getStripeServer } from "app/utils/getStripe";
 import db from "db";
 
@@ -18,7 +17,7 @@ async function getStripePayments(session) {
 async function getAddress() {
   const user = await db.user.findFirstOrThrow({
     where: {
-      id: 1
+      id: "1"
     },
     select: {
       address: {
@@ -74,4 +73,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
   })
 };
 
-export default api(handler);
+export default handler;

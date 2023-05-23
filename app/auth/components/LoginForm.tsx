@@ -15,7 +15,7 @@ type LoginFormProps = {
 };
 
 export const LoginForm = (props: LoginFormProps) => {
-  const [login] = useMutation(loginMutation);
+  // const [login] = useMutation(loginMutation);
 
   return (
     <Box
@@ -35,7 +35,7 @@ export const LoginForm = (props: LoginFormProps) => {
         submitText="Login"
         schema={Login}
         mutation={{
-          schema: login,
+          schema: () => {},
           toVariables: (values) => ({
             ...values,
           }),
@@ -56,7 +56,7 @@ export const LoginForm = (props: LoginFormProps) => {
           type="password"
         />
         <Grid item xs={12}>
-          <Link href={Routes.ForgotPasswordPage()}>
+          <Link href="/auth/forgot-password">
             <Typography color="#000">Forgot your password?</Typography>
           </Link>
         </Grid>
@@ -64,7 +64,7 @@ export const LoginForm = (props: LoginFormProps) => {
 
       <div style={{ marginTop: "1rem", color: "#000" }}>
         Or{" "}
-        <Link href={Routes.SignupPage()} style={{ color: "#000" }}>
+        <Link href="/auth/signup" style={{ color: "#000" }}>
           Sign Up
         </Link>
       </div>

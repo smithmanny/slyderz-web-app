@@ -1,4 +1,3 @@
-import { gSSP } from "app/blitz-server";
 import { useRouter } from "next/router";
 import db from "db";
 
@@ -12,7 +11,7 @@ import Divider from "app/core/components/shared/Divider";
 import { TRANSACTIONAL_EMAILS } from "types";
 import sendSesEmail from "emails/utils/sendSesEmail";
 
-export const getServerSideProps = gSSP(async function getServerSideProps({
+export const getServerSideProps = async function getServerSideProps({
   req,
   res,
   params,
@@ -88,7 +87,7 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
       order,
     },
   };
-});
+};
 
 export const DenyOrderPage = (props) => {
   const router = useRouter();

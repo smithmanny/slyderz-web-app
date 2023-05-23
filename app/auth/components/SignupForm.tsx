@@ -1,9 +1,7 @@
 import Link from "next/link";
-import { Routes } from "@blitzjs/next";
-import { useMutation } from "@blitzjs/rpc";
 
-import signupMutation from "app/auth/mutations/signup";
 import { Signup } from "app/auth/validations";
+import { trpc } from "server/utils/trpc";
 
 import Form, { TextField } from "app/core/components/form";
 import Grid from "app/core/components/shared/Grid";
@@ -15,7 +13,8 @@ type SignupFormProps = {
 };
 
 export const SignupForm = (props: SignupFormProps) => {
-  const [signup] = useMutation(signupMutation);
+  const createUser = trpc.auth.createUser.useMutation();
+  // const [signup] = useMutation(signupMutation);
 
   return (
     <Box
@@ -39,7 +38,7 @@ export const SignupForm = (props: SignupFormProps) => {
           password: "",
         }}
         mutation={{
-          schema: signup,
+          schema: createUser.mutateAsync,
           toVariables: (values) => ({
             ...values,
           }),
@@ -52,7 +51,7 @@ export const SignupForm = (props: SignupFormProps) => {
             label="First Name"
             name="name"
             required={true}
-            md={6}
+            md={12}
           />
         </Grid>
         <TextField
@@ -71,7 +70,7 @@ export const SignupForm = (props: SignupFormProps) => {
 
       <div style={{ marginTop: "1rem", color: "#000" }}>
         Or{" "}
-        <Link href={Routes.LoginPage()} style={{ color: "#000" }}>
+        <Link href="/auth/login" style={{ color: "#000" }}>
           Log In
         </Link>
       </div>

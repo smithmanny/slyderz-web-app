@@ -41,10 +41,10 @@ function ElevationScroll(props) {
 
 const Appbar = (props) => {
   const [accountAnchorEl, setAccountAnchorEl] = useState(null);
-  const chef = useAppSelector(state => state.user.chef)
+  const chef = useAppSelector((state) => state.user.chef);
   const isAccountOpen = Boolean(accountAnchorEl);
   const accountId = isAccountOpen ? "account-popover" : null;
-  const router = useRouter()
+  const router = useRouter();
 
   const closeAccountModal = useCallback(() => {
     setAccountAnchorEl(null);
@@ -54,9 +54,9 @@ const Appbar = (props) => {
     setAccountAnchorEl(event.currentTarget);
   };
 
-  const navigateToDashboard = useCallback(async() => {
-    await router.push(Routes.Dashboard())
-  }, [router])
+  const navigateToDashboard = useCallback(async () => {
+    await router.push("/dashboard");
+  }, [router]);
 
   return (
     <>
@@ -96,7 +96,9 @@ const Appbar = (props) => {
                       variant="text"
                       onClick={navigateToDashboard}
                     >
-                      <Typography sx={{ color: "black", fontWeight: 600 }}>Your Dashboard</Typography>
+                      <Typography sx={{ color: "black", fontWeight: 600 }}>
+                        Your Dashboard
+                      </Typography>
                     </Button>
                   )}
                   <IconButton

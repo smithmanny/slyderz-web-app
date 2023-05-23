@@ -1,6 +1,3 @@
-import { SessionContext, SimpleRolesIsAuthorized } from "@blitzjs/auth";
-import { User } from "db";
-
 export type Role = "ADMIN" | "USER" | "CHEF";
 export const CHEF_SERVICE_FEE = 0.03;
 export const CONSUMER_SERVICE_FEE = 0.10;
@@ -40,23 +37,7 @@ interface Cart {
   total: number;
 }
 
-declare module "@blitzjs/auth" {
-  export interface Ctx {
-    session: SessionContext;
-  }
-  export interface Session {
-    isAuthorized: SimpleRolesIsAuthorized<Role>;
-    PublicData: {
-      stripeCustomerId: string;
-      userId: User["id"];
-      role: Role;
-      cart: Cart;
-    };
-  }
-}
-
 // Email section
-
 export interface SESParamsType {
   subject: string;
   to: string;

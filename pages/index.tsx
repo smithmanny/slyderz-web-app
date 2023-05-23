@@ -1,15 +1,10 @@
-import dynamic from "next/dynamic";
-import { BlitzPage } from "@blitzjs/next";
-
 import Layout from "app/core/layouts/Layout";
+import LoggedInContainer from "app/LoggedInLayout";
 
-const LoggedInContainer = dynamic(() => import("app/LoggedInLayout"));
-
-const Home: BlitzPage = () => {
+const Home = () => {
   return <LoggedInContainer />;
 };
 
-Home.suppressFirstRenderFlicker = true;
 Home.getLayout = (page) => <Layout>{page}</Layout>;
 
 export default Home;

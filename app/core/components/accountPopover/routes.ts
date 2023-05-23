@@ -1,4 +1,3 @@
-import { Routes } from "@blitzjs/next";
 import AddIcon from "@mui/icons-material/Add";
 
 interface LoggedOutRouteType {
@@ -16,36 +15,36 @@ export const loggedOutRoutes: Array<LoggedOutRouteType> = [
     id: 0,
     icon: AddIcon,
     name: "Login",
-    route: Routes.LoginPage(),
+    route: "/auth/login",
   },
   {
     id: 1,
     icon: AddIcon,
     name: "Register",
-    route: Routes.SignupPage(),
+    route: "/auth/signup",
   },
 ];
 export const loggedInRoutes: Array<LoggedInRouteType> = [
   {
     id: 0,
     name: "Account",
-    route: Routes.Account(),
+    route: "/account",
   },
   {
     id: 1,
     name: "Become a Host",
-    route: Routes.Host(),
+    route: "/host",
   },
 ];
 export const onboardedRoutes: Array<OnboarderdRouteType> = [
   {
     id: 0,
     name: "Account",
-    route: Routes.Account(),
+    route: "/account",
   },
   {
     id: 1,
     name: "Dashboard",
-    route: Routes.Dashboard(),
+    route: "/dashboard",
   },
 ];

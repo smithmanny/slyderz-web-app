@@ -58,7 +58,7 @@ model User {
   emailVerified DateTime?
   image         String?
   imagePublicId String?
-  hashedPassword   String?
+  hashedPassword   String @default("")
   stripeCustomerId String   @unique
   role             RoleType @default(USER)
 

@@ -39,7 +39,7 @@ function LoadingIcon() {
 function SlyderzWrapper({ children }) {
   const dispatch = useAppDispatch();
   // TODO:: Add session and check for user
-  const userId = 1;
+  const userId = null;
 
   useEffect(() => {
     if (userId) {
@@ -55,11 +55,7 @@ function Slyderz({ Component, pageProps: { session, ...pageProps } }) {
   const getLayout = Component.getLayout || ((page) => page);
 
   return (
-    <SessionProvider
-      session={session}
-      // Re-fetches session when window is focused
-      refetchOnWindowFocus={true}
-    >
+    <SessionProvider session={session}>
       <Provider store={store}>
         <SnackbarProvider
           anchorOrigin={{

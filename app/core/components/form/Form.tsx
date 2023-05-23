@@ -1,17 +1,17 @@
 import { ReactNode, PropsWithoutRef } from "react";
-import { AuthenticationError, validateZodSchema } from "blitz";
 import {
   Form as FinalForm,
   FormProps as FinalFormProps,
 } from "react-final-form";
 import { FORM_ERROR } from "final-form";
 import * as z from "zod";
+import type { ZodError } from "zod";
 
 import Button from "../shared/Button";
 import Grid from "../shared/Grid";
 
 type FormMutationType = {
-  schema: any;
+  schema: Function;
   toVariables: (object) => void;
 };
 
@@ -40,6 +40,51 @@ export function Form<S extends z.ZodType<any, any>>({
   onSuccess,
   ...props
 }: FormProps<S>) {
+  function recursiveFormatZodErrors(errors: any) {
+    let formattedErrors: Record<string, any> = {};
+
+    for (const key in errors) {
+      if (key === "_errors") {
+        continue;
+      }
+
+      if (errors[key]?._errors?.[0]) {
+        if (!isNaN(key as any) && !Array.isArray(formattedErrors)) {
+          formattedErrors = [];
+        }
+        formattedErrors[key] = errors[key]._errors[0];
+      } else {
+        if (!isNaN(key as any) && !Array.isArray(formattedErrors)) {
+          formattedErrors = [];
+        }
+        formattedErrors[key] = recursiveFormatZodErrors(errors[key]);
+      }
+    }
+
+    return formattedErrors;
+  }
+
+  function formatZodError(error: ZodError) {
+    if (!error || typeof error.format !== "function") {
+      throw new Error(
+        "The argument to formatZodError must be a zod error with error.format()"
+      );
+    }
+
+    const errors = error.format();
+    return recursiveFormatZodErrors(errors);
+  }
+
+  const validateZodSchemaAsync = (schema: any) => async (values: any) => {
+    if (!schema) return {};
+    try {
+      await schema.parseAsync(values);
+      return {};
+    } catch (error: any) {
+      return error.format ? formatZodError(error) : error.toString();
+    }
+  };
+
   async function _handleSubmit(values, formApi, cb) {
     if (mutation && mutation.toVariables) {
       const variables = mutation.toVariables(values);
@@ -55,10 +100,8 @@ export function Form<S extends z.ZodType<any, any>>({
         if (error.code === "P2002" && error.meta?.target?.includes("email")) {
           // This error comes from Prisma
           return { email: "This email is already being used" };
-        } else if (error instanceof AuthenticationError) {
-          // return enqueueSnackbar("Sorry, those credentials are invalid", { variant: "error" })
-          return { [FORM_ERROR]: "Sorry, those credentials are invalid" };
         } else {
+          console.log("Error submitting form", error);
           return { [FORM_ERROR]: error.toString() };
         }
       }
@@ -72,7 +115,7 @@ export function Form<S extends z.ZodType<any, any>>({
   return (
     <FinalForm
       initialValues={initialValues}
-      validate={validateZodSchema(schema)}
+      validate={validateZodSchemaAsync(schema)}
       onSubmit={_handleSubmit}
       render={({ handleSubmit, submitting, submitError, pristine }) => (
         <form onSubmit={handleSubmit} className="form" {...props}>

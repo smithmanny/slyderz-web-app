@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import { gSSP } from "app/blitz-server";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
@@ -11,7 +10,7 @@ import Button from "app/core/components/shared/Button";
 import Typography from "app/core/components/shared/Typography";
 import Layout from "app/core/layouts/Layout";
 
-export const getServerSideProps = gSSP(async function getServerSideProps({
+export const getServerSideProps = async function getServerSideProps({
   ctx,
   params,
 }) {
@@ -52,7 +51,7 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
       userId: session.userId,
     },
   };
-});
+};
 
 export const NewOrderConfirmationPage = (props) => {
   const router = useRouter();

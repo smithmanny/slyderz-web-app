@@ -13,7 +13,6 @@ import Button from "app/core/components/shared/Button";
 import Box from "app/core/components/shared/Box";
 import Stack from "app/core/components/shared/Stack";
 import Form, { TextField }  from "app/core/components/form";
-import { Routes } from "@blitzjs/next";
 
 const FooterDiv = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.primary.dark,
@@ -25,41 +24,41 @@ const FooterLinks = (props) => {
   const aboutLinks = [
     {
       name: "About",
-      route: Routes.About()
+      route: "/about"
     },
     {
       name: "Contact",
-      route: Routes.About()
+      route: "/about"
     },
     {
       name: "Blog",
-      route: Routes.About()
+      route: "/about"
     },
     {
       name: "Terms",
-      route: Routes.TermsAndCondition()
+      route: "/terms-and-conditions"
     },
     {
       name: "Privacy",
-      route: Routes.About()
+      route: "/about"
     }
   ]
   const chefLinks = [
     {
       name: 'Join Slyderz',
-      route: Routes.Host()
+      route: "/host"
     }
   ]
   const supportLinks = [
     {
       name: 'Consumer Help',
-      route: Routes.BecomeAChef()
+      route: "/become-a-chef"
     }
   ]
   const citiesLinks = [
     {
       name: 'Atlanta',
-      route: Routes.Home()
+      route: '/'
     }
   ]
 

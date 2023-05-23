@@ -1,15 +1,11 @@
 import { useRouter } from "next/router";
-import { useSession } from "@blitzjs/auth";
-import { useMutation } from "@blitzjs/rpc";
 import PropTypes from "prop-types";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import PersonIcon from "@mui/icons-material/Person";
-import { signIn, signOut } from "next-auth/react";
 
-import logoutMutation from "app/auth/mutations/logout";
 import Popover from "app/core/components/shared/Popover";
 import { loggedInRoutes, loggedOutRoutes, onboardedRoutes } from "./routes";
 import { ChefType } from "integrations/redux/reducers/userReduer";
@@ -24,9 +20,8 @@ interface AccountPopver {
 
 const AccountPopover = (props: AccountPopver) => {
   const { chef, onClose, ...rest } = props;
-  const [logout] = useMutation(logoutMutation);
   const router = useRouter();
-  const session = useSession();
+  const session = { userId: "" };
 
   const fetchListItems = () => {
     const routes = {
@@ -80,7 +75,8 @@ const AccountPopover = (props: AccountPopver) => {
           </ListItemButton>
         ))}
         {session.userId ? (
-          <ListItemButton onClick={() => signOut()}>
+          // TODO
+          <ListItemButton onClick={() => {}}>
             <ListItemText
               primary="Sign out"
               sx={{

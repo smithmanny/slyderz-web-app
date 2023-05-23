@@ -1,4 +1,3 @@
-import { gSSP } from "app/blitz-server";
 import { useRouter } from "next/router";
 import db from "db";
 
@@ -20,7 +19,7 @@ import Divider from "app/core/components/shared/Divider";
 import { getStripeServer } from "app/utils/getStripe";
 
 const stripe = getStripeServer();
-export const getServerSideProps = gSSP(async function getServerSideProps({
+export const getServerSideProps = async function getServerSideProps({
   req,
   res,
   params,
@@ -175,7 +174,7 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
       order,
     },
   };
-});
+};
 
 export const ConfirmOrderPage = (props) => {
   const { order } = props;

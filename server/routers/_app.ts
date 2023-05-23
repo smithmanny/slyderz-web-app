@@ -1,23 +1,11 @@
-import { z } from 'zod';
-import { publicProcedure, router } from '../trpc';
+import { router } from '../trpc';
+import chefRouter from './chefRouter';
+import authRouter from './authRouter';
 
 export const appRouter = router({
-  hello: publicProcedure
-    .input(
-      z.object({
-        text: z.string(),
-      }),
-    )
-    .query((opts) => {
-      return {
-        greeting: `hello ${opts.input.text}`,
-      };
-    }),
+  auth: authRouter,
+  chef: chefRouter,
 });
 
-// const appRouter = router({
-//   user: userRouter, // put procedures under "user" namespace
-//   post: postRouter, // put procedures under "post" namespace
-// });
 // export type definition of API
 export type AppRouter = typeof appRouter;

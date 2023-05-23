@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { BlitzPage, Routes } from "@blitzjs/next";
-import { useQuery } from "@blitzjs/rpc";
-
-import NearbyChefQuery from "app/chefs/queries/getNearbyChefsQuery";
+import { trpc } from "server/utils/trpc";
 
 import Card, { CardContent, CardMedia } from "app/core/components/shared/Card";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
@@ -11,10 +9,11 @@ import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
 
 const NearbyChefs = (props) => {
-  const [nearbyChefs] = useQuery(NearbyChefQuery, null);
+  const { data } = trpc.chef.fetchNearbyChefs.useQuery();
+  console.log(data);
   return (
     <>
-      {nearbyChefs.map((chef, index) => (
+      {data?.map((chef, index) => (
         <Grid
           key={`${chef.user.name}-${index}`}
           item
@@ -23,7 +22,7 @@ const NearbyChefs = (props) => {
           md={4}
           lg={2}
         >
-          <Link href={Routes.ChefPage({ cid: chef.id })}>
+          <Link href={`chefs/${"cid"}`}>
             <Card sx={{ maxWidth: 245, margin: "auto" }}>
               <CardMedia
                 image="/headshot.jpeg"
@@ -80,7 +79,7 @@ const LoggedinLayout: BlitzPage = () => {
               home.
             </Typography>
 
-            <Link href={Routes.About()}>
+            <Link href="/about">
               <Button
                 sx={{ mt: 4, textTransform: "uppercase" }}
                 variant="outlined"

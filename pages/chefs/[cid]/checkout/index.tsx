@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from "react";
-import { gSSP } from "app/blitz-server";
 import { BlitzPage } from "@blitzjs/next";
 
 import Layout from "app/core/layouts/Layout";
@@ -9,8 +8,8 @@ import CartEmpty from "app/checkout/components/CartEmpty";
 import AddAddressModal from "app/core/modals/AddAddressModal";
 
 interface CheckoutTypes {
-  cart: any
-  cid: string
+  cart: any;
+  cid: string;
   eventDate: Date;
   eventTime: string;
   paymentIntent: any;
@@ -18,22 +17,19 @@ interface CheckoutTypes {
   userId: Number;
 }
 
-export const getServerSideProps = gSSP(async function getServerSideProps({
+export const getServerSideProps = async function getServerSideProps({
   ctx,
   query,
 }) {
   const session = ctx?.session;
-  const { cid } = query
-  const eventDate = session.cart?.eventDate
-  const eventTime = session.cart?.eventTime
+  const { cid } = query;
+  const eventDate = session.cart?.eventDate;
+  const eventTime = session.cart?.eventTime;
 
-  if (
-    !session.stripeCustomerId ||
-    !session.userId
-  ) {
+  if (!session.stripeCustomerId || !session.userId) {
     return {
       redirect: {
-        destination: '/auth/login',
+        destination: "/auth/login",
         permanent: false,
       },
     };
@@ -48,14 +44,14 @@ export const getServerSideProps = gSSP(async function getServerSideProps({
       userId: session.userId,
     },
   };
-});
+};
 
 const Checkout: BlitzPage = (props: any) => {
   const { cart, cid, eventDate, eventTime, userId }: CheckoutTypes = props;
-  const isCartEmpty = !cart?.pendingCartItems || !cart?.total
+  const isCartEmpty = !cart?.pendingCartItems || !cart?.total;
   const [showAddressModal, setShowAddressModal] = useState(false);
-  const closeAddressModal = useCallback(() => setShowAddressModal(false), [])
-  const openAddressModal = useCallback(() => setShowAddressModal(true), [])
+  const closeAddressModal = useCallback(() => setShowAddressModal(false), []);
+  const openAddressModal = useCallback(() => setShowAddressModal(true), []);
 
   return (
     <ConsumerContainer>

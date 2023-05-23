@@ -1,9 +1,7 @@
-const { withBlitz } = require("@blitzjs/next");
-
-module.exports = withBlitz({
+module.exports = {
   reactStrictMode: true,
   images: {
     loader: "cloudinary",
     path: "https://res.cloudinary.com/slyderz/image/upload"
   }
-});
+};

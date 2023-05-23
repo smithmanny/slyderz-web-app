@@ -1,6 +1,6 @@
+import { FC } from "react";
 import Link from "next/link";
 import { useMutation } from "@blitzjs/rpc";
-import { BlitzPage } from "@blitzjs/next";
 import Layout from "app/core/layouts/Layout";
 import Form, { TextField } from "app/core/components/form";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
@@ -8,9 +8,8 @@ import Typography from "app/core/components/shared/Typography";
 
 import resetPassword from "app/auth/mutations/resetPassword";
 import { AuthorizationError } from "blitz";
-import { gSSP } from "app/blitz-server";
 
-export const getServerSideProps = gSSP(async ({ ctx, query }) => {
+export const getServerSideProps = async ({ ctx, query }) => {
   const { session } = ctx;
 
   if (!query.token || session.userId) {
@@ -21,13 +20,13 @@ export const getServerSideProps = gSSP(async ({ ctx, query }) => {
       token: query.token,
     },
   };
-});
+};
 
 interface ResetPasswordTypes {
   token: string;
 }
 
-const ResetPasswordPage: BlitzPage<ResetPasswordTypes> = ({ token }) => {
+const ResetPasswordPage: FC<ResetPasswordTypes> = ({ token }) => {
   const [resetPasswordMutation, { isSuccess }] = useMutation(resetPassword);
 
   return (
