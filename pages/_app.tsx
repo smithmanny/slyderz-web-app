@@ -4,7 +4,6 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Provider } from "react-redux";
 import { SnackbarProvider } from "notistack";
-import { SessionProvider } from "next-auth/react";
 
 import { trpc } from "server/utils/trpc";
 import store from "integrations/redux";
@@ -12,7 +11,6 @@ import { theme } from "integrations/material-ui";
 import { useAppDispatch } from "integrations/redux";
 import { fetchUserData } from "integrations/redux/reducers/userReduer";
 
-import LoginForm from "app/auth/components/LoginForm";
 import Box from "app/core/components/shared/Box";
 import CircularProgress from "app/core/components/shared/CircularProgress";
 
@@ -38,47 +36,41 @@ function LoadingIcon() {
 
 function SlyderzWrapper({ children }) {
   const dispatch = useAppDispatch();
-  // TODO:: Add session and check for user
-  const userId = null;
 
   useEffect(() => {
-    if (userId) {
-      dispatch(fetchUserData())
-        .unwrap()
-        .catch((err) => console.log("Failed fetching initial data", err));
-    }
-  }, [userId, dispatch]);
+    dispatch(fetchUserData())
+      .unwrap()
+      .catch((err) => console.log("Failed fetching initial data", err));
+  }, [dispatch]);
   return children;
 }
 
-function Slyderz({ Component, pageProps: { session, ...pageProps } }) {
+function Slyderz({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page);
 
   return (
-    <SessionProvider session={session}>
-      <Provider store={store}>
-        <SnackbarProvider
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center",
-          }}
-          preventDuplicate={true}
-        >
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Suspense fallback={<LoadingIcon />}>
-              <SlyderzWrapper>
-                {getLayout(
-                  <div className={roboto.className}>
-                    <Component {...pageProps} />
-                  </div>
-                )}
-              </SlyderzWrapper>
-            </Suspense>
-          </ThemeProvider>
-        </SnackbarProvider>
-      </Provider>
-    </SessionProvider>
+    <Provider store={store}>
+      <SnackbarProvider
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        preventDuplicate={true}
+      >
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Suspense fallback={<LoadingIcon />}>
+            <SlyderzWrapper>
+              {getLayout(
+                <div className={roboto.className}>
+                  <Component {...pageProps} />
+                </div>
+              )}
+            </SlyderzWrapper>
+          </Suspense>
+        </ThemeProvider>
+      </SnackbarProvider>
+    </Provider>
   );
 }
 

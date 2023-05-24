@@ -102,7 +102,7 @@ export function Form<S extends z.ZodType<any, any>>({
           return { email: "This email is already being used" };
         } else {
           console.log("Error submitting form", error);
-          return { [FORM_ERROR]: error.toString() };
+          return { [FORM_ERROR]: error.message };
         }
       }
     }

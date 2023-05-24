@@ -4,11 +4,10 @@ import { Contact, LibraryResponse } from "node-mailjet";
 import { hash } from 'argon2';
 
 import { router, publicProcedure } from '../trpc';
-
-import { Signup } from "app/auth/validations";
-import { Role, TRANSACTIONAL_EMAILS } from "types";
+import { TRANSACTIONAL_EMAILS } from "types";
 import { mailjet, mailjetClient } from "app/utils/getMailjet";
 import sendSesEmail from "emails/utils/sendSesEmail";
+import type { User } from "lucia-auth"
 
 const authRouter = router({
   createUser: publicProcedure
@@ -24,95 +23,110 @@ const authRouter = router({
       const input = opts.input
 
       const hashedPassword = await hash(input.password)
-      const userExists = await ctx.prisma.user.findFirst({
+      const userExists = await ctx.prisma.authUser.findFirst({
         where: {
           email: input.email,
         },
       });
 
-      return userExists
+      if (userExists) {
+        throw new TRPCError({
+          code: "CONFLICT",
+          message: "User already exists"
+        })
+      }
 
-      // if (userExists) {
-      //   throw new TRPCError({
-      //     code: "CONFLICT",
-      //     message: "User already exists"
-      //   })
-      // }
+      const createUser = async () => {
+        let user: User
 
-      // const createUser = async () => {
-      //   const stripeCustomer = await ctx.stripe.customers.create({
-      //     email: input.email,
-      //     name: input.name
-      //   });
+        try {
+          let stripeCustomerId: string = ""
 
-      //   const user = await ctx.prisma.user.create({
-      //     data: {
-      //       email: input.email.toLowerCase(),
-      //       name: input.name,
-      //       hashedPassword,
-      //       role: "USER",
-      //       stripeCustomerId: stripeCustomer.id,
-      //     },
-      //     select: {
-      //       id: true,
-      //       name: true,
-      //       email: true,
-      //       role: true,
-      //       stripeCustomerId: true,
-      //     },
-      //   });
+          if (input.email === "shakhorsmith@gmail.com") {
+            stripeCustomerId = "cus_LpSKis9bilj3rP"
+          }
 
-      //   return user;
-      // };
+          if (!stripeCustomerId) {
+            const stripeCustomer = await ctx.stripe.customers.create({
+              email: input.email,
+              name: input.name
+            });
 
-      // const createMailjetContact = async (user) => {
-      //   const body: Contact.PostContactBody = {
-      //     IsExcludedFromCampaigns: false,
-      //     Name: input.name,
-      //     Email: input.email,
-      //   };
-      //   let contact: LibraryResponse<Contact.GetContactResponse>;
-      //   try {
-      //     contact = await mailjet.post("contact").request(body);
-      //     const contactId = contact?.body?.Data[0]?.ID;
+            stripeCustomerId = stripeCustomer.id
+          }
 
-      //     if (contactId) {
-      //       await mailjetClient
-      //         .post("contact")
-      //         .id(contactId)
-      //         .action("managecontactslists")
-      //         .request({
-      //           ContactsLists: [
-      //             {
-      //               ListID: 10251087, //Subscribers list
-      //               Action: "addnoforce",
-      //             },
-      //           ],
-      //         });
-      //     }
-      //   } catch (err) {
-      //     console.log("User not created cause of error...", err);
-      //     await ctx.prisma.user.delete({ where: { id: user.id } });
-      //     throw new TRPCError({
-      //       code: "BAD_REQUEST",
-      //       message: "Please try again later"
-      //     })
-      //   }
+          user = await ctx.auth.createUser({
+            primaryKey: {
+              providerId: "email",
+              providerUserId: input.email,
+              password: hashedPassword
+            },
+            attributes: {
+              name: input.name,
+              email: input.email,
+              stripeCustomerId: stripeCustomerId
+            }
+          })
+        } catch(err) {
+          console.log("User not created", err)
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Problem creating user."
+          })
+        }
 
-      //   return contact;
-      // };
+        const createMailjetContact = async () => {
+          const body: Contact.PostContactBody = {
+            IsExcludedFromCampaigns: false,
+            Name: input.name,
+            Email: input.email,
+          };
 
-      // const user = await createUser();
-      // // Create contact in mailjet and add to list
-      // await createMailjetContact(user);
-      // await sendSesEmail({
-      //   to: "contact@slyderz.co",
-      //   type: TRANSACTIONAL_EMAILS.activation,
-      // });
+          try {
+            const contact: LibraryResponse<Contact.GetContactResponse> = await mailjet.post("contact").request(body);
+            const contactId = contact?.body?.Data[0]?.ID;
 
-      // // Merge pending carts from logged out session
-      // const pendingCartItems = ctx.session?.cart?.pendingCartItems || [];
-      // const total = ctx.session?.cart?.total || 0;
+            if (contactId) {
+              await mailjetClient
+                .post("contact")
+                .id(contactId)
+                .action("managecontactslists")
+                .request({
+                  ContactsLists: [
+                    {
+                      ListID: 10251087, //Subscribers list
+                      Action: "addnoforce",
+                    },
+                  ],
+                });
+            }
+          } catch (err) {
+            console.log("User not added to email list cause of error...", err);
+          }
+        };
+
+        // Add user to email list
+        await createMailjetContact()
+
+        return user;
+      };
+
+      const [user] = await Promise.all([
+        createUser(),
+        sendSesEmail({
+          to: "contact@slyderz.co",
+          type: TRANSACTIONAL_EMAILS.activation,
+        })
+      ]).catch(err => {
+        console.log(err)
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Problem creating user."
+        })
+      })
+
+      const session = await ctx.auth.createSession(user.userId)
+      ctx.auth.authRequest.setSession(session)
 
       // await ctx.session.$create({
       //   userId: user.id,
@@ -124,8 +138,22 @@ const authRouter = router({
       //   stripeCustomerId: user.stripeCustomerId,
       // });
 
-      // return user;
+      return {
+        message: "Successfully created user"
+      }
     }),
+  getSession: publicProcedure
+    .query(async (opts) => {
+      const session = opts.ctx.session
+
+      if (session.sessionId && session.userId) {
+        return {
+          userId: session.userId
+        }
+      }
+
+      return {}
+    })
 });
 
 export default authRouter

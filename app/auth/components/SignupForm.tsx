@@ -14,7 +14,6 @@ type SignupFormProps = {
 
 export const SignupForm = (props: SignupFormProps) => {
   const createUser = trpc.auth.createUser.useMutation();
-  // const [signup] = useMutation(signupMutation);
 
   return (
     <Box
@@ -32,11 +31,6 @@ export const SignupForm = (props: SignupFormProps) => {
       <Form
         submitText="Create Account"
         schema={Signup}
-        initialValues={{
-          email: "",
-          name: "",
-          password: "",
-        }}
         mutation={{
           schema: createUser.mutateAsync,
           toVariables: (values) => ({
