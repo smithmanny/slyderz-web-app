@@ -5,17 +5,30 @@ import { getStripeServer } from 'app/utils/getStripe';
 import prisma from 'db';
 import { auth as lucia } from 'integrations/auth/lucia';
 
+interface SessionType {
+  userId: string
+  sessionId: string
+  user: {
+    stripeCustomerId: string
+  }
+}
+
 const stripe = getStripeServer()
 
 const createContext = async (opts: CreateNextContextOptions) => {
   const cookies = opts.req.cookies
   const sessionId = cookies["auth_session"]
+  let session = {} as SessionType
 
-  const getSession = await lucia.getSessionUser(sessionId || "")
-  const session = {
-    ...getSession.session,
-    user: {
-      ...getSession.user
+  if (sessionId) {
+    // TODO: renew session every week
+    const getSession = await lucia.getSessionUser(sessionId)
+
+    session = {
+      ...getSession.session,
+      user: {
+        ...getSession.user
+      }
     }
   }
 

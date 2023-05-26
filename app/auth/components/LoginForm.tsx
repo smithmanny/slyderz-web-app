@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { Routes } from "@blitzjs/next";
-import { useMutation } from "@blitzjs/rpc";
 
-import loginMutation from "app/auth/mutations/login";
 import { Login } from "app/auth/validations";
+import { trpc } from "server/utils/trpc";
+import { useAppDispatch } from "integrations/redux";
+import { updateUser } from "integrations/redux/reducers/userReduer";
 
 import Typography from "app/core/components/shared/Typography";
 import Box from "app/core/components/shared/Box";
@@ -15,7 +15,12 @@ type LoginFormProps = {
 };
 
 export const LoginForm = (props: LoginFormProps) => {
-  // const [login] = useMutation(loginMutation);
+  const dispatch = useAppDispatch();
+  const login = trpc.auth.login.useMutation({
+    onSuccess: (userId) => {
+      dispatch(updateUser({ userId }));
+    },
+  });
 
   return (
     <Box
@@ -35,7 +40,7 @@ export const LoginForm = (props: LoginFormProps) => {
         submitText="Login"
         schema={Login}
         mutation={{
-          schema: () => {},
+          schema: login.mutateAsync,
           toVariables: (values) => ({
             ...values,
           }),

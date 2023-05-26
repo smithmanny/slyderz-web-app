@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BlitzPage, Routes } from "@blitzjs/next";
+import { BlitzPage } from "@blitzjs/next";
 import { trpc } from "server/utils/trpc";
 
 import Card, { CardContent, CardMedia } from "app/core/components/shared/Card";
@@ -10,7 +10,7 @@ import Typography from "app/core/components/shared/Typography";
 
 const NearbyChefs = (props) => {
   const { data } = trpc.chef.fetchNearbyChefs.useQuery();
-  console.log(data);
+
   return (
     <>
       {data?.map((chef, index) => (

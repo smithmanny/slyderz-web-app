@@ -33,6 +33,7 @@ export type ChefType = {
 
 interface InitialStateType {
   loading: boolean
+  userId: string
   address: {} | AddAddressType
   stripeCards: Array<StripePaymentType>
   chef: ChefType
@@ -45,10 +46,14 @@ type FetchUserDataType = {
     isChef: boolean
     isChefProfileComplete: boolean
   }
+  userId: string
 }
+
+type UpdateUser = Partial<InitialStateType>
 
 const initialState: InitialStateType = {
   loading: false,
+  userId: "",
   address: {},
   stripeCards: [],
   chef: {
@@ -68,10 +73,23 @@ const userSlice = createSlice({
       state.stripeCards.push(action.payload)
     },
     addAddress: (state, action: PayloadAction<AddAddressType>) => {
-      state.address = action.payload
+      state.address["address1"] = action.payload.address1
+      state.address["address2"] = action.payload.address2
+      state.address["city"] = action.payload.city
+      state.address["state"] = action.payload.state
+      state.address["zipcode"] = action.payload.zipcode
     },
     setLoadingState: (state, action: PayloadAction<SetLoadingStateType>) => {
       state.loading = action.payload.loading
+    },
+    logout: (state, action: PayloadAction<undefined>) => {
+      return initialState
+    },
+    updateUser: (state, action: PayloadAction<UpdateUser>) => {
+      return {
+        ...state,
+        ...action.payload
+      }
     },
   },
   extraReducers: (builders) => {
@@ -79,6 +97,7 @@ const userSlice = createSlice({
       if (action.payload) {
         state.stripeCards = action.payload.paymentMethods
         state.address = action.payload.address
+        state.userId = action.payload.userId
 
         if (action.payload.chefStatus.isChef) {
           state.chef.isChef = action.payload.chefStatus.isChef
@@ -109,6 +128,6 @@ export const fetchUserData = createAppAsyncThunk(
 // Extract the action creators object and the reducer
 const { actions, reducer } = userSlice;
 // Extract and export each action creator by name
-export const { addCard, addAddress } = actions;
+export const { addCard, addAddress, updateUser, logout } = actions;
 // Export the reducer, either as a default or named export
 export default reducer;

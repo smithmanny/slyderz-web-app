@@ -8,7 +8,11 @@ import PersonIcon from "@mui/icons-material/Person";
 
 import Popover from "app/core/components/shared/Popover";
 import { loggedInRoutes, loggedOutRoutes, onboardedRoutes } from "./routes";
-import { ChefType } from "integrations/redux/reducers/userReduer";
+import useSession from "app/hooks/useSession";
+import { trpc } from "server/utils/trpc";
+import { useAppSelector, useAppDispatch } from "integrations/redux";
+import { logout as resetState } from "integrations/redux/reducers/userReduer";
+import type { ChefType } from "integrations/redux/reducers/userReduer";
 
 interface AccountPopver {
   id: string | null;
@@ -21,7 +25,14 @@ interface AccountPopver {
 const AccountPopover = (props: AccountPopver) => {
   const { chef, onClose, ...rest } = props;
   const router = useRouter();
-  const session = { userId: "" };
+  const dispatch = useAppDispatch();
+  const userId = useAppSelector((state) => state.user.userId);
+  const logout = trpc.auth.logout.useMutation({
+    onSuccess: () => {
+      dispatch(resetState());
+      return handlePopoverClick("/");
+    },
+  });
 
   const fetchListItems = () => {
     const routes = {
@@ -30,11 +41,11 @@ const AccountPopover = (props: AccountPopver) => {
       chefOnboarded: onboardedRoutes,
     };
 
-    if (session.userId && !chef.isChef) {
+    if (userId && !chef.isChef) {
       return routes.loggedIn;
     }
 
-    if (session.userId && chef.isChefProfileComplete) {
+    if (userId && chef.isChefProfileComplete) {
       return routes.chefOnboarded;
     }
 
@@ -74,9 +85,8 @@ const AccountPopover = (props: AccountPopver) => {
             />
           </ListItemButton>
         ))}
-        {session.userId ? (
-          // TODO
-          <ListItemButton onClick={() => {}}>
+        {userId ? (
+          <ListItemButton onClick={async () => logout.mutateAsync()}>
             <ListItemText
               primary="Sign out"
               sx={{

@@ -63,6 +63,7 @@ const userRouter = router({
       }
 
       const session = ctx.session
+      let userId: string = ""
       let paymentMethods = {} as Stripe.Response<Stripe.ApiList<Stripe.PaymentMethod>>
       let address: Address | {} | null = {}
       let checkUserChefStatus: UserChefStatusType = {
@@ -81,12 +82,14 @@ const userRouter = router({
         paymentMethods = _paymentMethods
         address = _address
         checkUserChefStatus = _checkUserChefStatus
+        userId = session.userId
       }
 
       return {
         paymentMethods,
         address,
-        checkUserChefStatus
+        checkUserChefStatus,
+        userId
       }
     }),
 });
