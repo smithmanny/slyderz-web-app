@@ -1,12 +1,11 @@
 import { router, publicProcedure } from '../trpc';
 import { z } from 'zod';
-import db from "db"
 
 const chefRouter = router({
   fetchNearbyChefs: publicProcedure
     .query(async (opts) => {
       try {
-        const nearbyChefs = await db.chef.findMany({
+        const nearbyChefs = await opts.ctx.prisma.chef.findMany({
           include: {
             user: {
               select: {

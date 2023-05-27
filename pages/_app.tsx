@@ -1,9 +1,10 @@
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useEffect, ReactNode, ReactElement } from "react";
 import { Roboto_Serif } from "next/font/google";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Provider } from "react-redux";
 import { SnackbarProvider } from "notistack";
+import type { AppProps } from "next/app";
 
 import { trpc } from "server/utils/trpc";
 import store from "integrations/redux";
@@ -15,8 +16,16 @@ import Box from "app/core/components/shared/Box";
 import CircularProgress from "app/core/components/shared/CircularProgress";
 
 import "app/styles/base.css";
+import { NextComponentType } from "next";
 
 const roboto = Roboto_Serif({ subsets: ["latin"] });
+
+type SlyderzAppProps = NextComponentType & {
+  getLayout: (Component: ReactElement) => ReactNode;
+};
+interface SlyderzApp extends AppProps {
+  Component: SlyderzAppProps;
+}
 
 function LoadingIcon() {
   return (
@@ -45,8 +54,8 @@ function SlyderzWrapper({ children }) {
   return children;
 }
 
-function Slyderz({ Component, pageProps }) {
-  const getLayout = Component.getLayout || ((page) => page);
+function Slyderz({ Component, pageProps }: SlyderzApp) {
+  const getLayout = Component.getLayout || ((page: ReactNode) => page);
 
   return (
     <Provider store={store}>

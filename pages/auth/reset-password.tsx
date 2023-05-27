@@ -1,19 +1,22 @@
-import { FC } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { useMutation } from "@blitzjs/rpc";
+
 import Layout from "app/core/layouts/Layout";
 import Form, { TextField } from "app/core/components/form";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Typography from "app/core/components/shared/Typography";
+import { trpc } from "server/utils/trpc";
 
-import resetPassword from "app/auth/mutations/resetPassword";
-import { AuthorizationError } from "blitz";
+import type { SlyderzPage } from "next";
 
-export const getServerSideProps = async ({ ctx, query }) => {
-  const { session } = ctx;
-
-  if (!query.token || session.userId) {
-    throw new AuthorizationError();
+export const getServerSideProps = async ({ query }) => {
+  if (!query.token) {
+    return {
+      redirect: {
+        destination: "/auth/forgot-password",
+        permanent: false,
+      },
+    };
   }
   return {
     props: {
@@ -26,8 +29,9 @@ interface ResetPasswordTypes {
   token: string;
 }
 
-const ResetPasswordPage: FC<ResetPasswordTypes> = ({ token }) => {
-  const [resetPasswordMutation, { isSuccess }] = useMutation(resetPassword);
+const ResetPasswordPage: SlyderzPage<ResetPasswordTypes> = ({ token }) => {
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const resetPassword = trpc.auth.handlePasswordReset.useMutation();
 
   return (
     <ConsumerContainer maxWidth="sm">
@@ -48,7 +52,7 @@ const ResetPasswordPage: FC<ResetPasswordTypes> = ({ token }) => {
           <Form
             submitText="Reset Password"
             mutation={{
-              schema: resetPasswordMutation,
+              schema: resetPassword.mutateAsync,
               toVariables: (values) => ({
                 ...values,
                 token,

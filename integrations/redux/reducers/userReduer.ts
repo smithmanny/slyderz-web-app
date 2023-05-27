@@ -34,6 +34,8 @@ export type ChefType = {
 interface InitialStateType {
   loading: boolean
   userId: string
+  email: string
+  name: string
   address: {} | AddAddressType
   stripeCards: Array<StripePaymentType>
   chef: ChefType
@@ -42,6 +44,8 @@ interface InitialStateType {
 type FetchUserDataType = {
   paymentMethods: Array<StripePaymentType>
   address: AddAddressType
+  email: string
+  name: string
   chefStatus: {
     isChef: boolean
     isChefProfileComplete: boolean
@@ -55,6 +59,8 @@ const initialState: InitialStateType = {
   loading: false,
   userId: "",
   address: {},
+  email: "",
+  name: "",
   stripeCards: [],
   chef: {
     isChef: false,
@@ -98,6 +104,8 @@ const userSlice = createSlice({
         state.stripeCards = action.payload.paymentMethods
         state.address = action.payload.address
         state.userId = action.payload.userId
+        state.email = action.payload.email
+        state.name = action.payload.name
 
         if (action.payload.chefStatus.isChef) {
           state.chef.isChef = action.payload.chefStatus.isChef

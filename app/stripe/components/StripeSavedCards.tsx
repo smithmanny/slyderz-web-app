@@ -1,25 +1,24 @@
+import React from "react";
 import { useRouter } from "next/router";
-import React, { FunctionComponent } from "react";
-import { useMutation } from "@blitzjs/rpc";
 
-import deletePaymentMethodMutation from "../../account/mutations/deletePaymentMethodMutation";
+import { trpc } from "server/utils/trpc";
+import { StripePaymentType } from "integrations/redux/reducers/userReduer";
 
 import Box from "app/core/components/shared/Box";
 import Button from "app/core/components/shared/Button";
 import Typography from "app/core/components/shared/Typography";
 
-import { StripePaymentType } from "integrations/redux/reducers/userReduer";
 interface StripeSavedCardsType {
   paymentMethods: Array<StripePaymentType>
 }
 function StripeSavedCards(props: StripeSavedCardsType) {
   const { paymentMethods } = props;
   const router = useRouter();
-  const [deletePaymentMethod] = useMutation(deletePaymentMethodMutation, {
+  const deletePaymentMethod = trpc.account.deletePaymentMethod.useMutation({
     onSuccess: () => {
       return router.reload();
-    },
-  });
+    }
+  })
 
   return (
     <React.Fragment>
@@ -43,7 +42,7 @@ function StripeSavedCards(props: StripeSavedCardsType) {
             <Button
               label="delete"
               variant="text"
-              onClick={() => deletePaymentMethod(stripePaymentMethod.id)}
+              onClick={async () => await deletePaymentMethod.mutateAsync(stripePaymentMethod.id)}
             >
               Delete
             </Button>

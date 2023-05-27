@@ -89,7 +89,9 @@ const userRouter = router({
         paymentMethods,
         address,
         checkUserChefStatus,
-        userId
+        userId,
+        email: session.user.email,
+        name: session.user.name
       }
     }),
 });

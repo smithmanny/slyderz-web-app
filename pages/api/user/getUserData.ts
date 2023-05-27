@@ -6,13 +6,22 @@ import createContext from "server/utils/createContext";
 const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
   const context = await createContext({ req, res })
   const caller = userRouter.createCaller(context)
-  const { paymentMethods, address, checkUserChefStatus, userId } = await caller.fetchInitialData()
+  const {
+    paymentMethods,
+    address,
+    checkUserChefStatus,
+    userId,
+    email,
+    name
+  } = await caller.fetchInitialData()
 
   res.status(200).json({
     address,
     paymentMethods: paymentMethods.data,
     chefStatus: checkUserChefStatus,
-    userId
+    userId,
+    email,
+    name
   })
 };
 

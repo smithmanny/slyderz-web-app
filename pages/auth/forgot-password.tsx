@@ -1,6 +1,6 @@
+import { useState } from "react";
 import Link from "next/link";
-import { useMutation } from "@blitzjs/rpc";
-import { BlitzPage, Routes } from "@blitzjs/next";
+import { BlitzPage } from "@blitzjs/next";
 import Layout from "app/core/layouts/Layout";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Form, { TextField } from "app/core/components/form";
@@ -8,10 +8,27 @@ import Typography from "app/core/components/shared/Typography";
 import Button from "app/core/components/shared/Button";
 
 import { ForgotPassword } from "app/auth/validations";
-import forgotPassword from "app/auth/mutations/forgotPassword";
+import { trpc } from "server/utils/trpc";
+import { auth } from "integrations/auth/lucia";
 
+export async function getServerSideProps(ctx) {
+  const authRequest = auth.handleRequest(ctx);
+  const { session } = await authRequest.validateUser();
+
+  if (session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+}
 const ForgotPasswordPage: BlitzPage = () => {
-  const [forgotPasswordMutation, { isSuccess }] = useMutation(forgotPassword);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const forgotPassword = trpc.auth.sendPasswordResetLink.useMutation({
+    onSuccess: () => setIsSuccess(true),
+  });
 
   return (
     <ConsumerContainer maxWidth="sm">
@@ -24,7 +41,7 @@ const ForgotPasswordPage: BlitzPage = () => {
             If your email is in our system, you will receive instructions to
             reset your password shortly.
           </Typography>
-          <Link href={Routes.Home()}>
+          <Link href="/">
             <Button label="Go home" variant="text" sx={{ pl: 0 }}>
               Go back home
             </Button>
@@ -39,7 +56,7 @@ const ForgotPasswordPage: BlitzPage = () => {
             submitText="Send Reset Password Instructions"
             schema={ForgotPassword}
             mutation={{
-              schema: forgotPasswordMutation,
+              schema: forgotPassword.mutateAsync,
               toVariables: (values) => ({
                 ...values,
               }),
@@ -57,7 +74,7 @@ const ForgotPasswordPage: BlitzPage = () => {
     </ConsumerContainer>
   );
 };
-ForgotPasswordPage.redirectAuthenticatedTo = "/";
+
 ForgotPasswordPage.getLayout = (page) => (
   <Layout title="Forgot Your Password?">{page}</Layout>
 );

@@ -7,8 +7,8 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { useQuery } from "@blitzjs/rpc";
-import createSetupIntentQuery from "../queries/createSetupIntent";
+
+import { trpc } from "server/utils/trpc";
 
 import Button from "app/core/components/shared/Button";
 
@@ -67,9 +67,7 @@ interface StripeCardElementType {
 }
 
 const StripeCardElement = (props: StripeCardElementType) => {
-  const [setupIntent, {
-    isLoading
-  }] = useQuery(createSetupIntentQuery, {})
+  const { data, isLoading } = trpc.stripe.createSetupIntent.useQuery()
 
   if (isLoading) return null
 
@@ -77,13 +75,13 @@ const StripeCardElement = (props: StripeCardElementType) => {
     theme: "stripe",
   };
   const options: any = {
-    clientSecret: setupIntent.client_secret,
+    clientSecret: data,
     appearance,
   };
 
   return (
     <React.Fragment>
-      {setupIntent.client_secret && (
+      {data && (
         <Elements options={options} stripe={promise}>
           <StripeCard chefId={props.chefId} />
         </Elements>

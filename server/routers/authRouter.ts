@@ -1,22 +1,18 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { Contact, LibraryResponse } from "node-mailjet";
+import { LuciaTokenError } from '@lucia-auth/tokens';
 
+import { passwordResetToken } from 'integrations/auth/lucia';
 import { router, publicProcedure, protectedProcedure } from '../trpc';
 import { TRANSACTIONAL_EMAILS } from "types";
 import { mailjet, mailjetClient } from "app/utils/getMailjet";
 import sendSesEmail from "emails/utils/sendSesEmail";
-import type { User } from "lucia-auth"
+import { Signup, Login } from 'app/auth/validations';
 
 const authRouter = router({
   createUser: publicProcedure
-    .input(
-      z.object({
-        name: z.string().min(2),
-        email: z.string().email(),
-        password: z.string().min(6)
-      })
-    )
+    .input(Signup)
     .mutation(async (opts) => {
       const ctx = opts.ctx
       const input = opts.input
@@ -122,7 +118,7 @@ const authRouter = router({
       })
 
       const session = await ctx.auth.createSession(user.userId)
-      ctx.auth.authRequest.setSession(session)
+      ctx.authRequest.setSession(session)
 
       // await ctx.session.$create({
       //   userId: user.id,
@@ -153,15 +149,10 @@ const authRouter = router({
       const session = opts.ctx.session
 
       await opts.ctx.auth.invalidateAllUserSessions(session.userId)
-      opts.ctx.auth.authRequest.setSession(null)
+      opts.ctx.authRequest.setSession(null)
     }),
   login: publicProcedure
-    .input(
-      z.object({
-        email: z.string(),
-        password: z.string(),
-      })
-    )
+    .input(Login)
     .mutation(async (opts) => {
       const input = opts.input
       const ctx = opts.ctx
@@ -169,7 +160,7 @@ const authRouter = router({
       try {
         const key = await ctx.auth.useKey("email", input.email, input.password)
         const session = await ctx.auth.createSession(key.userId)
-        ctx.auth.authRequest.setSession(session)
+        ctx.authRequest.setSession(session)
 
         return key.userId
       } catch(err) {
@@ -180,6 +171,105 @@ const authRouter = router({
         })
       }
     }),
+  sendPasswordResetLink: publicProcedure
+    .input(
+      z.object({
+        email: z.string()
+      })
+    )
+    .mutation(async opts => {
+      const dbUser = opts.ctx.prisma.authUser.findFirst({
+        where: {
+          email: opts.input.email
+        }
+      })
+
+      if (!dbUser) {
+        return await new Promise((resolve) => setTimeout(resolve, 750));
+      }
+
+      const user = opts.ctx.auth.transformDatabaseUser(dbUser);
+      const token = await passwordResetToken.issue(user.userId);
+
+      await sendSesEmail({
+        to: user.email,
+        type: TRANSACTIONAL_EMAILS.forgotPassword,
+        variables: {
+          resetPasswordUrl: `${process.env.NEXT_PUBLIC_URL}/auth/reset-password?token=${token}`,
+        },
+      });
+
+      return
+    }),
+  handlePasswordReset: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+        password: z.string()
+      })
+    )
+    .mutation(async opts => {
+      const input = opts.input
+      const authRequest = opts.ctx.authRequest
+
+      try {
+        const token = await passwordResetToken.validate(input.token)
+        const user = await opts.ctx.auth.getUser(token.userId)
+
+        // Invalidate all sessions, user tokens and update password
+        await Promise.all([
+          opts.ctx.auth.invalidateAllUserSessions(user.userId),
+          passwordResetToken.invalidateAllUserTokens(user.userId),
+          opts.ctx.auth.updateKeyPassword("email", user.email, input.password)
+        ])
+
+        // update key
+        const session = await opts.ctx.auth.createSession(user.userId);
+        authRequest.setSession(session);
+      } catch (e) {
+          console.log("Error resetting password", e.message)
+          if (e instanceof LuciaTokenError && e.message === "EXPIRED_TOKEN") {
+            // expired token/link
+          }
+          if (e instanceof LuciaTokenError && e.message === "INVALID_TOKEN") {
+            throw new TRPCError({
+              code: "UNAUTHORIZED",
+              message: "Please try again"
+            })
+          }
+      }
+      // TODO
+      // await sendSesEmail({
+      //   to: user.email,
+      //   type: TRANSACTIONAL_EMAILS.forgotPassword,
+      //   variables: {
+      //     resetPasswordUrl: `${process.env.NEXT_PUBLIC_URL}/auth/reset-password?token=${token}`,
+      //   },
+      // });
+
+      return
+    }),
+  updatePassword: protectedProcedure
+    .input(
+      z.object({
+        currentPassword: z.string(),
+        newPassword: z.string(),
+      })
+    )
+    .mutation(async opts => {
+      const input = opts.input
+      const email = opts.ctx.session.user.email
+
+      try {
+        const key = await opts.ctx.auth.useKey("email", email, input.currentPassword)
+        await opts.ctx.auth.updateKeyPassword(key.providerId, key.providerUserId, input.newPassword)
+      } catch (err) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Wrong password"
+        })
+      }
+    })
 });
 
 export default authRouter

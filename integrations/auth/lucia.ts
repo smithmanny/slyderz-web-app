@@ -1,4 +1,5 @@
 import lucia from "lucia-auth";
+import { idToken } from "@lucia-auth/tokens";
 import { nextjs } from "lucia-auth/middleware";
 import prisma from "@lucia-auth/adapter-prisma";
 import "lucia-auth/polyfill/node";
@@ -12,9 +13,15 @@ export const auth = lucia({
 	transformDatabaseUser: (userData) => {
 		return {
 			userId: userData.id,
-			stripeCustomerId: userData.stripeCustomerId
+			stripeCustomerId: userData.stripeCustomerId,
+			email: userData.email,
+			name: userData.name
 		};
 	}
+});
+
+export const passwordResetToken = idToken(auth, "password-reset", {
+	expiresIn: 60 * 60 // 1 hour
 });
 
 export type Auth = typeof auth;
