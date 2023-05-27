@@ -25,6 +25,38 @@ const accountRouter = router({
         })
       }
     }),
+  createAccountLinkMutation: protectedProcedure
+    .mutation(async ({ ctx }) => {
+      const user = await ctx.prisma.authUser.findFirstOrThrow({
+        where: { id: ctx.session.userId },
+        select: {
+          id: true,
+          email: true,
+          chef: {
+            select: {
+              stripeAccountId: true
+            }
+          }
+        }
+      })
+
+      if (!user.chef || !user.chef.stripeAccountId) throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Error..Please try again"
+        })
+
+      try {
+        const accountLink = await ctx.stripe.accountLinks.create({
+          account: user.chef.stripeAccountId,
+          refresh_url: "http://localhost:3000/api/stripe/reauth",
+          return_url: "http://localhost:3000/dashboard",
+          type: "account_onboarding",
+        });
+        return accountLink.url
+      } catch (err) {
+        throw new Error(err)
+      }
+    })
 });
 
 export default accountRouter

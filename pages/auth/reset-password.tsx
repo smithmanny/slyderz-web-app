@@ -31,7 +31,9 @@ interface ResetPasswordTypes {
 
 const ResetPasswordPage: SlyderzPage<ResetPasswordTypes> = ({ token }) => {
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
-  const resetPassword = trpc.auth.handlePasswordReset.useMutation();
+  const resetPassword = trpc.auth.handlePasswordReset.useMutation({
+    onSuccess: () => setIsSuccess(true),
+  });
 
   return (
     <ConsumerContainer maxWidth="sm">

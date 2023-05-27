@@ -1,18 +1,15 @@
 import React, { useState } from "react";
 import { CldUploadWidget, CldImage } from "next-cloudinary";
-import { useMutation, invalidateQuery } from "@blitzjs/rpc";
 
-import completeOnboardingHeadshotMutation from "../mutations/completeOnboardingHeadshotMutation";
-import destroyCloudinaryImageMutation from "app/cloudinary/mutations/destroyCloudinaryImageMutation";
-import fetchChefOnboardingStateQuery from "app/onboarding/queries/fetchChefOnboardingStateQuery";
+import { trpc } from "server/utils/trpc";
 
 import Button from "app/core/components/shared/Button";
 import Stack from "app/core/components/shared/Stack";
 import Typography from "app/core/components/shared/Typography";
 
 type CloudinaryImageType = {
-  url: string;
-  publicId: string;
+  image: string;
+  imagePublicId: string;
 };
 interface UploadHeadshotPreviewType {
   cloudinaryImage: CloudinaryImageType;
@@ -20,23 +17,25 @@ interface UploadHeadshotPreviewType {
 }
 
 function UploadHeadshotPreview(props: UploadHeadshotPreviewType) {
-  const { url, publicId } = props.cloudinaryImage;
-  const [uploadHeadshot] = useMutation(completeOnboardingHeadshotMutation, {
-    onSuccess: async () => {
-      await invalidateQuery(fetchChefOnboardingStateQuery);
+  const { image, imagePublicId } = props.cloudinaryImage;
+  const utils = trpc.useContext()
+
+  const completeOnboardingHeadshot = trpc.onboarding.completeOnboardingHeadshot.useMutation({
+    onSuccess: async() => {
+      await utils.chef.invalidate()
     },
-  });
-  const [destroyCloudinaryImage] = useMutation(destroyCloudinaryImageMutation, {
+  })
+  const destroyAccountImage = trpc.account.deleteAccountPicture.useMutation({
     onSuccess: () => props.setCloudinaryImage(null),
     onError: (err) => console.log(err),
-  });
+  })
 
   const handleUploadingHeadshot = async () => {
-    await uploadHeadshot({ url, publicId });
+    await completeOnboardingHeadshot.mutateAsync({ image, imagePublicId });
   };
 
   const handleDestroyingImage = async () => {
-    await destroyCloudinaryImage({ publicId });
+    await destroyAccountImage.mutateAsync(imagePublicId);
   };
   return (
     <>
@@ -44,7 +43,7 @@ function UploadHeadshotPreview(props: UploadHeadshotPreviewType) {
         <CldImage
           width="320"
           height="320"
-          src={url}
+          src={image}
           sizes="100vw"
           alt="chef headshot"
         />
@@ -92,8 +91,8 @@ function UploadHeadshot(props: UploadHeadshotType) {
         onUpload={(res) => {
           console.log(res);
           setCloudinaryImage({
-            url: res?.info.secure_url,
-            publicId: res?.info.public_id,
+            image: res?.info.secure_url,
+            imagePublicId: res?.info.public_id,
           });
         }}
         options={{

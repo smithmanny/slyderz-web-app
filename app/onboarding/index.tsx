@@ -11,9 +11,8 @@ import { NoSSrConsumerContainer } from "app/core/components/shared/ConsumerConta
 import Box from "app/core/components/shared/Box";
 import Typography from "app/core/components/shared/Typography";
 
-import { OnboardingState } from "db";
-import fetchChefOnboardingStateQuery from "./queries/fetchChefOnboardingStateQuery";
-import createAccountLinkMutation from "app/stripe/mutations/createAccountLinkMutation";
+import type { OnboardingState } from "@prisma/client";
+import { trpc } from "server/utils/trpc";
 
 import UploadHeadshot from "./components/UplaodHeadshot";
 import ProfileDescription from "./components/ProfileDescription";
@@ -62,8 +61,8 @@ const OnboardingStep = (children: any, description: string) => {
 export default function Onboarding() {
   const [activeStep, setActiveStep] = useState(0);
   const router = useRouter();
-  const [onboardingState] = useQuery(fetchChefOnboardingStateQuery, null);
-  const [createStripeAccountLink] = useMutation(createAccountLinkMutation);
+  const { data: onboardingState } = trpc.onboarding.fetchOnboardingState.useQuery()
+  const createStripeAccountLink = trpc.stripe.createAccountLinkMutation.useMutation()
 
   useEffect(() => {
     switch (onboardingState) {
@@ -78,7 +77,7 @@ export default function Onboarding() {
 
   const handleNext = async (step: StepsType) => {
     if (step.id === "SETUP_STRIPE") {
-      const stripeAccountUrl = await createStripeAccountLink();
+      const stripeAccountUrl = await createStripeAccountLink.mutateAsync();
       return router.push(stripeAccountUrl);
     }
 

@@ -1,8 +1,11 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
-import { router, publicProcedure, protectedProcedure } from '../trpc';
-import { DeleteStripePaymentMethod } from 'app/account/validations';
+import getCloudinary from "app/utils/getCloudinary"
+import { router, protectedProcedure } from '../trpc';
+import { DeleteStripePaymentMethod, DestroyImageType } from 'app/account/validations';
+
+const cloudinary = getCloudinary()
 
 const accountRouter = router({
   deletePaymentMethod: protectedProcedure
@@ -40,6 +43,20 @@ const accountRouter = router({
           code: "UNAUTHORIZED",
           message: "Error deleting account"
         })
+      }
+    }),
+  deleteAccountPicture: protectedProcedure
+    .input(DestroyImageType)
+    .mutation(async ({ input, ctx }) => {
+      try {
+        await ctx.auth.updateUserAttributes(ctx.session.userId, {
+          image: null,
+          imagePublicId: null
+        })
+        await cloudinary.uploader.destroy(input)
+      } catch (err) {
+        console.log("Error deleting cloudinary image", err.message)
+        throw new Error("Error deleting cloudinary image")
       }
     })
 });

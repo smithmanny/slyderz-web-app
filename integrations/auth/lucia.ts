@@ -11,6 +11,7 @@ export const auth = lucia({
 	env: "DEV", // "PROD" if prod
 	middleware: nextjs(),
 	transformDatabaseUser: (userData) => {
+		console.log("USERDATA", userData)
 		return {
 			userId: userData.id,
 			stripeCustomerId: userData.stripeCustomerId,
