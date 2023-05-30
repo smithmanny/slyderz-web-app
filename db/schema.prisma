@@ -46,6 +46,7 @@ model AuthUser {
   tokens   Token[]
   chef     Chef?
   orders   Order[]
+  cart     Cart?
   auth_session AuthSession[]
   auth_key     AuthKey[]
 
@@ -112,7 +113,6 @@ model Chef {
   user       AuthUser         @relation(fields: [userId], references: [id])
   userId     String
   orders     Order[]
-  orderItems OrderItems[]
   dishes     Dish[]
   sections   Section[]
   hours      Hours[]
@@ -188,10 +188,8 @@ model OrderItems {
 
   dish    Dish  @relation(fields: [dishId], references: [id])
   dishId  String
-  order   Order @relation(fields: [orderId], references: [id])
-  orderId String
-  chef    Chef  @relation(fields: [chefId], references: [id])
-  chefId  String
+  cart   Cart @relation(fields: [cartId], references: [id])
+  cartId String
 }
 
 model Order {
@@ -214,5 +212,25 @@ model Order {
   userId String
   chef   Chef         @relation(fields: [chefId], references: [id])
   chefId String
-  dishes OrderItems[]
+  cart Cart @relation(fields: [cartId], references: [id])
+  cartId String
+
+  @@unique([cartId])
+}
+
+model Cart {
+  id        String       @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  total Int
+  chefId String
+  eventDate DateTime
+  eventTime String
+
+  user AuthUser @relation(fields: [userId], references: [id])
+  userId String
+  items OrderItems []
+  order Order?
+
+  @@unique([userId])
 }

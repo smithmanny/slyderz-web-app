@@ -120,16 +120,6 @@ const authRouter = router({
       const session = await ctx.auth.createSession(user.userId)
       ctx.authRequest.setSession(session)
 
-      // await ctx.session.$create({
-      //   userId: user.id,
-      //   role: user.role as Role,
-      //   cart: {
-      //     pendingCartItems,
-      //     total,
-      //   },
-      //   stripeCustomerId: user.stripeCustomerId,
-      // });
-
       return user.userId
     }),
   getSession: publicProcedure

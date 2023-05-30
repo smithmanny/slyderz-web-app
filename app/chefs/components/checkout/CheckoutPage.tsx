@@ -13,7 +13,7 @@ import { AddAddressType } from "integrations/redux/reducers/userReduer";
 import Form, { Select } from "app/core/components/form";
 import Button from "app/core/components/shared/Button";
 import Box from "app/core/components/shared/Box";
-import CartSummary from "app/core/components/cart/cartSummary";
+import CheckoutCartSummary from "app/core/components/cart/cartSummary/CheckoutCartSummary";
 import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
 import StripeCardElement from "app/stripe/components/StripeCardElement";
@@ -226,7 +226,7 @@ const CheckoutPage = ({
         {renderLeftContainer()}
       </Grid>
       <Grid item xs={12} md={6}>
-        <CartSummary chefId={chefId} checkoutPage />
+        <CheckoutCartSummary />
         <Button
           disabled={processing || !stripePaymentMethods[0]?.id}
           label="pay-now"

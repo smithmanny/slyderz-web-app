@@ -13,10 +13,10 @@ export interface StripePaymentType {
 
 export type AddAddressType = {
   address1: string
-  address2: string
+  address2: string | null
   city: string
   state: string
-  zipcode: number
+  zipcode: string
 }
 
 type SetLoadingStateType = {
@@ -80,7 +80,7 @@ const userSlice = createSlice({
     },
     addAddress: (state, action: PayloadAction<AddAddressType>) => {
       state.address["address1"] = action.payload.address1
-      state.address["address2"] = action.payload.address2
+      state.address["address2"] = action.payload.address2 || ""
       state.address["city"] = action.payload.city
       state.address["state"] = action.payload.state
       state.address["zipcode"] = action.payload.zipcode

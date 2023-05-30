@@ -51,6 +51,7 @@ function SlyderzWrapper({ children }) {
       .unwrap()
       .catch((err) => console.log("Failed fetching initial data", err));
   }, [dispatch]);
+
   return children;
 }
 

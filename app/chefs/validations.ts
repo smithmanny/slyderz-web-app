@@ -26,3 +26,5 @@ export const UpdateMenuItem = z.object({
   id: z.string().uuid(),
   quantity: z.number(),
 });
+
+export const GetChefDishesType = z.string();

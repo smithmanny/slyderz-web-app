@@ -1,9 +1,7 @@
 import { useRouter } from "next/router";
-import { BlitzPage } from "@blitzjs/next";
-import { useMutation } from "@blitzjs/rpc";
 import { useSnackbar } from "notistack";
 
-import createChefMutation from "app/chefs/mutations/createChefMutation";
+import { trpc } from "server/utils/trpc";
 
 import Layout from "app/core/layouts/Layout";
 import AboutSection from "app/about/components/AboutSection";
@@ -13,19 +11,21 @@ import Typography from "app/core/components/shared/Typography";
 import Box from "app/core/components/shared/Box";
 import Button from "app/core/components/shared/Button";
 
-const Host: BlitzPage = () => {
+import type { SlyderzPage } from "next";
+
+const Host: SlyderzPage = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  const [createChef] = useMutation(createChefMutation, {
+  const createChef = trpc.chef.createChef.useMutation({
     onSuccess: async (url) => {
       await router.push(url);
     },
-    onError: (err: Error) => {
+    onError: (err) => {
       return enqueueSnackbar(err.message, { variant: "error" });
     },
-  });
+  })
 
-  const handleCreateChef = async () => await createChef();
+  const handleCreateChef = async () => await createChef.mutateAsync();
   return (
     <ConsumerContainer>
       <Grid container spacing={2}>

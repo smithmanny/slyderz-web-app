@@ -10,7 +10,7 @@ import { useSnackbar } from "notistack";
 import { formatNumberToCurrency } from "app/utils/time";
 import { convertDayToInt, todAM, todPM } from "app/utils/time";
 import { CONSUMER_SERVICE_FEE } from "types";
-import createCartMutation from "app/cart/mutations/createCartMutation";
+import { trpc } from "server/utils/trpc";
 
 import Form, { DatePicker, Select } from "app/core/components/form";
 import Button from "app/core/components/shared/Button";
@@ -22,7 +22,7 @@ import CartItems from "../cartItems";
 const CartItemsContainer = (props) => {
   const { enqueueSnackbar } = useSnackbar();
   const formState = useFormState();
-  const [createCart] = useMutation(createCartMutation);
+  const createCart = trpc.cart.createCart.useMutation();
   const time = [...todAM, ...todPM];
   const selectedEventDate: Date = formState.values?.eventDate;
   const selectedDayOfWeek: number = selectedEventDate?.getDay();
@@ -120,7 +120,7 @@ const CartItemsContainer = (props) => {
               {formatNumberToCurrency(props.total + orderServiceFee)}
             </span>
           </Typography>
-          {props.buttonText && !props.isCheckoutPage && (
+          {props.buttonText && (
             <Button
               label="Add to cart"
               variant="contained"
@@ -134,9 +134,12 @@ const CartItemsContainer = (props) => {
                   return enqueueSnackbar("Please log in", { variant: "error" });
 
                 try {
-                  await createCart({
+                  await createCart.mutateAsync({
+                    total: 0,
                     eventDate: selectedEventDate,
                     eventTime: formState.values?.eventTime,
+                    items: [],
+                    chefId: props.chefId,
                   });
 
                   await props.router.push(
@@ -168,7 +171,7 @@ const CartSummary = (props) => {
   return (
     <Box sx={{ p: 2 }}>
       <Form>
-        {buttonText && !isCheckoutPage && (
+        {buttonText && (
           <Grid item>
             <Typography fontWeight="550" variant="h5">
               Your Reservation

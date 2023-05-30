@@ -1,22 +1,21 @@
 import React from "react";
-import { useMutation } from "@blitzjs/rpc";
 
 import { useAppDispatch } from "integrations/redux";
-import updateUserAddress from "app/users/mutations/updateUserAddressMutation";
 import { AddUserAddress } from "app/users/validations";
 import { addAddress } from "integrations/redux/reducers/userReduer";
+import { trpc } from "server/utils/trpc";
 
 import Form, { TextField } from "app/core/components/form";
 import Modal from "app/core/components/shared/Modal";
 
 const AddAddressModal = ({ show, onClose, ...props }) => {
-  const [addAddressSchema] = useMutation(updateUserAddress);
   const dispatch = useAppDispatch();
-
-  const onSuccess = (input) => {
-    dispatch(addAddress(input));
-    return onClose();
-  };
+  const addAddressMutation = trpc.account.createAddress.useMutation({
+    onSuccess: (input) => {
+      dispatch(addAddress(input));
+      return onClose();
+    }
+  })
 
   return (
     <Modal closeModal={onClose} show={show} size="sm" {...props}>
@@ -24,12 +23,11 @@ const AddAddressModal = ({ show, onClose, ...props }) => {
         submitText="Add Address"
         schema={AddUserAddress}
         mutation={{
-          schema: addAddressSchema,
+          schema: addAddressMutation.mutateAsync,
           toVariables: (values) => ({
             ...values,
           }),
         }}
-        onSuccess={onSuccess}
       >
         <TextField
           autoComplete="address-line1"

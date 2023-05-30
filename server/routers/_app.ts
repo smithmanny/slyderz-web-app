@@ -1,4 +1,5 @@
 import { router } from '../trpc';
+import cartRouter from './cartRouter';
 import chefRouter from './chefRouter';
 import authRouter from './authRouter';
 import userRouter from './userRouter';
@@ -9,6 +10,7 @@ import onboardingRouter from './onboardingRouter';
 export const appRouter = router({
   auth: authRouter,
   account: accountRouter,
+  cart: cartRouter,
   chef: chefRouter,
   onboarding: onboardingRouter,
   stripe: stripeRouter,

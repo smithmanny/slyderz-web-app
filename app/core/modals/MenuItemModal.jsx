@@ -4,25 +4,12 @@ import { useMutation } from "@blitzjs/rpc";
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types'
 
-import { styled } from 'integrations/material-ui'
 import addMenuItemToCartMutation from 'app/chefs/mutations/createMenuItemOnCart';
 
 import Modal from 'app/core/components/shared/Modal'
 import Button from 'app/core/components/shared/Button'
+import Box from 'app/core/components/shared/Box'
 import Typography from 'app/core/components/shared/Typography'
-
-const QuantityContainer = styled('div')(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    marginRight: theme.spacing(2)
-}))
-
-const LogoContainer = styled('div')(({ theme }) => ({
-    marginBottom: theme.spacing(2),
-    position: 'relative',
-    height: "250px",
-    width: '100%'
-}))
 
 const MenuItemModal = ({ show, onClose, menuItem, ...props }) => {
   const [addMenuItemToCart] = useMutation(addMenuItemToCartMutation);
@@ -57,9 +44,9 @@ const MenuItemModal = ({ show, onClose, menuItem, ...props }) => {
     }
   }
 
-  if (!menuItem) {
-    return null
-  };
+  // if (!menuItem) {
+  //   return null
+  // };
   return (
     <Modal
       closeModal={onClose}
@@ -67,7 +54,13 @@ const MenuItemModal = ({ show, onClose, menuItem, ...props }) => {
       size="sm"
       actions={(
         <React.Fragment>
-          <QuantityContainer>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              marginRight: 2
+            }}
+          >
             <Button
               variant="text"
               onClick={decreaseQuantity}
@@ -81,7 +74,7 @@ const MenuItemModal = ({ show, onClose, menuItem, ...props }) => {
             >
               +
             </Button>
-          </QuantityContainer>
+          </Box>
           <Button
             color="primary"
             variant="contained"
@@ -94,9 +87,16 @@ const MenuItemModal = ({ show, onClose, menuItem, ...props }) => {
       {...props}
     >
       <React.Fragment>
-        <LogoContainer>
+        <Box
+          sx={{
+            marginBottom: 2,
+            position: 'relative',
+            height: "250px",
+            width: '100%'
+          }}
+        >
           <Image src="/logo.png" layout="fill" alt="Logo" />
-        </LogoContainer>
+        </Box>
         <Typography variant="h6">{menuItem.name}</Typography>
         <Typography sx={{ my: 2 }}>
           There was a feature request in my current company, product

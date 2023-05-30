@@ -1,12 +1,13 @@
-import Image from "next/image";
-import { useQuery } from "@blitzjs/rpc";
-import { useRouter } from "next/router";
 import React from "react";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { createServerSideHelpers } from '@trpc/react-query/server';
 
 import Logo from "public/logo.png";
 import { styled } from "integrations/material-ui";
-
-import ChefDishesQuery from "app/chefs/queries/chefDishesQuery";
+import { trpc } from "server/utils/trpc";
+import createContext from "server/utils/createContext";
+import { appRouter } from "server/routers/_app";
 
 import Avatar from "app/core/components/shared/Avatar";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
@@ -18,6 +19,43 @@ import Tab from "app/core/components/shared/Tab";
 import Typography from "app/core/components/shared/Typography";
 import Layout from "app/core/layouts/Layout";
 import CartSummary from "app/core/components/cart/cartSummary";
+
+export async function getServerSideProps(ctx) {
+  const helpers = createServerSideHelpers({
+    router: appRouter,
+    ctx: await createContext(ctx),
+  });
+
+  const chefId = ctx.query?.cid as string
+
+  if (!chefId) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    }
+  }
+  const chefDishes = await helpers.chef.fetchChefDishes.fetch(chefId)
+
+  // TODO: Show component with nearby chefs for invalid chef id's
+  if (!chefDishes?.user) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: {
+      trpcState: helpers.dehydrate(),
+      chefId
+    }
+  }
+
+}
 
 const ChefProfileAvatar = styled(Avatar)`
   & .MuiAvatar-img {
@@ -40,10 +78,9 @@ export const ChefPage = (props) => {
     setValue(newValue);
   };
 
-  const { cid } = router.query;
-  const [data, { isLoading }] = useQuery(ChefDishesQuery, {
-    chefId: Number(cid),
-  });
+  const { chefId } = props;
+  const { data, isLoading } = trpc.chef.fetchChefDishes.useQuery(chefId)
+
   if (isLoading) return null;
 
   const chefName = data?.user?.name;
@@ -97,15 +134,15 @@ export const ChefPage = (props) => {
         </Grid>
         <Grid container item xs={12} spacing={2} direction="row-reverse">
           <Grid item md={4} xs={12}>
-            <CartSummary
+            {/* <CartSummary
               buttonText="Checkout"
               chefId={cid}
               hours={data.hours}
-            />
+            /> */}
           </Grid>
           <Grid item xs>
             <TabPanel value={value} index={0}>
-              <Menu dishes={data.dishes} />
+              {/* <Menu dishes={data.dishes} /> */}
             </TabPanel>
             <TabPanel value={value} index={1}>
               Item Two

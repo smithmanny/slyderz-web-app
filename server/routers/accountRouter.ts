@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import getCloudinary from "app/utils/getCloudinary"
 import { router, protectedProcedure } from '../trpc';
-import { DeleteStripePaymentMethod, DestroyImageType } from 'app/account/validations';
+import { DeleteStripePaymentMethod, DestroyImageType, AddUserAddressType } from 'app/account/validations';
 
 const cloudinary = getCloudinary()
 
@@ -58,6 +58,37 @@ const accountRouter = router({
         console.log("Error deleting cloudinary image", err.message)
         throw new Error("Error deleting cloudinary image")
       }
+    }),
+  createAddress: protectedProcedure
+    .input(AddUserAddressType)
+    .mutation(async ({ ctx, input }) => {
+      const address = await ctx.prisma.address.create({
+        data: {
+          userId: ctx.session.userId,
+          ...input
+        },
+        select: {
+          address1: true,
+          address2: true,
+          city: true,
+          state: true,
+          zipcode: true,
+        }
+      })
+
+      return address
+    }),
+  updateAddress: protectedProcedure
+    .input(AddUserAddressType)
+    .mutation(async ({ ctx, input }) => {
+      await ctx.prisma.address.update({
+        where: {
+          userId: ctx.session.userId
+        },
+        data: {
+          ...input
+        }
+      })
     })
 });
 
