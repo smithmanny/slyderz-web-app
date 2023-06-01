@@ -1,15 +1,12 @@
-import React from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useRouter } from "next/router";
-import { Routes } from "@blitzjs/next";
-import { useMutation } from "@blitzjs/rpc";
-import { useSession } from "@blitzjs/auth";
-import PropTypes from "prop-types";
 import { useFormState } from "react-final-form";
 import { useSnackbar } from "notistack";
+import type { DaysOfWeekTypeEnum } from "@prisma/client";
 
 import { formatNumberToCurrency } from "app/utils/time";
 import { convertDayToInt, todAM, todPM } from "app/utils/time";
-import { CONSUMER_SERVICE_FEE } from "types";
+import { Cart, CONSUMER_SERVICE_FEE } from "types";
 import { trpc } from "server/utils/trpc";
 
 import Form, { DatePicker, Select } from "app/core/components/form";
@@ -19,108 +16,139 @@ import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
 import CartItems from "../cartItems";
 
-const CartItemsContainer = (props) => {
+type HoursType = {
+  daysOfWeek: Array<DaysOfWeekTypeEnum>;
+  startTime: string | null;
+  endTime: string | null;
+};
+type CartSummaryType = {
+  chefId: string;
+  hours: Array<HoursType>;
+};
+
+const CartSummary = (props: CartSummaryType) => {
+  const { chefId, hours } = props;
+  const initalCartState: Cart = {
+    items: [],
+    total: 0,
+  };
+  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const formState = useFormState();
-  const createCart = trpc.cart.createCart.useMutation();
-  const time = [...todAM, ...todPM];
+  const { data } = trpc.cart.getUserCart.useQuery();
+  const isCheckoutPage = router.asPath.includes("checkout");
+
+  const time = useMemo(() => [...todAM, ...todPM], []);
   const selectedEventDate: Date = formState.values?.eventDate;
   const selectedDayOfWeek: number = selectedEventDate?.getDay();
-  const orderServiceFee: number = props.total * CONSUMER_SERVICE_FEE;
-  let startTime;
-  let startTimeIndex;
-  let endTime;
-  let endTimeIndex;
-  let availableTime;
 
-  const disableDaysOff = (date) => {
-    const daysOfWeek: Array<number> = [0, 1, 2, 3, 4, 5, 6];
-    const workingDays: Array<number> = [];
+  const [cart, setCart] = useState<Cart>(initalCartState);
+  const cartItems = cart.items;
+  const total = cart.total;
+  const orderServiceFee: number = total * CONSUMER_SERVICE_FEE;
 
-    props.hours.map((hourBlock) =>
-      hourBlock.daysOfWeek.map((day) => {
-        const matchedDay = convertDayToInt(day);
-        workingDays.push(matchedDay);
-      })
-    );
+  useEffect(() => {
+    setCart({
+      items: data?.items || [],
+      total: data?.total || 0,
+    });
+  }, [data]);
 
-    const offDays = daysOfWeek.filter((day) => !workingDays.includes(day));
+  const disableDaysOff = useCallback(
+    (date: Date) => {
+      const daysOfWeek: Array<number> = [0, 1, 2, 3, 4, 5, 6];
+      const workingDays: Array<number> = [];
 
-    return offDays.includes(date.getDay());
-  };
+      hours.map((hourBlock) =>
+        hourBlock.daysOfWeek.map((day) => {
+          const matchedDay = convertDayToInt(day);
+          workingDays.push(matchedDay);
+        })
+      );
 
-  if (!props.checkoutPage) {
-    const selectedTime = props.hours?.find((hourBlock) =>
+      const offDays = daysOfWeek.filter((day) => !workingDays.includes(day));
+
+      return offDays.includes(date.getDay());
+    },
+    [hours]
+  );
+
+  const getAvailableTime = useCallback(() => {
+    const selectedTime = hours.find((hourBlock) =>
       hourBlock.daysOfWeek.find(
         (dayOfWeek) => convertDayToInt(dayOfWeek) === selectedDayOfWeek
       )
     );
-    startTime = time.find((t) => t.key === selectedTime?.startTime);
-    startTimeIndex = time.indexOf(startTime);
-    endTime = time.find((t) => t.key === selectedTime?.endTime);
-    endTimeIndex = time.indexOf(endTime);
-    availableTime = time.slice(startTimeIndex, endTimeIndex + 1);
-  }
+    const startTime = time.find((t) => t.key === selectedTime?.startTime);
+    const endTime = time.find((t) => t.key === selectedTime?.endTime);
+
+    if (startTime && endTime) {
+      const startTimeIndex = time.indexOf(startTime);
+      const endTimeIndex = time.indexOf(endTime);
+      const availableTime = time.slice(startTimeIndex, endTimeIndex + 1);
+
+      return availableTime;
+    }
+  }, [hours, time, selectedDayOfWeek]);
+
+  const availableTime = getAvailableTime();
 
   return (
-    <React.Fragment>
-      {!props.isCheckoutPage && (
-        <React.Fragment>
-          <DatePicker
-            name="eventDate"
-            disablePast
-            required
-            label="Date"
-            views={["month", "day"]}
-            inputVariant="outlined"
-            shouldDisableDate={disableDaysOff}
-          />
-          <Select
-            name="eventTime"
-            label="Time"
-            items={availableTime}
-            required
-          />
-        </React.Fragment>
-      )}
-
-      {(props.cartItems?.length === 0 || props.cartItems === undefined) && (
-        <Grid item xs={12}>
+    <Box sx={{ p: 2 }}>
+      <Form>
+        <Grid item>
           <Typography fontWeight="550" variant="h5">
-            Your cart is empty
+            Your Reservation
           </Typography>
         </Grid>
-      )}
+        <DatePicker
+          name="eventDate"
+          disablePast
+          required
+          label="Date"
+          views={["month", "day"]}
+          inputVariant="outlined"
+          shouldDisableDate={disableDaysOff}
+        />
+        <Select name="eventTime" label="Time" items={availableTime} required />
 
-      {props.cartItems?.length > 0 && (
-        <Grid item xs={12}>
-          <Typography variant="h6" sx={{ mt: 4, fontWeight: "bold" }}>
-            Your Items
-          </Typography>
-          <CartItems
-            selectedCartItems={props.cartItems}
-            isCheckoutPage={props.isCheckoutPage}
-          />
+        {(cartItems?.length === 0 || cartItems === undefined) && (
+          <Grid item xs={12}>
+            <Typography fontWeight="550" variant="h5">
+              Your cart is empty
+            </Typography>
+          </Grid>
+        )}
 
-          <Typography variant="subtitle1" sx={{ mt: 4, fontWeight: "bold" }}>
-            Subtotal:
-            <span style={{ fontWeight: "normal" }}>
-              {formatNumberToCurrency(props.total)}
-            </span>
-          </Typography>
-          <Typography variant="subtitle1" sx={{ my: 0, fontWeight: "bold" }}>
-            Service Fee:
-            <span style={{ fontWeight: "normal" }}>
-              {formatNumberToCurrency(orderServiceFee)}
-            </span>
-          </Typography>
-          <Typography variant="subtitle1" sx={{ mb: 4, fontWeight: "bold" }}>
-            Total:
-            <span style={{ fontWeight: "normal" }}>
-              {formatNumberToCurrency(props.total + orderServiceFee)}
-            </span>
-          </Typography>
-          {props.buttonText && (
+        {cartItems?.length > 0 && (
+          <Grid item xs={12}>
+            <Typography variant="h6" sx={{ mt: 4, fontWeight: "bold" }}>
+              Your Items
+            </Typography>
+            <CartItems
+              selectedCartItems={cartItems}
+              isCheckoutPage={isCheckoutPage}
+            />
+
+            <Typography variant="subtitle1" sx={{ mt: 4, fontWeight: "bold" }}>
+              Subtotal:
+              <span style={{ fontWeight: "normal" }}>
+                {formatNumberToCurrency(total)}
+              </span>
+            </Typography>
+            <Typography variant="subtitle1" sx={{ my: 0, fontWeight: "bold" }}>
+              Service Fee:
+              <span style={{ fontWeight: "normal" }}>
+                {formatNumberToCurrency(orderServiceFee)}
+              </span>
+            </Typography>
+            <Typography variant="subtitle1" sx={{ mb: 4, fontWeight: "bold" }}>
+              Total:
+              <span style={{ fontWeight: "normal" }}>
+                {formatNumberToCurrency(total + orderServiceFee)}
+              </span>
+            </Typography>
+
             <Button
               label="Add to cart"
               variant="contained"
@@ -130,81 +158,32 @@ const CartItemsContainer = (props) => {
                 e.preventDefault();
                 e.stopPropagation();
 
-                if (!props.userId)
-                  return enqueueSnackbar("Please log in", { variant: "error" });
-
                 try {
-                  await createCart.mutateAsync({
-                    total: 0,
-                    eventDate: selectedEventDate,
-                    eventTime: formState.values?.eventTime,
-                    items: [],
-                    chefId: props.chefId,
-                  });
+                  // await createCart.mutateAsync({
+                  //   total: 0,
+                  //   eventDate: selectedEventDate,
+                  //   eventTime: formState.values?.eventTime,
+                  //   items: [],
+                  //   chefId,
+                  // });
 
-                  await props.router.push(
-                    Routes.Checkout({ cid: props.chefId })
-                  );
+                  await router.push(`/chefs/${chefId}/checkout`);
                 } catch (err) {
                   console.log("Failed to create cart", err);
+                  enqueueSnackbar(err.message, {
+                    variant: "error",
+                  });
                 }
               }}
               disabled={!selectedEventDate || !formState.values?.eventTime}
             >
-              {props.buttonText}
+              Checkout
             </Button>
-          )}
-        </Grid>
-      )}
-    </React.Fragment>
-  );
-};
-
-const CartSummary = (props) => {
-  const { chefId, checkoutPage, buttonText, hours } = props;
-  const session = useSession();
-  const router = useRouter();
-  const cartItems = session?.cart?.pendingCartItems;
-  const total = session?.cart?.total || 0;
-  const isCheckoutPage = router.asPath.includes("checkout");
-
-  return (
-    <Box sx={{ p: 2 }}>
-      <Form>
-        {buttonText && (
-          <Grid item>
-            <Typography fontWeight="550" variant="h5">
-              Your Reservation
-            </Typography>
           </Grid>
         )}
-        <CartItemsContainer
-          chefId={chefId}
-          userId={session.userId}
-          buttonText={buttonText}
-          checkoutPage={checkoutPage}
-          cartItems={cartItems}
-          hours={hours}
-          total={total}
-          router={router}
-          isCheckoutPage={isCheckoutPage}
-        />
       </Form>
     </Box>
   );
-};
-
-CartSummary.defaultProps = {
-  checkoutPage: false,
-  chefId: "",
-  hours: [],
-};
-
-CartSummary.propTypes = {
-  buttonText: PropTypes.string,
-  checkoutPage: PropTypes.bool,
-  chefId: PropTypes.any.isRequired,
-  hours: PropTypes.array.isRequired,
 };
 
 export default CartSummary;

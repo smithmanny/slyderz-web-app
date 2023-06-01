@@ -1,5 +1,3 @@
-import { hasCookie, getCookie, setCookie } from 'cookies-next';
-
 import { router, publicProcedure } from '../trpc';
 import type { Address } from "@prisma/client"
 import type { Stripe } from "stripe"
@@ -7,13 +5,6 @@ import type { Stripe } from "stripe"
 interface UserChefStatusType {
   isChef: boolean
   isChefProfileComplete: boolean
-}
-
-type InitialUserCartType = {
-  cart: {
-    pendingCartItems: Array<any>
-    total: string
-  }
 }
 
 const userRouter = router({
@@ -71,47 +62,18 @@ const userRouter = router({
         }
       }
 
-      function getCartCookie() {
-        const cartCookie = getCookie("user_cart", { req: opts.ctx.req, res: opts.ctx.res })
-        const initialUserCart: InitialUserCartType = {
-          cart: {
-            pendingCartItems: [],
-            total: "0"
-          }
-        }
-
-        if (!cartCookie) {
-          setCookie("user_cart", initialUserCart, {
-            req: opts.ctx.req,
-            res: opts.ctx.res,
-            maxAge: 60 * 6 * 24,
-            secure: process.env.NODE_ENV !== "development",
-            httpOnly: true,
-          })
-          return initialUserCart
-        } else {
-          const userCart: InitialUserCartType = JSON.parse(String(cartCookie))
-
-          return {
-            cart: {
-              pendingCartItems: userCart.cart.pendingCartItems,
-              total: userCart.cart.total
-            }
-          }
-        }
-      }
-
       const session = ctx.session
-      // const cartCookie = getCartCookie()
       let userId: string = ""
       let paymentMethods = {} as Stripe.Response<Stripe.ApiList<Stripe.PaymentMethod>>
       let address: Address | {} | null = {}
+      let email: string = ""
+      let name: string = ""
       let checkUserChefStatus: UserChefStatusType = {
         isChef: false,
         isChefProfileComplete: false
       }
 
-      if (session.userId) {
+      if (session) {
         const stripePayments = getStripePayments(session.user.stripeCustomerId)
         const userAddress = getAddress(session.userId)
         const chefStatus = getChefStatus(session.userId)
@@ -123,6 +85,8 @@ const userRouter = router({
         address = _address
         checkUserChefStatus = _checkUserChefStatus
         userId = session.userId
+        email = session.user.email,
+        name = session.user.name
       }
 
       return {
@@ -130,8 +94,8 @@ const userRouter = router({
         address,
         checkUserChefStatus,
         userId,
-        email: session.user.email,
-        name: session.user.name
+        email,
+        name
       }
     }),
 });

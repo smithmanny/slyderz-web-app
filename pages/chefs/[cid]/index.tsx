@@ -1,7 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { useRouter } from "next/router";
-import { createServerSideHelpers } from '@trpc/react-query/server';
+import { createServerSideHelpers } from "@trpc/react-query/server";
 
 import Logo from "public/logo.png";
 import { styled } from "integrations/material-ui";
@@ -26,7 +25,7 @@ export async function getServerSideProps(ctx) {
     ctx: await createContext(ctx),
   });
 
-  const chefId = ctx.query?.cid as string
+  const chefId = ctx.query?.cid as string;
 
   if (!chefId) {
     return {
@@ -34,27 +33,16 @@ export async function getServerSideProps(ctx) {
         destination: "/",
         permanent: false,
       },
-    }
+    };
   }
-  const chefDishes = await helpers.chef.fetchChefDishes.fetch(chefId)
-
-  // TODO: Show component with nearby chefs for invalid chef id's
-  if (!chefDishes?.user) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    }
-  }
+  await helpers.chef.fetchChefPublicProfile.prefetch(chefId);
 
   return {
     props: {
       trpcState: helpers.dehydrate(),
-      chefId
-    }
-  }
-
+      chefId,
+    },
+  };
 }
 
 const ChefProfileAvatar = styled(Avatar)`
@@ -71,7 +59,6 @@ function a11yProps(index: number) {
 }
 
 export const ChefPage = (props) => {
-  const router = useRouter();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -79,11 +66,9 @@ export const ChefPage = (props) => {
   };
 
   const { chefId } = props;
-  const { data, isLoading } = trpc.chef.fetchChefDishes.useQuery(chefId)
+  const { data, isLoading } = trpc.chef.fetchChefPublicProfile.useQuery(chefId);
 
-  if (isLoading) return null;
-
-  const chefName = data?.user?.name;
+  if (isLoading || !data?.chefName) return null;
 
   return (
     <ConsumerContainer>
@@ -118,7 +103,7 @@ export const ChefPage = (props) => {
               src="/profile_pic.jpeg"
             />
             <Typography variant="h1" fontWeight="bold">
-              {chefName}
+              {data.chefName}
             </Typography>
 
             <Tabs
@@ -134,15 +119,11 @@ export const ChefPage = (props) => {
         </Grid>
         <Grid container item xs={12} spacing={2} direction="row-reverse">
           <Grid item md={4} xs={12}>
-            {/* <CartSummary
-              buttonText="Checkout"
-              chefId={cid}
-              hours={data.hours}
-            /> */}
+            <CartSummary chefId={chefId} hours={data?.hours} />
           </Grid>
           <Grid item xs>
             <TabPanel value={value} index={0}>
-              {/* <Menu dishes={data.dishes} /> */}
+              <Menu dishes={data.dishes} />
             </TabPanel>
             <TabPanel value={value} index={1}>
               Item Two

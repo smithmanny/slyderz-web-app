@@ -1,5 +1,4 @@
 import { TRPCError } from '@trpc/server';
-import { hasCookie } from 'cookies-next';
 
 import { router, publicProcedure, protectedProcedure } from '../trpc';
 import { GetChefDishesType } from 'app/chefs/validations';
@@ -73,25 +72,50 @@ const chefRouter = router({
           throw new Error(err)
         }
     }),
-  fetchChefDishes: publicProcedure
+  fetchChefPublicProfile: publicProcedure
     .input(GetChefDishesType)
     .query(async ({ ctx, input }) => {
-      const chef = await ctx.prisma.chef.findFirst({
-        where: {
-          id: input
-        },
-        select: {
-          dishes: true,
-          hours: true,
-          user: {
-            select: {
-              name: true,
+      try {
+        const chef = await ctx.prisma.chef.findUniqueOrThrow({
+          where: {
+            id: input,
+          },
+          select: {
+            dishes: true,
+            hours: {
+              select: {
+                daysOfWeek: true,
+                endTime: true,
+                startTime: true
+              }
+            },
+            user: {
+              select: {
+                name: true,
+              }
             }
-          }
-        },
-      })
+          },
+        })
 
-      return chef
+        if (chef) {
+          return {
+            dishes: chef.dishes,
+            chefName: chef.user.name,
+            hours: chef.hours
+          }
+        }
+
+        return {
+          dishes: [],
+          chefName: "",
+          hours: []
+        }
+      } catch (err) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Chef not found"
+        })
+      }
     })
 });
 

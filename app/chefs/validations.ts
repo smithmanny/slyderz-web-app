@@ -8,10 +8,6 @@ export const MenuItem = z.object({
   quantity: z.number(),
 });
 
-export const DestroyMenuItem = z.object({
-  menuItemId: z.string().uuid(),
-});
-
 export const CreateMenuItem = z.object({
   chefId: z.number(),
   id: z.string().uuid(),
@@ -19,11 +15,6 @@ export const CreateMenuItem = z.object({
   name: z.string(),
   price: z.number(),
   dishId: z.number(),
-  quantity: z.number(),
-});
-
-export const UpdateMenuItem = z.object({
-  id: z.string().uuid(),
   quantity: z.number(),
 });
 

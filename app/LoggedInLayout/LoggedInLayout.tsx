@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { BlitzPage } from "@blitzjs/next";
 import { trpc } from "server/utils/trpc";
+
+import type { SlyderzPage } from "next";
 
 import Card, { CardContent, CardMedia } from "app/core/components/shared/Card";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
@@ -51,7 +52,7 @@ const NearbyChefs = (props) => {
   );
 };
 
-const LoggedinLayout: BlitzPage = () => {
+const LoggedinLayout: SlyderzPage = () => {
   return (
     <ConsumerContainer>
       <Grid container spacing={2}>

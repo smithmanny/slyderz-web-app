@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import Image from "next/image";
-import { useMutation } from "@blitzjs/rpc";
-import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types'
 
-import addMenuItemToCartMutation from 'app/chefs/mutations/createMenuItemOnCart';
+import { trpc } from 'server/utils/trpc';
 
 import Modal from 'app/core/components/shared/Modal'
 import Button from 'app/core/components/shared/Button'
@@ -12,7 +10,7 @@ import Box from 'app/core/components/shared/Box'
 import Typography from 'app/core/components/shared/Typography'
 
 const MenuItemModal = ({ show, onClose, menuItem, ...props }) => {
-  const [addMenuItemToCart] = useMutation(addMenuItemToCartMutation);
+  const addMenuItemToCart = trpc.cart.addMenuItemToCart.useMutation()
   const [quantity, setQuantity] = useState(1);
 
   const decreaseQuantity = () => {
@@ -25,17 +23,14 @@ const MenuItemModal = ({ show, onClose, menuItem, ...props }) => {
 
   const updateCart = async () => {
     const values = {
-      id: uuidv4(),
       dishId: menuItem.id,
-      description: menuItem.description,
       chefId: menuItem.chefId,
-      name: menuItem.name,
       price: Number(menuItem.price),
       quantity,
     }
 
     try {
-      await addMenuItemToCart(values);
+      await addMenuItemToCart.mutateAsync(values);
     } catch (e) {
       console.error('Error adding menu item to cart', e)
     } finally {
@@ -44,9 +39,6 @@ const MenuItemModal = ({ show, onClose, menuItem, ...props }) => {
     }
   }
 
-  // if (!menuItem) {
-  //   return null
-  // };
   return (
     <Modal
       closeModal={onClose}

@@ -4,7 +4,6 @@ export const CONSUMER_SERVICE_FEE = 0.10;
 export interface CartItem {
   chefId: number;
   id: string;
-  description: string;
   name: string;
   price: number;
   dishId: number;
@@ -30,10 +29,10 @@ export interface EmailBodyResponseType {
   eventTime: string;
   orderTotal: Number;
 }
-interface Cart {
+export interface Cart {
   eventDate?: Date | null;
-  eventTime?: string;
-  pendingCartItems: Array<CartItem> | Array<any>;
+  eventTime?: string | null;
+  items: Array<CartItem> | Array<any>;
   total: number;
 }
 
