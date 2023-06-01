@@ -1,15 +1,17 @@
 import { useState } from "react";
 import Link from "next/link";
-import { BlitzPage } from "@blitzjs/next";
+
+import { ForgotPassword } from "app/auth/validations";
+import { trpc } from "server/utils/trpc";
+import { auth } from "integrations/auth/lucia";
+
 import Layout from "app/core/layouts/Layout";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Form, { TextField } from "app/core/components/form";
 import Typography from "app/core/components/shared/Typography";
 import Button from "app/core/components/shared/Button";
 
-import { ForgotPassword } from "app/auth/validations";
-import { trpc } from "server/utils/trpc";
-import { auth } from "integrations/auth/lucia";
+import type { SlyderzPage } from "next";
 
 export async function getServerSideProps(ctx) {
   const authRequest = auth.handleRequest(ctx);
@@ -24,7 +26,7 @@ export async function getServerSideProps(ctx) {
     };
   }
 }
-const ForgotPasswordPage: BlitzPage = () => {
+const ForgotPasswordPage: SlyderzPage = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const forgotPassword = trpc.auth.sendPasswordResetLink.useMutation({
     onSuccess: () => setIsSuccess(true),

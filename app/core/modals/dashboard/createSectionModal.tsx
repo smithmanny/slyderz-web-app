@@ -1,14 +1,18 @@
 import React from "react";
-import { useMutation } from "@blitzjs/rpc";
 import PropTypes from "prop-types";
 
-import createSectionMutation from "app/dashboard/mutations/createSectionMutation";
+import { trpc } from "server/utils/trpc";
 
 import Form, { TextField } from "app/core/components/form";
 import Modal from "app/core/components/shared/Modal";
 
 const CreateSectionModal = ({ refetch, show, onClose, ...props }) => {
-  const [createSection] = useMutation(createSectionMutation);
+  const createSection = trpc.dashboard.createSection.useMutation({
+    onSuccess: () => {
+      refetch();
+      onClose();
+    },
+  });
 
   return (
     <Modal
@@ -22,7 +26,7 @@ const CreateSectionModal = ({ refetch, show, onClose, ...props }) => {
         submitText="Create Section"
         // schema={Login}
         mutation={{
-          schema: createSection,
+          schema: createSection.mutateAsync,
           toVariables: (values) => ({
             ...values,
           }),

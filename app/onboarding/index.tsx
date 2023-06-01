@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useQuery, useMutation } from "@blitzjs/rpc";
 import { useRouter } from "next/router";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
@@ -61,8 +60,10 @@ const OnboardingStep = (children: any, description: string) => {
 export default function Onboarding() {
   const [activeStep, setActiveStep] = useState(0);
   const router = useRouter();
-  const { data: onboardingState } = trpc.onboarding.fetchOnboardingState.useQuery()
-  const createStripeAccountLink = trpc.stripe.createAccountLinkMutation.useMutation()
+  const { data: onboardingState } =
+    trpc.onboarding.fetchOnboardingState.useQuery();
+  const createStripeAccountLink =
+    trpc.stripe.createAccountLinkMutation.useMutation();
 
   useEffect(() => {
     switch (onboardingState) {

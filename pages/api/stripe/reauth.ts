@@ -1,7 +1,5 @@
-import { api } from "app/blitz-server";
 import { getStripeServer } from "app/utils/getStripe";
 import { NextApiRequest, NextApiResponse } from "next";
-import { AuthorizationError } from "blitz";
 
 import db from "db";
 
@@ -10,7 +8,7 @@ const stripe = getStripeServer();
 const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
   const { session } = ctx;
 
-  const user = await db.user.findFirstOrThrow({
+  const user = await db.authUser.findFirstOrThrow({
     where: { id: session.userId },
     select: {
       id: true,
@@ -24,9 +22,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
   })
 
   if (!user.chef) {
-    throw new AuthorizationError("Chef not found")
+    throw new Error("Chef not found")
   }
 
+  // TODO: replace with prod url
   const createAccountLink = await stripe.accountLinks.create({
     account: user.chef.stripeAccountId,
     refresh_url: "http://localhost:3000/api/stripe/reauth",
@@ -39,4 +38,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
   })
 };
 
-export default api(handler);
+export default handler;

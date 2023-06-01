@@ -1,15 +1,29 @@
 import React from "react";
-import { useMutation } from "@blitzjs/rpc";
-import PropTypes from "prop-types";
 
-import createHoursMutation from "app/dashboard/mutations/createHoursMutation";
 import { todAM, todPM, weekdays } from "app/utils/time";
+import { trpc } from "server/utils/trpc";
 
 import Form, { Checkbox, Select } from "app/core/components/form";
 import Modal from "app/core/components/shared/Modal";
 
-const CreateSectionModal = ({ refetch, show, onClose, ...props }) => {
-  const [createHours] = useMutation(createHoursMutation);
+type CreateSectionModalProps = {
+  show: boolean;
+  onClose: () => void;
+  refetch: () => void;
+};
+
+const CreateSectionModal = ({
+  refetch,
+  show,
+  onClose,
+  ...props
+}: CreateSectionModalProps) => {
+  const createHours = trpc.dashboard.createHours.useMutation({
+    onSuccess: () => {
+      refetch();
+      onClose();
+    },
+  });
   return (
     <Modal
       closeModal={onClose}
@@ -22,14 +36,10 @@ const CreateSectionModal = ({ refetch, show, onClose, ...props }) => {
         submitText="Save Hours"
         // schema={Login}
         mutation={{
-          schema: createHours,
+          schema: createHours.mutateAsync,
           toVariables: (values) => ({
             ...values,
           }),
-        }}
-        onSuccess={() => {
-          refetch();
-          onClose();
         }}
       >
         <Checkbox label="Select Days" name="daysOfWeek" data={weekdays} />
@@ -52,12 +62,6 @@ const CreateSectionModal = ({ refetch, show, onClose, ...props }) => {
       </Form>
     </Modal>
   );
-};
-
-CreateSectionModal.propTypes = {
-  show: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  refetch: PropTypes.func.isRequired,
 };
 
 export default CreateSectionModal;

@@ -1,4 +1,3 @@
-import { api } from "app/blitz-server";
 import { getStripeServer } from "app/utils/getStripe";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -8,7 +7,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
   const { session } = ctx;
 
   if (session.stripeCustomerId === undefined) {
-    throw Error("No customer was provided");
+    throw new Error("No customer was provided");
   }
 
   const paymentMethods = await stripe.paymentMethods.list({
@@ -21,15 +20,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
     payment_method_types: ["card"],
   });
 
-  res.statusCode = 200;
-  res.setHeader("Content-Type", "application/json");
-  res.end(
-    JSON.stringify({
-      clientSecret: setupIntent.client_secret,
-      id: setupIntent.id,
-      paymentMethods: paymentMethods.data,
-    })
-  );
+  res.status(200).json({
+    clientSecret: setupIntent.client_secret,
+    id: setupIntent.id,
+    paymentMethods: paymentMethods.data,
+  })
 };
 
-export default api(handler);
+export default handler;

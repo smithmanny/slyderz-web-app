@@ -1,9 +1,4 @@
-"use client";
-
-import { useMutation, useQuery } from "@blitzjs/rpc";
-
-import menuSectionQuery from "../../queries/menuSectionQuery";
-import destroyDishMutation from "../../mutations/destroyDishMutation";
+import { trpc } from "server/utils/trpc";
 
 import IconButton from "app/core/components/shared/IconButton";
 import DeleteIcon from "app/core/components/icons/DeleteIcon";
@@ -20,18 +15,21 @@ import { CREATE_DISH, HOME, UPDATE_DISH } from "./IndexContainer";
 const SectionContainer = (props) => {
   const { currentView, setCurrentView, selectedSection, setSelectedDishId } =
     props;
-  const [dishes, { refetch }] = useQuery(menuSectionQuery, {
-    sectionId: selectedSection.id,
+  const { data, refetch } = trpc.dashboard.getChefSectionDishes.useQuery(
+    selectedSection.id
+  );
+  const destroyDish = trpc.dashboard.destroyDish.useMutation({
+    onSuccess: () => refetch(),
   });
-  const [destroyDish] = useMutation(destroyDishMutation);
+  const dishes = data || [];
 
   const handleEditOnClick = (dishId) => {
     setSelectedDishId(dishId);
     setCurrentView(UPDATE_DISH);
   };
 
-  const handleDeleteDish = (id) => {
-    return destroyDish({ id }, { onSuccess: () => refetch() });
+  const handleDeleteDish = async (id) => {
+    return destroyDish.mutateAsync(id);
   };
 
   return (

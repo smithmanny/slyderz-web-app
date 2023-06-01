@@ -1,4 +1,3 @@
-import { api } from "app/blitz-server";
 import { NextApiRequest, NextApiResponse } from "next";
 import getCloudinary from "app/utils/getCloudinary";
 
@@ -18,4 +17,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
   })
 };
 
-export default api(handler);
+export default handler;

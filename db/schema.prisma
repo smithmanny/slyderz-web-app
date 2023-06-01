@@ -23,7 +23,7 @@ model Address {
   state     String
   zipcode   String
 
-  user   AuthUser @relation(fields: [userId], references: [id])
+  user   AuthUser @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String  @unique
 }
 
@@ -86,7 +86,7 @@ model Chef {
   stripeAccountId      String
   isOnboardingComplete Boolean  @default(false)
 
-  user       AuthUser         @relation(fields: [userId], references: [id])
+  user       AuthUser         @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
   orders     Order[]
   dishes     Dish[]
@@ -190,6 +190,4 @@ model Order {
   chef   Chef         @relation(fields: [chefId], references: [id])
   chefId String
   items OrderItems[]
-
-  @@unique([id, userId])
 }

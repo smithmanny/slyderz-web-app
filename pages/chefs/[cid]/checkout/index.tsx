@@ -1,11 +1,12 @@
 import React, { useCallback, useState } from "react";
-import { BlitzPage } from "@blitzjs/next";
 
 import Layout from "app/core/layouts/Layout";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import CheckoutPage from "app/chefs/components/checkout/CheckoutPage";
 import CartEmpty from "app/checkout/components/CartEmpty";
 import AddAddressModal from "app/core/modals/AddAddressModal";
+
+import type { SlyderzPage } from "next";
 
 interface CheckoutTypes {
   cart: any;
@@ -46,7 +47,7 @@ export const getServerSideProps = async function getServerSideProps({
   };
 };
 
-const Checkout: BlitzPage = (props: any) => {
+const Checkout: SlyderzPage = (props: any) => {
   const { cart, cid, eventDate, eventTime, userId }: CheckoutTypes = props;
   const isCartEmpty = !cart?.pendingCartItems || !cart?.total;
   const [showAddressModal, setShowAddressModal] = useState(false);

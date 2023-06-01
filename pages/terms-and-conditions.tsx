@@ -1,11 +1,11 @@
 /* eslint-disable react/no-unescaped-entities */
-import { BlitzPage } from "@blitzjs/next";
-
 import Layout from "app/core/layouts/Layout";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Typography from "app/core/components/shared/Typography";
 
-const TermsAndCondition: BlitzPage = () => (
+import type { SlyderzPage } from "next";
+
+const TermsAndCondition: SlyderzPage = () => (
   <ConsumerContainer>
     <Typography variant="h2" gutterBottom>
       <strong>Terms and Conditions</strong>

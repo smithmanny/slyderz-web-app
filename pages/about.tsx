@@ -1,14 +1,13 @@
-import { BlitzPage } from "@blitzjs/next";
 import Box from "@mui/material/Box";
-
 import Layout from "app/core/layouts/Layout";
 import AboutSection from "app/about/components/AboutSection";
-
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
 
-const About: BlitzPage = () => {
+import type { SlyderzPage } from "next";
+
+const About: SlyderzPage = () => {
   return (
     <ConsumerContainer>
       <Grid container spacing={2}>

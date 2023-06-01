@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from "react";
 import { useRouter } from "next/router";
-import { Routes } from "@blitzjs/next";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import IconButton from "@mui/material/IconButton";

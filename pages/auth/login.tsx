@@ -1,11 +1,12 @@
-import { BlitzPage } from "@blitzjs/next";
 import { useRouter } from "next/router";
 
 import Layout from "app/core/layouts/Layout";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import { LoginForm } from "app/auth/components/LoginForm";
 
-const LoginPage: BlitzPage = () => {
+import type { SlyderzPage } from "next";
+
+const LoginPage: SlyderzPage = () => {
   const router = useRouter();
 
   return (

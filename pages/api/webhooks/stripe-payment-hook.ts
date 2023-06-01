@@ -1,4 +1,3 @@
-import { api } from "app/blitz-server";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -47,4 +46,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   res.status(200).end();
 };
 
-export default api(handler);
+export default handler;

@@ -1,9 +1,7 @@
 import React, { useState, useCallback } from "react";
 import dynamic from "next/dynamic";
-import { useMutation, useQuery } from "@blitzjs/rpc";
 
-import destroyHoursMutation from "app/dashboard/mutations/destroyHoursMutation";
-import chefHoursQuery from "../../queries/hoursQuery";
+import { trpc } from "server/utils/trpc";
 
 import Card, {
   CardActions,
@@ -19,14 +17,15 @@ const DynamicCreateHoursModal = dynamic(() => import("./modal/hoursModal"));
 
 const HoursContainer = () => {
   const [showHoursModal, setShowHoursModal] = useState(false);
-  const [destroyHours] = useMutation(destroyHoursMutation);
-  const [chefHours, { refetch }] = useQuery(chefHoursQuery, {});
+  const destroyHours = trpc.dashboard.destroyHours.useMutation();
+  const { data, refetch } = trpc.dashboard.getChefHours.useQuery();
+  const chefHours: any = data || [];
 
   const openHoursModal = useCallback(() => setShowHoursModal(true), []);
   const closeHoursModal = useCallback(() => setShowHoursModal(false), []);
 
-  const destroyHourBlock = (hourBlockId: number) => {
-    return destroyHours({ id: hourBlockId }).then(() => refetch());
+  const destroyHourBlock = (hourBlockId: string) => {
+    return destroyHours.mutateAsync(hourBlockId).then(() => refetch());
   };
 
   return (

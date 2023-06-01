@@ -1,26 +1,17 @@
-import { useMutation } from "@blitzjs/rpc";
 import React from "react";
 
-import destroyMenuItemMutation from 'app/chefs/mutations/destroyMenuItem';
-import decreaseMenuItemQuantityMutation from 'app/chefs/mutations/decreaseMenuItemQuantity';
-import increaseMenuItemQuantityMutation from 'app/chefs/mutations/increaseMenuItemQuantity';
-
-import { styled } from "integrations/material-ui";
+import { trpc } from "server/utils/trpc";
 
 import Divider from 'app/core/components/shared/Divider'
 import Typography from 'app/core/components/shared/Typography'
 import Button from "app/core/components/shared/Button";
 import Grid from "app/core/components/shared/Grid";
-
-const QuantityContainer = styled('div')({
-  alignItems: "center",
-  display: "flex",
-})
+import Box from "app/core/components/shared/Box";
 
 const CartItems = ({ isCheckoutPage, selectedCartItems }) => {
-  const [destroyMenuItem] = useMutation(destroyMenuItemMutation);
-  const [decreaseMenuItemQuantity] = useMutation(decreaseMenuItemQuantityMutation);
-  const [increaseMenuItemQuantity] = useMutation(increaseMenuItemQuantityMutation);
+  const destroyMenuItem = trpc.cart.deleteMenuItem.useMutation()
+  const decreaseMenuItemQuantity = trpc.cart.decreaseMenuItemQuantity.useMutation()
+  const increaseMenuItemQuantity = trpc.cart.increaseMenuItemQuantity.useMutation()
 
   return selectedCartItems.map((item) => (
     <span key={item.id}>
@@ -37,21 +28,26 @@ const CartItems = ({ isCheckoutPage, selectedCartItems }) => {
           <Typography variant="body2">{item.name}</Typography>
         </Grid>
         <Grid item xs>
-          <QuantityContainer>
+          <Box
+            sx={{
+              alignItems: "center",
+              display: "flex",
+            }}
+          >
             <Button
               variant="text"
-              onClick={() => decreaseMenuItemQuantity({ id: item.id, quantity: 1 })}
+              onClick={() => decreaseMenuItemQuantity.mutate({ id: item.id, quantity: 1 })}
             >
               -
             </Button>
             <Button
               variant="text"
-              onClick={() => increaseMenuItemQuantity({ id: item.id, quantity: 1 })}
+              onClick={() => increaseMenuItemQuantity.mutate({ id: item.id, quantity: 1 })}
             >
               +
             </Button>
             <Typography>x{item.quantity}</Typography>
-          </QuantityContainer>
+          </Box>
         </Grid>
         <Grid item xs>
           <Typography sx={{ float: "right" }}>
@@ -63,7 +59,7 @@ const CartItems = ({ isCheckoutPage, selectedCartItems }) => {
         <Button
           variant="text"
           size="small"
-          onClick={() => destroyMenuItem({ menuItemId: item.id })}
+          onClick={() => destroyMenuItem.mutate({ menuItemId: item.id })}
         >
           Delete
         </Button>

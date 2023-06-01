@@ -1,10 +1,8 @@
-import { useMutation, useQuery } from "@blitzjs/rpc";
 import React, { useState, useCallback } from "react";
 import IconButton from "@mui/material/IconButton";
 import dynamic from "next/dynamic";
 
-import menuSectionsQuery from "../../queries/menuSectionsQuery";
-import destroySectionMutation from "../../mutations/destroySectionMutation";
+import { trpc } from "server/utils/trpc";
 
 import DeleteIcon from "app/core/components/icons/DeleteIcon";
 import Card, { CardContent } from "app/core/components/shared/Card";
@@ -26,8 +24,11 @@ const CreateSectionModal = dynamic(
 const HomeContainer = (props) => {
   const { currentView, setCurrentView, setSelectedSection } = props;
   const [showSectionModal, setShowSectionModal] = useState(false);
-  const [sections, { refetch }] = useQuery(menuSectionsQuery, {});
-  const [destroySection] = useMutation(destroySectionMutation);
+  const { data, refetch } = trpc.dashboard.getMenuSections.useQuery();
+  const destroySection = trpc.dashboard.destroySection.useMutation({
+    onSuccess: () => refetch(),
+  });
+  const sections = data || [];
 
   const closeSectionModal = useCallback(() => {
     setShowSectionModal(false);
@@ -43,7 +44,7 @@ const HomeContainer = (props) => {
         <Grid item xs={12}>
           <Typography variant="h6">Your Sections</Typography>
         </Grid>
-        {sections?.map((section) => (
+        {sections.map((section) => (
           <Grid item xs={12} key={section.id}>
             <Card
               onClick={() => {
@@ -67,12 +68,9 @@ const HomeContainer = (props) => {
                     <IconButton
                       aria-label="delete"
                       disableRipple
-                      onClick={(e) => {
+                      onClick={async (e) => {
                         e.stopPropagation();
-                        return destroySection(
-                          { id: section.id },
-                          { onSuccess: () => refetch() }
-                        );
+                        return destroySection.mutateAsync(section.id);
                       }}
                       size="large"
                     >

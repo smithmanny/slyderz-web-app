@@ -1,8 +1,4 @@
-import { useMutation, useQuery } from "@blitzjs/rpc";
-import PropTypes from "prop-types";
-
-import dishQuery from "../../queries/dishQuery";
-import updateDishMutation from "../../mutations/updateDishMutation";
+import { trpc } from "server/utils/trpc";
 
 import Grid from "app/core/components/shared/Grid";
 import MenuLayout from "./MenuLayout";
@@ -10,7 +6,17 @@ import DishForm from "./DishForm";
 
 import { SECTION } from "./IndexContainer";
 
-const UpdateDishContainer = (props) => {
+type UpdateDishContainerProps = {
+  currentView: string;
+  setCurrentView: (string) => void;
+  setSelectedDishId: (string) => void;
+  selectedDishId: string;
+  selectedSection: {
+    id: string;
+  };
+};
+
+const UpdateDishContainer = (props: UpdateDishContainerProps) => {
   const {
     currentView,
     setCurrentView,
@@ -18,13 +24,14 @@ const UpdateDishContainer = (props) => {
     selectedDishId,
     selectedSection,
   } = props;
-  const [dish, { isLoading }] = useQuery(dishQuery, {
+
+  const { data, isLoading } = trpc.dashboard.getChefSectionDish.useQuery({
     dishId: selectedDishId,
     sectionId: selectedSection.id,
   });
-  const [updateDish] = useMutation(updateDishMutation);
+  const updateDish = trpc.dashboard.updateDish.useMutation();
 
-  if (isLoading || !dish) {
+  if (isLoading || !data) {
     return (
       <>
         <h1>Loading</h1>
@@ -33,9 +40,9 @@ const UpdateDishContainer = (props) => {
   }
 
   const initialValues = {
-    description: dish.description,
-    name: dish.name,
-    price: dish.price,
+    description: data.description,
+    name: data.name,
+    price: data.price,
     selectedDishId,
   };
 
@@ -48,7 +55,7 @@ const UpdateDishContainer = (props) => {
       <Grid item xs={12}>
         <DishForm
           initialValues={initialValues}
-          mutation={updateDish}
+          mutation={updateDish.mutateAsync}
           submitText="Update Dish"
           sectionId={selectedSection.id}
           setCurrentView={setCurrentView}
@@ -56,14 +63,6 @@ const UpdateDishContainer = (props) => {
       </Grid>
     </MenuLayout>
   );
-};
-
-UpdateDishContainer.propTypes = {
-  currentView: PropTypes.string.isRequired,
-  setCurrentView: PropTypes.func.isRequired,
-  setSelectedDishId: PropTypes.func.isRequired,
-  selectedDishId: PropTypes.string.isRequired,
-  selectedSection: PropTypes.string.isRequired,
 };
 
 export default UpdateDishContainer;
