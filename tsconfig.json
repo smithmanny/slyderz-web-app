@@ -32,7 +32,6 @@
     "cypress"
   ],
   "include": [
-    "blitz-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     "types"

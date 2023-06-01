@@ -11,6 +11,7 @@ import {
   CHEF_SERVICE_FEE,
   CONSUMER_SERVICE_FEE,
 } from "types";
+import { TRPCError } from "@trpc/server";
 
 const checkoutRouter = router({
   createCheckout: protectedProcedure
@@ -21,11 +22,17 @@ const checkoutRouter = router({
 
       await ctx.prisma.$transaction(async (db) => {
         if (!ctx.session.cart || ctx.session.cart.items.length === 0) {
-          throw new Error("Cart can't be empty");
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "Cart can't be empty"
+          });
         }
 
         if (ctx.session.user.stripeCustomerId === undefined || !paymentMethodId) {
-          throw Error("Wrong order data");
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "Wrong order data"
+          });
         }
 
         // Create order
