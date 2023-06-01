@@ -16,6 +16,7 @@ type SessionType = {
     name: string
     stripeCustomerId: string
   }
+  cart: Cart | null
 }
 
 const stripe = getStripeServer()
@@ -50,7 +51,7 @@ const createContext = async (opts: CreateNextContextOptions) => {
   const authRequest = auth.handleRequest({ req: opts.req, res: opts.res })
   const cart = getCartCookie(opts.req, opts.res)
   const { session, user } = await authRequest.validateUser()
-  const authSession = {
+  const slyderzSession = {
     ...session,
     user: {
       ...user
@@ -61,9 +62,8 @@ const createContext = async (opts: CreateNextContextOptions) => {
   return {
     auth,
     authRequest,
-    cart,
     stripe,
-    session: authSession,
+    session: slyderzSession,
     prisma,
     req: opts.req,
     res: opts.res,

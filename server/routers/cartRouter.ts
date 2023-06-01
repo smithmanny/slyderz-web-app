@@ -8,7 +8,7 @@ import type { CartItem } from 'types';
 const chefRouter = router({
   getUserCart: publicProcedure
     .query(async ({ ctx }) => {
-      return ctx.cart
+      return ctx.session.cart
     }),
   addMenuItemToCart: publicProcedure
     .input(AddMenuItemToCartType)

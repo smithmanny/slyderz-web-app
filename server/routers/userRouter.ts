@@ -73,7 +73,7 @@ const userRouter = router({
         isChefProfileComplete: false
       }
 
-      if (session) {
+      if (session.sessionId) {
         const stripePayments = getStripePayments(session.user.stripeCustomerId)
         const userAddress = getAddress(session.userId)
         const chefStatus = getChefStatus(session.userId)
