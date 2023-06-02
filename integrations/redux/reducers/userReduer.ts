@@ -36,7 +36,7 @@ interface InitialStateType {
   userId: string
   email: string
   name: string
-  address: {} | AddAddressType
+  address: object | AddAddressType
   stripeCards: Array<StripePaymentType>
   chef: ChefType
 }

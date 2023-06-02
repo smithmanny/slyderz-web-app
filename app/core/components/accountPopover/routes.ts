@@ -7,8 +7,8 @@ interface LoggedOutRouteType {
   route: any
 }
 
-interface LoggedInRouteType extends Partial<LoggedOutRouteType> {}
-interface OnboarderdRouteType extends LoggedInRouteType {}
+type LoggedInRouteType = Partial<LoggedOutRouteType>
+type OnboarderdRouteType = LoggedInRouteType
 
 export const loggedOutRoutes: Array<LoggedOutRouteType> = [
   {

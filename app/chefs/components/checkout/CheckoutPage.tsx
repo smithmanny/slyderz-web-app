@@ -67,7 +67,7 @@ interface CheckoutPageTypes {
   chefId: string;
   eventDate: Date;
   eventTime: string;
-  userId: Number;
+  userId: number;
   openAddressModal: () => void;
 }
 

@@ -18,7 +18,7 @@ export interface EmailBodyType {
   email: string;
   eventDate: string;
   eventTime: string;
-  orderTotal: Number;
+  orderTotal: number;
 }
 export interface EmailBodyResponseType {
   cartItems: Array<CartItem>;
@@ -27,7 +27,7 @@ export interface EmailBodyResponseType {
   email: string;
   eventDate: string;
   eventTime: string;
-  orderTotal: Number;
+  orderTotal: number;
 }
 export interface Cart {
   eventDate?: Date | null;
@@ -91,8 +91,7 @@ export interface ConsumerNewOrderEmailInputType {
     items: Array<OrderItemsType>;
   };
 }
-export interface ConsumerOrderApprovedEmailInputType
-  extends ConsumerNewOrderEmailInputType {}
+export type ConsumerOrderApprovedEmailInputType = ConsumerNewOrderEmailInputType
 export interface ChefNewOrderEmailInputType {
   order: {
     subtotal: number;

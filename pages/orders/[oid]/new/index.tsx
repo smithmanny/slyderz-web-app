@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 
 import completedOrderIcon from "public/completed-order.svg";
+import createContext from "server/utils/createContext";
 
 import Box from "app/core/components/shared/Box";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
@@ -14,7 +15,8 @@ export const getServerSideProps = async function getServerSideProps({
   ctx,
   params,
 }) {
-  const session = ctx?.session;
+  const context = await createContext(ctx);
+  const session = context.session;
 
   if (!params?.oid) {
     return {

@@ -11,7 +11,7 @@ import Button from "../shared/Button";
 import Grid from "../shared/Grid";
 
 type FormMutationType = {
-  schema: Function;
+  schema: (schema) => void;
   toVariables: (object) => void;
 };
 
@@ -25,8 +25,8 @@ export interface FormProps<S extends z.ZodType<any, any>>
   onSubmit?: FinalFormProps<z.infer<S>>["onSubmit"];
   initialValues?: FinalFormProps<z.infer<S>>["initialValues"];
   mutation?: FormMutationType;
-  toVariables?: Function;
-  onSuccess?: Function;
+  toVariables?: (values) => void;
+  onSuccess?: (values) => void;
 }
 
 export function Form<S extends z.ZodType<any, any>>({
@@ -35,7 +35,6 @@ export function Form<S extends z.ZodType<any, any>>({
   schema,
   initialValues = {},
   mutation,
-  toVariables,
   onSubmit,
   onSuccess,
   ...props

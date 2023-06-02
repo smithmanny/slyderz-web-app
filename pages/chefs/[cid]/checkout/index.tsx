@@ -6,6 +6,7 @@ import CheckoutPage from "app/chefs/components/checkout/CheckoutPage";
 import CartEmpty from "app/checkout/components/CartEmpty";
 import AddAddressModal from "app/core/modals/AddAddressModal";
 
+import createContext from "server/utils/createContext";
 import type { SlyderzPage } from "next";
 
 interface CheckoutTypes {
@@ -14,20 +15,21 @@ interface CheckoutTypes {
   eventDate: Date;
   eventTime: string;
   paymentIntent: any;
-  setupIntentId: Number;
-  userId: Number;
+  setupIntentId: number;
+  userId: number;
 }
 
 export const getServerSideProps = async function getServerSideProps({
   ctx,
   query,
 }) {
-  const session = ctx?.session;
+  const context = await createContext(ctx);
+  const session = context.session;
   const { cid } = query;
   const eventDate = session.cart?.eventDate;
   const eventTime = session.cart?.eventTime;
 
-  if (!session.stripeCustomerId || !session.userId) {
+  if (!session.user.stripeCustomerId || !session.userId) {
     return {
       redirect: {
         destination: "/auth/login",

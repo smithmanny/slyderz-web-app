@@ -8,7 +8,7 @@ import PersonIcon from "@mui/icons-material/Person";
 
 import Popover from "app/core/components/shared/Popover";
 import { loggedInRoutes, loggedOutRoutes, onboardedRoutes } from "./routes";
-import useSession from "app/hooks/useSession";
+
 import { trpc } from "server/utils/trpc";
 import { useAppSelector, useAppDispatch } from "integrations/redux";
 import { logout as resetState } from "integrations/redux/reducers/userReduer";

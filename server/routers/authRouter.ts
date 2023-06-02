@@ -62,7 +62,7 @@ const authRouter = router({
 
       const createUser = async () => {
         try {
-          let stripeCustomerId: string = ""
+          let stripeCustomerId = ""
 
           if (input.email === "shakhorsmith@gmail.com") {
             stripeCustomerId = "cus_LpSKis9bilj3rP"

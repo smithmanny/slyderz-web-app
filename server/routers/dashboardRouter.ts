@@ -114,7 +114,7 @@ const dashboardRouter = router({
   createHours: chefProcedure
     .input(CreateHours)
     .mutation(async ({ ctx, input }) => {
-      const selectedWeekdays: Array<String> = [];
+      const selectedWeekdays: Array<string> = [];
 
       const allChefHours = await ctx.prisma.hours.findMany({
         where: {

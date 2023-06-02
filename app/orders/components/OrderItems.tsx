@@ -25,7 +25,7 @@ const OrderItems = (props) => {
           <strong>Event Time:</strong> {order.eventTime}
         </Typography>
       </Box>
-      {order.dishes.map((item) => (
+      {order.items.map((item) => (
         <Box
           key={item.id}
           sx={{

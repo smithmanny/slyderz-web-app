@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unescaped-entities */
 import Layout from "app/core/layouts/Layout";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Typography from "app/core/components/shared/Typography";

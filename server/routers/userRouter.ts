@@ -55,7 +55,7 @@ const userRouter = router({
           return { isChef: false, isChefProfileComplete: false }
         }
 
-        if (!!chef.isOnboardingComplete) {
+        if (chef.isOnboardingComplete) {
           return { isChef: true, isChefProfileComplete: true }
         } else {
           return { isChef: true, isChefProfileComplete: false }
@@ -63,11 +63,11 @@ const userRouter = router({
       }
 
       const session = ctx.session
-      let userId: string = ""
+      let userId = ""
       let paymentMethods = {} as Stripe.Response<Stripe.ApiList<Stripe.PaymentMethod>>
-      let address: Address | {} | null = {}
-      let email: string = ""
-      let name: string = ""
+      let address: Address | object | null = {}
+      let email = ""
+      let name = ""
       let checkUserChefStatus: UserChefStatusType = {
         isChef: false,
         isChefProfileComplete: false

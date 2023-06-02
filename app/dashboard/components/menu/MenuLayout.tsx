@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+import React, { ReactNode } from "react";
 import IconButton from "@mui/material/IconButton";
 
 import ArrowBackIcon from "app/core/components/icons/ArrowBackIcon";
@@ -8,10 +8,17 @@ import Typography from "app/core/components/shared/Typography";
 
 import { CREATE_DISH, HOME, SECTION, UPDATE_DISH } from "./IndexContainer";
 
-const MenuLayout = (props) => {
+type MenuLayoutProps = {
+  currentView: string;
+  buttonFunc?: () => void;
+  goBackHome?: () => void;
+  children: ReactNode;
+  selectedSectionName: string;
+};
+const MenuLayout = (props: MenuLayoutProps) => {
   const { currentView, buttonFunc, goBackHome, selectedSectionName } = props;
-  let buttonTitle: String;
-  let showActionButton: Boolean = true;
+  let buttonTitle: string;
+  let showActionButton = true;
 
   switch (currentView) {
     case HOME:
@@ -69,20 +76,6 @@ const MenuLayout = (props) => {
       </Grid>
     </Grid>
   );
-};
-
-MenuLayout.defaultProps = {
-  buttonFunc: () => {},
-  goBackHome: () => {},
-  selectedSectionName: "",
-};
-
-MenuLayout.propTypes = {
-  currentView: PropTypes.string.isRequired,
-  buttonFunc: PropTypes.func,
-  goBackHome: PropTypes.func,
-  children: PropTypes.any.isRequired,
-  selectedSectionName: PropTypes.string,
 };
 
 export default MenuLayout;

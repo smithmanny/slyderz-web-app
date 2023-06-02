@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
-import db from "db";
 
+import db from "db";
 import { readableDate } from "app/utils/dateHelpers";
 import {
   TRANSACTIONAL_EMAILS,
@@ -35,7 +35,7 @@ export const getServerSideProps = async function getServerSideProps({
     };
   }
 
-  const order = await db.order.findFirstOrThrow({
+  const order = await db.order.findUniqueOrThrow({
     where: {
       confirmationNumber,
     },
@@ -52,7 +52,7 @@ export const getServerSideProps = async function getServerSideProps({
       id: true,
       orderStatus: true,
       paymentMethodId: true,
-      dishes: {
+      items: {
         include: {
           dish: {
             select: {

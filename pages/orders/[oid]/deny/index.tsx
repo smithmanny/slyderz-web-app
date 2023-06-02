@@ -37,7 +37,7 @@ export const getServerSideProps = async function getServerSideProps({
       eventDate: true,
       eventTime: true,
       orderStatus: true,
-      dishes: {
+      items: {
         include: {
           dish: {
             select: {

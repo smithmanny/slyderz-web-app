@@ -51,6 +51,6 @@ function StripeSavedCards(props: StripeSavedCardsType) {
       ))}
     </React.Fragment>
   )
-};
+}
 
 export default StripeSavedCards;
