@@ -29,7 +29,11 @@ const UpdateDishContainer = (props: UpdateDishContainerProps) => {
     dishId: selectedDishId,
     sectionId: selectedSection.id,
   });
-  const updateDish = trpc.dashboard.updateDish.useMutation();
+  const updateDish = trpc.dashboard.updateDish.useMutation({
+    onSuccess: () => {
+      props.setCurrentView("SECTION");
+    },
+  });
 
   if (isLoading || !data) {
     return (
@@ -58,7 +62,6 @@ const UpdateDishContainer = (props: UpdateDishContainerProps) => {
           mutation={updateDish.mutateAsync}
           submitText="Update Dish"
           sectionId={selectedSection.id}
-          setCurrentView={setCurrentView}
         />
       </Grid>
     </MenuLayout>

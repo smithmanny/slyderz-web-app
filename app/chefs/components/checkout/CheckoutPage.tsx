@@ -95,7 +95,7 @@ const CheckoutPage = ({
   const isAddressEmpty = Object.keys(address).length === 0;
 
   const handleSubmit = async (values) => {
-    const location: LocationType = values.selectedAddress;
+    const location: AddAddressType = values.selectedAddress;
     const orderBody = {
       address: location,
       eventDate,
@@ -153,7 +153,7 @@ const CheckoutPage = ({
               <Select
                 label="Select event address"
                 name="selectedAddress"
-                items={[address].map((addy: AddAddressType) => ({
+                items={[address].map((addy) => ({
                   key: addy.address1,
                   value: addy,
                 }))}

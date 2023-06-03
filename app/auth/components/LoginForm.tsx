@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Login } from "app/auth/validations";
 import { trpc } from "server/utils/trpc";
 import { useAppDispatch } from "integrations/redux";
-import { updateUser } from "integrations/redux/reducers/userReduer";
+import { fetchUserData } from "integrations/redux/reducers/userReduer";
 
 import Typography from "app/core/components/shared/Typography";
 import Box from "app/core/components/shared/Box";
@@ -17,8 +17,8 @@ type LoginFormProps = {
 export const LoginForm = (props: LoginFormProps) => {
   const dispatch = useAppDispatch();
   const login = trpc.auth.login.useMutation({
-    onSuccess: (userId) => {
-      dispatch(updateUser({ userId }));
+    onSuccess: () => {
+      dispatch(fetchUserData()).unwrap();
     },
   });
 

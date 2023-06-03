@@ -7,8 +7,6 @@ import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Typography from "app/core/components/shared/Typography";
 import { trpc } from "server/utils/trpc";
 
-import type { SlyderzPage } from "next";
-
 export const getServerSideProps = async ({ query }) => {
   if (!query.token) {
     return {
@@ -29,7 +27,7 @@ interface ResetPasswordTypes {
   token: string;
 }
 
-const ResetPasswordPage: SlyderzPage<ResetPasswordTypes> = ({ token }) => {
+const ResetPasswordPage = ({ token }) => {
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const resetPassword = trpc.auth.handlePasswordReset.useMutation({
     onSuccess: () => setIsSuccess(true),

@@ -7,21 +7,21 @@ import "lucia-auth/polyfill/node";
 import prismaClient from "db";
 
 export const auth = lucia({
-	adapter: prisma(prismaClient),
-	env: "DEV", // "PROD" if prod
-	middleware: nextjs(),
-	transformDatabaseUser: (userData) => {
-		return {
-			userId: userData.id,
-			stripeCustomerId: userData.stripeCustomerId,
-			email: userData.email,
-			name: userData.name
-		};
-	}
+  adapter: prisma(prismaClient),
+  env: "DEV", // "PROD" if prod
+  middleware: nextjs(),
+  transformDatabaseUser: (userData) => {
+    return {
+      userId: userData.id,
+      stripeCustomerId: userData.stripeCustomerId,
+      email: userData.email,
+      name: userData.name,
+    };
+  },
 });
 
 export const passwordResetToken = idToken(auth, "password-reset", {
-	expiresIn: 60 * 60 // 1 hour
+  expiresIn: 60 * 60, // 1 hour
 });
 
 export type Auth = typeof auth;

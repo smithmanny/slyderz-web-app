@@ -13,7 +13,7 @@ type MenuLayoutProps = {
   buttonFunc?: () => void;
   goBackHome?: () => void;
   children: ReactNode;
-  selectedSectionName: string;
+  selectedSectionName?: string;
 };
 const MenuLayout = (props: MenuLayoutProps) => {
   const { currentView, buttonFunc, goBackHome, selectedSectionName } = props;

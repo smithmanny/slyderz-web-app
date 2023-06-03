@@ -1,0 +1,23 @@
+{
+  "extends": "next/core-web-vitals",
+  "overrides": [
+    {
+      "parser": "@typescript-eslint/parser",
+      "files": ["*.ts", "*.tsx"],
+      "plugins": ["@typescript-eslint", "prettier"],
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react-hooks/recommended",
+        "prettier"
+      ],
+      "rules": {
+        "prefer-const": "error",
+        "prettier/prettier": "error"
+      }
+      // "parserOptions": {
+      //     "project": "./tsconfig.json"
+      // }
+    }
+  ]
+}

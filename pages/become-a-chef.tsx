@@ -3,9 +3,7 @@ import { useEffect, useState } from "react";
 import Layout from "app/core/layouts/Layout";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 
-import type { SlyderzPage } from "next";
-
-const BecomeAChef: SlyderzPage = () => {
+const BecomeAChef = () => {
   const [isAirtableLoaded, setAirtableStatus] = useState(false);
   useEffect(() => {
     const src = "https://static.airtable.com/js/embed/embed_snippet_v1.js";

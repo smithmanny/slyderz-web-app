@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import IconButton from "@mui/material/IconButton";
 import dynamic from "next/dynamic";
+import { useSnackbar } from "notistack";
 
 import { trpc } from "server/utils/trpc";
 
@@ -23,10 +24,14 @@ const CreateSectionModal = dynamic(
 
 const HomeContainer = (props) => {
   const { currentView, setCurrentView, setSelectedSection } = props;
+  const { enqueueSnackbar } = useSnackbar();
   const [showSectionModal, setShowSectionModal] = useState(false);
   const { data, refetch } = trpc.dashboard.getMenuSections.useQuery();
   const destroySection = trpc.dashboard.destroySection.useMutation({
-    onSuccess: () => refetch(),
+    onSuccess: () => {
+      enqueueSnackbar("Section deleted", { variant: "success" });
+      refetch();
+    },
   });
   const sections = data || [];
 
@@ -70,7 +75,9 @@ const HomeContainer = (props) => {
                       disableRipple
                       onClick={async (e) => {
                         e.stopPropagation();
-                        return destroySection.mutateAsync(section.id);
+                        return destroySection.mutateAsync({
+                          sectionId: section.id,
+                        });
                       }}
                       size="large"
                     >

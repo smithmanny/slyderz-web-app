@@ -18,17 +18,18 @@ interface UploadHeadshotPreviewType {
 
 function UploadHeadshotPreview(props: UploadHeadshotPreviewType) {
   const { image, imagePublicId } = props.cloudinaryImage;
-  const utils = trpc.useContext()
+  const utils = trpc.useContext();
 
-  const completeOnboardingHeadshot = trpc.onboarding.completeOnboardingHeadshot.useMutation({
-    onSuccess: async() => {
-      await utils.chef.invalidate()
-    },
-  })
+  const completeOnboardingHeadshot =
+    trpc.onboarding.completeOnboardingHeadshot.useMutation({
+      onSuccess: async () => {
+        await utils.chef.invalidate();
+      },
+    });
   const destroyAccountImage = trpc.account.deleteAccountPicture.useMutation({
     onSuccess: () => props.setCloudinaryImage(null),
     onError: (err) => console.log(err),
-  })
+  });
 
   const handleUploadingHeadshot = async () => {
     await completeOnboardingHeadshot.mutateAsync({ image, imagePublicId });

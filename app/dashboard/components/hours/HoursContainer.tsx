@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from "react";
 import dynamic from "next/dynamic";
+import { useSnackbar } from "notistack";
 
 import { trpc } from "server/utils/trpc";
 
@@ -16,8 +17,17 @@ import Button from "app/core/components/shared/Button";
 const DynamicCreateHoursModal = dynamic(() => import("./modal/hoursModal"));
 
 const HoursContainer = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const [showHoursModal, setShowHoursModal] = useState(false);
-  const destroyHours = trpc.dashboard.destroyHours.useMutation();
+  const destroyHours = trpc.dashboard.destroyHours.useMutation({
+    onSuccess: () => {
+      enqueueSnackbar("Hours deleted", { variant: "success" });
+      refetch();
+    },
+    onError: (err) => {
+      enqueueSnackbar("Hours not deleted", { variant: "error" });
+    },
+  });
   const { data, refetch } = trpc.dashboard.getChefHours.useQuery();
   const chefHours: any = data || [];
 
@@ -25,7 +35,7 @@ const HoursContainer = () => {
   const closeHoursModal = useCallback(() => setShowHoursModal(false), []);
 
   const destroyHourBlock = (hourBlockId: string) => {
-    return destroyHours.mutateAsync(hourBlockId).then(() => refetch());
+    return destroyHours.mutateAsync({ hourId: hourBlockId });
   };
 
   return (

@@ -1,9 +1,19 @@
-import { TRPCError } from '@trpc/server';
+import { TRPCError } from "@trpc/server";
 import { Prisma } from "@prisma/client";
 
-import { router, chefProcedure } from '../trpc';
+import { router, chefProcedure } from "../trpc";
 
-import { CreateSection, DestroyHour, GetChefSectionDish, GetChefSectionDishes, CreateDish, UpdateDish, DestroyDish, CreateHours, DeleteSection } from 'app/dashboard/validations';
+import {
+  CreateSection,
+  DestroyHour,
+  GetChefSectionDish,
+  GetChefSectionDishes,
+  CreateDish,
+  UpdateDish,
+  DestroyDish,
+  CreateHours,
+  DeleteSection,
+} from "app/dashboard/validations";
 
 const dashboardRouter = router({
   createSection: chefProcedure
@@ -12,18 +22,18 @@ const dashboardRouter = router({
       try {
         await ctx.prisma.section.create({
           data: {
-            name: input,
+            name: input.name,
             chefId: ctx.chef.id,
           },
         });
 
-        return
-      } catch(err) {
-        console.log(err)
+        return;
+      } catch (err) {
+        console.log(err);
         throw new TRPCError({
           code: "BAD_REQUEST",
-          message: err.message
-        })
+          message: "Section not created",
+        });
       }
     }),
   getChefSectionDish: chefProcedure
@@ -42,9 +52,9 @@ const dashboardRouter = router({
           chefId: true,
           sectionId: true,
         },
-      })
+      });
 
-      return dish
+      return dish;
     }),
   getChefSectionDishes: chefProcedure
     .input(GetChefSectionDishes)
@@ -53,7 +63,7 @@ const dashboardRouter = router({
         const dishes = await ctx.prisma.dish.findMany({
           where: {
             chefId: ctx.chef.id,
-            sectionId: input,
+            sectionId: input.sectionId,
           },
           select: {
             id: true,
@@ -63,54 +73,49 @@ const dashboardRouter = router({
             chefId: true,
             sectionId: true,
           },
-        })
+        });
 
-        return dishes
+        return dishes;
       } catch (err) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: err.message
-        })
+        console.log(err);
       }
     }),
-  getMenuSections: chefProcedure
-    .query(async ({ ctx, input }) => {
-      const sections = await ctx.prisma.section.findMany({
-        where: {
-          chefId: ctx.chef.id,
-        },
-      });
+  getMenuSections: chefProcedure.query(async ({ ctx, input }) => {
+    const sections = await ctx.prisma.section.findMany({
+      where: {
+        chefId: ctx.chef.id,
+      },
+    });
 
-      return sections;
-    }),
+    return sections;
+  }),
   destroySection: chefProcedure
     .input(DeleteSection)
     .mutation(async ({ ctx, input }) => {
-      const section = await ctx.prisma.section.delete({
+      await ctx.prisma.section.delete({
         where: {
-          id: input,
+          id: input.sectionId,
         },
       });
 
-      return section;
+      return true;
     }),
-  getChefHours: chefProcedure
-    .query(async ({ ctx }) => {
-      const chef = await ctx.prisma.chef.findFirstOrThrow({
-        where: {
-          userId: ctx.session.userId
-        }
-      })
-      const hours = await ctx.prisma.hours.findMany({
-        where: {
-          chefId: chef.id
-        }
-      })
+  getChefHours: chefProcedure.query(async ({ ctx }) => {
+    const chef = await ctx.prisma.chef.findFirstOrThrow({
+      where: {
+        userId: ctx.session.userId,
+      },
+    });
+    const hours = await ctx.prisma.hours.findMany({
+      where: {
+        chefId: chef.id,
+      },
+    });
 
-      if (!hours) return []
+    if (!hours) return [];
 
-      return hours
-    }),
+    return hours;
+  }),
   createHours: chefProcedure
     .input(CreateHours)
     .mutation(async ({ ctx, input }) => {
@@ -124,14 +129,16 @@ const dashboardRouter = router({
 
       // create array with days of week thats already created
       allChefHours.map((hourBlock) => {
-        hourBlock.daysOfWeek.map((dayOfWeek) => selectedWeekdays.push(dayOfWeek));
+        hourBlock.daysOfWeek.map((dayOfWeek) =>
+          selectedWeekdays.push(dayOfWeek)
+        );
       });
 
       input.daysOfWeek.map((dayOfWeek) => {
         if (selectedWeekdays.includes(dayOfWeek)) {
           throw new TRPCError({
             code: "BAD_REQUEST",
-            message: `${dayOfWeek} is already being used in a time block`
+            message: `${dayOfWeek} is already being used in a time block`,
           });
         }
       });
@@ -149,7 +156,9 @@ const dashboardRouter = router({
     .input(DestroyHour)
     .mutation(async ({ ctx, input }) => {
       await ctx.prisma.hours.delete({
-        where: { id: input },
+        where: {
+          id: input.hourId,
+        },
       });
 
       return true;
@@ -186,11 +195,11 @@ const dashboardRouter = router({
 
         return dish;
       } catch (err) {
-        console.log("Failed to update Item", err.message)
+        console.log("Failed to update Item", err);
         throw new TRPCError({
           code: "BAD_REQUEST",
-          message: err.message
-        })
+          message: "Dish not updated",
+        });
       }
     }),
   destroyDish: chefProcedure
@@ -199,19 +208,19 @@ const dashboardRouter = router({
       try {
         await ctx.prisma.dish.delete({
           where: {
-            id: input,
+            id: input.dishId,
           },
         });
 
         return true;
       } catch (err) {
-        console.log("Failed to delete Item", err.message)
+        console.log("Failed to delete Item", err);
         throw new TRPCError({
           code: "BAD_REQUEST",
-          message: err.message
-        })
+          message: "Dish not destroyed",
+        });
       }
     }),
 });
 
-export default dashboardRouter
+export default dashboardRouter;

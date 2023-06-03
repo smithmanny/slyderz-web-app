@@ -9,7 +9,7 @@ const DynamicSectionContainer = dynamic(
   { ssr: false }
 );
 const DynamicCreateDishContainer = dynamic(
-  () => import("app/dashboard/components/menu/SectionContainer"),
+  () => import("app/dashboard/components/menu/CreateDishContainer"),
   { ssr: false }
 );
 const DynamicUpdateDishContainer = dynamic(

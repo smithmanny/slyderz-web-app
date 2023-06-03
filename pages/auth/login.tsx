@@ -4,9 +4,7 @@ import Layout from "app/core/layouts/Layout";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import { LoginForm } from "app/auth/components/LoginForm";
 
-import type { SlyderzPage } from "next";
-
-const LoginPage: SlyderzPage = () => {
+const LoginPage = () => {
   const router = useRouter();
 
   return (

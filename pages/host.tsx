@@ -11,9 +11,7 @@ import Typography from "app/core/components/shared/Typography";
 import Box from "app/core/components/shared/Box";
 import Button from "app/core/components/shared/Button";
 
-import type { SlyderzPage } from "next";
-
-const Host: SlyderzPage = () => {
+const Host = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const createChef = trpc.chef.createChef.useMutation({
@@ -23,7 +21,7 @@ const Host: SlyderzPage = () => {
     onError: (err) => {
       return enqueueSnackbar(err.message, { variant: "error" });
     },
-  })
+  });
 
   const handleCreateChef = async () => await createChef.mutateAsync();
   return (

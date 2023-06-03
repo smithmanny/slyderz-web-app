@@ -7,7 +7,6 @@ import CartEmpty from "app/checkout/components/CartEmpty";
 import AddAddressModal from "app/core/modals/AddAddressModal";
 
 import createContext from "server/utils/createContext";
-import type { SlyderzPage } from "next";
 
 interface CheckoutTypes {
   cart: any;
@@ -49,7 +48,7 @@ export const getServerSideProps = async function getServerSideProps({
   };
 };
 
-const Checkout: SlyderzPage = (props: any) => {
+const Checkout = (props: any) => {
   const { cart, cid, eventDate, eventTime, userId }: CheckoutTypes = props;
   const isCartEmpty = !cart?.pendingCartItems || !cart?.total;
   const [showAddressModal, setShowAddressModal] = useState(false);

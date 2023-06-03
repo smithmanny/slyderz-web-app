@@ -9,7 +9,7 @@ import Button from "app/core/components/shared/Button";
 import Typography from "app/core/components/shared/Typography";
 
 interface StripeSavedCardsType {
-  paymentMethods: Array<StripePaymentType>
+  paymentMethods: Array<StripePaymentType>;
 }
 function StripeSavedCards(props: StripeSavedCardsType) {
   const { paymentMethods } = props;
@@ -17,8 +17,8 @@ function StripeSavedCards(props: StripeSavedCardsType) {
   const deletePaymentMethod = trpc.account.deletePaymentMethod.useMutation({
     onSuccess: () => {
       return router.reload();
-    }
-  })
+    },
+  });
 
   return (
     <React.Fragment>
@@ -34,15 +34,17 @@ function StripeSavedCards(props: StripeSavedCardsType) {
           <Typography>{stripePaymentMethod.card.last4}</Typography>
           <Box
             sx={{
-              display: 'flex',
-              alignItems: 'center',
-              ml: 5
+              display: "flex",
+              alignItems: "center",
+              ml: 5,
             }}
           >
             <Button
               label="delete"
               variant="text"
-              onClick={async () => await deletePaymentMethod.mutateAsync(stripePaymentMethod.id)}
+              onClick={async () =>
+                await deletePaymentMethod.mutateAsync(stripePaymentMethod.id)
+              }
             >
               Delete
             </Button>
@@ -50,7 +52,7 @@ function StripeSavedCards(props: StripeSavedCardsType) {
         </Box>
       ))}
     </React.Fragment>
-  )
+  );
 }
 
 export default StripeSavedCards;

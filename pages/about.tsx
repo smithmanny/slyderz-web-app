@@ -5,9 +5,7 @@ import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
 
-import type { SlyderzPage } from "next";
-
-const About: SlyderzPage = () => {
+const About = () => {
   return (
     <ConsumerContainer>
       <Grid container spacing={2}>

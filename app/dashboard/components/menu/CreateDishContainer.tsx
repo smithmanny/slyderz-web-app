@@ -8,7 +8,11 @@ import { SECTION } from "./IndexContainer";
 
 const CreateDishContainer = (props) => {
   const { currentView, setCurrentView, selectedSection } = props;
-  const createDish = trpc.dashboard.createDish.useMutation();
+  const createDish = trpc.dashboard.createDish.useMutation({
+    onSuccess: () => {
+      props.setCurrentView("SECTION");
+    },
+  });
   return (
     <MenuLayout
       currentView={currentView}
@@ -19,7 +23,6 @@ const CreateDishContainer = (props) => {
           mutation={createDish.mutateAsync}
           submitText="Create Dish"
           sectionId={selectedSection.id}
-          setCurrentView={setCurrentView}
         />
       </Grid>
     </MenuLayout>

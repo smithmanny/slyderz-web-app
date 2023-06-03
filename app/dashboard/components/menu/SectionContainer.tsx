@@ -15,9 +15,9 @@ import { CREATE_DISH, HOME, UPDATE_DISH } from "./IndexContainer";
 const SectionContainer = (props) => {
   const { currentView, setCurrentView, selectedSection, setSelectedDishId } =
     props;
-  const { data, refetch } = trpc.dashboard.getChefSectionDishes.useQuery(
-    selectedSection.id
-  );
+  const { data, refetch } = trpc.dashboard.getChefSectionDishes.useQuery({
+    sectionId: selectedSection.id,
+  });
   const destroyDish = trpc.dashboard.destroyDish.useMutation({
     onSuccess: () => refetch(),
   });
@@ -29,7 +29,7 @@ const SectionContainer = (props) => {
   };
 
   const handleDeleteDish = async (id) => {
-    return destroyDish.mutateAsync(id);
+    return destroyDish.mutateAsync({ dishId: id });
   };
 
   return (

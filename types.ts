@@ -1,6 +1,6 @@
 export type Role = "ADMIN" | "USER" | "CHEF";
 export const CHEF_SERVICE_FEE = 0.03;
-export const CONSUMER_SERVICE_FEE = 0.10;
+export const CONSUMER_SERVICE_FEE = 0.1;
 export interface CartItem {
   chefId: number;
   id: string;
@@ -91,7 +91,8 @@ export interface ConsumerNewOrderEmailInputType {
     items: Array<OrderItemsType>;
   };
 }
-export type ConsumerOrderApprovedEmailInputType = ConsumerNewOrderEmailInputType
+export type ConsumerOrderApprovedEmailInputType =
+  ConsumerNewOrderEmailInputType;
 export interface ChefNewOrderEmailInputType {
   order: {
     subtotal: number;

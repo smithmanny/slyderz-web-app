@@ -10,7 +10,7 @@
     "baseUrl": ".",
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": false,
+    "strict": true,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
@@ -25,6 +25,14 @@
     "tsBuildInfoFile": ".tsbuildinfo",
     "noImplicitAny": false,
     "noImplicitThis": true,
+    "plugins": [
+      {
+        "name": "next"
+      },
+      {
+        "name": "typescript-eslint-language-service"
+      }
+    ]
   },
   "exclude": [
     "node_modules",
@@ -32,8 +40,10 @@
     "cypress"
   ],
   "include": [
+    "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "types"
+    "types",
+    ".next/types/**/*.ts"
   ]
 }

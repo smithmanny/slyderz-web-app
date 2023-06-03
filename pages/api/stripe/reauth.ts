@@ -15,14 +15,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
       email: true,
       chef: {
         select: {
-          stripeAccountId: true
-        }
-      }
-    }
-  })
+          stripeAccountId: true,
+        },
+      },
+    },
+  });
 
   if (!user.chef) {
-    throw new Error("Chef not found")
+    throw new Error("Chef not found");
   }
 
   // TODO: replace with prod url
@@ -34,8 +34,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
   });
 
   res.status(200).json({
-    url: createAccountLink.url
-  })
+    url: createAccountLink.url,
+  });
 };
 
 export default handler;

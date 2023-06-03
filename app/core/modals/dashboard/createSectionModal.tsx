@@ -6,7 +6,7 @@ import { trpc } from "server/utils/trpc";
 import Form, { TextField } from "app/core/components/form";
 import Modal from "app/core/components/shared/Modal";
 
-const CreateSectionModal = ({ refetch, show, onClose, ...props }) => {
+function CreateSectionModal({ refetch, show, onClose, ...props }) {
   const createSection = trpc.dashboard.createSection.useMutation({
     onSuccess: () => {
       refetch();
@@ -24,26 +24,20 @@ const CreateSectionModal = ({ refetch, show, onClose, ...props }) => {
     >
       <Form
         submitText="Create Section"
-        // schema={Login}
         mutation={{
           schema: createSection.mutateAsync,
           toVariables: (values) => ({
             ...values,
           }),
         }}
-        onSuccess={() => {
-          refetch();
-          onClose();
-        }}
       >
         <TextField name="name" label="Section Name" placeholder="Entrees" />
       </Form>
     </Modal>
   );
-};
+}
 
 CreateSectionModal.propTypes = {
-  createSection: PropTypes.func.isRequired,
   show: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   refetch: PropTypes.func.isRequired,

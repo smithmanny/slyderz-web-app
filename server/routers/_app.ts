@@ -1,13 +1,13 @@
-import { router } from '../trpc';
-import accountRouter from './accountRouter';
-import authRouter from './authRouter';
-import cartRouter from './cartRouter';
-import checkoutRouter from './checkoutRouter';
-import chefRouter from './chefRouter';
-import dashboardRouter from './dashboardRouter';
-import onboardingRouter from './onboardingRouter';
-import stripeRouter from './stripeRouter';
-import userRouter from './userRouter';
+import { router } from "../trpc";
+import accountRouter from "./accountRouter";
+import authRouter from "./authRouter";
+import cartRouter from "./cartRouter";
+import checkoutRouter from "./checkoutRouter";
+import chefRouter from "./chefRouter";
+import dashboardRouter from "./dashboardRouter";
+import onboardingRouter from "./onboardingRouter";
+import stripeRouter from "./stripeRouter";
+import userRouter from "./userRouter";
 
 export const appRouter = router({
   auth: authRouter,

@@ -1,11 +1,11 @@
 import randomstring from "randomstring";
 
-import { router, protectedProcedure } from '../trpc';
-import { setCookie } from 'server/utils/cookieHelpers';
+import { router, protectedProcedure } from "../trpc";
+import { setCookie } from "server/utils/cookieHelpers";
 
 import { readableDate } from "app/utils/dateHelpers";
 import sendSesEmail from "emails/utils/sendSesEmail";
-import { CreateCartType } from 'app/checkout/validations';
+import { CreateCartType } from "app/checkout/validations";
 import {
   TRANSACTIONAL_EMAILS,
   CHEF_SERVICE_FEE,
@@ -24,14 +24,17 @@ const checkoutRouter = router({
         if (!ctx.session.cart || ctx.session.cart.items.length === 0) {
           throw new TRPCError({
             code: "FORBIDDEN",
-            message: "Cart can't be empty"
+            message: "Cart can't be empty",
           });
         }
 
-        if (ctx.session.user.stripeCustomerId === undefined || !paymentMethodId) {
+        if (
+          ctx.session.user.stripeCustomerId === undefined ||
+          !paymentMethodId
+        ) {
           throw new TRPCError({
             code: "FORBIDDEN",
-            message: "Wrong order data"
+            message: "Wrong order data",
           });
         }
 
@@ -100,47 +103,52 @@ const checkoutRouter = router({
           const denyUrl = `${process.env.NEXT_PUBLIC_URL}/orders/${order.confirmationNumber}/deny`;
           const consumerServiceFee = order.amount * CONSUMER_SERVICE_FEE;
           const chefServiceFee = order.amount * CHEF_SERVICE_FEE;
-          const address = `${order.address1} ${order.city}, ${order.state} ${order.zipcode}`
+          const address = `${order.address1} ${order.city}, ${order.state} ${order.zipcode}`;
           const customerEmailParams = {
-              to: "contact@slyderz.co", //TODO: swap out with customer email
-              type: TRANSACTIONAL_EMAILS.newOrderConsumer,
-              variables: {
-                orderNumber: order.confirmationNumber,
-                orderDate: readableDate(date),
-                orderTime: eventTime,
-                orderLocation: address,
-                orderSubtotal: order.amount,
-                orderServiceFee: consumerServiceFee,
-                orderTotal: order.amount + consumerServiceFee,
-                // orderItems: order.dishes,
-              },
-            }
+            to: "contact@slyderz.co", //TODO: swap out with customer email
+            type: TRANSACTIONAL_EMAILS.newOrderConsumer,
+            variables: {
+              orderNumber: order.confirmationNumber,
+              orderDate: readableDate(date),
+              orderTime: eventTime,
+              orderLocation: address,
+              orderSubtotal: order.amount,
+              orderServiceFee: consumerServiceFee,
+              orderTotal: order.amount + consumerServiceFee,
+              // orderItems: order.dishes,
+            },
+          };
           const chefEmailParams = {
-              to: "contact@slyderz.co", //TODO: swap out with chef email
-              type: TRANSACTIONAL_EMAILS.newOrderChef,
-              variables: {
-                orderApproveUrl: acceptUrl,
-                orderDenyUrl: denyUrl,
-                orderNumber: order.confirmationNumber,
-                orderDate: readableDate(date),
-                orderTime: eventTime,
-                orderLocation: address,
-                orderSubtotal: order.amount,
-                orderServiceFee: chefServiceFee,
-                orderTotal: order.amount + chefServiceFee,
-                // orderItems: order.dishes,
-              },
-            }
+            to: "contact@slyderz.co", //TODO: swap out with chef email
+            type: TRANSACTIONAL_EMAILS.newOrderChef,
+            variables: {
+              orderApproveUrl: acceptUrl,
+              orderDenyUrl: denyUrl,
+              orderNumber: order.confirmationNumber,
+              orderDate: readableDate(date),
+              orderTime: eventTime,
+              orderLocation: address,
+              orderSubtotal: order.amount,
+              orderServiceFee: chefServiceFee,
+              orderTotal: order.amount + chefServiceFee,
+              // orderItems: order.dishes,
+            },
+          };
 
-          Promise.all([sendSesEmail(customerEmailParams), sendSesEmail(chefEmailParams)])
-          .then(() => console.log('Order confirmation email sent'))
-          .catch((err) => console.log("Order confirmation email failed to send", err))
+          Promise.all([
+            sendSesEmail(customerEmailParams),
+            sendSesEmail(chefEmailParams),
+          ])
+            .then(() => console.log("Order confirmation email sent"))
+            .catch((err) =>
+              console.log("Order confirmation email failed to send", err)
+            );
 
           const initialUserCart = {
             items: [],
-            total: 0
-          }
-          setCookie("cart", initialUserCart, { req: ctx.req, res: ctx.res })
+            total: 0,
+          };
+          setCookie("cart", initialUserCart, { req: ctx.req, res: ctx.res });
         }
       });
 
@@ -148,4 +156,4 @@ const checkoutRouter = router({
     }),
 });
 
-export default checkoutRouter
+export default checkoutRouter;

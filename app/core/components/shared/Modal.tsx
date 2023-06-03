@@ -14,17 +14,23 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Toolbar from "@mui/material/Toolbar";
 
-
 interface ModalType {
-  actions?: any
-  children: ReactNode
-  size?: Breakpoint
-  title?: string
-  show: boolean
-  closeModal: () => void
+  actions?: any;
+  children: ReactNode;
+  size?: Breakpoint;
+  title?: string;
+  show: boolean;
+  closeModal: () => void;
 }
 
-const Modal = ({ actions, children, size, title, show, closeModal }: ModalType) => {
+const Modal = ({
+  actions,
+  children,
+  size,
+  title,
+  show,
+  closeModal,
+}: ModalType) => {
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
@@ -55,14 +61,17 @@ const Modal = ({ actions, children, size, title, show, closeModal }: ModalType) 
           </IconButton>
         </Toolbar>
       </MuiAppBar>
-      {title && <DialogTitle id={title || "slyderz-modal-title"} sx={{ fontWeight: 'bold' }}>{title}</DialogTitle>}
-      <DialogContent sx={{ minHeight: '300px' }}>
-        {children}
-      </DialogContent>
+      {title && (
+        <DialogTitle
+          id={title || "slyderz-modal-title"}
+          sx={{ fontWeight: "bold" }}
+        >
+          {title}
+        </DialogTitle>
+      )}
+      <DialogContent sx={{ minHeight: "300px" }}>{children}</DialogContent>
       {actions && (
-        <DialogActions sx={{ mb: 2, mr: 2 }}>
-          {actions}
-        </DialogActions>
+        <DialogActions sx={{ mb: 2, mr: 2 }}>{actions}</DialogActions>
       )}
     </Dialog>
   );

@@ -14,8 +14,8 @@ const AddAddressModal = ({ show, onClose, ...props }) => {
     onSuccess: (input) => {
       dispatch(addAddress(input));
       return onClose();
-    }
-  })
+    },
+  });
 
   return (
     <Modal closeModal={onClose} show={show} size="sm" {...props}>

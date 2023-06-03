@@ -1,12 +1,12 @@
 import { trpc } from "server/utils/trpc";
 
 interface SessionType {
-  userId: string
+  userId: string;
 }
 
 function useSession() {
-  const session = trpc.auth.getSession.useQuery().data as SessionType
-  return session
+  const session = trpc.auth.getSession.useQuery().data as SessionType;
+  return session;
 }
 
-export default useSession
+export default useSession;

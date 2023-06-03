@@ -1,14 +1,14 @@
 import AddIcon from "@mui/icons-material/Add";
 
 interface LoggedOutRouteType {
-  id: number
-  icon: any
-  name: string
-  route: any
+  id: number;
+  icon: any;
+  name: string;
+  route: any;
 }
 
-type LoggedInRouteType = Partial<LoggedOutRouteType>
-type OnboarderdRouteType = LoggedInRouteType
+type LoggedInRouteType = Partial<LoggedOutRouteType>;
+type OnboarderdRouteType = LoggedInRouteType;
 
 export const loggedOutRoutes: Array<LoggedOutRouteType> = [
   {
@@ -36,7 +36,7 @@ export const loggedInRoutes: Array<LoggedInRouteType> = [
     route: "/host",
   },
 ];
-export const onboardedRoutes: Array<OnboarderdRouteType> = [
+export const chefLoggedInRoutes: Array<OnboarderdRouteType> = [
   {
     id: 0,
     name: "Account",

@@ -16,16 +16,8 @@ import Box from "app/core/components/shared/Box";
 import CircularProgress from "app/core/components/shared/CircularProgress";
 
 import "app/styles/base.css";
-import { NextComponentType } from "next";
 
 const roboto = Roboto_Serif({ subsets: ["latin"] });
-
-type SlyderzAppProps = NextComponentType & {
-  getLayout: (Component: ReactElement) => ReactNode;
-};
-interface SlyderzApp extends AppProps {
-  Component: SlyderzAppProps;
-}
 
 function LoadingIcon() {
   return (
@@ -55,7 +47,12 @@ function SlyderzWrapper({ children }) {
   return children;
 }
 
-function Slyderz({ Component, pageProps }: SlyderzApp) {
+type MyAppProps = Omit<AppProps, "Component"> & {
+  Component: AppProps["Component"] & {
+    getLayout?: (page: ReactNode) => ReactNode;
+  };
+};
+function Slyderz({ Component, pageProps }: MyAppProps) {
   const getLayout = Component.getLayout || ((page: ReactNode) => page);
 
   return (

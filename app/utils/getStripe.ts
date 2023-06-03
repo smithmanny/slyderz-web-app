@@ -3,7 +3,7 @@ import { default as StripeServer } from "stripe";
 import type StripeServerType from "stripe";
 
 let stripePromise: Promise<Stripe | null>;
-let stripeServer: StripeServerType
+let stripeServer: StripeServerType;
 
 const getStripe = () => {
   if (!stripePromise) {
@@ -19,7 +19,7 @@ export const getStripeServer = (): StripeServerType => {
     });
   }
 
-  return stripeServer
+  return stripeServer;
 };
 
 export default getStripe;

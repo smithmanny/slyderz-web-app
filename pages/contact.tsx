@@ -5,9 +5,7 @@ import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
 import Form, { TextField } from "app/core/components/form";
 
-import type { SlyderzPage } from "next";
-
-const Contact: SlyderzPage = () => {
+const Contact = () => {
   return (
     <ConsumerContainer maxWidth="sm">
       <Grid container spacing={2}>

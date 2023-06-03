@@ -11,7 +11,7 @@ import Button from "../shared/Button";
 import Grid from "../shared/Grid";
 
 type FormMutationType = {
-  schema: (schema) => void;
+  schema: (schema) => Promise<void>;
   toVariables: (object) => void;
 };
 
@@ -94,7 +94,7 @@ export function Form<S extends z.ZodType<any, any>>({
         if (typeof onSuccess === "function") {
           return onSuccess(data);
         }
-      } catch (error) {
+      } catch (error: any) {
         console.log(`Error submitting form ${JSON.stringify(error)}`);
         if (error.code === "P2002" && error.meta?.target?.includes("email")) {
           // This error comes from Prisma

@@ -24,7 +24,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
     clientSecret: setupIntent.client_secret,
     id: setupIntent.id,
     paymentMethods: paymentMethods.data,
-  })
+  });
 };
 
 export default handler;

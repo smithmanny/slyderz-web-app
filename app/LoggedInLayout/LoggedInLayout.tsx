@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { trpc } from "server/utils/trpc";
 
-import type { SlyderzPage } from "next";
-
 import Card, { CardContent, CardMedia } from "app/core/components/shared/Card";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Button from "app/core/components/shared/Button";
@@ -52,7 +50,7 @@ const NearbyChefs = (props) => {
   );
 };
 
-const LoggedinLayout: SlyderzPage = () => {
+const LoggedinLayout = () => {
   return (
     <ConsumerContainer>
       <Grid container spacing={2}>

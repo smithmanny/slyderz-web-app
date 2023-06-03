@@ -11,8 +11,6 @@ import Form, { TextField } from "app/core/components/form";
 import Typography from "app/core/components/shared/Typography";
 import Button from "app/core/components/shared/Button";
 
-import type { SlyderzPage } from "next";
-
 export async function getServerSideProps(ctx) {
   const authRequest = auth.handleRequest(ctx);
   const { session } = await authRequest.validateUser();
@@ -26,7 +24,7 @@ export async function getServerSideProps(ctx) {
     };
   }
 }
-const ForgotPasswordPage: SlyderzPage = () => {
+const ForgotPasswordPage = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const forgotPassword = trpc.auth.sendPasswordResetLink.useMutation({
     onSuccess: () => setIsSuccess(true),

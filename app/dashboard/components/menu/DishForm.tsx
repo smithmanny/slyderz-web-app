@@ -15,7 +15,6 @@ const DishForm = (props) => {
   return (
     <Form
       submitText={props.submitText}
-      // schema={Login}
       initialValues={initialValues}
       mutation={{
         schema: props.mutation,
@@ -25,7 +24,6 @@ const DishForm = (props) => {
           sectionId: props.sectionId,
         }),
       }}
-      onSuccess={() => props.setCurrentView("SECTION")}
     >
       <CldUploadWidget
         // signatureEndpoint="/api/sign-cloudinary-params"
@@ -100,7 +98,6 @@ DishForm.defaultProps = {
 
 DishForm.propTypes = {
   initialValues: PropTypes.object,
-  setCurrentView: PropTypes.func.isRequired,
   submitText: PropTypes.string.isRequired,
   sectionId: PropTypes.string.isRequired,
   selectedDishId: PropTypes.number,

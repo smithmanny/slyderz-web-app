@@ -1,6 +1,6 @@
-import { router, protectedProcedure } from '../trpc';
+import { router, protectedProcedure } from "../trpc";
 
-import { UploadHeadshotUrl } from 'app/onboarding/validations';
+import { UploadHeadshotUrl } from "app/onboarding/validations";
 
 const chefRouter = router({
   completeOnboardingHeadshot: protectedProcedure
@@ -20,41 +20,40 @@ const chefRouter = router({
           },
         });
 
-        return
-      } catch(err) {
-        console.log(err)
+        return;
+      } catch (err) {
+        console.log(err);
       }
     }),
-  fetchOnboardingState: protectedProcedure
-    .query(async ({ ctx }) => {
-      const chef = await ctx.prisma.chef.findFirstOrThrow({
-        where: {
-          userId: ctx.session.userId
-        },
-        select: {
-          id: true,
-          stripeAccountId: true,
-          onboardingState: true
-        }
-      })
+  fetchOnboardingState: protectedProcedure.query(async ({ ctx }) => {
+    const chef = await ctx.prisma.chef.findFirstOrThrow({
+      where: {
+        userId: ctx.session.userId,
+      },
+      select: {
+        id: true,
+        stripeAccountId: true,
+        onboardingState: true,
+      },
+    });
 
-      if (chef.onboardingState === "SETUP_STRIPE") {
-        const account = await ctx.stripe.accounts.retrieve(chef.stripeAccountId);
+    if (chef.onboardingState === "SETUP_STRIPE") {
+      const account = await ctx.stripe.accounts.retrieve(chef.stripeAccountId);
 
-        if (account.charges_enabled) {
-          await ctx.prisma.chef.update({
-            where: {
-              id: chef.id
-            },
-            data: {
-              onboardingState: "UPLOAD_HEADSHOT"
-            }
-          })
-        }
+      if (account.charges_enabled) {
+        await ctx.prisma.chef.update({
+          where: {
+            id: chef.id,
+          },
+          data: {
+            onboardingState: "UPLOAD_HEADSHOT",
+          },
+        });
       }
+    }
 
-      return chef.onboardingState
-    })
+    return chef.onboardingState;
+  }),
 });
 
-export default chefRouter
+export default chefRouter;

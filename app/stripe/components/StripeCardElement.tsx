@@ -29,8 +29,9 @@ const StripeCard: FunctionComponent<any> = (props) => {
       return;
     }
 
-    const returnUrl = props.chefId ? `${process.env.NEXT_PUBLIC_URL}/chefs/${props.chefId}/checkout`
-    : `${process.env.NEXT_PUBLIC_URL}/account`
+    const returnUrl = props.chefId
+      ? `${process.env.NEXT_PUBLIC_URL}/chefs/${props.chefId}/checkout`
+      : `${process.env.NEXT_PUBLIC_URL}/account`;
 
     const { error }: any = await stripe.confirmSetup({
       //`Elements` instance that was used to create the Payment Element
@@ -63,13 +64,13 @@ const StripeCard: FunctionComponent<any> = (props) => {
   );
 };
 interface StripeCardElementType {
-  chefId?: string
+  chefId?: string;
 }
 
 const StripeCardElement = (props: StripeCardElementType) => {
-  const { data, isLoading } = trpc.stripe.createSetupIntent.useQuery()
+  const { data, isLoading } = trpc.stripe.createSetupIntent.useQuery();
 
-  if (isLoading) return null
+  if (isLoading) return null;
 
   const appearance = {
     theme: "stripe",

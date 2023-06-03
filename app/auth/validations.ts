@@ -28,12 +28,13 @@ export const ResetPassword = z
     path: ["passwordConfirmation"], // set the path of the error
   });
 
-export const UpdatePassword = z.object({
-  currentPassword: z.string(),
-  newPassword: password,
-  newPasswordConfirmation: password,
-})
-.refine((data) => data.newPassword === data.newPasswordConfirmation, {
+export const UpdatePassword = z
+  .object({
+    currentPassword: z.string(),
+    newPassword: password,
+    newPasswordConfirmation: password,
+  })
+  .refine((data) => data.newPassword === data.newPasswordConfirmation, {
     message: "Passwords don't match",
     path: ["newPasswordConfirmation"], // set the path of the error
   });
