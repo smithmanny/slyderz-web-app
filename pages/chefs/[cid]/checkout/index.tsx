@@ -6,7 +6,8 @@ import CheckoutPage from "app/chefs/components/checkout/CheckoutPage";
 import CartEmpty from "app/checkout/components/CartEmpty";
 import AddAddressModal from "app/core/modals/AddAddressModal";
 
-import createContext from "server/utils/createContext";
+import { getCookieServer } from "server/utils/cookieHelpers";
+import { auth } from "integrations/auth/lucia";
 
 interface CheckoutTypes {
   cart: any;
@@ -18,17 +19,11 @@ interface CheckoutTypes {
   userId: number;
 }
 
-export const getServerSideProps = async function getServerSideProps({
-  ctx,
-  query,
-}) {
-  const context = await createContext(ctx);
-  const session = context.session;
-  const { cid } = query;
-  const eventDate = session.cart?.eventDate;
-  const eventTime = session.cart?.eventTime;
+export const getServerSideProps = async function getServerSideProps(ctx) {
+  const authRequest = auth.handleRequest(ctx);
+  const { session } = await authRequest.validateUser();
 
-  if (!session.user.stripeCustomerId || !session.userId) {
+  if (!session) {
     return {
       redirect: {
         destination: "/auth/login",
@@ -37,20 +32,21 @@ export const getServerSideProps = async function getServerSideProps({
     };
   }
 
+  const { cid } = ctx.query;
+  const cart = getCookieServer("cart", { req: ctx.req, res: ctx.res });
+
   return {
     props: {
-      cart: session.cart,
+      cart,
       cid,
-      eventDate,
-      eventTime,
       userId: session.userId,
     },
   };
 };
 
 const Checkout = (props: any) => {
-  const { cart, cid, eventDate, eventTime, userId }: CheckoutTypes = props;
-  const isCartEmpty = !cart?.pendingCartItems || !cart?.total;
+  const { cart, cid, userId }: CheckoutTypes = props;
+  const isCartEmpty = cart.items.length === 0 || cart.total === 0;
   const [showAddressModal, setShowAddressModal] = useState(false);
   const closeAddressModal = useCallback(() => setShowAddressModal(false), []);
   const openAddressModal = useCallback(() => setShowAddressModal(true), []);
@@ -62,8 +58,8 @@ const Checkout = (props: any) => {
       ) : (
         <React.Fragment>
           <CheckoutPage
-            eventDate={eventDate}
-            eventTime={eventTime}
+            eventDate={cart.eventDate}
+            eventTime={cart.eventTime}
             userId={userId}
             chefId={cid}
             openAddressModal={openAddressModal}

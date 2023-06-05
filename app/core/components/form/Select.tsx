@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import PropTypes from "prop-types";
-import { Select as MuiSelect } from "mui-rff";
+import { Select as MuiSelect, SelectProps } from "mui-rff";
 import { MenuItem } from "@mui/material";
 import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
@@ -8,50 +8,41 @@ import DateFnsUtils from "@date-io/date-fns";
 import Grid from "../shared/Grid";
 
 interface MenuItemType {
-  key: string;
-  value: string;
+  label: string;
+  value: any;
 }
 
-const Select: FunctionComponent<any> = (props) => {
+interface SlyderzSelectProps extends SelectProps {
+  items: Array<MenuItemType>;
+  xs?: any;
+  md?: any;
+  name: string;
+  label: string;
+  required?: boolean;
+  onChange?: (event) => void;
+}
+
+const Select: FunctionComponent<SlyderzSelectProps> = (props) => {
   const menuItems = props.items.map((item: MenuItemType, index: number) => {
     return (
-      <MenuItem key={item.key} value={item.value}>
-        {item.key}
+      <MenuItem key={item.label} value={item.value}>
+        {item.label}
       </MenuItem>
     );
   });
   return (
-    <Grid item xs={props.xs} md={props.md}>
+    <Grid item xs={props.xs || 12} md={props.md}>
       <MuiSelect
+        {...props}
         label={props.label}
         name={props.name}
-        required={props.required}
-        dateFunsUtils={DateFnsUtils}
-        {...props}
+        required={props.required || false}
+        // dateFunsUtils={DateFnsUtils}
       >
         {menuItems}
       </MuiSelect>
     </Grid>
   );
-};
-
-Select.defaultProps = {
-  name: "",
-  xs: 12,
-  required: false,
-};
-
-Select.propTypes = {
-  items: PropTypes.arrayOf(
-    PropTypes.shape({
-      key: PropTypes.string,
-      value: PropTypes.string,
-    })
-  ).isRequired,
-  label: PropTypes.string,
-  name: PropTypes.string.isRequired,
-  required: PropTypes.bool,
-  xs: PropTypes.number,
 };
 
 export default Select;

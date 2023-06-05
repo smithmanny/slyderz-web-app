@@ -39,7 +39,7 @@ export async function getServerSideProps(ctx) {
 
   return {
     props: {
-      trpcState: helpers.dehydrate(),
+      trpcState: JSON.stringify(helpers.dehydrate()),
       chefId,
     },
   };

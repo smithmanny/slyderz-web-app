@@ -30,9 +30,9 @@ export interface EmailBodyResponseType {
   orderTotal: number;
 }
 export interface Cart {
-  eventDate?: Date | null;
+  eventDate?: string | null;
   eventTime?: string | null;
-  items: Array<CartItem> | Array<any>;
+  items: Array<any>;
   total: number;
 }
 

@@ -154,7 +154,7 @@ const CheckoutPage = ({
                 label="Select event address"
                 name="selectedAddress"
                 items={[address].map((addy) => ({
-                  key: addy.address1,
+                  label: addy.address1,
                   value: addy,
                 }))}
                 variant="outlined"
@@ -193,7 +193,7 @@ const CheckoutPage = ({
             label="Select payment method"
             name="paymentMethod"
             items={stripePaymentMethods.map((paymentMethod) => ({
-              key: paymentMethod.card.last4,
+              label: paymentMethod.card.last4,
               value: paymentMethod.id,
             }))}
             variant="outlined"

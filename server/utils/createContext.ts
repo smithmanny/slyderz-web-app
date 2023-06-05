@@ -16,7 +16,7 @@ type SessionType = {
     name: string;
     stripeCustomerId: string;
   };
-  cart: Cart | null;
+  cart: Cart;
 };
 
 const stripe = getStripeServer();

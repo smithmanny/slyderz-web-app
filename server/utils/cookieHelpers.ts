@@ -2,6 +2,7 @@ import {
   getCookie as getSlyderzCookie,
   setCookie as setSlyderzCookie,
 } from "cookies-next";
+import { Cart } from "types";
 
 type SetCookieOptionType = {
   req: any;
@@ -31,8 +32,15 @@ export function setCookie(
   });
 }
 
-export function getCookie(key: string, { req, res }: GetCookieOptionType) {
+export function getCookieServer(key: string, { req, res }: GetCookieOptionType): Cart {
   const cookie = getSlyderzCookie(key, { req, res });
+  const parsedCookie = JSON.parse(String(cookie));
+
+  return parsedCookie;
+}
+
+export function getCookie(key: string): Cart {
+  const cookie = getSlyderzCookie(key);
   const parsedCookie = JSON.parse(String(cookie));
 
   return parsedCookie;

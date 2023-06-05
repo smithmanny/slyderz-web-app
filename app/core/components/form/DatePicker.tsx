@@ -9,7 +9,7 @@ import Grid from "../shared/Grid";
 
 const DatePicker: FunctionComponent<any> = (props) => {
   return (
-    <Grid item xs={props.xs} md={props.md}>
+    <Grid item xs={props.xs || 12} md={props.md}>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <MuiDatePicker
           label={props.label}
@@ -17,6 +17,11 @@ const DatePicker: FunctionComponent<any> = (props) => {
           required={props.required}
           desktopModeMediaQuery="@media (min-width: 2000px)"
           closeOnSelect
+          sx={{
+            "& .MuiFormControl-ui": {
+              width: "100%",
+            },
+          }}
           {...props}
         />
       </LocalizationProvider>

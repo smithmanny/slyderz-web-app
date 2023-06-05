@@ -7,6 +7,7 @@ const isAuthed = t.middleware(({ next, ctx }) => {
   if (!ctx.session?.userId) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
+      message: "Please log in"
     });
   }
 

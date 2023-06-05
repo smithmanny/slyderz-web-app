@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Image from "next/image";
 import PropTypes from 'prop-types'
+import { v4 as uuidv4 } from 'uuid';
 
 import { trpc } from 'server/utils/trpc';
 
@@ -10,7 +11,12 @@ import Box from 'app/core/components/shared/Box'
 import Typography from 'app/core/components/shared/Typography'
 
 const MenuItemModal = ({ show, onClose, menuItem, ...props }) => {
-  const addMenuItemToCart = trpc.cart.addMenuItemToCart.useMutation()
+  const utils = trpc.useContext()
+  const addItemToCart = trpc.cart.addItemToCart.useMutation({
+    onSuccess: () => {
+      utils.cart.getUserCart.invalidate()
+    }
+  })
   const [quantity, setQuantity] = useState(1);
 
   const decreaseQuantity = () => {
@@ -23,14 +29,17 @@ const MenuItemModal = ({ show, onClose, menuItem, ...props }) => {
 
   const updateCart = async () => {
     const values = {
+      id: uuidv4(),
       dishId: menuItem.id,
+      description: menuItem.description,
       chefId: menuItem.chefId,
+      name: menuItem.name,
       price: Number(menuItem.price),
       quantity,
     }
 
     try {
-      await addMenuItemToCart.mutateAsync(values);
+      await addItemToCart.mutateAsync(values);
     } catch (e) {
       console.error('Error adding menu item to cart', e)
     } finally {

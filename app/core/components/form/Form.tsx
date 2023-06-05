@@ -10,8 +10,11 @@ import type { ZodError } from "zod";
 import Button from "../shared/Button";
 import Grid from "../shared/Grid";
 
+type SchemaType = (schema) => void;
+type SchemaPromiseType = (schema) => Promise<void>;
+type FormSchemaType = SchemaType | SchemaPromiseType;
 type FormMutationType = {
-  schema: (schema) => Promise<void>;
+  schema: FormSchemaType;
   toVariables: (object) => void;
 };
 

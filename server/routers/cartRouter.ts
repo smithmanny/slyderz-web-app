@@ -1,11 +1,12 @@
 import { TRPCError } from "@trpc/server";
 
-import { setCookie, getCookie } from "server/utils/cookieHelpers";
-import { router, publicProcedure } from "../trpc";
+import { setCookie, getCookieServer } from "server/utils/cookieHelpers";
+import { router, publicProcedure, protectedProcedure } from "../trpc";
 import {
-  AddMenuItemToCartType,
-  UpdateMenuItem,
-  DestroyMenuItem,
+  AddItemToCartType,
+  UpdateCartItem,
+  DestroyCartItem,
+  CreateCartType,
 } from "app/cart/validations";
 import type { CartItem } from "types";
 
@@ -13,12 +14,11 @@ const chefRouter = router({
   getUserCart: publicProcedure.query(async ({ ctx }) => {
     return ctx.session.cart;
   }),
-  addMenuItemToCart: publicProcedure
-    .input(AddMenuItemToCartType)
+  addItemToCart: publicProcedure
+    .input(AddItemToCartType)
     .mutation(async ({ ctx, input }) => {
       const { req, res } = ctx;
-      const cartCookie = getCookie("cart", { req, res });
-      const cart = JSON.parse(String(cartCookie));
+      const cart = getCookieServer("cart", { req, res });
 
       let sum = input.price * input.quantity;
       if (cart.items.length !== 0) {
@@ -31,13 +31,13 @@ const chefRouter = router({
       cart.items = [...cart.items, input];
 
       setCookie("cart", cart, { req, res });
-      // return utils.cart.invalidate()
+      return cart
     }),
-  decreaseMenuItemQuantity: publicProcedure
-    .input(UpdateMenuItem)
+  decreaseCartItemQuantity: publicProcedure
+    .input(UpdateCartItem)
     .mutation(async ({ ctx, input }) => {
       const { req, res } = ctx;
-      const cart = getCookie("cart", { req, res });
+      const cart = getCookieServer("cart", { req, res });
       const index = cart.items.findIndex((elem) => elem.id === input.id);
       const itemToUpdate = cart.items[index];
 
@@ -60,12 +60,14 @@ const chefRouter = router({
 
       cart.total = total;
       setCookie("cart", cart, { req, res });
+
+      return cart
     }),
-  increaseMenuItemQuantity: publicProcedure
-    .input(UpdateMenuItem)
+  increaseCartItemQuantity: publicProcedure
+    .input(UpdateCartItem)
     .mutation(async ({ ctx, input }) => {
       const { req, res } = ctx;
-      const cart = getCookie("cart", { req, res });
+      const cart = getCookieServer("cart", { req, res });
       const index = cart.items.findIndex((elem) => elem.id === input.id);
       const item = cart.items[index];
 
@@ -78,21 +80,35 @@ const chefRouter = router({
 
       item.quantity += input.quantity;
 
-      const total = cart.items.reduce((total, currentVal: CartItem) => {
+      const total = cart.items.reduce((total: number, currentVal: CartItem) => {
         return (total += currentVal.quantity * currentVal.price);
       }, 0);
 
       cart.total = total;
       setCookie("cart", cart, { req, res });
+
+      return cart
     }),
-  deleteMenuItem: publicProcedure
-    .input(DestroyMenuItem)
+  createCart: protectedProcedure
+    .input(CreateCartType)
     .mutation(async ({ ctx, input }) => {
       const { req, res } = ctx;
-      const cart = getCookie("cart", { req, res });
+      const cart = getCookieServer("cart", { req, res });
+
+      cart.eventDate = input.eventDate
+      cart.eventTime = input.eventTime
+      setCookie("cart", cart, { req, res });
+
+      return cart
+    }),
+  deleteCartItem: publicProcedure
+    .input(DestroyCartItem)
+    .mutation(async ({ ctx, input }) => {
+      const { req, res } = ctx;
+      const cart = getCookieServer("cart", { req, res });
 
       const updatedCartItems: Array<CartItem> = cart.items.filter(
-        (item) => item.id !== input
+        (item) => item.id !== input.cartItemId
       );
       const sum = updatedCartItems.reduce((total, currentVal: CartItem) => {
         return (total += currentVal.quantity * currentVal.price);
@@ -101,6 +117,8 @@ const chefRouter = router({
       cart.total = sum;
       cart.items = [...updatedCartItems];
       setCookie("cart", cart, { req, res });
+
+      return cart
     }),
 });
 

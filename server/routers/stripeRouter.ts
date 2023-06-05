@@ -17,7 +17,7 @@ const accountRouter = router({
 
       return setupIntent.client_secret;
     } catch (err) {
-      console.log(err.message);
+      console.log(err);
       throw new TRPCError({
         code: "BAD_REQUEST",
         message: "Error..Please try again",
@@ -53,7 +53,10 @@ const accountRouter = router({
       });
       return accountLink.url;
     } catch (err) {
-      throw new Error(err);
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Error..Please try again",
+      });
     }
   }),
 });

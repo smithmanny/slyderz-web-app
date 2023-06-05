@@ -9,9 +9,23 @@ import Grid from "app/core/components/shared/Grid";
 import Box from "app/core/components/shared/Box";
 
 const CartItems = ({ isCheckoutPage, selectedCartItems }) => {
-  const destroyMenuItem = trpc.cart.deleteMenuItem.useMutation()
-  const decreaseMenuItemQuantity = trpc.cart.decreaseMenuItemQuantity.useMutation()
-  const increaseMenuItemQuantity = trpc.cart.increaseMenuItemQuantity.useMutation()
+  const utils = trpc.useContext()
+
+  const destroyCartItem = trpc.cart.deleteCartItem.useMutation({
+    onSuccess: () => {
+      utils.cart.getUserCart.invalidate()
+    }
+  })
+  const decreaseMenuItemQuantity = trpc.cart.decreaseCartItemQuantity.useMutation({
+    onSuccess: () => {
+      utils.cart.getUserCart.invalidate()
+    }
+  })
+  const increaseMenuItemQuantity = trpc.cart.increaseCartItemQuantity.useMutation({
+    onSuccess: () => {
+      utils.cart.getUserCart.invalidate()
+    }
+  })
 
   return selectedCartItems.map((item) => (
     <span key={item.id}>
@@ -59,7 +73,7 @@ const CartItems = ({ isCheckoutPage, selectedCartItems }) => {
         <Button
           variant="text"
           size="small"
-          onClick={() => destroyMenuItem.mutate({ menuItemId: item.id })}
+          onClick={() => destroyCartItem.mutate({ cartItemId: item.id })}
         >
           Delete
         </Button>

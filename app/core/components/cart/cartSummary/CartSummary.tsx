@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useRef } from "react";
 import { useRouter } from "next/router";
-import { useFormState } from "react-final-form";
 import { useSnackbar } from "notistack";
 import type { DaysOfWeekTypeEnum } from "@prisma/client";
 
@@ -28,31 +27,36 @@ type CartSummaryType = {
 
 const CartSummary = (props: CartSummaryType) => {
   const { chefId, hours } = props;
-  const initalCartState: Cart = {
-    items: [],
-    total: 0,
-  };
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  const formState = useFormState();
   const { data } = trpc.cart.getUserCart.useQuery();
+  const createCart = trpc.cart.createCart.useMutation({
+    onSuccess: () => {
+      return router.push(`/chefs/${chefId}/checkout`);
+    },
+  });
+  const cart: Cart = {
+    items: data?.items || [],
+    total: data?.total || 0,
+  };
+
   const isCheckoutPage = router.asPath.includes("checkout");
 
   const time = useMemo(() => [...todAM, ...todPM], []);
-  const selectedEventDate: Date = formState.values?.eventDate;
-  const selectedDayOfWeek: number = selectedEventDate?.getDay();
+  const selectedEventDate = useRef<Date>(new Date());
+  const [selectedEventTime, setSelectedEventTime] = useState("");
+  const selectedDayOfWeek: number = selectedEventDate.current.getDay();
 
-  const [cart, setCart] = useState<Cart>(initalCartState);
   const cartItems = cart.items;
   const total = cart.total;
   const orderServiceFee: number = total * CONSUMER_SERVICE_FEE;
 
-  useEffect(() => {
-    setCart({
-      items: data?.items || [],
-      total: data?.total || 0,
-    });
-  }, [data]);
+  const handleEventDate = (date: Date) => {
+    selectedEventDate.current = date;
+  };
+  const handleEventTime = (event) => {
+    setSelectedEventTime(event.target.value);
+  };
 
   const disableDaysOff = useCallback(
     (date: Date) => {
@@ -79,8 +83,8 @@ const CartSummary = (props: CartSummaryType) => {
         (dayOfWeek) => convertDayToInt(dayOfWeek) === selectedDayOfWeek
       )
     );
-    const startTime = time.find((t) => t.key === selectedTime?.startTime);
-    const endTime = time.find((t) => t.key === selectedTime?.endTime);
+    const startTime = time.find((t) => t.label === selectedTime?.startTime);
+    const endTime = time.find((t) => t.label === selectedTime?.endTime);
 
     if (startTime && endTime) {
       const startTimeIndex = time.indexOf(startTime);
@@ -89,13 +93,19 @@ const CartSummary = (props: CartSummaryType) => {
 
       return availableTime;
     }
+
+    return [];
   }, [hours, time, selectedDayOfWeek]);
 
   const availableTime = getAvailableTime();
 
   return (
     <Box sx={{ p: 2 }}>
-      <Form>
+      <Form
+        initialValues={{
+          eventDate: selectedEventDate.current,
+        }}
+      >
         <Grid item>
           <Typography fontWeight="550" variant="h5">
             Your Reservation
@@ -109,8 +119,19 @@ const CartSummary = (props: CartSummaryType) => {
           views={["month", "day"]}
           inputVariant="outlined"
           shouldDisableDate={disableDaysOff}
+          onChange={handleEventDate}
         />
-        <Select name="eventTime" label="Time" items={availableTime} required />
+        <Select
+          name="eventTime"
+          label="Time"
+          items={availableTime?.map((time, index) => ({
+            label: time.label,
+            value: time.value,
+          }))}
+          required
+          onChange={handleEventTime}
+          value={selectedEventTime}
+        />
 
         {(cartItems?.length === 0 || cartItems === undefined) && (
           <Grid item xs={12}>
@@ -159,23 +180,19 @@ const CartSummary = (props: CartSummaryType) => {
                 e.stopPropagation();
 
                 try {
-                  // await createCart.mutateAsync({
-                  //   total: 0,
-                  //   eventDate: selectedEventDate,
-                  //   eventTime: formState.values?.eventTime,
-                  //   items: [],
-                  //   chefId,
-                  // });
-
-                  await router.push(`/chefs/${chefId}/checkout`);
+                  await createCart.mutateAsync({
+                    eventDate: String(selectedEventDate.current),
+                    eventTime: selectedEventTime,
+                    chefId,
+                  });
                 } catch (err) {
                   console.log("Failed to create cart", err);
-                  enqueueSnackbar(err.message, {
+                  enqueueSnackbar("Checkout failed", {
                     variant: "error",
                   });
                 }
               }}
-              disabled={!selectedEventDate || !formState.values?.eventTime}
+              disabled={!selectedEventDate.current || !selectedEventTime}
             >
               Checkout
             </Button>

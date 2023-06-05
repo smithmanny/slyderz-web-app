@@ -21,7 +21,7 @@ const NearbyChefs = (props) => {
           md={4}
           lg={2}
         >
-          <Link href={`chefs/${"cid"}`}>
+          <Link href={`/chefs/${chef.id}`}>
             <Card sx={{ maxWidth: 245, margin: "auto" }}>
               <CardMedia
                 image="/headshot.jpeg"
