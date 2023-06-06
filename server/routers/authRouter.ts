@@ -4,6 +4,7 @@ import { Contact, LibraryResponse } from "node-mailjet";
 import { LuciaTokenError } from "@lucia-auth/tokens";
 
 import { passwordResetToken } from "integrations/auth/lucia";
+import { emailVerificationToken } from "integrations/auth/lucia";
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 import { TRANSACTIONAL_EMAILS } from "types";
 import { mailjet, mailjetClient } from "app/utils/getMailjet";
@@ -93,28 +94,29 @@ const authRouter = router({
         // Add user to email list
         await createMailjetContact();
 
-        return user;
+        // Issue email_activation token
+        const token = await emailVerificationToken.issue(user.userId);
+
+        return {
+          userId: user.userId,
+          token,
+        };
       } catch (err) {
         console.log("User not created", err);
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Problem creating user.",
+          cause: err,
         });
       }
     };
 
-    const [user] = await Promise.all([
-      createUser(),
-      sendSesEmail({
-        to: "contact@slyderz.co",
-        type: TRANSACTIONAL_EMAILS.activation,
-      }),
-    ]).catch((err) => {
-      console.log(err);
-      throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Problem creating user.",
-      });
+    const user = await createUser();
+    const activationUrl = `http://localhost:3000/auth/email-verification/${user.token.toString()}`;
+    sendSesEmail({
+      to: "contact@slyderz.co",
+      type: TRANSACTIONAL_EMAILS.activation,
+      variables: { activationUrl },
     });
 
     const session = await ctx.auth.createSession(user.userId);
@@ -152,6 +154,7 @@ const authRouter = router({
       throw new TRPCError({
         code: "BAD_REQUEST",
         message: "Problem logging user in.",
+        cause: err,
       });
     }
   }),
@@ -219,6 +222,7 @@ const authRouter = router({
           throw new TRPCError({
             code: "UNAUTHORIZED",
             message: "Please try again",
+            cause: e,
           });
         }
       }
@@ -259,6 +263,7 @@ const authRouter = router({
         throw new TRPCError({
           code: "UNAUTHORIZED",
           message: "Wrong password",
+          cause: err,
         });
       }
     }),

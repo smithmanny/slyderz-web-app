@@ -21,6 +21,7 @@ const accountRouter = router({
       throw new TRPCError({
         code: "BAD_REQUEST",
         message: "Error..Please try again",
+        cause: err,
       });
     }
   }),
@@ -56,6 +57,7 @@ const accountRouter = router({
       throw new TRPCError({
         code: "BAD_REQUEST",
         message: "Error..Please try again",
+        cause: err,
       });
     }
   }),

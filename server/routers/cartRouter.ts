@@ -31,7 +31,7 @@ const chefRouter = router({
       cart.items = [...cart.items, input];
 
       setCookie("cart", cart, { req, res });
-      return cart
+      return cart;
     }),
   decreaseCartItemQuantity: publicProcedure
     .input(UpdateCartItem)
@@ -61,7 +61,7 @@ const chefRouter = router({
       cart.total = total;
       setCookie("cart", cart, { req, res });
 
-      return cart
+      return cart;
     }),
   increaseCartItemQuantity: publicProcedure
     .input(UpdateCartItem)
@@ -87,7 +87,7 @@ const chefRouter = router({
       cart.total = total;
       setCookie("cart", cart, { req, res });
 
-      return cart
+      return cart;
     }),
   createCart: protectedProcedure
     .input(CreateCartType)
@@ -95,11 +95,11 @@ const chefRouter = router({
       const { req, res } = ctx;
       const cart = getCookieServer("cart", { req, res });
 
-      cart.eventDate = input.eventDate
-      cart.eventTime = input.eventTime
+      cart.eventDate = input.eventDate;
+      cart.eventTime = input.eventTime;
       setCookie("cart", cart, { req, res });
 
-      return cart
+      return cart;
     }),
   deleteCartItem: publicProcedure
     .input(DestroyCartItem)
@@ -118,7 +118,7 @@ const chefRouter = router({
       cart.items = [...updatedCartItems];
       setCookie("cart", cart, { req, res });
 
-      return cart
+      return cart;
     }),
 });
 

@@ -8,9 +8,10 @@ import AddAddressModal from "app/core/modals/AddAddressModal";
 
 import { getCookieServer } from "server/utils/cookieHelpers";
 import { auth } from "integrations/auth/lucia";
+import { Cart } from "types";
 
 interface CheckoutTypes {
-  cart: any;
+  cart: Cart;
   cid: string;
   eventDate: Date;
   eventTime: string;
@@ -44,8 +45,8 @@ export const getServerSideProps = async function getServerSideProps(ctx) {
   };
 };
 
-const Checkout = (props: any) => {
-  const { cart, cid, userId }: CheckoutTypes = props;
+const Checkout = (props: CheckoutTypes) => {
+  const { cart, cid, userId } = props;
   const isCartEmpty = cart.items.length === 0 || cart.total === 0;
   const [showAddressModal, setShowAddressModal] = useState(false);
   const closeAddressModal = useCallback(() => setShowAddressModal(false), []);
@@ -53,7 +54,7 @@ const Checkout = (props: any) => {
 
   return (
     <ConsumerContainer>
-      {isCartEmpty ? (
+      {isCartEmpty || !cart.eventTime || !cart.eventDate ? (
         <CartEmpty />
       ) : (
         <React.Fragment>

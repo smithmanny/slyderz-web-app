@@ -70,7 +70,7 @@ async function sendSesEmail({ to, type, variables = {} }: SendSesEmailType) {
       const response = await SesClient.send(command);
 
       return response;
-    } catch (err) {
+    } catch (err: any) {
       console.log("Email template has errors", err);
       throw new Error("Can't send emails", err);
     }

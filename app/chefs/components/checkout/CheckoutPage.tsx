@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import ArrowBack from "@mui/icons-material/ArrowBack";
@@ -71,14 +71,6 @@ interface CheckoutPageTypes {
   openAddressModal: () => void;
 }
 
-interface LocationType {
-  address1: string;
-  address2: string;
-  state: string;
-  city: string;
-  zipcode: string;
-}
-
 const CheckoutPage = ({
   chefId,
   eventDate,
@@ -87,6 +79,9 @@ const CheckoutPage = ({
 }: CheckoutPageTypes) => {
   const router = useRouter();
   const [processing, setProcessing] = useState(false);
+  const [orderConfirmationNumber, setOrderConfirmationNumber] = useState("");
+  // const orderConfirmationNumber = useRef<string>("");
+
   const createOrder = trpc.checkout.createCheckout.useMutation();
   const stripePaymentMethods = useAppSelector(
     (state) => state.user.stripeCards
@@ -97,19 +92,31 @@ const CheckoutPage = ({
   const handleSubmit = async (values) => {
     const location: AddAddressType = values.selectedAddress;
     const orderBody = {
-      address: location,
-      eventDate,
+      address: {
+        address1: location.address1,
+        address2: location.address2,
+        state: location.state,
+        city: location.city,
+        zipcode: location.zipcode,
+      },
+      eventDate: new Date(eventDate),
       eventTime,
       paymentMethodId: values?.paymentMethod,
     };
-    // TODO: Throw error
+
     if (!values.paymentMethod) throw new Error("Select payment method");
 
     setProcessing(true);
-    const fufilledOrder = await createOrder.mutateAsync(orderBody);
+    try {
+      const confirmationNumber = await createOrder.mutateAsync(orderBody);
 
-    if (fufilledOrder && fufilledOrder.confirmationNumber) {
-      return router.push(`/orders/${fufilledOrder.confirmationNumber}/new`);
+      if (confirmationNumber) {
+        return router.push(`/orders/${orderConfirmationNumber}/new`);
+      }
+    } catch (err) {
+      console.log("Cart failed", err);
+    } finally {
+      setProcessing(false);
     }
   };
 

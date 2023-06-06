@@ -2,7 +2,7 @@ import * as z from "zod";
 
 export const CreateCartType = z.object({
   chefId: z.string(),
-  eventDate: z.string(),
+  eventDate: z.date(),
   eventTime: z.string(),
 });
 

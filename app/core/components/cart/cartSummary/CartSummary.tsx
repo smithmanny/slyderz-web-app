@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useRef } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import type { DaysOfWeekTypeEnum } from "@prisma/client";
@@ -43,16 +43,15 @@ const CartSummary = (props: CartSummaryType) => {
   const isCheckoutPage = router.asPath.includes("checkout");
 
   const time = useMemo(() => [...todAM, ...todPM], []);
-  const selectedEventDate = useRef<Date>(new Date());
+  const [selectedEventDate, setSelectedEventDate] = useState<Date>(new Date());
   const [selectedEventTime, setSelectedEventTime] = useState("");
-  const selectedDayOfWeek: number = selectedEventDate.current.getDay();
 
   const cartItems = cart.items;
   const total = cart.total;
   const orderServiceFee: number = total * CONSUMER_SERVICE_FEE;
 
   const handleEventDate = (date: Date) => {
-    selectedEventDate.current = date;
+    setSelectedEventDate(date);
   };
   const handleEventTime = (event) => {
     setSelectedEventTime(event.target.value);
@@ -78,6 +77,7 @@ const CartSummary = (props: CartSummaryType) => {
   );
 
   const getAvailableTime = useCallback(() => {
+    const selectedDayOfWeek: number = selectedEventDate.getDay();
     const selectedTime = hours.find((hourBlock) =>
       hourBlock.daysOfWeek.find(
         (dayOfWeek) => convertDayToInt(dayOfWeek) === selectedDayOfWeek
@@ -95,7 +95,7 @@ const CartSummary = (props: CartSummaryType) => {
     }
 
     return [];
-  }, [hours, time, selectedDayOfWeek]);
+  }, [hours, time, selectedEventDate]);
 
   const availableTime = getAvailableTime();
 
@@ -103,7 +103,7 @@ const CartSummary = (props: CartSummaryType) => {
     <Box sx={{ p: 2 }}>
       <Form
         initialValues={{
-          eventDate: selectedEventDate.current,
+          eventDate: selectedEventDate,
         }}
       >
         <Grid item>
@@ -181,7 +181,7 @@ const CartSummary = (props: CartSummaryType) => {
 
                 try {
                   await createCart.mutateAsync({
-                    eventDate: String(selectedEventDate.current),
+                    eventDate: selectedEventDate,
                     eventTime: selectedEventTime,
                     chefId,
                   });
@@ -192,7 +192,7 @@ const CartSummary = (props: CartSummaryType) => {
                   });
                 }
               }}
-              disabled={!selectedEventDate.current || !selectedEventTime}
+              disabled={!selectedEventDate || !selectedEventTime}
             >
               Checkout
             </Button>

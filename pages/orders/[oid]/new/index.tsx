@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 
 import completedOrderIcon from "public/completed-order.svg";
-import createContext from "server/utils/createContext";
+import { auth } from "integrations/auth/lucia";
 
 import Box from "app/core/components/shared/Box";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
@@ -11,11 +11,12 @@ import Typography from "app/core/components/shared/Typography";
 import Layout from "app/core/layouts/Layout";
 
 export const getServerSideProps = async function getServerSideProps({
-  ctx,
+  req,
+  res,
   params,
 }) {
-  const context = await createContext(ctx);
-  const session = context.session;
+  const authRequest = auth.handleRequest({ req, res });
+  const { session } = await authRequest.validateUser();
 
   if (!params?.oid) {
     return {
@@ -26,7 +27,7 @@ export const getServerSideProps = async function getServerSideProps({
     };
   }
 
-  if (!session.userId) {
+  if (!session) {
     return {
       redirect: {
         destination: "/",

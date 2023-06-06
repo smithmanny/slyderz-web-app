@@ -33,6 +33,7 @@ const dashboardRouter = router({
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Section not created",
+          cause: err,
         });
       }
     }),
@@ -199,6 +200,7 @@ const dashboardRouter = router({
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Dish not updated",
+          cause: err,
         });
       }
     }),
@@ -218,6 +220,7 @@ const dashboardRouter = router({
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Dish not destroyed",
+          cause: err,
         });
       }
     }),

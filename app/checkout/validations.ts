@@ -8,7 +8,7 @@ export const CreateCartType = z.object({
   // })),
   address: z.object({
     address1: z.string(),
-    address2: z.string().optional(),
+    address2: z.string().optional().nullable(),
     city: z.string(),
     state: z.string(),
     zipcode: z.string(),

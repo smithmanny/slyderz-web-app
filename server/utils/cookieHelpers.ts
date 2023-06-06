@@ -32,7 +32,10 @@ export function setCookie(
   });
 }
 
-export function getCookieServer(key: string, { req, res }: GetCookieOptionType): Cart {
+export function getCookieServer(
+  key: string,
+  { req, res }: GetCookieOptionType
+): Cart {
   const cookie = getSlyderzCookie(key, { req, res });
   const parsedCookie = JSON.parse(String(cookie));
 

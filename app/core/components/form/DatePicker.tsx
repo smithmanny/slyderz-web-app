@@ -17,11 +17,6 @@ const DatePicker: FunctionComponent<any> = (props) => {
           required={props.required}
           desktopModeMediaQuery="@media (min-width: 2000px)"
           closeOnSelect
-          sx={{
-            "& .MuiFormControl-ui": {
-              width: "100%",
-            },
-          }}
           {...props}
         />
       </LocalizationProvider>

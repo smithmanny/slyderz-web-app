@@ -15,12 +15,16 @@ export const auth = lucia({
       userId: userData.id,
       stripeCustomerId: userData.stripeCustomerId,
       email: userData.email,
+      emailVerified: userData.emailVerified,
       name: userData.name,
     };
   },
 });
 
-export const passwordResetToken = idToken(auth, "password-reset", {
+export const passwordResetToken = idToken(auth, "password_reset", {
+  expiresIn: 60 * 60, // 1 hour
+});
+export const emailVerificationToken = idToken(auth, "email_verification", {
   expiresIn: 60 * 60, // 1 hour
 });
 

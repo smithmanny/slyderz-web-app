@@ -18,7 +18,7 @@ const checkoutRouter = router({
     .input(CreateCartType)
     .mutation(async ({ ctx, input }) => {
       const { address, eventDate, eventTime, paymentMethodId } = input;
-      let order;
+      let confirmationNumber = "" as string;
 
       await ctx.prisma.$transaction(async (db) => {
         if (!ctx.session.cart || ctx.session.cart.items.length === 0) {
@@ -39,17 +39,17 @@ const checkoutRouter = router({
         }
 
         // Create order
-        const confirmationNumber = `SLY-${randomstring.generate({
+        const orderConfirmationNumber = `SLY-${randomstring.generate({
           charset: "alphanumeric",
           capitalization: "uppercase",
           length: 7,
         })}`;
 
-        order = await db.order.create({
+        const order = await db.order.create({
           data: {
             amount: Number(ctx.session.cart?.total),
             chefId: ctx.session.cart.items[0].chefId,
-            confirmationNumber,
+            confirmationNumber: orderConfirmationNumber,
             address1: address.address1,
             address2: address.address2,
             state: address.state,
@@ -61,7 +61,6 @@ const checkoutRouter = router({
               createMany: {
                 data: ctx.session.cart.items.map((item) => ({
                   dishId: item.dishId,
-                  chefId: item.chefId,
                   quantity: item.quantity,
                 })),
               },
@@ -105,7 +104,7 @@ const checkoutRouter = router({
           const chefServiceFee = order.amount * CHEF_SERVICE_FEE;
           const address = `${order.address1} ${order.city}, ${order.state} ${order.zipcode}`;
           const customerEmailParams = {
-            to: "contact@slyderz.co", //TODO: swap out with customer email
+            to: order.user.email,
             type: TRANSACTIONAL_EMAILS.newOrderConsumer,
             variables: {
               orderNumber: order.confirmationNumber,
@@ -119,7 +118,7 @@ const checkoutRouter = router({
             },
           };
           const chefEmailParams = {
-            to: "contact@slyderz.co", //TODO: swap out with chef email
+            to: order.chef.user.email, //TODO: swap out with chef email
             type: TRANSACTIONAL_EMAILS.newOrderChef,
             variables: {
               orderApproveUrl: acceptUrl,
@@ -148,11 +147,14 @@ const checkoutRouter = router({
             items: [],
             total: 0,
           };
+
           setCookie("cart", initialUserCart, { req: ctx.req, res: ctx.res });
+
+          confirmationNumber = order.confirmationNumber;
         }
       });
 
-      return order;
+      return confirmationNumber;
     }),
 });
 

@@ -71,6 +71,7 @@ const chefRouter = router({
       throw new TRPCError({
         code: "BAD_REQUEST",
         message: "Chef not created",
+        cause: err,
       });
     }
   }),
@@ -116,6 +117,7 @@ const chefRouter = router({
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "Chef not found",
+          cause: err,
         });
       }
     }),

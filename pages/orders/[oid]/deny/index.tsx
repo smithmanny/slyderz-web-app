@@ -84,7 +84,7 @@ export const getServerSideProps = async function getServerSideProps({
 
   return {
     props: {
-      order,
+      order: JSON.stringify(order),
     },
   };
 };

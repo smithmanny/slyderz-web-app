@@ -35,10 +35,7 @@ const OrderItems = (props) => {
           }}
         >
           <Typography>{item.dish.name}</Typography>
-          {/* TODO: Fix rendering dish price */}
-          {/* <Typography>
-            ${item.quantity * item.dish.price}
-          </Typography> */}
+          <Typography>${item.quantity * item.dish.price}</Typography>
         </Box>
       ))}
     </Box>
