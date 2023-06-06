@@ -14,7 +14,7 @@ type LoginFormProps = {
   onSuccess?: () => void;
 };
 
-export const LoginForm = (props: LoginFormProps) => {
+const LoginForm = (props: LoginFormProps) => {
   const dispatch = useAppDispatch();
   const login = trpc.auth.login.useMutation({
     onSuccess: () => {

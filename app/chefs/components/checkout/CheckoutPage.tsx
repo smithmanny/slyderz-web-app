@@ -111,7 +111,7 @@ const CheckoutPage = ({
       const confirmationNumber = await createOrder.mutateAsync(orderBody);
 
       if (confirmationNumber) {
-        return router.push(`/orders/${orderConfirmationNumber}/new`);
+        return router.push(`/orders/${confirmationNumber}/new`);
       }
     } catch (err) {
       console.log("Cart failed", err);

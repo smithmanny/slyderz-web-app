@@ -185,9 +185,9 @@ const CartSummary = (props: CartSummaryType) => {
                     eventTime: selectedEventTime,
                     chefId,
                   });
-                } catch (err) {
-                  console.log("Failed to create cart", err);
-                  enqueueSnackbar("Checkout failed", {
+                } catch (err: any) {
+                  console.log("Failed to create cart", err.message);
+                  enqueueSnackbar(err.message, {
                     variant: "error",
                   });
                 }

@@ -17,6 +17,9 @@ const DatePicker: FunctionComponent<any> = (props) => {
           required={props.required}
           desktopModeMediaQuery="@media (min-width: 2000px)"
           closeOnSelect
+          sx={{
+            width: "100%",
+          }}
           {...props}
         />
       </LocalizationProvider>
