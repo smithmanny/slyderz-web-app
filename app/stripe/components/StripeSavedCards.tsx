@@ -16,6 +16,7 @@ function StripeSavedCards(props: StripeSavedCardsType) {
   const router = useRouter();
   const deletePaymentMethod = trpc.account.deletePaymentMethod.useMutation({
     onSuccess: () => {
+      // TODO: update redux instead
       return router.reload();
     },
   });
@@ -43,7 +44,9 @@ function StripeSavedCards(props: StripeSavedCardsType) {
               label="delete"
               variant="text"
               onClick={async () =>
-                await deletePaymentMethod.mutateAsync(stripePaymentMethod.id)
+                await deletePaymentMethod.mutateAsync({
+                  paymentMethodId: stripePaymentMethod.id,
+                })
               }
             >
               Delete

@@ -82,7 +82,8 @@ const userRouter = router({
       address = _address;
       checkUserChefStatus = _checkUserChefStatus;
       userId = session.userId;
-      (email = session.user.email), (name = session.user.name);
+      email = session.user.email;
+      name = session.user.name;
     }
 
     return {

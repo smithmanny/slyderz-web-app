@@ -11,6 +11,7 @@ const chefRouter = router({
           user: {
             select: {
               name: true,
+              image: true,
             },
           },
         },

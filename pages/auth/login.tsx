@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 
 import Layout from "app/core/layouts/Layout";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
-import { LoginForm } from "app/auth/components/LoginForm";
+import LoginForm from "app/auth/components/LoginForm";
 
 const LoginPage = () => {
   const router = useRouter();

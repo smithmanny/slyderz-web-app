@@ -118,7 +118,7 @@ const checkoutRouter = router({
             },
           };
           const chefEmailParams = {
-            to: order.chef.user.email, //TODO: swap out with chef email
+            to: order.chef.user.email,
             type: TRANSACTIONAL_EMAILS.newOrderChef,
             variables: {
               orderApproveUrl: acceptUrl,

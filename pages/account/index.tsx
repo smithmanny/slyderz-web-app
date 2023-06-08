@@ -13,6 +13,7 @@ import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
 import Form, { TextField } from "app/core/components/form";
+import UploadImage from "app/core/components/shared/UploadImage";
 
 const DynamicStripeCardElement = dynamic(
   () => import("app/stripe/components/StripeCardElement"),
@@ -66,6 +67,18 @@ const Account = (props) => {
         <Typography variant="h2" align="center">
           Your Account
         </Typography>
+        <Grid container>
+          <Grid item xs={12}>
+            <Typography variant="h6" sx={{ mt: 6 }}>
+              <strong>Profile Picture</strong>
+            </Typography>
+          </Grid>
+
+          <Grid item xs={12}>
+            <UploadImage />
+          </Grid>
+        </Grid>
+
         <Form
           submitText="Update Password"
           schema={UpdatePassword}

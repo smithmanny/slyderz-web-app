@@ -1,10 +1,10 @@
 import { TRPCError } from "@trpc/server";
-import { z } from "zod";
 
 import getCloudinary from "app/utils/getCloudinary";
 import { router, protectedProcedure } from "../trpc";
 import {
   DeleteStripePaymentMethod,
+  CreateImageType,
   DestroyImageType,
   AddUserAddressType,
 } from "app/account/validations";
@@ -15,7 +15,7 @@ const accountRouter = router({
   deletePaymentMethod: protectedProcedure
     .input(DeleteStripePaymentMethod)
     .mutation(async (opts) => {
-      const stripePaymentId = opts.input;
+      const stripePaymentId = opts.input.paymentMethodId;
 
       if (!stripePaymentId) {
         throw new TRPCError({
@@ -29,7 +29,7 @@ const accountRouter = router({
           stripePaymentId
         );
         return paymentMethod;
-      } catch (err) {
+      } catch (err: any) {
         console.log(err.message);
         throw new TRPCError({
           code: "BAD_REQUEST",
@@ -42,7 +42,7 @@ const accountRouter = router({
 
     try {
       return await opts.ctx.auth.deleteUser(userId);
-    } catch (err) {
+    } catch (err: any) {
       console.log("Account not deleted", err.mesage);
       throw new TRPCError({
         code: "UNAUTHORIZED",
@@ -50,6 +50,50 @@ const accountRouter = router({
       });
     }
   }),
+  fetchAccountPicture: protectedProcedure.query(async (opts) => {
+    const userId = opts.ctx.session.userId;
+    const ctx = opts.ctx;
+
+    try {
+      const user = await ctx.prisma.authUser.findFirstOrThrow({
+        where: {
+          id: userId,
+        },
+        select: {
+          image: true,
+          imagePublicId: true,
+        },
+      });
+
+      if (!user.image || !user.imagePublicId) {
+        return null;
+      }
+
+      return {
+        image: user.image,
+        imagePublicId: user.imagePublicId,
+      };
+    } catch (err: any) {
+      console.log("Account not deleted", err.mesage);
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: "Error deleting account",
+      });
+    }
+  }),
+  setAccountPicture: protectedProcedure
+    .input(CreateImageType)
+    .mutation(async ({ input, ctx }) => {
+      try {
+        await ctx.auth.updateUserAttributes(ctx.session.userId, {
+          image: input.image,
+          imagePublicId: input.publicId,
+        });
+      } catch (err: any) {
+        console.log("Error deleting cloudinary image", err.message);
+        throw new Error("Error deleting cloudinary image");
+      }
+    }),
   deleteAccountPicture: protectedProcedure
     .input(DestroyImageType)
     .mutation(async ({ input, ctx }) => {
@@ -58,8 +102,8 @@ const accountRouter = router({
           image: null,
           imagePublicId: null,
         });
-        await cloudinary.uploader.destroy(input);
-      } catch (err) {
+        await cloudinary.uploader.destroy(input.publicId);
+      } catch (err: any) {
         console.log("Error deleting cloudinary image", err.message);
         throw new Error("Error deleting cloudinary image");
       }

@@ -24,7 +24,7 @@ const NearbyChefs = (props) => {
           <Link href={`/chefs/${chef.id}`}>
             <Card sx={{ maxWidth: 245, margin: "auto" }}>
               <CardMedia
-                image="/headshot.jpeg"
+                image="/no-profile-pic.svg"
                 title="Chef dish"
                 sx={{
                   borderRadius: "50%",
