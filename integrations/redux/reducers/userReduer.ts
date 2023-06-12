@@ -13,7 +13,7 @@ export interface StripePaymentType {
 
 export type AddAddressType = {
   address1: string;
-  address2?: string | undefined;
+  address2?: string | null;
   city: string;
   state: string;
   zipcode: string;
@@ -38,7 +38,7 @@ export type ChefType = {
 interface InitialStateType {
   loading: boolean;
   userId: string;
-  email: string;
+  email: { emailAddress: string, isVerified: boolean};
   name: string;
   address: AddAddressType;
   stripeCards: Array<StripePaymentType>;
@@ -48,7 +48,7 @@ interface InitialStateType {
 type FetchUserDataType = {
   paymentMethods: Array<StripePaymentType>;
   address: AddAddressType;
-  email: string;
+  email: { emailAddress: string, isVerified: boolean};
   name: string;
   chefStatus: {
     isChef: boolean;
@@ -68,7 +68,10 @@ const initialState: InitialStateType = {
     state: "",
     zipcode: "",
   },
-  email: "",
+  email: {
+    emailAddress: "",
+    isVerified: false,
+  },
   name: "",
   stripeCards: [],
   chef: {
@@ -113,7 +116,8 @@ const userSlice = createSlice({
         state.stripeCards = action.payload.paymentMethods;
         state.address = action.payload.address;
         state.userId = action.payload.userId;
-        state.email = action.payload.email;
+        state.email.emailAddress = action.payload.email.emailAddress;
+        state.email.isVerified = action.payload.email.isVerified;
         state.name = action.payload.name;
 
         if (action.payload.chefStatus.isChef) {

@@ -4,7 +4,7 @@
     {
       "parser": "@typescript-eslint/parser",
       "files": ["*.ts", "*.tsx"],
-      "plugins": ["@typescript-eslint", "prettier"],
+      "plugins": ["@typescript-eslint"],
       "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
@@ -12,8 +12,7 @@
         "prettier"
       ],
       "rules": {
-        "prefer-const": "error",
-        "prettier/prettier": "error"
+        "prefer-const": "error"
       }
       // "parserOptions": {
       //     "project": "./tsconfig.json"

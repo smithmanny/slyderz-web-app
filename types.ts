@@ -51,7 +51,7 @@ type TranactionalEmailTypes =
   | "ORDER-APPROVED"
   | "ORDER-DENIED"
   | "ORDER-CONFIRMED"
-  | "RESET-PASSWORD"
+  | "PASSWORD-RESET"
   | "FORGOT-PASSWORD";
 interface TransactionalEmailInterface {
   activation: TranactionalEmailTypes;
@@ -59,7 +59,7 @@ interface TransactionalEmailInterface {
   newOrderChef: TranactionalEmailTypes;
   denyOrder: TranactionalEmailTypes;
   confirmOrder: TranactionalEmailTypes;
-  resetPassword: TranactionalEmailTypes;
+  passwordReset: TranactionalEmailTypes;
   forgotPassword: TranactionalEmailTypes;
 }
 export const TRANSACTIONAL_EMAILS: TransactionalEmailInterface = {
@@ -68,7 +68,7 @@ export const TRANSACTIONAL_EMAILS: TransactionalEmailInterface = {
   newOrderChef: "NEW-ORDER-CHEF",
   denyOrder: "ORDER-DENIED",
   confirmOrder: "ORDER-CONFIRMED",
-  resetPassword: "RESET-PASSWORD",
+  passwordReset: "PASSWORD-RESET",
   forgotPassword: "FORGOT-PASSWORD",
 };
 

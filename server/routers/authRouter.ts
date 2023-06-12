@@ -158,14 +158,43 @@ const authRouter = router({
       });
     }
   }),
-  sendPasswordResetLink: publicProcedure
+  sendConfirmEmailLink: protectedProcedure
     .input(
       z.object({
         email: z.string(),
       })
     )
     .mutation(async (opts) => {
-      const dbUser = opts.ctx.prisma.authUser.findFirst({
+      const dbUser = await opts.ctx.prisma.authUser.findFirst({
+        where: {
+          email: opts.input.email,
+        },
+      });
+
+      if (!dbUser || dbUser.emailVerified) {
+        return await new Promise((resolve) => setTimeout(resolve, 750));
+      }
+
+      const user = opts.ctx.auth.transformDatabaseUser(dbUser);
+      const token = await emailVerificationToken.issue(user.userId);
+
+      const activationUrl = `http://localhost:3000/auth/email-verification/${token.toString()}`;
+      sendSesEmail({
+        to: user.email,
+        type: TRANSACTIONAL_EMAILS.activation,
+        variables: { activationUrl },
+      });
+
+      return;
+    }),
+  sendPasswordResetLink: protectedProcedure
+    .input(
+      z.object({
+        email: z.string(),
+      })
+    )
+    .mutation(async (opts) => {
+      const dbUser = await opts.ctx.prisma.authUser.findFirst({
         where: {
           email: opts.input.email,
         },
@@ -182,7 +211,7 @@ const authRouter = router({
         to: user.email,
         type: TRANSACTIONAL_EMAILS.forgotPassword,
         variables: {
-          resetPasswordUrl: `${process.env.NEXT_PUBLIC_URL}/auth/reset-password?token=${token}`,
+          resetPasswordUrl: `${process.env.NEXT_PUBLIC_URL}/auth/reset-password?token=${token.toString()}`,
         },
       });
 
@@ -213,6 +242,11 @@ const authRouter = router({
         // update key
         const session = await opts.ctx.auth.createSession(user.userId);
         authRequest.setSession(session);
+
+        await sendSesEmail({
+          to: user.email,
+          type: TRANSACTIONAL_EMAILS.passwordReset,
+        });
       } catch (e) {
         console.log("Error resetting password", e);
         if (e instanceof LuciaTokenError && e.message === "EXPIRED_TOKEN") {
@@ -226,16 +260,6 @@ const authRouter = router({
           });
         }
       }
-      // TODO
-      // await sendSesEmail({
-      //   to: user.email,
-      //   type: TRANSACTIONAL_EMAILS.forgotPassword,
-      //   variables: {
-      //     resetPasswordUrl: `${process.env.NEXT_PUBLIC_URL}/auth/reset-password?token=${token}`,
-      //   },
-      // });
-
-      return;
     }),
   updatePassword: protectedProcedure
     .input(

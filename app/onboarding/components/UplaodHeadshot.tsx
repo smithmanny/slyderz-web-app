@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { CldUploadWidget, CldImage } from "next-cloudinary";
 
 import { trpc } from "server/utils/trpc";
@@ -13,7 +13,6 @@ type CloudinaryImageType = {
 };
 interface UploadHeadshotPreviewType {
   cloudinaryImage: CloudinaryImageType;
-  setCloudinaryImage: (arg0: null) => void;
 }
 
 function UploadHeadshotPreview(props: UploadHeadshotPreviewType) {
@@ -27,12 +26,14 @@ function UploadHeadshotPreview(props: UploadHeadshotPreviewType) {
       },
     });
   const destroyAccountImage = trpc.account.deleteAccountPicture.useMutation({
-    onSuccess: () => props.setCloudinaryImage(null),
+    onSuccess: async () => {
+      await utils.account.fetchAccountPicture.invalidate();
+    },
     onError: (err) => console.log(err),
   });
 
   const handleUploadingHeadshot = async () => {
-    await completeOnboardingHeadshot.mutateAsync({ image, imagePublicId });
+    await completeOnboardingHeadshot.mutateAsync();
   };
 
   const handleDestroyingImage = async () => {
@@ -42,8 +43,8 @@ function UploadHeadshotPreview(props: UploadHeadshotPreviewType) {
     <>
       <div>
         <CldImage
-          width="320"
-          height="320"
+          width="150"
+          height="150"
           src={image}
           sizes="100vw"
           alt="chef headshot"
@@ -75,14 +76,19 @@ interface UploadHeadshotType {
   description?: string;
 }
 function UploadHeadshot(props: UploadHeadshotType) {
-  const [cloudinaryImage, setCloudinaryImage] =
-    useState<CloudinaryImageType | null>(null);
+  const utils = trpc.useContext();
 
-  return cloudinaryImage ? (
-    <UploadHeadshotPreview
-      cloudinaryImage={cloudinaryImage}
-      setCloudinaryImage={setCloudinaryImage}
-    />
+  const invalidatePictureQuery = async () => {
+    await utils.account.fetchAccountPicture.invalidate();
+  };
+
+  const fetchProfileImage = trpc.account.fetchAccountPicture.useQuery();
+  const setAccountPicture = trpc.account.setAccountPicture.useMutation({
+    onSuccess: invalidatePictureQuery,
+  });
+
+  return fetchProfileImage.data ? (
+    <UploadHeadshotPreview cloudinaryImage={fetchProfileImage.data} />
   ) : (
     <>
       <Typography>{props.description}</Typography>
@@ -90,10 +96,9 @@ function UploadHeadshot(props: UploadHeadshotType) {
         uploadPreset="chef_profile_pic"
         onError={(err) => console.log("ERROR uploading headshot", err)}
         onUpload={(res) => {
-          console.log(res);
-          setCloudinaryImage({
-            image: res?.info.secure_url,
-            imagePublicId: res?.info.public_id,
+          setAccountPicture.mutateAsync({
+            image: res.info.secure_url,
+            publicId: res.info.public_id,
           });
         }}
         options={{

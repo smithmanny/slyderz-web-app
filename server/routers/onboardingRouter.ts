@@ -1,31 +1,24 @@
-import { router, protectedProcedure } from "../trpc";
+import { router, protectedProcedure, chefProcedure } from "../trpc";
 
 import { UploadHeadshotUrl } from "app/onboarding/validations";
 
 const chefRouter = router({
-  completeOnboardingHeadshot: protectedProcedure
-    .input(UploadHeadshotUrl)
+  completeOnboardingHeadshot: chefProcedure
     .mutation(async ({ ctx, input }) => {
       try {
-        await ctx.prisma.authUser.update({
-          where: { id: ctx.session.userId },
-          data: {
-            image: input.image,
-            imagePublicId: input.imagePublicId,
-            chef: {
-              update: {
-                onboardingState: "COMPLETE_SERVSAFE",
-              },
-            },
+        await ctx.prisma.chef.update({
+          where: {
+            id: ctx.chef.id
           },
-        });
-
-        return;
+          data: {
+            onboardingState: "COMPLETE_SERVSAFE",
+          }
+        })
       } catch (err) {
         console.log(err);
       }
     }),
-  fetchOnboardingState: protectedProcedure.query(async ({ ctx }) => {
+  fetchOnboardingState: chefProcedure.query(async ({ ctx }) => {
     const chef = await ctx.prisma.chef.findFirstOrThrow({
       where: {
         userId: ctx.session.userId,

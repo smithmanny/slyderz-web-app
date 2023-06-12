@@ -1,4 +1,4 @@
-<mj-wrapper>
+<mj-wrapper background-color="#ffffff">
   <mj-section>
     <mj-column>
       <mj-text font-size="18px" font-weight="bold">
@@ -8,6 +8,22 @@
       <mj-text font-weight="bold">Date: {{= it.orderDate }}</mj-text>
       <mj-text font-weight="bold">Time: {{= it.orderTime }}</mj-text>
       <mj-text font-weight="bold">Location: {{= it.orderLocation }}</mj-text>
+
+      {{ console.log("ORDER_ITEMS", it.orderItems) }}
+      <mj-table>
+          <tr style="border-bottom:1px solid #ecedee;text-align:left;padding:15px 0;">
+            <th style="padding: 0 15px 0 0;">Item</th>
+            <th style="padding: 0 15px;">Quantity</th>
+            <th style="padding: 0 0 0 15px;">Price</th>
+          </tr>
+
+          {{ it.orderItems.forEach(function(item) { }}
+            <tr>
+                <td style="padding: 0 15px 0 0;">{{= item.name }}</td>
+                <td style="padding: 0 15px;">x{{= item.quantity }}</td>
+                <td style="padding: 0 0 0 15px;">{{= item.price * item.quantity }}
+          {{ }) }}
+        </mj-table>
     </mj-column>
   </mj-section>
 

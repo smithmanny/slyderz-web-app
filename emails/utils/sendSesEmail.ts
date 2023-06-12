@@ -37,6 +37,10 @@ async function sendSesEmail({ to, type, variables = {} }: SendSesEmailType) {
       emailTemplate = "./emails/transactional/views/forgot-password.eta.mjml";
       subject = "Reset your Slyderz password";
       break;
+    case TRANSACTIONAL_EMAILS.passwordReset:
+      emailTemplate = "./emails/transactional/views/password-changed.eta.mjml";
+      subject = "Your password has been changed";
+      break;
     default:
       throw new Error("Can't send email");
   }

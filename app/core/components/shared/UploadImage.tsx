@@ -1,51 +1,58 @@
-import React, { useState } from "react";
-import { CldUploadWidget, CldImage } from "next-cloudinary";
+import React, { ReactElement } from "react";
+import {
+  CldUploadWidget,
+  CldImage,
+  CldUploadWidgetProps,
+} from "next-cloudinary";
 import Image from "next/image";
+import { useSnackbar } from "notistack";
 
 import { trpc } from "server/utils/trpc";
 
 import Button from "app/core/components/shared/Button";
 import IconButton from "app/core/components/shared/IconButton";
 import Stack from "app/core/components/shared/Stack";
-import Typography from "app/core/components/shared/Typography";
 
 type CloudinaryImageType = {
   image: string;
   imagePublicId: string;
 };
-interface UploadHeadshotPreviewType {
+interface UploadedImagePreviewType {
   cloudinaryImage: CloudinaryImageType;
-  invalidateCache: () => Promise<void>;
+  invalidateCacheOnDestroy: () => Promise<void>;
+  snackbar: (err: string, object: object) => void;
 }
 
-function UploadHeadshotPreview(props: UploadHeadshotPreviewType) {
+function UploadedImagePreview(props: UploadedImagePreviewType) {
   const { image, imagePublicId } = props.cloudinaryImage;
 
   const destroyAccountImage = trpc.account.deleteAccountPicture.useMutation({
-    onSuccess: async () => {
-      await props.invalidateCache();
+    onSuccess: props.invalidateCacheOnDestroy,
+    onError: (err) => {
+      console.log(err);
+      props.snackbar("Image not deleted. Please try again", {
+        variant: "error",
+      });
     },
-    onError: (err) => console.log(err),
   });
 
   const handleDestroyingImage = async () => {
     await destroyAccountImage.mutateAsync({ publicId: imagePublicId });
   };
+
   return (
     <>
-      <div>
-        <CldImage
-          width="150"
-          height="150"
-          src={image}
-          sizes="100vw"
-          alt="chef headshot"
-          priority
-        />
-      </div>
+      <CldImage
+        width="150"
+        height="150"
+        src={image}
+        sizes="100vw"
+        alt="chef headshot"
+        priority
+      />
       <Stack direction="row">
         <Button
-          label="continue onboarding"
+          label="delete profile picture"
           variant="outlined"
           onClick={handleDestroyingImage}
           sx={{ mt: 1, mr: 1 }}
@@ -57,45 +64,46 @@ function UploadHeadshotPreview(props: UploadHeadshotPreviewType) {
   );
 }
 
-interface UploadHeadshotType {
-  image?: string;
+interface UploadImageProps extends CldUploadWidgetProps {
+  image: CloudinaryImageType | null | undefined;
+  invalidateCacheOnDestroy: () => Promise<void>;
+  onUpload: (res) => Promise<void>;
+  previewComponent?: ReactElement;
 }
-function UploadImage(props: UploadHeadshotType) {
-  const utils = trpc.useContext();
 
-  const invalidatePictureQuery = async () => {
-    return await utils.account.fetchAccountPicture.invalidate();
-  };
+function UploadImage(props: UploadImageProps) {
+  const { enqueueSnackbar } = useSnackbar();
 
-  const fetchProfileImage = trpc.account.fetchAccountPicture.useQuery();
-  const setAccountPicture = trpc.account.setAccountPicture.useMutation({
-    onSuccess: invalidatePictureQuery,
-  });
-
-  return fetchProfileImage.data ? (
-    <UploadHeadshotPreview
-      cloudinaryImage={fetchProfileImage.data}
-      invalidateCache={invalidatePictureQuery}
-    />
+  // TODO: Show spinner for loading state
+  return props.image ? (
+    props.previewComponent ? (
+      props.previewComponent
+    ) : (
+      <UploadedImagePreview
+        cloudinaryImage={props.image}
+        invalidateCacheOnDestroy={props.invalidateCacheOnDestroy}
+        snackbar={enqueueSnackbar}
+      />
+    )
   ) : (
     <>
       <CldUploadWidget
         uploadPreset="chef_profile_pic"
-        onError={(err) => console.log("ERROR uploading profile picture", err)}
-        onUpload={async (res) => {
-          setAccountPicture.mutateAsync({
-            image: res.info.secure_url,
-            publicId: res.info.public_id,
+        onError={(err) => {
+          console.log(err);
+          enqueueSnackbar("Image not uploaded", {
+            variant: "error",
           });
         }}
         options={{
           cropping: true,
           croppingCoordinatesMode: "face",
-          minImageHeight: 200,
-          minImageWidth: 200,
+          minImageHeight: 250,
+          minImageWidth: 250,
           sources: ["local"],
           resourceType: "image",
         }}
+        {...props}
       >
         {({ open }) => {
           function handleOnClick(e) {

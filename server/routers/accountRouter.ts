@@ -90,8 +90,8 @@ const accountRouter = router({
           imagePublicId: input.publicId,
         });
       } catch (err: any) {
-        console.log("Error deleting cloudinary image", err.message);
-        throw new Error("Error deleting cloudinary image");
+        console.log("Error uploading cloudinary image", err.message);
+        throw new Error("Error uploading cloudinary image");
       }
     }),
   deleteAccountPicture: protectedProcedure

@@ -1,5 +1,5 @@
-import Head from "next/head";
 import { ReactNode } from "react";
+import Head from "next/head";
 
 import Appbar from "app/core/components/appbar";
 import Footer from "app/core/components/footer";

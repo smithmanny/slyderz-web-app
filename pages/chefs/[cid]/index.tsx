@@ -1,14 +1,14 @@
 import React from "react";
-import Image from "next/image";
 import { createServerSideHelpers } from "@trpc/react-query/server";
+import { CldImage } from "next-cloudinary";
 
-import Logo from "public/logo.png";
 import { styled } from "integrations/material-ui";
 import { trpc } from "server/utils/trpc";
 import createContext from "server/utils/createContext";
 import { appRouter } from "server/routers/_app";
 
 import Avatar from "app/core/components/shared/Avatar";
+import Box from "app/core/components/shared/Box";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Menu from "app/chefs/components/menu";
 import Grid from "app/core/components/shared/Grid";
@@ -76,13 +76,51 @@ export const ChefPage = (props) => {
         <Grid item xs={12} sx={{ mb: 4 }}>
           <div
             style={{
-              height: 250,
-              maxHeight: 250,
+              height: 360,
+              maxHeight: 360,
               width: "100%",
               position: "relative",
             }}
           >
-            <Image src={Logo} alt="Logo" />
+            <CldImage
+              src="https://res.cloudinary.com/slyderz/image/upload/v1686420045/dcdp5lc26pzvv8xlpfui.png"
+              sizes="100vw"
+              alt="chef bg picture"
+              fill
+              priority
+            />
+            <Box
+              sx={{
+                position: "absolute",
+                marginLeft: "auto",
+                marginRight: "auto",
+                textAlign: "center",
+                bottom: "-55px",
+                left: 0,
+                right: 0,
+              }}
+            >
+              {data.chefImage ? (
+                <CldImage
+                  width="150"
+                  height="150"
+                  src={data.chefImage}
+                  sizes="100vw"
+                  alt="chef profile picture"
+                  priority
+                />
+              ) : (
+                <ChefProfileAvatar
+                  alt="chef profile picture"
+                  sx={{
+                    height: 150,
+                    width: 150,
+                    mb: 2,
+                  }}
+                  src="/profile_pic.jpeg"
+                />
+              )}
+            </Box>
           </div>
         </Grid>
         <Grid item xs={12}>
@@ -93,15 +131,6 @@ export const ChefPage = (props) => {
               alignItems: "center",
             }}
           >
-            <ChefProfileAvatar
-              alt="Remy Sharp"
-              sx={{
-                height: 100,
-                width: 100,
-                mb: 2,
-              }}
-              src="/profile_pic.jpeg"
-            />
             <Typography variant="h1" fontWeight="bold">
               {data.chefName}
             </Typography>

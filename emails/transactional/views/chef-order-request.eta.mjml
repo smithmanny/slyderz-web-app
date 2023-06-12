@@ -11,7 +11,8 @@
     orderNumber: it.orderNumber,
     orderDate: it.orderDate,
     orderTime: it.orderTime,
-    orderLocation: it.orderLocation
+    orderLocation: it.orderLocation,
+    orderItems: it.orderItems
   })
 }}
 
@@ -24,12 +25,12 @@
     </mj-column>
 
     <mj-column>
-      <mj-button background-color="#F6644A" href="{{= it.orderApproveUrl }}">
+      <mj-button background-color="#F6644A" href="{{= it.orderApproveUrl }}" font-size="14px">
         Approve Order
       </mj-button>
     </mj-column>
     <mj-column>
-      <mj-button background-color="#F64A4A" href="{{= it.orderDenyUrl }}">
+      <mj-button background-color="#F64A4A" href="{{= it.orderDenyUrl }}" font-size="14px">
         Deny Order
       </mj-button>
     </mj-column>

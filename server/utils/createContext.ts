@@ -13,6 +13,7 @@ type SessionType = {
   user: {
     userId: string;
     email: string;
+    emailVerified: boolean;
     name: string;
     stripeCustomerId: string;
   };

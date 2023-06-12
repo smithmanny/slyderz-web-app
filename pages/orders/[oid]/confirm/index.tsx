@@ -86,89 +86,89 @@ export const getServerSideProps = async function getServerSideProps({
   });
 
   // Don't charge card again if order is already accepted
-  // if (order.orderStatus !== "PENDING") {
-  //   return {
-  //     redirect: {
-  //       destination: "/",
-  //       permanent: false,
-  //     },
-  //   };
-  // }
+  if (order.orderStatus !== "PENDING") {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
 
-  // // Stripe amount must be in cents
-  // const consumerServiceFee = order.amount * CONSUMER_SERVICE_FEE;
-  // const stripeOrderAmount = Number(
-  //   (parseFloat(String(order.amount + consumerServiceFee)) * 100).toString()
-  // );
-  // const stripeApplicationFee = Number(
-  //   (
-  //     parseFloat(
-  //       String(
-  //         order.amount * CHEF_SERVICE_FEE + order.amount * CONSUMER_SERVICE_FEE
-  //       )
-  //     ) * 100
-  //   ).toString()
-  // );
+  // Stripe amount must be in cents
+  const consumerServiceFee = order.amount * CONSUMER_SERVICE_FEE;
+  const stripeOrderAmount = Number(
+    (parseFloat(String(order.amount + consumerServiceFee)) * 100).toString()
+  );
+  const stripeApplicationFee = Number(
+    (
+      parseFloat(
+        String(
+          order.amount * CHEF_SERVICE_FEE + order.amount * CONSUMER_SERVICE_FEE
+        )
+      ) * 100
+    ).toString()
+  );
 
-  // const paymentIntent = await stripe.paymentIntents.create({
-  //   amount: stripeOrderAmount,
-  //   capture_method: "manual",
-  //   currency: "usd",
-  //   customer: order.user.stripeCustomerId,
-  //   payment_method: order.paymentMethodId,
-  //   off_session: true,
-  //   confirm: true,
-  //   application_fee_amount: stripeApplicationFee,
-  //   transfer_data: {
-  //     destination: order.chef.stripeAccountId,
-  //   },
-  //   metadata: {
-  //     userId: order.user.id,
-  //   },
-  // });
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: stripeOrderAmount,
+    capture_method: "manual",
+    currency: "usd",
+    customer: order.user.stripeCustomerId,
+    payment_method: order.paymentMethodId,
+    off_session: true,
+    confirm: true,
+    application_fee_amount: stripeApplicationFee,
+    transfer_data: {
+      destination: order.chef.stripeAccountId,
+    },
+    metadata: {
+      userId: order.user.id,
+    },
+  });
 
-  // if (!paymentIntent) {
-  //   return {
-  //     redirect: {
-  //       destination: "/",
-  //       permanent: false,
-  //     },
-  //   };
-  // }
+  if (!paymentIntent) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
 
-  // await stripe.paymentIntents.capture(paymentIntent.id);
+  await stripe.paymentIntents.capture(paymentIntent.id);
 
-  // await db.order.update({
-  //   where: {
-  //     confirmationNumber,
-  //   },
-  //   data: {
-  //     orderStatus: "ACCEPTED",
-  //   },
-  // });
+  await db.order.update({
+    where: {
+      confirmationNumber,
+    },
+    data: {
+      orderStatus: "ACCEPTED",
+    },
+  });
 
-  // const eventDate = new Date(order.eventDate);
-  // const address = `${order.address1} ${order.city}, ${order.state} ${order.zipcode}`;
+  const eventDate = new Date(order.eventDate);
+  const address = `${order.address1} ${order.city}, ${order.state} ${order.zipcode}`;
 
-  // await sendSesEmail({
-  //   to: "contact@slyderz.co",
-  //   type: TRANSACTIONAL_EMAILS.confirmOrder,
-  //   variables: {
-  //     orderNumber: order.confirmationNumber,
-  //     orderDate: readableDate(eventDate),
-  //     orderTime: order.eventTime,
-  //     orderLocation: address,
-  //     orderSubtotal: order.amount,
-  //     orderServiceFee: consumerServiceFee,
-  //     orderTotal: order.amount + consumerServiceFee,
-  //     // orderItems: order.dishes.map(d => ({
-  //     //   id: String(d.id),
-  //     //   quantity: d.quantity,
-  //     //   description: d.dish.description,
-  //     //   name: d.dish.name,
-  //     // })),
-  //   },
-  // });
+  await sendSesEmail({
+    to: "contact@slyderz.co",
+    type: TRANSACTIONAL_EMAILS.confirmOrder,
+    variables: {
+      orderNumber: order.confirmationNumber,
+      orderDate: readableDate(eventDate),
+      orderTime: order.eventTime,
+      orderLocation: address,
+      orderSubtotal: order.amount,
+      orderServiceFee: consumerServiceFee,
+      orderTotal: order.amount + consumerServiceFee,
+      orderItems: order.items.map(d => ({
+        id: d.id,
+        quantity: d.quantity,
+        description: d.dish.description,
+        name: d.dish.name,
+      })),
+    },
+  });
 
   return {
     props: {

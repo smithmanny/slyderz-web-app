@@ -70,7 +70,16 @@ const checkoutRouter = router({
           },
           select: {
             amount: true,
-            items: true,
+            items: {
+              include: {
+                dish: {
+                  select: {
+                    name: true,
+                    price: true,
+                  },
+                },
+              },
+            },
             confirmationNumber: true,
             id: true,
             address1: true,
@@ -114,7 +123,12 @@ const checkoutRouter = router({
               orderSubtotal: order.amount,
               orderServiceFee: consumerServiceFee,
               orderTotal: order.amount + consumerServiceFee,
-              // orderItems: order.dishes,
+              orderItems: order.items.map(i => ({
+                id: i.id,
+                quantity: i.quantity,
+                price: i.dish.price,
+                name: i.dish.name,
+              })),
             },
           };
           const chefEmailParams = {
@@ -130,18 +144,28 @@ const checkoutRouter = router({
               orderSubtotal: order.amount,
               orderServiceFee: chefServiceFee,
               orderTotal: order.amount + chefServiceFee,
-              // orderItems: order.dishes,
+              orderItems: order.items.map(i => ({
+                id: i.id,
+                quantity: i.quantity,
+                price: i.dish.price,
+                name: i.dish.name,
+            })),
             },
           };
 
+          // Send email to chef and user
           Promise.all([
             sendSesEmail(customerEmailParams),
             sendSesEmail(chefEmailParams),
           ])
             .then(() => console.log("Order confirmation email sent"))
-            .catch((err) =>
+            .catch((err) => {
               console.log("Order confirmation email failed to send", err)
-            );
+              throw new TRPCError({
+                code: "INTERNAL_SERVER_ERROR",
+                message: "Email failed to send"
+              })
+            });
 
           const initialUserCart = {
             items: [],

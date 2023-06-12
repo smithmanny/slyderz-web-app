@@ -2,6 +2,7 @@ import React, { useState, useMemo, useCallback } from "react";
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import type { DaysOfWeekTypeEnum } from "@prisma/client";
+import Image from "next/image";
 
 import { formatNumberToCurrency } from "app/utils/time";
 import { convertDayToInt, todAM, todPM } from "app/utils/time";
@@ -134,7 +135,8 @@ const CartSummary = (props: CartSummaryType) => {
         />
 
         {(cartItems?.length === 0 || cartItems === undefined) && (
-          <Grid item xs={12}>
+          <Grid item xs={12} textAlign="center">
+            <Image alt="Empty cart" width={85} height={85} src="/empty-cart.svg" />
             <Typography fontWeight="550" variant="h5">
               Your cart is empty
             </Typography>

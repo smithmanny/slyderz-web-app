@@ -64,7 +64,7 @@ const userRouter = router({
     let userId = "";
     let paymentMethods: Array<any> = [];
     let address: Address | object | null = {};
-    let email = "";
+    let email = {};
     let name = "";
     let checkUserChefStatus: UserChefStatusType = {
       isChef: false,
@@ -82,7 +82,10 @@ const userRouter = router({
       address = _address;
       checkUserChefStatus = _checkUserChefStatus;
       userId = session.userId;
-      email = session.user.email;
+      email = {
+        emailAddress: session.user.email,
+        isVerified: session.user.emailVerified
+      } as { emailAddress: string, isVerified: boolean};
       name = session.user.name;
     }
 

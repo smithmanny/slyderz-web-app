@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import ArrowBack from "@mui/icons-material/ArrowBack";
@@ -79,8 +79,6 @@ const CheckoutPage = ({
 }: CheckoutPageTypes) => {
   const router = useRouter();
   const [processing, setProcessing] = useState(false);
-  const [orderConfirmationNumber, setOrderConfirmationNumber] = useState("");
-  // const orderConfirmationNumber = useRef<string>("");
 
   const createOrder = trpc.checkout.createCheckout.useMutation();
   const stripePaymentMethods = useAppSelector(
@@ -115,7 +113,6 @@ const CheckoutPage = ({
       }
     } catch (err) {
       console.log("Cart failed", err);
-    } finally {
       setProcessing(false);
     }
   };

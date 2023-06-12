@@ -80,7 +80,7 @@ const chefRouter = router({
     .input(GetChefDishesType)
     .query(async ({ ctx, input }) => {
       try {
-        const chef = await ctx.prisma.chef.findUniqueOrThrow({
+        const chef = await ctx.prisma.chef.findFirstOrThrow({
           where: {
             id: input,
           },
@@ -96,23 +96,17 @@ const chefRouter = router({
             user: {
               select: {
                 name: true,
+                image: true,
               },
             },
           },
         });
 
-        if (chef) {
-          return {
-            dishes: chef.dishes,
-            chefName: chef.user.name,
-            hours: chef.hours,
-          };
-        }
-
         return {
-          dishes: [],
-          chefName: "",
-          hours: [],
+          dishes: chef.dishes,
+          chefName: chef.user.name,
+          chefImage: chef.user.image,
+          hours: chef.hours,
         };
       } catch (err) {
         throw new TRPCError({

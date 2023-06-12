@@ -1,6 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
+import { useSnackbar } from "notistack";
 
 import { UpdatePassword } from "app/auth/validations";
 import { useAppSelector } from "integrations/redux";
@@ -48,14 +49,27 @@ export async function getServerSideProps(ctx) {
 
 const Account = (props) => {
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+  const user = useAppSelector((state) => state.user);
+  const utils = trpc.useContext();
+
+  const invalidatePictureQuery = async () => {
+    await utils.account.fetchAccountPicture.invalidate();
+    enqueueSnackbar("Profile picture updated", {
+      variant: "success",
+    });
+  };
+
+  const fetchProfileImage = trpc.account.fetchAccountPicture.useQuery();
+  const setAccountPicture = trpc.account.setAccountPicture.useMutation({
+    onSuccess: invalidatePictureQuery,
+  });
   const updatePassword = trpc.auth.updatePassword.useMutation();
   const deleteAccount = trpc.account.deleteAccount.useMutation({
     onSuccess: () => {
       return router.replace("/");
     },
   });
-
-  const user = useAppSelector((state) => state.user);
 
   const initialValues = {
     name: user.name,
@@ -75,7 +89,16 @@ const Account = (props) => {
           </Grid>
 
           <Grid item xs={12}>
-            <UploadImage />
+            <UploadImage
+              image={fetchProfileImage.data}
+              invalidateCacheOnDestroy={invalidatePictureQuery}
+              onUpload={async (res) => {
+                setAccountPicture.mutateAsync({
+                  image: res.info.secure_url,
+                  publicId: res.info.public_id,
+                });
+              }}
+            />
           </Grid>
         </Grid>
 

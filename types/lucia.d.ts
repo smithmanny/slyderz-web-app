@@ -5,6 +5,7 @@ declare namespace Lucia {
   type UserAttributes = {
     stripeCustomerId: string;
     email: string;
+    emailVerified: boolean;
     name: string;
   };
 }
