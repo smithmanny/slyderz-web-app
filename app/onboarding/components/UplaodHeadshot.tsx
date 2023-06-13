@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { CldUploadWidget, CldImage } from "next-cloudinary";
 
 import { trpc } from "server/utils/trpc";
@@ -8,27 +8,23 @@ import Stack from "app/core/components/shared/Stack";
 import Typography from "app/core/components/shared/Typography";
 
 type CloudinaryImageType = {
-  image: string;
+  imageUrl: string;
   imagePublicId: string;
 };
 interface UploadHeadshotPreviewType {
   cloudinaryImage: CloudinaryImageType;
+  invalidateOnboardingState: () => Promise<void>;
 }
 
 function UploadHeadshotPreview(props: UploadHeadshotPreviewType) {
-  const { image, imagePublicId } = props.cloudinaryImage;
-  const utils = trpc.useContext();
+  const { imageUrl, imagePublicId } = props.cloudinaryImage;
 
   const completeOnboardingHeadshot =
     trpc.onboarding.completeOnboardingHeadshot.useMutation({
-      onSuccess: async () => {
-        await utils.chef.invalidate();
-      },
+      onSuccess: props.invalidateOnboardingState,
     });
   const destroyAccountImage = trpc.account.deleteAccountPicture.useMutation({
-    onSuccess: async () => {
-      await utils.account.fetchAccountPicture.invalidate();
-    },
+    onSuccess: props.invalidateOnboardingState,
     onError: (err) => console.log(err),
   });
 
@@ -45,7 +41,7 @@ function UploadHeadshotPreview(props: UploadHeadshotPreviewType) {
         <CldImage
           width="150"
           height="150"
-          src={image}
+          src={imageUrl}
           sizes="100vw"
           alt="chef headshot"
         />
@@ -78,22 +74,25 @@ interface UploadHeadshotType {
 function UploadHeadshot(props: UploadHeadshotType) {
   const utils = trpc.useContext();
 
-  const invalidatePictureQuery = async () => {
-    await utils.account.fetchAccountPicture.invalidate();
-  };
+  const invalidateOnboardingState = useCallback(async () => {
+    await utils.onboarding.fetchOnboardingState.invalidate();
+  }, [utils.onboarding.fetchOnboardingState]);
 
   const fetchProfileImage = trpc.account.fetchAccountPicture.useQuery();
   const setAccountPicture = trpc.account.setAccountPicture.useMutation({
-    onSuccess: invalidatePictureQuery,
+    onSuccess: invalidateOnboardingState,
   });
 
-  return fetchProfileImage.data ? (
-    <UploadHeadshotPreview cloudinaryImage={fetchProfileImage.data} />
+  return fetchProfileImage.data?.imagePublicId ? (
+    <UploadHeadshotPreview
+      cloudinaryImage={fetchProfileImage.data}
+      invalidateOnboardingState={invalidateOnboardingState}
+    />
   ) : (
     <>
       <Typography>{props.description}</Typography>
       <CldUploadWidget
-        uploadPreset="chef_profile_pic"
+        uploadPreset="user_profile_pic"
         onError={(err) => console.log("ERROR uploading headshot", err)}
         onUpload={(res) => {
           setAccountPicture.mutateAsync({

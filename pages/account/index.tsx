@@ -70,6 +70,15 @@ const Account = (props) => {
       return router.replace("/");
     },
   });
+  const destroyImage = trpc.account.deleteAccountPicture.useMutation({
+    onSuccess: invalidatePictureQuery,
+    onError: (err) => {
+      console.log(err);
+      props.snackbar("Image not deleted. Please try again", {
+        variant: "error",
+      });
+    },
+  });
 
   const initialValues = {
     name: user.name,
@@ -90,8 +99,10 @@ const Account = (props) => {
 
           <Grid item xs={12}>
             <UploadImage
+              uploadPreset="user_profile_pic"
               image={fetchProfileImage.data}
-              invalidateCacheOnDestroy={invalidatePictureQuery}
+              destroyFunc={destroyImage}
+              destroyOnSuccess={invalidatePictureQuery}
               onUpload={async (res) => {
                 setAccountPicture.mutateAsync({
                   image: res.info.secure_url,

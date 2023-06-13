@@ -67,7 +67,7 @@ export const Dashboard = (props) => {
 
   if (user.loading) return <h1>LOADING</h1>;
 
-  if (!user.chef.isChefProfileComplete) {
+  if (user.chef.isChefProfileComplete) {
     return <DynamicOnboarding />;
   }
 

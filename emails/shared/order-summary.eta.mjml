@@ -9,7 +9,6 @@
       <mj-text font-weight="bold">Time: {{= it.orderTime }}</mj-text>
       <mj-text font-weight="bold">Location: {{= it.orderLocation }}</mj-text>
 
-      {{ console.log("ORDER_ITEMS", it.orderItems) }}
       <mj-table>
           <tr style="border-bottom:1px solid #ecedee;text-align:left;padding:15px 0;">
             <th style="padding: 0 15px 0 0;">Item</th>
@@ -21,7 +20,7 @@
             <tr>
                 <td style="padding: 0 15px 0 0;">{{= item.name }}</td>
                 <td style="padding: 0 15px;">x{{= item.quantity }}</td>
-                <td style="padding: 0 0 0 15px;">{{= item.price * item.quantity }}
+                <td style="padding: 0 0 0 15px;">${{= item.price * item.quantity }}
           {{ }) }}
         </mj-table>
     </mj-column>

@@ -2,6 +2,7 @@ import { TRPCError } from "@trpc/server";
 import { Prisma } from "@prisma/client";
 
 import { router, chefProcedure } from "../trpc";
+import getCloudinary from "app/utils/getCloudinary";
 
 import {
   CreateSection,
@@ -10,6 +11,7 @@ import {
   GetChefSectionDishes,
   CreateDish,
   UpdateDish,
+  DestroyDishImageType,
   DestroyDish,
   CreateHours,
   DeleteSection,
@@ -52,6 +54,7 @@ const dashboardRouter = router({
           price: true,
           chefId: true,
           sectionId: true,
+          image: true,
         },
       });
 
@@ -174,6 +177,12 @@ const dashboardRouter = router({
           price: new Prisma.Decimal(input.price),
           sectionId: input.sectionId,
           chefId: ctx.chef.id,
+          image: {
+            create: {
+              imagePublicId: input.image.imagePublicId,
+              imageUrl: input.image.imageUrl,
+            }
+          }
         },
       });
 
@@ -191,6 +200,17 @@ const dashboardRouter = router({
             description: input.description,
             name: input.name,
             price: input.price,
+            image: {
+              update: {
+                where: {
+                  imagePublicId: input.image.imagePublicId
+                },
+                data: {
+                  imagePublicId: input.image.imagePublicId,
+                  imageUrl: input.image.imageUrl,
+                }
+              }
+            }
           },
         });
 
@@ -202,6 +222,23 @@ const dashboardRouter = router({
           message: "Dish not updated",
           cause: err,
         });
+      }
+    }),
+  destroyDishtPicture: chefProcedure
+    .input(DestroyDishImageType)
+    .mutation(async ({ input, ctx }) => {
+      const cloudinary = getCloudinary();
+
+      try {
+        await ctx.prisma.userPhoto.delete({
+          where: {
+            imagePublicId: input.publicId
+          },
+        })
+        await cloudinary.uploader.destroy(input.publicId);
+      } catch (err: any) {
+        console.log("Error deleting cloudinary image", err.message);
+        throw new Error("Error deleting cloudinary image");
       }
     }),
   destroyDish: chefProcedure

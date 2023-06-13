@@ -158,14 +158,14 @@ const checkoutRouter = router({
             sendSesEmail(customerEmailParams),
             sendSesEmail(chefEmailParams),
           ])
-            .then(() => console.log("Order confirmation email sent"))
-            .catch((err) => {
-              console.log("Order confirmation email failed to send", err)
-              throw new TRPCError({
-                code: "INTERNAL_SERVER_ERROR",
-                message: "Email failed to send"
-              })
-            });
+          .then(() => console.log("Order confirmation email sent"))
+          .catch((err) => {
+            console.log("Order confirmation email failed to send", err)
+            throw new TRPCError({
+              code: "INTERNAL_SERVER_ERROR",
+              message: "Email failed to send"
+            })
+          });
 
           const initialUserCart = {
             items: [],

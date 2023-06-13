@@ -24,6 +24,10 @@ export const CreateDish = z.object({
   description: z.string(),
   name: z.string(),
   price: z.string(),
+  image: z.object({
+    imageUrl: z.string(),
+    imagePublicId: z.string()
+  })
 });
 
 export const UpdateDish = z.object({
@@ -31,10 +35,18 @@ export const UpdateDish = z.object({
   description: z.string(),
   name: z.string(),
   price: z.string(),
+  image: z.object({
+    imageUrl: z.string(),
+    imagePublicId: z.string()
+  })
 });
 
 export const DestroyDish = z.object({
   dishId: z.string(),
+});
+
+export const DestroyDishImageType = z.object({
+  publicId: z.string(),
 });
 
 export const CreateHours = z.object({

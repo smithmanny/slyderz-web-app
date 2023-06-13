@@ -105,7 +105,7 @@ const chefRouter = router({
         return {
           dishes: chef.dishes,
           chefName: chef.user.name,
-          chefImage: chef.user.image,
+          chefImage: chef.user.image?.imageUrl,
           hours: chef.hours,
         };
       } catch (err) {

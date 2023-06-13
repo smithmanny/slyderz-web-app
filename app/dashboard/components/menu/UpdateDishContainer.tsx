@@ -58,6 +58,7 @@ const UpdateDishContainer = (props: UpdateDishContainerProps) => {
     <MenuLayout currentView={currentView} goBackHome={goBackFunc}>
       <Grid item xs={12}>
         <DishForm
+          dishImage={data.image[0]}
           initialValues={initialValues}
           mutation={updateDish.mutateAsync}
           submitText="Update Dish"

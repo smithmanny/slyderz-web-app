@@ -9,8 +9,6 @@ import {
   AddUserAddressType,
 } from "app/account/validations";
 
-const cloudinary = getCloudinary();
-
 const accountRouter = router({
   deletePaymentMethod: protectedProcedure
     .input(DeleteStripePaymentMethod)
@@ -61,18 +59,14 @@ const accountRouter = router({
         },
         select: {
           image: true,
-          imagePublicId: true,
         },
       });
 
-      if (!user.image || !user.imagePublicId) {
+      if (!user.image || !user.image.imagePublicId) {
         return null;
       }
 
-      return {
-        image: user.image,
-        imagePublicId: user.imagePublicId,
-      };
+      return user.image
     } catch (err: any) {
       console.log("Account not deleted", err.mesage);
       throw new TRPCError({
@@ -85,10 +79,13 @@ const accountRouter = router({
     .input(CreateImageType)
     .mutation(async ({ input, ctx }) => {
       try {
-        await ctx.auth.updateUserAttributes(ctx.session.userId, {
-          image: input.image,
-          imagePublicId: input.publicId,
-        });
+        await ctx.prisma.userPhoto.create({
+          data: {
+            imagePublicId: input.publicId,
+            imageUrl: input.image,
+            userId: ctx.session.userId
+          },
+        })
       } catch (err: any) {
         console.log("Error uploading cloudinary image", err.message);
         throw new Error("Error uploading cloudinary image");
@@ -97,11 +94,14 @@ const accountRouter = router({
   deleteAccountPicture: protectedProcedure
     .input(DestroyImageType)
     .mutation(async ({ input, ctx }) => {
+      const cloudinary = getCloudinary();
+
       try {
-        await ctx.auth.updateUserAttributes(ctx.session.userId, {
-          image: null,
-          imagePublicId: null,
-        });
+        await ctx.prisma.userPhoto.delete({
+          where: {
+            imagePublicId: input.publicId
+          },
+        })
         await cloudinary.uploader.destroy(input.publicId);
       } catch (err: any) {
         console.log("Error deleting cloudinary image", err.message);

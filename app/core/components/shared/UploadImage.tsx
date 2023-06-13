@@ -3,41 +3,39 @@ import {
   CldUploadWidget,
   CldImage,
   CldUploadWidgetProps,
+  CldUploadWidgetPropsOptions,
 } from "next-cloudinary";
 import Image from "next/image";
 import { useSnackbar } from "notistack";
-
-import { trpc } from "server/utils/trpc";
 
 import Button from "app/core/components/shared/Button";
 import IconButton from "app/core/components/shared/IconButton";
 import Stack from "app/core/components/shared/Stack";
 
 type CloudinaryImageType = {
-  image: string;
+  imageUrl: string;
   imagePublicId: string;
 };
 interface UploadedImagePreviewType {
   cloudinaryImage: CloudinaryImageType;
-  invalidateCacheOnDestroy: () => Promise<void>;
+  destroyFunc: any;
+  destroyOnSuccess: () => Promise<void>;
   snackbar: (err: string, object: object) => void;
+  previewOptions?: {
+    width?: number;
+    height?: number;
+    alt?: string;
+  };
 }
 
 function UploadedImagePreview(props: UploadedImagePreviewType) {
-  const { image, imagePublicId } = props.cloudinaryImage;
+  const { imageUrl, imagePublicId } = props.cloudinaryImage;
 
-  const destroyAccountImage = trpc.account.deleteAccountPicture.useMutation({
-    onSuccess: props.invalidateCacheOnDestroy,
-    onError: (err) => {
-      console.log(err);
-      props.snackbar("Image not deleted. Please try again", {
-        variant: "error",
-      });
-    },
-  });
+  const handleDestroyingImage = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
 
-  const handleDestroyingImage = async () => {
-    await destroyAccountImage.mutateAsync({ publicId: imagePublicId });
+    await props.destroyFunc.mutateAsync({ publicId: imagePublicId });
   };
 
   return (
@@ -45,9 +43,10 @@ function UploadedImagePreview(props: UploadedImagePreviewType) {
       <CldImage
         width="150"
         height="150"
-        src={image}
         sizes="100vw"
-        alt="chef headshot"
+        alt="image preview"
+        {...props.previewOptions}
+        src={imageUrl}
         priority
       />
       <Stack direction="row">
@@ -66,9 +65,16 @@ function UploadedImagePreview(props: UploadedImagePreviewType) {
 
 interface UploadImageProps extends CldUploadWidgetProps {
   image: CloudinaryImageType | null | undefined;
-  invalidateCacheOnDestroy: () => Promise<void>;
+  destroyFunc: any;
+  destroyOnSuccess: () => Promise<void>;
   onUpload: (res) => Promise<void>;
   previewComponent?: ReactElement;
+  previewOptions?: {
+    width?: number;
+    height?: number;
+    alt?: string;
+  };
+  imageOptions?: CldUploadWidgetPropsOptions;
 }
 
 function UploadImage(props: UploadImageProps) {
@@ -81,14 +87,15 @@ function UploadImage(props: UploadImageProps) {
     ) : (
       <UploadedImagePreview
         cloudinaryImage={props.image}
-        invalidateCacheOnDestroy={props.invalidateCacheOnDestroy}
+        destroyFunc={props.destroyFunc}
+        destroyOnSuccess={props.destroyOnSuccess}
         snackbar={enqueueSnackbar}
+        previewOptions={props?.previewOptions}
       />
     )
   ) : (
     <>
       <CldUploadWidget
-        uploadPreset="chef_profile_pic"
         onError={(err) => {
           console.log(err);
           enqueueSnackbar("Image not uploaded", {
@@ -102,6 +109,7 @@ function UploadImage(props: UploadImageProps) {
           minImageWidth: 250,
           sources: ["local"],
           resourceType: "image",
+          ...props.imageOptions,
         }}
         {...props}
       >
@@ -113,7 +121,7 @@ function UploadImage(props: UploadImageProps) {
           return (
             <IconButton onClick={handleOnClick}>
               <Image
-                alt="Upload profile image"
+                alt="Upload image"
                 src="/add-pic.svg"
                 width={150}
                 height={150}

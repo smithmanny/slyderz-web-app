@@ -58,8 +58,9 @@ const OnboardingStep = (children: any, description: string) => {
 };
 
 export default function Onboarding() {
-  const [activeStep, setActiveStep] = useState(0);
   const router = useRouter();
+  const [activeStep, setActiveStep] = useState(0);
+  const stepsLastIndex = steps.length - 1;
   const { data: onboardingState } =
     trpc.onboarding.fetchOnboardingState.useQuery();
   const createStripeAccountLink =
@@ -67,12 +68,20 @@ export default function Onboarding() {
 
   useEffect(() => {
     switch (onboardingState) {
+      case "SETUP_STRIPE":
+        setActiveStep(0);
+        break;
       case "UPLOAD_HEADSHOT":
         setActiveStep(1);
         break;
       case "COMPLETE_SERVSAFE":
         setActiveStep(2);
         break;
+      case "ADD_PROFILE_DESCRIPTION":
+        setActiveStep(3);
+        break;
+      default:
+        setActiveStep(0);
     }
   }, [onboardingState]);
 
@@ -99,7 +108,7 @@ export default function Onboarding() {
           <Step key={step.label}>
             <StepLabel
               optional={
-                index === 3 ? (
+                index === stepsLastIndex ? (
                   <Typography variant="caption">Last step</Typography>
                 ) : null
               }
