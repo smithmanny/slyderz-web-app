@@ -1,9 +1,11 @@
 import React, { useCallback, useState } from "react";
+import { CardActionArea } from '@mui/material';
 
 import { styled } from "integrations/material-ui";
 
 import Card, { CardContent, CardMedia } from "app/core/components/shared/Card";
 import Box from "app/core/components/shared/Box";
+import Button from "app/core/components/shared/Button";
 import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
 import MenuItemModal from "app/core/modals/MenuItemModal";
@@ -45,28 +47,38 @@ const Menu = (props) => {
       <Grid item xs={12}>
         <Grid container item spacing={2}>
           {dishes.map((item, index) => (
-            <Grid key={index} item xs={12}>
+            <Grid key={index} item xs={12} lg={6}>
               <Card
                 sx={{ display: 'flex', justifyContent: 'space-between' }}
                 onClick={() => openMenuItemModal(item)}
               >
-              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                <CardContent sx={{ flex: '1 0 auto' }}>
-                  <Typography variant="body1">
-                    {item.name}
-                  </Typography>
-                  <Typography variant="subtitle1" color="text.secondary">
-                  ${item.price}
-                  </Typography>
-                  <Typography variant="subtitle2" color="text.secondary">
-                    {renderDishDescription("There was a feature request in my current company, product team requested a table component which should order columns in ascending or descending way when clicking the column’s title. At the end of this post, you’ll see the working POC. There may be so many things to improve in the aspect of code quality but do not forget, this is just a POC. I’m looking forward to your responses to the code.")}
-                  </Typography>
-                </CardContent>
-              </Box>
+                <CardActionArea>
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <CardContent sx={{ flex: '1 0 auto' }}>
+                      <Typography fontSize={18} fontWeight="bold">
+                        {item.name}
+                      </Typography>
+                      <Typography variant="subtitle1" color="text.secondary" fontWeight={550}>
+                        ${item.price} /person
+                      </Typography>
+                    </CardContent>
+                    <CardContent>
+                      <Button
+                        variant="outlined"
+                        fullWidth={false}
+                        sx={{
+                          width: 200
+                        }}
+                      >
+                        Add to cart
+                      </Button>
+                    </CardContent>
+                  </Box>
+                </CardActionArea>
               <MuiCardMedia
                 component="img"
-                sx={{ width: 75, mr: 2 }}
-                image="/logo.png"
+                sx={{ width: 200 }}
+                image={item.image[0].imageUrl}
                 alt="Live from space album cover"
               />
             </Card>

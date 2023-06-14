@@ -109,6 +109,11 @@ const Account = (props) => {
                   publicId: res.info.public_id,
                 });
               }}
+              imageOptions={{
+                croppingCoordinatesMode: "face",
+                minImageHeight: 250,
+                minImageWidth: 250,
+              }}
             />
           </Grid>
         </Grid>

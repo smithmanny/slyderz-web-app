@@ -36,11 +36,11 @@ const FooterLinks = (props) => {
     },
     {
       name: "Terms",
-      route: "/terms-and-conditions"
+      route: "/terms"
     },
     {
-      name: "Privacy",
-      route: "/about"
+      name: "Privacy Policy",
+      route: "/privacy-policy"
     }
   ]
   const chefLinks = [

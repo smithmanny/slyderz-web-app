@@ -7,6 +7,7 @@ import { formatNumberToCurrency } from "app/utils/time";
 import { trpc } from "server/utils/trpc";
 
 import Form, { TextField } from "app/core/components/form";
+import Grid from "app/core/components/shared/Grid";
 import UploadImage from "app/core/components/shared/UploadImage";
 
 type DishImageType = {
@@ -28,7 +29,7 @@ const DishForm = (props: DishFormPropTypes) => {
   const { enqueueSnackbar } = useSnackbar();
   const [dishImage, setDishImage] = useState<DishImageType | null>(null);
 
-  const destroyImage = trpc.dashboard.destroyDishtPicture.useMutation({
+  const destroyImage = trpc.dashboard.destroyDishPicture.useMutation({
     onSuccess: () => {
       setDishImage(null);
     },
@@ -63,32 +64,30 @@ const DishForm = (props: DishFormPropTypes) => {
           image: dishImage,
         }),
       }}
+      style={{ maxWidth: 800, margin: "auto" }}
     >
-      <UploadImage
-        uploadPreset="dish_image"
-        image={dishImage}
-        destroyFunc={destroyImage}
-        destroyOnSuccess={deleteDishImage}
-        onUpload={async (res) => {
-          setDishImage({
-            imageUrl: res.info.secure_url,
-            imagePublicId: res.info.public_id,
-          });
-        }}
-        options={{
-          cropping: true,
-          minImageHeight: 1200,
-          minImageWidth: 800,
-          sources: ["local"],
-          resourceType: "image",
-          clientAllowedFormats: ["webp", "jpg", "jpeg", "png"],
-        }}
-        previewOptions={{
-          alt: "dish preview image",
-          width: 325,
-          height: 325,
-        }}
-      />
+      <Grid item xs={12}>
+        <UploadImage
+          uploadPreset="dish_image"
+          image={dishImage}
+          destroyFunc={destroyImage}
+          destroyOnSuccess={deleteDishImage}
+          onUpload={async (res) => {
+            setDishImage({
+              imageUrl: res.info.secure_url,
+              imagePublicId: res.info.public_id,
+            });
+          }}
+          imageOptions={{
+            minImageHeight: 1200,
+            minImageWidth: 675,
+          }}
+          previewOptions={{
+            alt: "dish preview image",
+          }}
+          fullWidth
+        />
+      </Grid>
       <TextField
         name="name"
         label="Dish Name"

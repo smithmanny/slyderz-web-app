@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import {
   CldUploadWidget,
   CldImage,
@@ -9,6 +9,7 @@ import Image from "next/image";
 import { useSnackbar } from "notistack";
 
 import Button from "app/core/components/shared/Button";
+import Box from "app/core/components/shared/Box";
 import IconButton from "app/core/components/shared/IconButton";
 import Stack from "app/core/components/shared/Stack";
 
@@ -26,6 +27,7 @@ interface UploadedImagePreviewType {
     height?: number;
     alt?: string;
   };
+  isFullWidth: boolean;
 }
 
 function UploadedImagePreview(props: UploadedImagePreviewType) {
@@ -40,15 +42,28 @@ function UploadedImagePreview(props: UploadedImagePreviewType) {
 
   return (
     <>
-      <CldImage
-        width="150"
-        height="150"
-        sizes="100vw"
-        alt="image preview"
-        {...props.previewOptions}
-        src={imageUrl}
-        priority
-      />
+      {props.isFullWidth ? (
+        <Box sx={{ position: "relative", height: 325 }}>
+          <CldImage
+            sizes="100vw"
+            alt="image preview"
+            {...props.previewOptions}
+            fill
+            src={imageUrl}
+            priority
+          />
+        </Box>
+      ) : (
+        <CldImage
+          width="150"
+          height="150"
+          sizes="100vw"
+          alt="image preview"
+          {...props.previewOptions}
+          src={imageUrl}
+          priority
+        />
+      )}
       <Stack direction="row">
         <Button
           label="delete profile picture"
@@ -68,13 +83,13 @@ interface UploadImageProps extends CldUploadWidgetProps {
   destroyFunc: any;
   destroyOnSuccess: () => Promise<void>;
   onUpload: (res) => Promise<void>;
-  previewComponent?: ReactElement;
   previewOptions?: {
     width?: number;
     height?: number;
     alt?: string;
   };
   imageOptions?: CldUploadWidgetPropsOptions;
+  fullWidth?: boolean;
 }
 
 function UploadImage(props: UploadImageProps) {
@@ -82,17 +97,14 @@ function UploadImage(props: UploadImageProps) {
 
   // TODO: Show spinner for loading state
   return props.image ? (
-    props.previewComponent ? (
-      props.previewComponent
-    ) : (
-      <UploadedImagePreview
-        cloudinaryImage={props.image}
-        destroyFunc={props.destroyFunc}
-        destroyOnSuccess={props.destroyOnSuccess}
-        snackbar={enqueueSnackbar}
-        previewOptions={props?.previewOptions}
-      />
-    )
+    <UploadedImagePreview
+      cloudinaryImage={props.image}
+      destroyFunc={props.destroyFunc}
+      destroyOnSuccess={props.destroyOnSuccess}
+      snackbar={enqueueSnackbar}
+      previewOptions={props?.previewOptions}
+      isFullWidth={props.fullWidth || false}
+    />
   ) : (
     <>
       <CldUploadWidget
@@ -103,13 +115,12 @@ function UploadImage(props: UploadImageProps) {
           });
         }}
         options={{
-          cropping: true,
-          croppingCoordinatesMode: "face",
           minImageHeight: 250,
           minImageWidth: 250,
+          ...props.imageOptions,
+          cropping: true,
           sources: ["local"],
           resourceType: "image",
-          ...props.imageOptions,
         }}
         {...props}
       >

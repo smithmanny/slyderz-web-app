@@ -224,17 +224,27 @@ const dashboardRouter = router({
         });
       }
     }),
-  destroyDishtPicture: chefProcedure
+  destroyDishPicture: chefProcedure
     .input(DestroyDishImageType)
     .mutation(async ({ input, ctx }) => {
       const cloudinary = getCloudinary();
 
       try {
-        await ctx.prisma.userPhoto.delete({
+        const imageToDestroy = await ctx.prisma.dishPhoto.findFirst({
           where: {
             imagePublicId: input.publicId
-          },
+          }
         })
+
+        // This won't run for new dishes
+        if (imageToDestroy) {
+          await ctx.prisma.dishPhoto.delete({
+            where: {
+              imagePublicId: input.publicId
+            },
+          })
+        }
+
         await cloudinary.uploader.destroy(input.publicId);
       } catch (err: any) {
         console.log("Error deleting cloudinary image", err.message);

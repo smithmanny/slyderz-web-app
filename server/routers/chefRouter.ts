@@ -85,7 +85,11 @@ const chefRouter = router({
             id: input,
           },
           select: {
-            dishes: true,
+            dishes: {
+              include: {
+                image: true
+              }
+            },
             hours: {
               select: {
                 daysOfWeek: true,

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Image from "next/image";
 import PropTypes from 'prop-types'
 import { v4 as uuidv4 } from 'uuid';
+import { CldImage } from "next-cloudinary";
 
 import { trpc } from 'server/utils/trpc';
 
@@ -53,6 +53,7 @@ const MenuItemModal = ({ show, onClose, menuItem, ...props }) => {
       closeModal={onClose}
       show={show}
       size="sm"
+      imageUrl={menuItem.image[0].imageUrl}
       actions={(
         <React.Fragment>
           <Box
@@ -88,16 +89,6 @@ const MenuItemModal = ({ show, onClose, menuItem, ...props }) => {
       {...props}
     >
       <React.Fragment>
-        <Box
-          sx={{
-            marginBottom: 2,
-            position: 'relative',
-            height: "250px",
-            width: '100%'
-          }}
-        >
-          <Image src="/logo.png" layout="fill" alt="Logo" />
-        </Box>
         <Typography variant="h6">{menuItem.name}</Typography>
         <Typography sx={{ my: 2 }}>
           There was a feature request in my current company, product

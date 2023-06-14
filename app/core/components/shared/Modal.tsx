@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import PropTypes from "prop-types";
 import { default as MuiAppBar } from "@mui/material/AppBar";
+import { CldImage } from "next-cloudinary";
 
 import { theme } from "integrations/material-ui";
 import type { Breakpoint } from "@mui/material";
@@ -13,6 +14,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Toolbar from "@mui/material/Toolbar";
+import Box from "app/core/components/shared/Box";
 
 interface ModalType {
   actions?: any;
@@ -21,6 +23,7 @@ interface ModalType {
   title?: string;
   show: boolean;
   closeModal: () => void;
+  imageUrl?: string;
 }
 
 const Modal = ({
@@ -29,6 +32,7 @@ const Modal = ({
   size,
   title,
   show,
+  imageUrl,
   closeModal,
 }: ModalType) => {
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -48,9 +52,17 @@ const Modal = ({
       <MuiAppBar
         color="transparent"
         position="relative"
-        sx={{ boxShadow: "none" }}
+        sx={{ boxShadow: "none", position: "relative" }}
       >
-        <Toolbar variant="dense" sx={{ justifyContent: "flex-end" }}>
+        <Toolbar
+          variant="dense"
+          sx={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            zIndex: 99,
+          }}
+        >
           <IconButton
             edge="start"
             color="inherit"
@@ -68,6 +80,24 @@ const Modal = ({
         >
           {title}
         </DialogTitle>
+      )}
+      {imageUrl && (
+        <Box
+          sx={{
+            marginBottom: 2,
+            position: "relative",
+            height: "325px",
+            width: "100%",
+          }}
+        >
+          <CldImage
+            sizes="50vw"
+            alt="Dish photo"
+            fill
+            src={imageUrl}
+            priority
+          />
+        </Box>
       )}
       <DialogContent sx={{ minHeight: "300px" }}>{children}</DialogContent>
       {actions && (
