@@ -49,7 +49,13 @@ const Menu = (props) => {
           {dishes.map((item, index) => (
             <Grid key={index} item xs={12} lg={6}>
               <Card
-                sx={{ display: 'flex', justifyContent: 'space-between' }}
+                sx={{
+                  display: 'flex',
+                  flexDirection: {
+                    xs: "column-reverse",
+                    md: "row"
+                  },
+                }}
                 onClick={() => openMenuItemModal(item)}
               >
                 <CardActionArea>
@@ -77,7 +83,12 @@ const Menu = (props) => {
                 </CardActionArea>
               <MuiCardMedia
                 component="img"
-                sx={{ width: 200 }}
+                sx={{
+                  width: {
+                    xs: "100%",
+                    md: 200
+                  }
+                }}
                 image={item.image[0].imageUrl}
                 alt="Live from space album cover"
               />

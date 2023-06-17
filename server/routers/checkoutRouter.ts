@@ -76,6 +76,7 @@ const checkoutRouter = router({
                   select: {
                     name: true,
                     price: true,
+                    image: true
                   },
                 },
               },
@@ -128,6 +129,7 @@ const checkoutRouter = router({
                 quantity: i.quantity,
                 price: i.dish.price,
                 name: i.dish.name,
+                image: i.dish?.image[0]?.imageUrl
               })),
             },
           };
@@ -149,6 +151,7 @@ const checkoutRouter = router({
                 quantity: i.quantity,
                 price: i.dish.price,
                 name: i.dish.name,
+                image: i.dish?.image[0]?.imageUrl
             })),
             },
           };

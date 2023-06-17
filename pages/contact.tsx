@@ -33,7 +33,7 @@ const Contact = () => {
               md={12}
               type="email"
             />
-            <TextField name="message" label="Message" md={12} multiline />
+            <TextField name="message" label="Message" md={12} multiline minRows={5} />
           </Form>
         </Grid>
       </Grid>

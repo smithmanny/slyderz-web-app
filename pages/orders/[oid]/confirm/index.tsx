@@ -59,6 +59,7 @@ export const getServerSideProps = async function getServerSideProps({
               description: true,
               name: true,
               price: true,
+              image: true
             },
           },
         },
@@ -166,6 +167,7 @@ export const getServerSideProps = async function getServerSideProps({
         quantity: d.quantity,
         description: d.dish.description,
         name: d.dish.name,
+        image: d.dish?.image[0]?.imageUrl
       })),
     },
   });

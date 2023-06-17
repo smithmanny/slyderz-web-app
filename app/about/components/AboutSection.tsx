@@ -1,14 +1,18 @@
 import Image from "next/image";
 import PropTypes from "prop-types";
+import { CldImage } from "next-cloudinary";
 
 import Box from "app/core/components/shared/Box";
 import Stack from "app/core/components/shared/Stack";
 import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
+import { ReactElement } from "react";
 
 interface AboutSectionProps {
-  description: string;
+  component?: ReactElement;
+  description?: string;
   direction: string;
+  image?: string;
   title: string;
   type: string;
   MainProps: object;
@@ -31,7 +35,7 @@ const OurStoryBulletPoint = (props: OurStoryBulletPointType) => (
 );
 
 const AboutSection = (props: AboutSectionProps) => {
-  const { description, direction, title, type, MainProps } = props;
+  const { description, direction, image, title, type, MainProps } = props;
 
   const mainSection = () => (
     <Grid item xs={12} md={6}>
@@ -39,7 +43,9 @@ const AboutSection = (props: AboutSectionProps) => {
         <Typography variant="h4" sx={{ mb: 2, fontWeight: "bold" }}>
           {title}
         </Typography>
-        <Typography variant="subtitle2">{description}</Typography>
+        {props.component || (
+          <Typography variant="subtitle2">{description}</Typography>
+        )}
       </Box>
     </Grid>
   );
@@ -64,40 +70,31 @@ const AboutSection = (props: AboutSectionProps) => {
         <Box
           sx={{
             position: "relative",
-            width: { sm: "100%", md: "75%" },
             height: 400,
+            width: "100%",
+            maxWidth: 600,
             backgroundColor: "#f3f7f5",
             borderRadius: "10pt",
             margin: direction === "row" ? "auto" : null,
           }}
         >
-          {/* <Image
-            src='/our-vision-min.jpeg'
-            alt="About Us"
-            layout='fill'
-            objectFit='inherit'
-            // objectPosition='50% 50%'
-            sizes="(max-width: 768px) 100vw,
-                  (max-width: 1200px) 50vw,
-                  33vw"
-          /> */}
+          {image && (
+            <CldImage
+              src={image}
+              alt="About Us"
+              fill
+              gravity="auto"
+              style={{
+                objectFit: "cover",
+              }}
+              sizes="(max-width: 768px) 100vw,
+                  (max-width: 1200px) 50vw"
+            />
+          )}
         </Box>
       )}
     </Grid>
   );
-
-  const content =
-    direction === "row" ? (
-      <>
-        {mainSection()}
-        {secondarySection()}
-      </>
-    ) : (
-      <>
-        {secondarySection()}
-        {mainSection()}
-      </>
-    );
 
   return (
     <Grid
@@ -105,10 +102,18 @@ const AboutSection = (props: AboutSectionProps) => {
       item
       xs={12}
       spacing={2}
-      sx={{ mb: { xs: 4, md: 8 } }}
+      sx={{
+        mb: { xs: 4, md: 8 },
+        flexDirection: {
+          xs: "row-reverse",
+          md: direction === "row" ? "row" : "row-reverse",
+        },
+      }}
       {...MainProps}
     >
-      {content}
+      {/* {content} */}
+      {mainSection()}
+      {secondarySection()}
     </Grid>
   );
 };

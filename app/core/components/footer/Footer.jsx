@@ -1,24 +1,12 @@
 import Link from "next/link";
-import InputAdornment from "@mui/material/InputAdornment";
-import { EmailOutline, Facebook, Twitter, Instagram } from "mdi-material-ui";
-
-import { styled } from "integrations/material-ui";
+import { Facebook, Twitter, Instagram } from "mdi-material-ui";
 
 import Container from "app/core/components/shared/Container";
 import Divider from "app/core/components/shared/Divider";
 import Grid from "app/core/components/shared/Grid";
-import Paper from "app/core/components/shared/Paper";
 import Typography from "app/core/components/shared/Typography";
-import Button from "app/core/components/shared/Button";
 import Box from "app/core/components/shared/Box";
 import Stack from "app/core/components/shared/Stack";
-import Form, { TextField }  from "app/core/components/form";
-
-const FooterDiv = styled('div')(({ theme }) => ({
-  backgroundColor: theme.palette.primary.dark,
-  marginTop: theme.spacing(4),
-  padding: theme.spacing(6, 0),
-}))
 
 const FooterLinks = (props) => {
   const aboutLinks = [
@@ -28,7 +16,7 @@ const FooterLinks = (props) => {
     },
     {
       name: "Contact",
-      route: "/about"
+      route: "/contact"
     },
     {
       name: "Blog",
@@ -97,96 +85,38 @@ const FooterLinks = (props) => {
 
 const Footer = () => {
   return (
-    <FooterDiv>
+    <Box
+      sx={{
+        backgroundColor: "primary.dark",
+        marginTop: 4,
+        py: 6,
+      }}
+    >
       <Container maxWidth="xl">
         <Grid
           container
           sx={{
-            flexDirection: {
-              xs: 'row',
-              md: 'row-reverse',
-            }
+            flexDirection: "row",
+            justifyContent: "center"
           }}
           spacing={2}
         >
-          <Grid item xs={12} md={6}>
-            <Paper
-              sx={{
-                ml: {
-                  md: 'auto'
-                },
-                maxWidth: "500px",
-                padding: 3,
-              }}
-            >
-              <Typography sx={{ mb: 3 }} color="primary" variant="h6">
-                We’re cooking up something delicious.
-                <br />
-                Sign up to find out more.
-              </Typography>
-              <Form
-                onSubmit={{}}
-                // mutate={{
-                //   onSubmit: (variables) => {
-                //     fetch("/api/sendgrid", {
-                //       method: "POST",
-                //       body: variables.email,
-                //     });
-                //   },
-                //   toVariables: (values) => ({
-                //     ...values,
-                //   }),
-                // }}
-              >
-                <TextField
-                  name="email"
-                  variant="outlined"
-                  label="Email"
-                  placeholder="Email"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <EmailOutline />
-                      </InputAdornment>
-                    ),
-                  }}
-                  xs={12}
-                  md={7}
-                />
-
-                <Grid item xs={12} md={5} textAlign="right">
-                  <Button
-                    color="primary"
-                    sx={{
-                      padding: 2,
-                      width: {
-                        xs: '100%'
-                      }
-                    }}
-                    variant="contained"
-                  >
-                    Subscribe
-                  </Button>
-                </Grid>
-              </Form>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} md={6} textAlign='center'>
+          <Grid item xs={12} textAlign='center'>
             <Grid container item xs={12}>
               <Grid item xs={12} md={3}>
-                <Typography variant="h6" sx={{ color: '#FFF' }}>Company</Typography>
+                <Typography variant="h6" sx={{ color: '#FFF', fontWeight: "bold" }}>Company</Typography>
                 <FooterLinks section="company" />
               </Grid>
               <Grid item xs={12} md={3}>
-                <Typography variant="h6" sx={{ color: '#FFF' }}>Chefs</Typography>
+                <Typography variant="h6" sx={{ color: '#FFF', fontWeight: "bold" }}>Chefs</Typography>
                 <FooterLinks section="chefs" />
               </Grid>
               <Grid item xs={12} md={3}>
-                <Typography variant="h6" sx={{ color: '#FFF' }}>Support</Typography>
+                <Typography variant="h6" sx={{ color: '#FFF', fontWeight: "bold" }}>Support</Typography>
                 <FooterLinks section="support" />
               </Grid>
               <Grid item xs={12} md={3}>
-                <Typography variant="h6" sx={{ color: '#FFF' }}>Cities</Typography>
+                <Typography variant="h6" sx={{ color: '#FFF', fontWeight: "bold" }}>Cities</Typography>
                 <FooterLinks section="cities" />
               </Grid>
             </Grid>
@@ -223,7 +153,7 @@ const Footer = () => {
           </Grid>
         </Grid>
       </Container>
-    </FooterDiv>
+    </Box>
   );
 };
 

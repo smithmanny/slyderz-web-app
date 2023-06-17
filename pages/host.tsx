@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
+import Image from "next/image";
 
 import { trpc } from "server/utils/trpc";
 
@@ -32,38 +33,65 @@ const Host = () => {
         </Grid>
         <Grid container item xs={12} spacing={2}>
           <Grid item xs={12} md={4}>
-            <Box>
+            <div style={{ display: "flex" }}>
+              <Image
+                alt="Show your skilla"
+                src="/apron.svg"
+                height={35}
+                width={35}
+                style={{
+                  marginRight: 2,
+                }}
+              />
               <Typography variant="h3" gutterBottom>
                 Showcase your cooking skills
               </Typography>
-              <Typography variant="subtitle2">
-                Chefs have a platform to showcase their skills and create unique
-                menus. Connect with new clients and grow your business with
-                access to our customer base.
+            </div>
+            <Typography variant="subtitle2">
+              Chefs have a platform to showcase their skills and create unique
+              menus. Connect with new clients and grow your business with
+              access to our customer base.
               </Typography>
-            </Box>
           </Grid>
           <Grid item xs={12} md={4}>
-            <Box>
+            <div style={{ display: "flex" }}>
+              <Image
+                alt="You're in control"
+                src="/no-document.svg"
+                height={35}
+                width={35}
+                style={{
+                  marginRight: 2,
+                }}
+              />
               <Typography variant="h3" gutterBottom>
                 Flexibility. No Contracts.
               </Typography>
-              <Typography variant="subtitle2">
-                Work on your own terms and enjoy the freedom to manage your
-                business and grow your culinary career without any contracts.
-              </Typography>
-            </Box>
+            </div>
+            <Typography variant="subtitle2">
+              Work on your own terms and enjoy the freedom to manage your
+              business and grow your culinary career without any contracts.
+            </Typography>
           </Grid>
           <Grid item xs={12} md={4}>
-            <Box>
+            <div style={{ display: "flex" }}>
+              <Image
+                alt="Instant payments"
+                src="/dollar.svg"
+                height={35}
+                width={35}
+                style={{
+                  marginRight: 2,
+                }}
+              />
               <Typography variant="h3" gutterBottom>
                 Instant payments
               </Typography>
-              <Typography variant="subtitle2">
-                With Slyderz, chefs receive instant payments after completing a
-                booking. Say goodbye to waiting for payouts!
-              </Typography>
-            </Box>
+            </div>
+            <Typography variant="subtitle2">
+              With Slyderz, chefs receive instant payments after completing a
+              booking. Say goodbye to waiting for payouts!
+            </Typography>
           </Grid>
         </Grid>
         <AboutSection
