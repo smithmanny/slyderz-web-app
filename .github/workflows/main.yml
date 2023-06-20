@@ -17,22 +17,20 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 18.x
-          cache: yarn
 
       - name: Install packages
         run: yarn install --frozen-lockfile
-        
+
       - name: Building Slyderz
         run: yarn run build
-        
+
   if_merged:
     needs: [build]
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-    environment: staging
-    steps:
-      - name: Deploy to staging
-
+    # steps:
+    #   - run: echo deploying staging
+    #   - name: Deploy to staging
 #       - name: Install Railway
 #         run: npm i -g @railway/cli
 
