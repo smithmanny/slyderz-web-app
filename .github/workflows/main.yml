@@ -28,6 +28,13 @@ jobs:
     needs: [build]
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    steps:
+      - uses: everlytic/branch-merge@1.1.2
+        with:
+          github_token: ${{ github.token }}
+          source_ref: ${{ github.ref }}
+          target_branch: 'main'
+          commit_message_template: '[Automated] Merged {source_ref} into target {target_branch}'
     # steps:
     #   - run: echo deploying staging
     #   - name: Deploy to staging
