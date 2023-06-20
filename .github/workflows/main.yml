@@ -1,0 +1,42 @@
+name: Deploy Slyderz
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Use Node 18
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18.x
+          cache: yarn
+
+      - name: Install packages
+        run: yarn install --frozen-lockfile
+        
+      - name: Building Slyderz
+        run: yarn run build
+        
+  if_merged:
+    needs: [build]
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Deploy to staging
+
+#       - name: Install Railway
+#         run: npm i -g @railway/cli
+
+#       - name: Deploy Slyderz
+#         run: railway up
+#         env:
+#           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
