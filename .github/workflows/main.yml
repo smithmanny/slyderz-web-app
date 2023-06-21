@@ -23,6 +23,19 @@ jobs:
 
       - name: Building Slyderz
         run: yarn run build
+        env:
+          NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: ${{ secrets.secrets}}
+          SECRET_COOKIE_PASSWORD=broward: ${{ secrets.secrets}}
+          STRIPE_SECRET_KEY: ${{ secrets.secrets}}
+          STRIPE_ENDPOINT_SECRET: ${{ secrets.secrets}}
+          AWS_ACCESS_KEY_ID: ${{ secrets.secrets}}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.secrets}}
+          CLOUDINARY_API_KEY: ${{ secrets.secrets}}
+          CLOUDINARY_API_SECRET: ${{ secrets.secrets}}
+          MJ_APIKEY_PRIVATE: ${{ secrets.secrets}}
+          MJ_APIKEY_PUBLIC: ${{ secrets.secrets}}
+          CAPTCHA_SECRET: ${{ secrets.secrets}}
+          NEXT_PUBLIC_CAPTCHA_SITEKEY: ${{ secrets.secrets}}
 
   if_merged:
     needs: [build]
@@ -33,8 +46,8 @@ jobs:
         with:
           github_token: ${{ github.token }}
           source_ref: ${{ github.ref }}
-          target_branch: 'main'
-          commit_message_template: '[Automated] Merged {source_ref} into target {target_branch}'
+          target_branch: "main"
+          commit_message_template: "[Automated] Merged {source_ref} into target {target_branch}"
     # steps:
     #   - run: echo deploying staging
     #   - name: Deploy to staging
