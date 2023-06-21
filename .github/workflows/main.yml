@@ -58,17 +58,8 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-      - uses: everlytic/branch-merge@1.1.2
+      - uses: devmasx/merge-branch@master
         with:
-          github_token: ${{ github.token }}
-          source_ref: ${{ github.ref }}
-          target_branch: "staging"
-          commit_message_template: "[Automated] Merged {source_ref} into {target_branch}"
-
-      - name: Install Railway
-        run: npm i -g @railway/cli
-
-      - name: Deploy Slyderz
-        run: railway up
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          type: now
+          target_branch: staging
+          github_token: ${{ secrets.GITHUB_TOKEN }}
