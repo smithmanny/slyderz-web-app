@@ -30,6 +30,7 @@ export interface FormProps<S extends z.ZodType<any, any>>
   mutation?: FormMutationType;
   toVariables?: (values) => void;
   onSuccess?: (values) => void;
+  submitBtnProps?: any;
 }
 
 export function Form<S extends z.ZodType<any, any>>({
@@ -136,6 +137,7 @@ export function Form<S extends z.ZodType<any, any>>({
                   label="submit-text"
                   disabled={submitting || pristine}
                   type="submit"
+                  {...props.submitBtnProps}
                 >
                   {submitText}
                 </Button>
