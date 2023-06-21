@@ -22,7 +22,6 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Building Slyderz
-        run: yarn run build
         env:
           NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: ${{ secrets.secrets}}
           SECRET_COOKIE_PASSWORD=broward: ${{ secrets.secrets}}
@@ -36,6 +35,7 @@ jobs:
           MJ_APIKEY_PUBLIC: ${{ secrets.secrets}}
           CAPTCHA_SECRET: ${{ secrets.secrets}}
           NEXT_PUBLIC_CAPTCHA_SITEKEY: ${{ secrets.secrets}}
+        run: yarn run build
 
   if_merged:
     needs: [build]
