@@ -1,11 +1,19 @@
-import Layout from "app/core/layouts/Layout";
+import { useState, useEffect, useRef } from "react";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
 
+import Layout from "app/core/layouts/Layout";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
 import Form, { TextField } from "app/core/components/form";
 
 const Contact = () => {
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const captchaRef = useRef<HCaptcha>(null);
+
+  useEffect(() => {
+    if (captchaToken) console.log(`hCaptcha Token: ${captchaToken}`);
+  }, [captchaToken]);
   return (
     <ConsumerContainer maxWidth="sm">
       <Grid container spacing={2}>
@@ -13,7 +21,16 @@ const Contact = () => {
           <Typography variant="h1">Contact Us</Typography>
         </Grid>
         <Grid item xs={12}>
-          <Form submitText="Submit">
+          <Form
+            submitText="Submit"
+            onSubmit={(values) => {
+              if (captchaRef.current) {
+                captchaRef.current.execute();
+              }
+
+              console.log("VALUES", values);
+            }}
+          >
             <TextField
               autoComplete="given-name"
               name="firstName"
@@ -33,7 +50,19 @@ const Contact = () => {
               md={12}
               type="email"
             />
-            <TextField name="message" label="Message" md={12} multiline minRows={5} />
+            <TextField
+              name="message"
+              label="Message"
+              md={12}
+              multiline
+              minRows={5}
+            />
+            <HCaptcha
+              sitekey={process.env.NEXT_PUBLIC_CAPTCHA_SITEKEY || ""}
+              size="invisible"
+              onVerify={setCaptchaToken}
+              ref={captchaRef}
+            />
           </Form>
         </Grid>
       </Grid>
