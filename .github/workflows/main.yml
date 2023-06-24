@@ -10,6 +10,7 @@ jobs:
   build:
     uses: ./.github/workflows/build.yml
     secrets: inherit
+    concurrency: staging
 
   if_merged:
     needs: [build]
@@ -19,7 +20,7 @@ jobs:
       - name: Install Railway
         run: npm i -g @railway/cli
 
-      - name: Deploy
+      - name: Deploy to staging
         run: railway up
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
