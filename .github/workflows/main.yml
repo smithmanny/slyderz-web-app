@@ -1,4 +1,4 @@
-name: Deploy main to staging
+name: Deploy main
 on:
   pull_request:
     branches:
@@ -7,15 +7,36 @@ on:
       - closed
 
 jobs:
-  build:
+  deploy_staging:
     uses: ./.github/workflows/build.yml
     secrets: inherit
-    concurrency: staging
 
   if_merged:
-    needs: [build]
+    needs: [deploy_staging]
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    concurrency: staging
+    environment: staging
+    name: Deploy to staging
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Railway
+        run: bash <(curl -fsSL cli.new)
+
+      - name: Deploy to staging
+        run: railway up --service ${{ secrets.RAILWAY_SERVICE_ID }}
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
+  deploy_production:
+    runs-on: ubuntu-latest
+    needs: [deploy_staging]
+    concurrency: production
+    environment: production
+
+    name: Deploy to staging
     steps:
       - name: Checkout
         uses: actions/checkout@v2
