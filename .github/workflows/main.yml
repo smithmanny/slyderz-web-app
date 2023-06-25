@@ -17,10 +17,16 @@ jobs:
     runs-on: ubuntu-latest
     concurrency: staging
     environment: staging
-    name: Deploy to staging
+    name: Merge into staging and deploy
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Create PR main -> staging
+        run: gh pr create -B staging -H main --title 'Merge main into staging' --body 'Created by Github action'
+
+      - name: Merge PR main -> staging
+        run: gh pr merge staging --auto -d'
 
       - name: Install Railway
         run: bash <(curl -fsSL cli.new)
