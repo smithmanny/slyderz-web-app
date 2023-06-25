@@ -17,10 +17,13 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
       - name: Install Railway
-        run: npm i -g @railway/cli
+        run: bash <(curl -fsSL cli.new)
 
       - name: Deploy to staging
-        run: railway up --service ${{ secrets.RAILWAY_SERVICE_ID}}
+        run: railway up --service ${{ secrets.RAILWAY_SERVICE_ID }}
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
