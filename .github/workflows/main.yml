@@ -45,8 +45,9 @@ jobs:
           state: "failure"
 
   deploy_to_railway:
-    uses: ./.github/workflows/railway.yml
+    needs: deploy_to_staging
     if: github.event.pull_request.merged == true
+    uses: ./.github/workflows/railway.yml
     secrets: inherit
     with:
       environment: staging
