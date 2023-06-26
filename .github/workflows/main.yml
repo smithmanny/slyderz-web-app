@@ -7,18 +7,16 @@ on:
       - closed
 
 jobs:
-  deploy_staging:
-    uses: ./.github/workflows/build.yml
-    secrets: inherit
+  # deploy_staging:
+  #   uses: ./.github/workflows/build.yml
+  #   secrets: inherit
 
   if_merged:
-    needs: [deploy_staging]
+    # needs: [deploy_staging]
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     concurrency: staging
     environment: staging
-    permissions:
-      pull-requests: read
     name: Merge into staging and deploy
     env:
       GH_TOKEN: ${{ github.token }}
