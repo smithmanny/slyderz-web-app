@@ -7,36 +7,51 @@ on:
       - closed
 
 jobs:
-  # deploy_staging:
+  # build_staging:
   #   uses: ./.github/workflows/build.yml
   #   secrets: inherit
 
   if_merged:
-    # needs: [deploy_staging]
+    # needs: [build_staging]
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     concurrency: staging
     environment: staging
-    name: Merge into staging and deploy
-    env:
-      GH_TOKEN: ${{ github.token }}
+    name: Deploy to staging
     steps:
+      - uses: chrnorm/deployment-action@v2
+        name: Create GitHub deployment
+        id: deployment
+        with:
+          token: "${{ github.token }}"
+          environment-url: https://staging.slyderz.co
+          environment: staging
+
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Create PR main -> staging
-        run: |
-          gh pr create -B staging -H main --title 'Merge main into staging' --body 'Created by Github action' --label 'github action'
-          echo "::set-output name=pull_request_number::$(gh pr view --json number -q .number || echo "")"
-        id: createPR
-
-      - name: Merge PR main -> staging
-        run: gh pr merge ${{ steps.createPR.outputs.pull_request_number }} -d -s
 
       - name: Install Railway
         run: bash <(curl -fsSL cli.new)
 
-      - name: Deploy to staging
+      - name: Deploy to Railway
         run: railway up --service ${{ secrets.RAILWAY_SERVICE_ID }}
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
+      - name: Update deployment status (success)
+        if: success()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: "${{ github.token }}"
+          environment-url: ${{ steps.deployment.outputs.environment_url }}
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+          state: "success"
+
+      - name: Update deployment status (failure)
+        if: failure()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: "${{ github.token }}"
+          environment-url: ${{ steps.deployment.outputs.environment_url }}
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+          state: "failure"
