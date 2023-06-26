@@ -47,7 +47,18 @@ jobs:
   deploy_to_railway:
     needs: deploy_to_staging
     if: github.event.pull_request.merged == true
-    uses: ./.github/workflows/railway.yml
-    secrets: inherit
-    with:
-      environment: staging
+    runs-on: ubuntu-latest
+    concurrency: staging
+    environment: staging
+    name: Deploy to Railway
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Railway
+        run: bash <(curl -fsSL cli.new)
+
+      - name: Deploy to Railway
+        run: railway up --service ${{ secrets.RAILWAY_SERVICE_ID }}
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}

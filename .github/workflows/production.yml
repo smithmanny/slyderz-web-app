@@ -9,7 +9,7 @@ jobs:
   #   uses: ./.github/workflows/build.yml
   #   secrets: inherit
 
-  deploy_to_staging:
+  deploy_to_production:
     # needs: [build_production]
     runs-on: ubuntu-latest
     environment: production
@@ -45,7 +45,20 @@ jobs:
           state: "failure"
 
   deploy_to_railway:
-    uses: ./.github/workflows/railway.yml
-    secrets: inherit
-    with:
-      environment: production
+    needs: deploy_to_production
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    concurrency: production
+    environment: production
+    name: Deploy to Railway
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Railway
+        run: bash <(curl -fsSL cli.new)
+
+      - name: Deploy to Railway
+        run: railway up --service ${{ secrets.RAILWAY_SERVICE_ID }}
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
