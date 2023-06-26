@@ -17,18 +17,23 @@ jobs:
     runs-on: ubuntu-latest
     concurrency: staging
     environment: staging
+    permissions:
+      pull-requests: read
     name: Merge into staging and deploy
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Create PR main -> staging
         run: gh pr create -B staging -H main --title 'Merge main into staging' --body 'Created by Github action'
+        id: createPR
+        env:
+          PR_NUMBER: ${{ github.event.number }}
 
       - name: Merge PR main -> staging
-        run: gh pr merge staging --auto -d
+        run: gh pr merge ${{ steps.createPR.outputs.PR_NUMBER }} --auto -d -s
 
       - name: Install Railway
         run: bash <(curl -fsSL cli.new)
