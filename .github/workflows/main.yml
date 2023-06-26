@@ -46,6 +46,7 @@ jobs:
 
   deploy_to_railway:
     uses: ./.github/workflows/railway.yml
+    if: github.event.pull_request.merged == true
     secrets: inherit
     with:
       environment: staging

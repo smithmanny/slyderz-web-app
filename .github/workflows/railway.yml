@@ -34,7 +34,6 @@ on:
 
 jobs:
   deploy_to_railway:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     concurrency: ${{ inputs.environment }}
     environment: ${{ inputs.environment }}
