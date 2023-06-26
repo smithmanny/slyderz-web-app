@@ -3,8 +3,6 @@ on:
   pull_request:
     branches:
       - main
-    types:
-      - closed
 
 jobs:
   # build_staging:
@@ -46,7 +44,7 @@ jobs:
           state: "failure"
 
   deploy_to_railway:
-    # needs: [build_staging]
+    needs: [deploy_to_staging]
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     concurrency: staging
