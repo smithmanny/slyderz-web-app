@@ -24,9 +24,13 @@ jobs:
 
       - name: Create PR main -> staging
         run: gh pr create -B staging -H main --title 'Merge main into staging' --body 'Created by Github action'
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       - name: Merge PR main -> staging
         run: gh pr merge staging --auto -d'
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       - name: Install Railway
         run: bash <(curl -fsSL cli.new)
