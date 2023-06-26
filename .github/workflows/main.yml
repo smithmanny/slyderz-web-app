@@ -28,7 +28,7 @@ jobs:
         run: gh pr create -B staging -H main --title 'Merge main into staging' --body 'Created by Github action'
 
       - name: Merge PR main -> staging
-        run: gh pr merge staging --auto -d'
+        run: gh pr merge staging --auto -d
 
       - name: Install Railway
         run: bash <(curl -fsSL cli.new)
