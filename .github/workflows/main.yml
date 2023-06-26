@@ -20,8 +20,6 @@ jobs:
     name: Merge into staging and deploy
     env:
       GH_TOKEN: ${{ github.token }}
-    permissions:
-      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -33,7 +31,7 @@ jobs:
         id: createPR
 
       - name: Merge PR main -> staging
-        run: gh pr merge ${{ steps.createPR.outputs.pull_request_number }} --auto -d -s
+        run: gh pr merge ${{ steps.createPR.outputs.pull_request_number }} -d -s
 
       - name: Install Railway
         run: bash <(curl -fsSL cli.new)
