@@ -25,13 +25,13 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Create PR main -> staging
-        run: gh pr create -B staging -H main --title 'Merge main into staging' --body 'Created by Github action'
+        run: |
+          gh pr create -B staging -H main --title 'Merge main into staging' --body 'Created by Github action'
+          echo "::set-output name=pull_request_number::$(gh pr view --json number -q .number || echo "")"
         id: createPR
-        env:
-          PR_NUMBER: ${{ github.event.number }}
 
       - name: Merge PR main -> staging
-        run: gh pr merge ${{ steps.createPR.outputs.PR_NUMBER }} --auto -d -s
+        run: gh pr merge ${{ steps.createPR.outputs.pull_request_number }} --auto -d -s
 
       - name: Install Railway
         run: bash <(curl -fsSL cli.new)
