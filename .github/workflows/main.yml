@@ -3,21 +3,16 @@ on:
   pull_request:
     branches:
       - main
-    types:
-      - closed
 
 jobs:
   # build_staging:
   #   uses: ./.github/workflows/build.yml
   #   secrets: inherit
 
-  if_merged:
+  deploy_to_staging:
     # needs: [build_staging]
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-    concurrency: staging
     environment: staging
-    name: Deploy to staging
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -29,14 +24,6 @@ jobs:
           token: "${{ github.token }}"
           environment-url: https://staging.slyderz.co
           environment: staging
-
-      - name: Install Railway
-        run: bash <(curl -fsSL cli.new)
-
-      - name: Deploy to Railway
-        run: railway up --service ${{ secrets.RAILWAY_SERVICE_ID }}
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
       - name: Update deployment status (success)
         if: success()
@@ -55,3 +42,22 @@ jobs:
           environment-url: ${{ steps.deployment.outputs.environment_url }}
           deployment-id: ${{ steps.deployment.outputs.deployment_id }}
           state: "failure"
+
+  deploy_to_railway:
+    needs: [deploy_to_staging]
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    concurrency: staging
+    environment: staging
+    name: Deploy to staging
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Railway
+        run: bash <(curl -fsSL cli.new)
+
+      - name: Deploy to Railway
+        run: railway up --service ${{ secrets.RAILWAY_SERVICE_ID }}
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
