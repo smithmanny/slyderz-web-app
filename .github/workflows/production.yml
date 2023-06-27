@@ -39,6 +39,6 @@ jobs:
           state: "failure"
 
       - name: Deploy to Railway
-        uses: ./.github/workflows/railway.yml
+        uses: ./.github/workflows/actions/railway/action.yml
         with:
           environment: production
