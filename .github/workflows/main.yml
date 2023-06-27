@@ -45,7 +45,7 @@ jobs:
           state: "failure"
 
       - name: Deploy to Railway
-        uses: ./.github/actions/railway/action.yml
+        uses: ./.github/actions/railway
         with:
           environment: staging
 
