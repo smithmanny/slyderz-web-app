@@ -1,0 +1,32 @@
+name: Deploy to Railway
+description: Deploy to Railway
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v2
+
+    - run: bash <(curl -fsSL cli.new)
+      shell: bash
+
+    - run: railway up --service ${{ secrets.RAILWAY_SERVICE_ID }}
+      shell: bash
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+# jobs:
+#   deploy_to_railway:
+#     runs-on: ubuntu-latest
+#     concurrency: ${{ inputs.environment }}
+#     environment: ${{ inputs.environment }}
+#     name: Deploy to Railway
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v2
+
+#       - name: Install Railway
+#         run: bash <(curl -fsSL cli.new)
+
+#       - name: Deploy to Railway
+#         run: railway up --service ${{ secrets.RAILWAY_SERVICE_ID }}
+#         env:
+#           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
