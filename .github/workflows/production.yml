@@ -6,7 +6,7 @@ concurrency: production
 jobs:
   release_production:
     name: Release to Production
-    if: startsWith(github.ref_name, 'r-') # the prefix we have added to the tag
+    if: startsWith(github.ref_name, 'release-') # the prefix we have added to the tag
     environment: production
     runs-on: ubuntu-latest
     steps:
@@ -40,7 +40,7 @@ jobs:
           state: "failure"
 
       - name: Deploy to Railway
-        uses: ./.github/actions/railway/action
+        uses: ./.github/actions/railway
         with:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
           RAILWAY_SERVICE_ID: ${{ secrets.RAILWAY_SERVICE_ID }}
