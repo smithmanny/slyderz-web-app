@@ -73,3 +73,12 @@ jobs:
           CAPTCHA_SECRET: ${{ secrets.CAPTCHA_SECRET}}
           NEXT_PUBLIC_CAPTCHA_SITEKEY: ${{ secrets.NEXT_PUBLIC_CAPTCHA_SITEKEY}}
         run: yarn run build
+
+      - name: Upload Next build
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: |
+            .next
+            public
+          retention-days: 7
