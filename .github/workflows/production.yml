@@ -2,6 +2,7 @@ on:
   release:
     types: [published]
 
+concurrency: production
 jobs:
   release_production:
     name: Release to Production
@@ -41,4 +42,5 @@ jobs:
       - name: Deploy to Railway
         uses: ./.github/actions/railway/action
         with:
-          environment: production
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_SERVICE_ID: ${{ secrets.RAILWAY_SERVICE_ID }}
