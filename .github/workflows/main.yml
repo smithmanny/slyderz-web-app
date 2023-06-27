@@ -6,18 +6,18 @@ on:
 
 concurrency: staging
 jobs:
-  # build_staging:
-  #   uses: ./.github/workflows/build.yml
-  #   secrets: inherit
+  build_staging:
+    uses: ./.github/workflows/build.yml
+    secrets: inherit
 
   deploy_staging:
-    # needs: [build_staging]
+    needs: [build_staging]
     runs-on: ubuntu-latest
     environment: staging
     name: Deploy to staging
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - uses: chrnorm/deployment-action@v2
         name: Create GitHub deployment
@@ -57,15 +57,22 @@ jobs:
     needs: deploy_staging
     steps:
       - uses: actions/checkout@v3
+      - name: Upload Next build
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: |
+            .next
+            public
+          retention-days: 7
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
-          name: cdk-out
-          path: cdk.out
+          name: build
       # we can't attack a folder to a release
       - name: Zip Artifact
         run: |
-          zip -r cdk.out.zip cdk.out
+          zip -r build.zip .next.public
       - name: Create Release Tag
         id: create-release-tag
         # left pads the run number with zeros to a length of 4; better alphabetical order
@@ -84,4 +91,4 @@ jobs:
             ## How to Promote?
             In order to promote this to prod, edit the draft and press **"Publish release"**.
           draft: true
-          files: cdk.out.zip
+          files: build.zip
