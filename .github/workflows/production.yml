@@ -44,4 +44,4 @@ jobs:
         uses: ./.github/actions/railway
         with:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-          RAILWAY_SERVICE_ID: 4346f90d-4f2f-4965-8f22-c689cccc3472
+          RAILWAY_SERVICE_ID: ${{ secrets.RAILWAY_SERVICE_ID }}
