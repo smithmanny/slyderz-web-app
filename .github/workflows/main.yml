@@ -60,7 +60,7 @@ jobs:
       - name: Create Release Tag
         id: create-release-tag
         # left pads the run number with zeros to a length of 4; better alphabetical order
-        run: echo "tag_name=release-$(printf %04d $GITHUB_RUN_NUMBER)" >> $GITHUB_OUTPUT
+        run: echo "tag_name=v-$(printf %04d $GITHUB_RUN_NUMBER)" >> $GITHUB_OUTPUT
       - name: Create Draft Release
         uses: softprops/action-gh-release@v1
         with:
@@ -74,4 +74,5 @@ jobs:
 
             ## How to Promote?
             In order to promote this to prod, edit the draft and press **"Publish release"**.
+          generate_release_notes: true
           draft: true
