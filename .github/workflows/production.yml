@@ -7,7 +7,7 @@ concurrency: production
 jobs:
   release_production:
     name: Release to Production
-    if: startsWith(github.ref_name, 'release-') # the prefix we have added to the tag
+    if: startsWith(github.ref_name, 'v-') # the prefix we have added to the tag
     environment: production
     runs-on: ubuntu-latest
     steps:
