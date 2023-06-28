@@ -3,8 +3,6 @@ on:
     types: [published]
 
 concurrency: production
-env:
-  RAILWAY_SERVICE_ID: ${{ secrets.RAILWAY_SERVICE_ID }}
 
 jobs:
   release_production:
