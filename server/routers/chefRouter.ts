@@ -59,8 +59,8 @@ const chefRouter = router({
 
     const createAccountLink = await ctx.stripe.accountLinks.create({
       account: stripeAccount.id,
-      refresh_url: "http://localhost:3000/api/stripe/reauth",
-      return_url: "http://localhost:3000/dashboard",
+      refresh_url: `${process.env.NEXT_PUBLIC_URL}/api/stripe/reauth`,
+      return_url: `${process.env.NEXT_PUBLIC_URL}/dashboard`,
       type: "account_onboarding",
     });
 

@@ -28,8 +28,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
   // TODO: replace with prod url
   const createAccountLink = await stripe.accountLinks.create({
     account: user.chef.stripeAccountId,
-    refresh_url: "http://localhost:3000/api/stripe/reauth",
-    return_url: "http://localhost:3000/dashboard/onboarding",
+    refresh_url: `${process.env.NEXT_PUBLIC_URL}/api/stripe/reauth`,
+    return_url: `${process.env.NEXT_PUBLIC_URL}/dashboard/onboarding`,
     type: "account_onboarding",
   });
 
