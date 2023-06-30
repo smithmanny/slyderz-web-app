@@ -1,4 +1,4 @@
-name: Merge feature branch into main
+name: Build main
 on:
   push:
     branches:

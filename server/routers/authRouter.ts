@@ -112,7 +112,7 @@ const authRouter = router({
     };
 
     const user = await createUser();
-    const activationUrl = `http://localhost:3000/auth/email-verification/${user.token.toString()}`;
+    const activationUrl = `${process.env.NEXT_PUBLIC_URL}/auth/email-verification/${user.token.toString()}`;
     sendSesEmail({
       to: "contact@slyderz.co",
       type: TRANSACTIONAL_EMAILS.activation,
@@ -178,7 +178,7 @@ const authRouter = router({
       const user = opts.ctx.auth.transformDatabaseUser(dbUser);
       const token = await emailVerificationToken.issue(user.userId);
 
-      const activationUrl = `http://localhost:3000/auth/email-verification/${token.toString()}`;
+      const activationUrl = `${process.env.NEXT_PUBLIC_URL}/auth/email-verification/${token.toString()}`;
       sendSesEmail({
         to: user.email,
         type: TRANSACTIONAL_EMAILS.activation,
