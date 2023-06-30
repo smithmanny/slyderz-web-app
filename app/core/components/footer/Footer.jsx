@@ -20,7 +20,7 @@ const FooterLinks = (props) => {
     },
     {
       name: "Blog",
-      route: "/about"
+      route: "/"
     },
     {
       name: "Terms",
@@ -40,7 +40,7 @@ const FooterLinks = (props) => {
   const supportLinks = [
     {
       name: 'Consumer Help',
-      route: "/become-a-chef"
+      route: "/"
     }
   ]
   const citiesLinks = [
