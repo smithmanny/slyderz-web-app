@@ -23,6 +23,10 @@ export async function getServerSideProps(ctx) {
       },
     };
   }
+
+  return {
+    props: {},
+  };
 }
 const ForgotPasswordPage = () => {
   const [isSuccess, setIsSuccess] = useState(false);
