@@ -9,6 +9,7 @@ import Button from "app/core/components/shared/Button";
 import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
 import MenuItemModal from "app/core/modals/MenuItemModal";
+import { BorderColor } from "mdi-material-ui";
 
 const MuiCardMedia = styled(CardMedia)`
   & .MuiCardMedia-img {
@@ -69,15 +70,19 @@ const Menu = (props) => {
                       </Typography>
                     </CardContent>
                     <CardContent>
-                      <Button
-                        variant="outlined"
-                        fullWidth={false}
+                      <Typography
                         sx={{
-                          width: 200
+                          width: 200,
+                          border: "1px solid",
+                          borderColor: 'primary.main',
+                          borderRadius: 1,
+                          textAlign: 'center',
+                          fontWeight: 545,
+                          p: ".9"
                         }}
                       >
                         Add to cart
-                      </Button>
+                      </Typography>
                     </CardContent>
                   </Box>
                 </CardActionArea>

@@ -6,6 +6,7 @@ import Form, { TextField } from "app/core/components/form";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Typography from "app/core/components/shared/Typography";
 import { trpc } from "server/utils/trpc";
+import { ResetPassword } from "app/auth/validations";
 
 export const getServerSideProps = async ({ query }) => {
   if (!query.token) {
@@ -23,10 +24,6 @@ export const getServerSideProps = async ({ query }) => {
   };
 };
 
-interface ResetPasswordTypes {
-  token: string;
-}
-
 const ResetPasswordPage = ({ token }) => {
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const resetPassword = trpc.auth.handlePasswordReset.useMutation({
@@ -41,7 +38,10 @@ const ResetPasswordPage = ({ token }) => {
             Password Reset Successfully
           </Typography>
           <Typography>
-            Go to the <Link href="/">homepage</Link>
+            Go back{" "}
+            <Link href="/" style={{ color: "#000" }}>
+              Home
+            </Link>
           </Typography>
         </div>
       ) : (
@@ -51,6 +51,7 @@ const ResetPasswordPage = ({ token }) => {
           </Typography>
           <Form
             submitText="Reset Password"
+            schema={ResetPassword}
             mutation={{
               schema: resetPassword.mutateAsync,
               toVariables: (values) => ({
@@ -64,17 +65,6 @@ const ResetPasswordPage = ({ token }) => {
               name="passwordConfirmation"
               label="Confirm New Password"
               type="password"
-            />
-            <TextField
-              sx={{ display: "none" }}
-              name="token"
-              label="Token"
-              value={token}
-              fieldProps={{
-                type: "hidden",
-              }}
-              hidden
-              disabled
             />
           </Form>
         </>

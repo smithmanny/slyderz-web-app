@@ -148,7 +148,11 @@ export const ChefPage = (props) => {
         </Grid>
         <Grid container item xs={12} spacing={2} direction="row-reverse">
           <Grid item md={4} xs={12}>
-            <CartSummary chefId={chefId} hours={data?.hours} />
+            <CartSummary
+              chefId={chefId}
+              hours={data?.hours}
+              nextAvailableChefDay={data?.nextAvailableChefDay}
+            />
           </Grid>
           <Grid item xs>
             <TabPanel value={value} index={0}>
