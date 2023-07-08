@@ -21,7 +21,6 @@ export const ResetPassword = z
   .object({
     password: password,
     passwordConfirmation: password,
-    token: z.string(),
   })
   .refine((data) => data.password === data.passwordConfirmation, {
     message: "Passwords don't match",

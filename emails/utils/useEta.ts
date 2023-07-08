@@ -1,9 +1,10 @@
-import * as ETA from "eta";
+import { Eta } from "eta";
+import path from 'path';
 
-ETA.configure({
+
+const eta = new Eta({
   tags: ["{{", "}}"],
-  views: ["emails/transactional/views", "emails/shared"],
-  root: "/emails",
+  views: path.join(__dirname, "/emails/transactional",)
 });
 
-export default ETA;
+export default eta;

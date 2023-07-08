@@ -187,7 +187,7 @@ const authRouter = router({
 
       return;
     }),
-  sendPasswordResetLink: protectedProcedure
+  sendPasswordResetLink: publicProcedure
     .input(
       z.object({
         email: z.string(),
@@ -237,7 +237,13 @@ const authRouter = router({
           opts.ctx.auth.invalidateAllUserSessions(user.userId),
           passwordResetToken.invalidateAllUserTokens(user.userId),
           opts.ctx.auth.updateKeyPassword("email", user.email, input.password),
-        ]);
+        ]).catch(err => {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Please try again",
+            cause: err,
+          });
+        });
 
         // update key
         const session = await opts.ctx.auth.createSession(user.userId);
