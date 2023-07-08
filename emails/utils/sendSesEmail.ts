@@ -11,10 +11,6 @@ import EmailNewOrder from "emails/new-order";
 import EmailNewOrderApproved from "emails/order-approved";
 import EmailNewOrderDenied from "emails/order-denied";
 
-import fs from "fs";
-import mjml2html from "mjml";
-import Eta from "./useEta";
-
 import { TRANSACTIONAL_EMAILS, SendSesEmailType } from "types";
 
 async function sendSesEmail({ to, type, variables = {} }: SendSesEmailType) {
