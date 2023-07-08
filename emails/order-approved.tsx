@@ -39,8 +39,8 @@ export const EmailNewOrderApproved = ({
       />
       <Heading style={global.heading}>Your order has been approved 🥳</Heading>
       <Text style={global.text}>
-        You're one step closer to an unforgettable experience. The card you had
-        on file will now be charged.
+        You&apos;re one step closer to an unforgettable experience. The card you
+        had on file will now be charged.
       </Text>
     </Section>
     <Hr style={global.hr} />
