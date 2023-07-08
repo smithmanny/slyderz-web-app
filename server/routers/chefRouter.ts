@@ -119,6 +119,7 @@ const chefRouter = router({
 
         const getNextAvailableChefDay = () => {
           const chefWorkingDays: Array<number> = [];
+          const today = new Date()
 
           chef.hours.forEach((hourBlock) =>
             hourBlock.daysOfWeek.forEach((day) => {
@@ -128,7 +129,6 @@ const chefRouter = router({
           );
 
           function getNextDay(day: number|undefined): Date {
-            const today = new Date()
             let date: Date = today
 
             switch(day) {
@@ -173,7 +173,7 @@ const chefRouter = router({
             return getNextDay(daysAfterToday[0])
           }
 
-          return getNextDay(sortedAvailableDays[workingDayIndex])
+          return today
         }
 
         const nextAvailableChefDay = getNextAvailableChefDay()
