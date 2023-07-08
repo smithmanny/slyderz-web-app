@@ -54,7 +54,7 @@
   "lucia-auth": "^1.8.0",
   "mdi-material-ui": "7.7.0",
   "mui-rff": "6.1.4",
-  "next": "13.4.9",
+  "next": "13.4.4",
   "next-cloudinary": "^4.13.1",
   "node-mailjet": "^6.0.2",
   "notistack": "^3.0.1",
