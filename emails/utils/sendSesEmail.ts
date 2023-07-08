@@ -1,84 +1,78 @@
 import { SendEmailCommand } from "@aws-sdk/client-ses";
+import { render } from '@react-email/render';
+
 import SesClient from "app/utils/aws/sesClient";
 import createEmailParams from "app/utils/aws/createEmailParams";
-import fs from "fs";
-import mjml2html from "mjml";
-import Eta from "./useEta";
+import EmailActivateAccount from "emails/activate-account";
+import EmailForgotPasswordEmail from "emails/forgot-password";
+import EmailPasswordChangedEmail from "emails/password-changed";
+import EmailChefOrderRequest from "emails/chef-order-request";
+import EmailNewOrder from "emails/new-order";
+import EmailNewOrderApproved from "emails/order-approved";
+import EmailNewOrderDenied from "emails/order-denied";
 
 import { TRANSACTIONAL_EMAILS, SendSesEmailType } from "types";
 
 async function sendSesEmail({ to, type, variables = {} }: SendSesEmailType) {
-  let emailTemplate: string;
+  let Email: any;
   let subject: string;
 
   switch (type) {
     case TRANSACTIONAL_EMAILS.activation:
-      emailTemplate = "./emails/transactional/views/activate.eta.mjml";
+      Email = EmailActivateAccount;
       subject = "Activate your account.";
       break;
     case TRANSACTIONAL_EMAILS.newOrderConsumer:
-      emailTemplate = "./emails/transactional/views/new-order.eta.mjml";
+      Email = EmailNewOrder;
       subject = "We got your request! Your order will be confirmed soon.";
       break;
     case TRANSACTIONAL_EMAILS.newOrderChef:
-      emailTemplate =
-        "./emails/transactional/views/chef-order-request.eta.mjml";
+      Email = EmailChefOrderRequest;
       subject = "You got a new order!";
       break;
     case TRANSACTIONAL_EMAILS.denyOrder:
-      emailTemplate = "./emails/transactional/views/order-denied.eta.mjml";
+      Email = EmailNewOrderDenied;
       subject = "Sorry, your order was denied.";
       break;
     case TRANSACTIONAL_EMAILS.confirmOrder:
-      emailTemplate = "./emails/transactional/views/order-approved.eta.mjml";
+      Email = EmailNewOrderApproved;
       subject = "Your order has been approved!";
       break;
     case TRANSACTIONAL_EMAILS.forgotPassword:
-      emailTemplate = "./emails/transactional/views/forgot-password.eta.mjml";
+      Email = EmailForgotPasswordEmail;
       subject = "Reset your Slyderz password";
       break;
     case TRANSACTIONAL_EMAILS.passwordReset:
-      emailTemplate = "./emails/transactional/views/password-changed.eta.mjml";
+      Email = EmailPasswordChangedEmail;
       subject = "Your password has been changed";
       break;
     default:
       throw new Error("Can't send email");
   }
 
-  if (!subject || !emailTemplate) {
-    throw new Error("Can't send email");
+  const htmlContent = render(Email(variables), {
+    pretty: true,
+  })
+  const textContent = render(Email(variables), {
+    pretty: true,
+    plainText: true
+  })
+  const params = {
+    to,
+    subject,
+    htmlContent,
+    textContent,
+  };
+  try {
+    const input = createEmailParams(params);
+    const command = new SendEmailCommand(input);
+    const response = await SesClient.send(command);
+
+    return response;
+  } catch (err: any) {
+    console.log("Email template has errors", err);
+    throw new Error("Can't send emails", err);
   }
-
-  // 1. Read email mjml file
-  // 2. Get vars for template - json file
-  // 3. Replace {{}} with vars
-  // 4. Convert from mjml to html
-  fs.readFile(emailTemplate, "utf8", async (err, data) => {
-    if (err) {
-      console.error("Template error", err);
-      throw new Error("Can't send emails", err);
-    }
-
-    const emailTemplate = Eta.render(data, variables);
-    const html = mjml2html(emailTemplate).html;
-
-    const params = {
-      to,
-      subject,
-      htmlContent: html,
-      textContent: "",
-    };
-    try {
-      const input = createEmailParams(params);
-      const command = new SendEmailCommand(input);
-      const response = await SesClient.send(command);
-
-      return response;
-    } catch (err: any) {
-      console.log("Email template has errors", err);
-      throw new Error("Can't send emails", err);
-    }
-  });
 }
 
 export default sendSesEmail;

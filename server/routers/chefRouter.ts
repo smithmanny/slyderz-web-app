@@ -1,7 +1,9 @@
 import { TRPCError } from "@trpc/server";
+import { nextSunday, nextMonday, nextTuesday, nextWednesday, nextThursday, nextFriday, nextSaturday } from 'date-fns'
 
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 import { GetChefDishesType } from "app/chefs/validations";
+import { convertDayToInt } from "app/utils/time";
 
 const chefRouter = router({
   fetchNearbyChefs: publicProcedure.query(async (opts) => {
@@ -83,6 +85,15 @@ const chefRouter = router({
         const chef = await ctx.prisma.chef.findFirstOrThrow({
           where: {
             id: input,
+            AND: {
+              hours: {
+                some: {
+                  daysOfWeek: {
+                    isEmpty: false
+                  }
+                }
+              },
+            },
           },
           select: {
             dishes: {
@@ -106,7 +117,69 @@ const chefRouter = router({
           },
         });
 
+        const getNextAvailableChefDay = () => {
+          const chefWorkingDays: Array<number> = [];
+
+          chef.hours.forEach((hourBlock) =>
+            hourBlock.daysOfWeek.forEach((day) => {
+              const matchedDay = convertDayToInt(day);
+              chefWorkingDays.push(matchedDay);
+            })
+          );
+
+          function getNextDay(day: number|undefined): Date {
+            const today = new Date()
+            let date: Date = today
+
+            switch(day) {
+              case 0:
+                date = nextSunday(today)
+                break;
+              case 1:
+                date = nextMonday(today)
+                break;
+              case 2:
+                date = nextTuesday(today)
+                break;
+              case 3:
+                date = nextWednesday(today)
+                break;
+              case 4:
+                date = nextThursday(today)
+                break;
+              case 5:
+                date = nextFriday(today)
+                break;
+              case 6:
+                date = nextSaturday(today)
+                break;
+            }
+
+            return date;
+          }
+
+          const sortedAvailableDays = chefWorkingDays.sort()
+          const todayDay = new Date().getDay()
+          const workingDayIndex = sortedAvailableDays.indexOf(todayDay)
+
+          // If chefWorkingDays does not contain today return the next available day
+          if (workingDayIndex === -1) {
+            const daysAfterToday = sortedAvailableDays.filter(day => day >= todayDay)
+
+            if (daysAfterToday.length === 0) {
+              return getNextDay(sortedAvailableDays[0])
+            }
+
+            return getNextDay(daysAfterToday[0])
+          }
+
+          return getNextDay(sortedAvailableDays[workingDayIndex])
+        }
+
+        const nextAvailableChefDay = getNextAvailableChefDay()
+
         return {
+          nextAvailableChefDay: nextAvailableChefDay,
           dishes: chef.dishes,
           chefName: chef.user.name,
           chefImage: chef.user.image?.imageUrl,

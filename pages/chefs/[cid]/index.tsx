@@ -82,13 +82,13 @@ export const ChefPage = (props) => {
               position: "relative",
             }}
           >
-            <CldImage
+            {/* <CldImage
               src="https://res.cloudinary.com/slyderz/image/upload/v1686420045/dcdp5lc26pzvv8xlpfui.png"
               sizes="100vw"
               alt="chef bg picture"
               fill
               priority
-            />
+            /> */}
             <Box
               sx={{
                 position: "absolute",
@@ -101,14 +101,15 @@ export const ChefPage = (props) => {
               }}
             >
               {data.chefImage ? (
-                <CldImage
-                  width="150"
-                  height="150"
-                  src={data.chefImage}
-                  sizes="100vw"
-                  alt="chef profile picture"
-                  priority
-                />
+                // <CldImage
+                //   width="150"
+                //   height="150"
+                //   src={data.chefImage}
+                //   sizes="100vw"
+                //   alt="chef profile picture"
+                //   priority
+                // />
+                <h1></h1>
               ) : (
                 <ChefProfileAvatar
                   alt="chef profile picture"
@@ -148,7 +149,11 @@ export const ChefPage = (props) => {
         </Grid>
         <Grid container item xs={12} spacing={2} direction="row-reverse">
           <Grid item md={4} xs={12}>
-            <CartSummary chefId={chefId} hours={data?.hours} />
+            <CartSummary
+              chefId={chefId}
+              hours={data?.hours}
+              nextAvailableChefDay={data?.nextAvailableChefDay}
+            />
           </Grid>
           <Grid item xs>
             <TabPanel value={value} index={0}>

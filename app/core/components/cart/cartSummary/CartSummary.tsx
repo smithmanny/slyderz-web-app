@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import type { DaysOfWeekTypeEnum } from "@prisma/client";
@@ -24,32 +24,38 @@ type HoursType = {
 type CartSummaryType = {
   chefId: string;
   hours: Array<HoursType>;
+  nextAvailableChefDay?: Date;
 };
 
 const CartSummary = (props: CartSummaryType) => {
   const { chefId, hours } = props;
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
+
   const { data } = trpc.cart.getUserCart.useQuery();
   const createCart = trpc.cart.createCart.useMutation({
     onSuccess: () => {
       return router.push(`/chefs/${chefId}/checkout`);
     },
   });
+
   const cart: Cart = {
     items: data?.items || [],
     total: data?.total || 0,
   };
-
   const isCheckoutPage = router.asPath.includes("checkout");
-
   const time = useMemo(() => [...todAM, ...todPM], []);
   const [selectedEventDate, setSelectedEventDate] = useState<Date>(new Date());
   const [selectedEventTime, setSelectedEventTime] = useState("");
-
   const cartItems = cart.items;
   const total = cart.total;
   const orderServiceFee: number = total * CONSUMER_SERVICE_FEE;
+
+  useEffect(() => {
+    if (props.nextAvailableChefDay) {
+      setSelectedEventDate(props.nextAvailableChefDay);
+    }
+  }, [props.nextAvailableChefDay]);
 
   const handleEventDate = (date: Date) => {
     setSelectedEventDate(date);
@@ -67,22 +73,22 @@ const CartSummary = (props: CartSummaryType) => {
         hourBlock.daysOfWeek.map((day) => {
           const matchedDay = convertDayToInt(day);
           workingDays.push(matchedDay);
-        })
+        }),
       );
 
       const offDays = daysOfWeek.filter((day) => !workingDays.includes(day));
 
       return offDays.includes(date.getDay());
     },
-    [hours]
+    [hours],
   );
 
   const getAvailableTime = useCallback(() => {
     const selectedDayOfWeek: number = selectedEventDate.getDay();
     const selectedTime = hours.find((hourBlock) =>
       hourBlock.daysOfWeek.find(
-        (dayOfWeek) => convertDayToInt(dayOfWeek) === selectedDayOfWeek
-      )
+        (dayOfWeek) => convertDayToInt(dayOfWeek) === selectedDayOfWeek,
+      ),
     );
     const startTime = time.find((t) => t.label === selectedTime?.startTime);
     const endTime = time.find((t) => t.label === selectedTime?.endTime);
@@ -136,7 +142,12 @@ const CartSummary = (props: CartSummaryType) => {
 
         {(cartItems?.length === 0 || cartItems === undefined) && (
           <Grid item xs={12} textAlign="center">
-            <Image alt="Empty cart" width={85} height={85} src="/empty-cart.svg" />
+            <Image
+              alt="Empty cart"
+              width={85}
+              height={85}
+              src="/empty-cart.svg"
+            />
             <Typography fontWeight="550" variant="h5">
               Your cart is empty
             </Typography>

@@ -111,3 +111,17 @@ export interface SendSesEmailType {
   type: string;
   variables?: SendSesObjectType;
 }
+
+type EmailOrderItemsType = {
+  name: string;
+  price: number;
+  quantity: number;
+};
+
+export type EmailNewOrderType = {
+  orderLocation: string;
+  orderDate: string;
+  orderTime: string;
+  orderTotal: string;
+  orderItems: Array<EmailOrderItemsType>;
+};
