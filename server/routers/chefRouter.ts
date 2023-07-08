@@ -179,7 +179,7 @@ const chefRouter = router({
         const nextAvailableChefDay = getNextAvailableChefDay()
 
         return {
-          nextAvailableChefDay,
+          nextAvailableChefDay: nextAvailableChefDay,
           dishes: chef.dishes,
           chefName: chef.user.name,
           chefImage: chef.user.image?.imageUrl,

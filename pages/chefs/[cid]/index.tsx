@@ -69,7 +69,6 @@ export const ChefPage = (props) => {
   const { data, isLoading } = trpc.chef.fetchChefPublicProfile.useQuery(chefId);
 
   if (isLoading || !data?.chefName) return null;
-  console.log("DATA", data);
 
   return (
     <ConsumerContainer>
@@ -83,13 +82,13 @@ export const ChefPage = (props) => {
               position: "relative",
             }}
           >
-            <CldImage
+            {/* <CldImage
               src="https://res.cloudinary.com/slyderz/image/upload/v1686420045/dcdp5lc26pzvv8xlpfui.png"
               sizes="100vw"
               alt="chef bg picture"
               fill
               priority
-            />
+            /> */}
             <Box
               sx={{
                 position: "absolute",
@@ -102,14 +101,15 @@ export const ChefPage = (props) => {
               }}
             >
               {data.chefImage ? (
-                <CldImage
-                  width="150"
-                  height="150"
-                  src={data.chefImage}
-                  sizes="100vw"
-                  alt="chef profile picture"
-                  priority
-                />
+                // <CldImage
+                //   width="150"
+                //   height="150"
+                //   src={data.chefImage}
+                //   sizes="100vw"
+                //   alt="chef profile picture"
+                //   priority
+                // />
+                <h1></h1>
               ) : (
                 <ChefProfileAvatar
                   alt="chef profile picture"

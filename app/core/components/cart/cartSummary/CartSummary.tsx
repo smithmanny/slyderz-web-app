@@ -52,8 +52,10 @@ const CartSummary = (props: CartSummaryType) => {
   const orderServiceFee: number = total * CONSUMER_SERVICE_FEE;
 
   useEffect(() => {
-    // selectedEventDate(props.nextAvailableChefDay);
-  });
+    if (props.nextAvailableChefDay) {
+      setSelectedEventDate(props.nextAvailableChefDay);
+    }
+  }, [props.nextAvailableChefDay]);
 
   const handleEventDate = (date: Date) => {
     setSelectedEventDate(date);
@@ -71,22 +73,22 @@ const CartSummary = (props: CartSummaryType) => {
         hourBlock.daysOfWeek.map((day) => {
           const matchedDay = convertDayToInt(day);
           workingDays.push(matchedDay);
-        })
+        }),
       );
 
       const offDays = daysOfWeek.filter((day) => !workingDays.includes(day));
 
       return offDays.includes(date.getDay());
     },
-    [hours]
+    [hours],
   );
 
   const getAvailableTime = useCallback(() => {
     const selectedDayOfWeek: number = selectedEventDate.getDay();
     const selectedTime = hours.find((hourBlock) =>
       hourBlock.daysOfWeek.find(
-        (dayOfWeek) => convertDayToInt(dayOfWeek) === selectedDayOfWeek
-      )
+        (dayOfWeek) => convertDayToInt(dayOfWeek) === selectedDayOfWeek,
+      ),
     );
     const startTime = time.find((t) => t.label === selectedTime?.startTime);
     const endTime = time.find((t) => t.label === selectedTime?.endTime);
