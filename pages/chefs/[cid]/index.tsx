@@ -115,6 +115,7 @@ export const ChefPage = (props) => {
                   sx={{
                     height: 150,
                     width: 150,
+                    margin: "auto",
                     mb: 2,
                   }}
                   src="/profile_pic.jpeg"
