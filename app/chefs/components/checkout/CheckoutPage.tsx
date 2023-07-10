@@ -82,7 +82,7 @@ const CheckoutPage = ({
 
   const createOrder = trpc.checkout.createCheckout.useMutation();
   const stripePaymentMethods = useAppSelector(
-    (state) => state.user.stripeCards
+    (state) => state.user.stripeCards,
   );
   const address = useAppSelector((state) => state.user.address);
   const isAddressEmpty = Object.keys(address).length === 0;

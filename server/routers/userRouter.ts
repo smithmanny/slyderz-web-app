@@ -37,7 +37,7 @@ const userRouter = router({
         },
       });
 
-      return user.address;
+      return user.address ?? [];
     }
 
     async function getChefStatus(userId: string) {
