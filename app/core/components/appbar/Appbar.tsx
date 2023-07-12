@@ -23,7 +23,7 @@ const AccountPopover = dynamic(
   () => import("app/core/components/accountPopover"),
   {
     ssr: false,
-  }
+  },
 );
 
 function ElevationScroll(props) {
@@ -129,15 +129,16 @@ const Appbar = (props) => {
 
                 <Stack direction="row" spacing={2} alignItems="center">
                   {user.chef.isChef && (
-                    <Button
-                      label="chef dashboard"
-                      variant="text"
-                      onClick={navigateToDashboard}
-                    >
-                      <Typography sx={{ color: "black", fontWeight: 600 }}>
+                    <Link href="/dashboard">
+                      <Button
+                        label="chef dashboard"
+                        variant="text"
+                        // onClick={navigateToDashboard}
+                        sx={{ color: "black", fontWeight: 600 }}
+                      >
                         Your Dashboard
-                      </Typography>
-                    </Button>
+                      </Button>
+                    </Link>
                   )}
                   <IconButton
                     aria-label="cart"
