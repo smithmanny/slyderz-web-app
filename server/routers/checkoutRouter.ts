@@ -117,19 +117,18 @@ const checkoutRouter = router({
             to: order.user.email,
             type: TRANSACTIONAL_EMAILS.newOrderConsumer,
             variables: {
-              orderNumber: order.confirmationNumber,
+              // orderNumber: order.confirmationNumber,
               orderDate: readableDate(date),
               orderTime: eventTime,
               orderLocation: address,
-              orderSubtotal: order.amount,
-              orderServiceFee: consumerServiceFee,
-              orderTotal: order.amount + consumerServiceFee,
+              // orderSubtotal: order.amount,
+              // orderServiceFee: consumerServiceFee,
+              orderTotal: String(order.amount + consumerServiceFee),
               orderItems: order.items.map(i => ({
-                id: i.id,
                 quantity: i.quantity,
-                price: i.dish.price,
+                price: String(i.dish.price),
                 name: i.dish.name,
-                image: i.dish?.image[0]?.imageUrl
+                // image: i.dish?.image[0]?.imageUrl
               })),
             },
           };
@@ -139,19 +138,18 @@ const checkoutRouter = router({
             variables: {
               orderApproveUrl: acceptUrl,
               orderDenyUrl: denyUrl,
-              orderNumber: order.confirmationNumber,
+              // orderNumber: order.confirmationNumber,
               orderDate: readableDate(date),
               orderTime: eventTime,
               orderLocation: address,
-              orderSubtotal: order.amount,
-              orderServiceFee: chefServiceFee,
-              orderTotal: order.amount + chefServiceFee,
+              // orderSubtotal: order.amount,
+              // orderServiceFee: chefServiceFee,
+              orderTotal: String(order.amount + chefServiceFee),
               orderItems: order.items.map(i => ({
-                id: i.id,
                 quantity: i.quantity,
-                price: i.dish.price,
+                price: String(i.dish.price),
                 name: i.dish.name,
-                image: i.dish?.image[0]?.imageUrl
+                // image: i.dish?.image[0]?.imageUrl
             })),
             },
           };

@@ -1,7 +1,6 @@
-import { SendEmailCommand } from "@aws-sdk/client-ses";
 import { render } from '@react-email/render';
 
-import SesClient from "app/utils/aws/sesClient";
+import ses from "app/utils/aws/sesClient";
 import createEmailParams from "app/utils/aws/createEmailParams";
 import EmailActivateAccount from "emails/activate-account";
 import EmailForgotPasswordEmail from "emails/forgot-password";
@@ -13,7 +12,7 @@ import EmailNewOrderDenied from "emails/order-denied";
 
 import { TRANSACTIONAL_EMAILS, SendSesEmailType } from "types";
 
-async function sendSesEmail({ to, type, variables = {} }: SendSesEmailType) {
+async function sendSesEmail({ to, type, variables }: SendSesEmailType) {
   let Email: any;
   let subject: string;
 
@@ -63,12 +62,10 @@ async function sendSesEmail({ to, type, variables = {} }: SendSesEmailType) {
     htmlContent,
     textContent,
   };
+
   try {
     const input = createEmailParams(params);
-    const command = new SendEmailCommand(input);
-    const response = await SesClient.send(command);
-
-    return response;
+    await ses.sendEmail(input);
   } catch (err: any) {
     console.log("Email template has errors", err);
     throw new Error("Can't send emails", err);

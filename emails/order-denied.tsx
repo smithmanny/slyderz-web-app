@@ -69,7 +69,7 @@ export const EmailNewOrderDenied = ({
         </Column>
         <Column>
           <Text style={global.paragraphWithBold}>Event Total</Text>
-          <Text style={track.number}>${orderTotal}</Text>
+          <Text style={track.number}>$ {orderTotal}</Text>
         </Column>
       </Row>
     </Section>

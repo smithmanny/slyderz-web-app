@@ -14,10 +14,6 @@ import EmailButton from "./components/EmailButton";
 import EmailOrderItem from "./components/OrderItem";
 import type { EmailNewOrderType } from "types";
 
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "";
-
 interface ChefOrderRequest extends EmailNewOrderType {
   orderApproveUrl: string;
   orderDenyUrl: string;
@@ -39,7 +35,7 @@ export const EmailChefOrderRequest = ({
     <Hr style={global.hr} />
     <Section style={message}>
       <Img
-        src={`${baseUrl}/logo.png`}
+        src={"/logo.png"}
         width="66"
         height="22"
         alt="Slyderz"
@@ -80,7 +76,7 @@ export const EmailChefOrderRequest = ({
         </Column>
         <Column align="center">
           <Text style={global.paragraphWithBold}>Event Total</Text>
-          <Text style={track.number}>${orderTotal}</Text>
+          <Text style={track.number}>$ {orderTotal}</Text>
         </Column>
       </Row>
       <Row>

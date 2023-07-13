@@ -5,8 +5,8 @@ import ArrowBack from "@mui/icons-material/ArrowBack";
 
 import { useAppSelector } from "integrations/redux";
 import { styled } from "integrations/material-ui";
-import { AddAddressType } from "integrations/redux/reducers/userReduer";
 import { trpc } from "server/utils/trpc";
+import type { AddAddressType } from "integrations/redux/reducers/userReduer";
 
 import Form, { Select } from "app/core/components/form";
 import Button from "app/core/components/shared/Button";

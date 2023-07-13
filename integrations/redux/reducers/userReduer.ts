@@ -47,7 +47,7 @@ interface InitialStateType {
 
 type FetchUserDataType = {
   paymentMethods: Array<StripePaymentType>;
-  address: AddAddressType;
+  address: AddAddressType | undefined;
   email: { emailAddress: string, isVerified: boolean};
   name: string;
   chefStatus: {
@@ -62,12 +62,7 @@ type UpdateUser = Partial<InitialStateType>;
 const initialState: InitialStateType = {
   loading: false,
   userId: "",
-  address: {
-    address1: "",
-    city: "",
-    state: "",
-    zipcode: "",
-  },
+  address: {} as AddAddressType,
   email: {
     emailAddress: "",
     isVerified: false,
@@ -92,7 +87,9 @@ const userSlice = createSlice({
     },
     addAddress: (state, action: PayloadAction<AddAddressType>) => {
       state.address["address1"] = action.payload.address1;
-      state.address["address2"] = action.payload.address2 || "";
+      if (action.payload.address2) {
+        state.address["address2"] = action.payload.address2;
+      }
       state.address["city"] = action.payload.city;
       state.address["state"] = action.payload.state;
       state.address["zipcode"] = action.payload.zipcode;
@@ -114,7 +111,15 @@ const userSlice = createSlice({
     builders.addCase(fetchUserData.fulfilled, (state, action) => {
       if (action.payload) {
         state.stripeCards = action.payload.paymentMethods;
-        state.address = action.payload.address;
+        if (action.payload.address) {
+          state.address["address1"] = action.payload.address.address1;
+          if (action.payload.address.address2) {
+            state.address["address2"] = action.payload.address.address2 || "";
+          }
+          state.address["city"] = action.payload.address.city;
+          state.address["state"] = action.payload.address.state;
+          state.address["zipcode"] = action.payload.address.zipcode;
+        }
         state.userId = action.payload.userId;
         state.email.emailAddress = action.payload.email.emailAddress;
         state.email.isVerified = action.payload.email.isVerified;
