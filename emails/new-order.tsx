@@ -13,10 +13,6 @@ import SlyderzEmailLayout from "emails";
 import { EmailOrderItem } from "./components/OrderItem";
 import type { EmailNewOrderType } from "types";
 
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "";
-
 export const EmailNewOrder = ({
   orderLocation = "4511 Glider Circle, Douglasville, Ga, 30135",
   orderDate = "Oct 30, 2023",
@@ -31,7 +27,7 @@ export const EmailNewOrder = ({
     <Hr style={global.hr} />
     <Section style={message}>
       <Img
-        src={`${baseUrl}/logo.png`}
+        src={"/logo.png"}
         width="66"
         height="22"
         alt="Slyderz"
@@ -77,7 +73,7 @@ export const EmailNewOrder = ({
         </Column>
         <Column>
           <Text style={global.paragraphWithBold}>Event Total</Text>
-          <Text style={track.number}>${orderTotal}</Text>
+          <Text style={track.number}>$ {orderTotal}</Text>
         </Column>
       </Row>
     </Section>
