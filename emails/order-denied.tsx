@@ -2,7 +2,6 @@ import {
   Column,
   Heading,
   Hr,
-  Img,
   Row,
   Section,
   Text,
@@ -30,13 +29,6 @@ export const EmailNewOrderDenied = ({
   >
     <Hr style={global.hr} />
     <Section style={message}>
-      <Img
-        src={`${baseUrl}/logo.png`}
-        width="66"
-        height="22"
-        alt="Slyderz"
-        style={{ margin: "auto" }}
-      />
       <Heading style={global.heading}>Sorry...your order was denied.</Heading>
       <Text style={global.text}>You will not be charged for anything.</Text>
     </Section>

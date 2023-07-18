@@ -2,7 +2,6 @@ import {
   Column,
   Heading,
   Hr,
-  Img,
   Row,
   Section,
   Text,
@@ -26,13 +25,6 @@ export const EmailNewOrder = ({
   >
     <Hr style={global.hr} />
     <Section style={message}>
-      <Img
-        src={"/logo.png"}
-        width="66"
-        height="22"
-        alt="Slyderz"
-        style={{ margin: "auto" }}
-      />
       <Heading style={global.heading}>Thank you for your order.</Heading>
       <Text style={global.text}>
         Your order has been requested. We&apos;ll notify you when the chef has
