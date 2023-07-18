@@ -1,4 +1,4 @@
-import { Img, Section, Text } from "@react-email/components";
+import { Section, Text } from "@react-email/components";
 import * as React from "react";
 
 import SlyderzEmailLayout from "emails";
@@ -8,21 +8,11 @@ interface EmailForgotPasswordEmailProps {
   resetPasswordUrl: string;
 }
 
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "";
-
 export const EmailForgotPasswordEmail = ({
   resetPasswordUrl,
 }: EmailForgotPasswordEmailProps) => {
   return (
     <SlyderzEmailLayout previewText="You requested to change your password.">
-      <Img
-        src={`${baseUrl}/static/logo.png`}
-        width="40"
-        height="33"
-        alt="Slyderz"
-      />
       <Section>
         <Text style={text}>
           Someone recently requested a password change for your Slyderz account.

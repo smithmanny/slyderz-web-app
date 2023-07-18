@@ -102,7 +102,7 @@ const authRouter = router({
           token,
         };
       } catch (err) {
-        console.log("User not created", err);
+        console.error("User not created", err);
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Problem creating user.",
@@ -114,7 +114,7 @@ const authRouter = router({
     const user = await createUser();
     const activationUrl = `${process.env.NEXT_PUBLIC_URL}/auth/email-verification/${user.token.toString()}`;
     sendSesEmail({
-      to: "contact@slyderz.co",
+      to: input.email,
       type: TRANSACTIONAL_EMAILS.activation,
       variables: { activationUrl },
     });

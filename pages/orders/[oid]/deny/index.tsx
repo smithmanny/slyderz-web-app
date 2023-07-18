@@ -75,7 +75,7 @@ export const getServerSideProps = async function getServerSideProps({
   });
 
   await sendSesEmail({
-    to: "contact@slyderz.co",
+    to: order.user.email,
     type: TRANSACTIONAL_EMAILS.denyOrder,
     variables: {
       orderNumber: order.confirmationNumber,

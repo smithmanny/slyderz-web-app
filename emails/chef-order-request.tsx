@@ -2,7 +2,6 @@ import {
   Column,
   Heading,
   Hr,
-  Img,
   Row,
   Section,
   Text,
@@ -34,13 +33,6 @@ export const EmailChefOrderRequest = ({
   >
     <Hr style={global.hr} />
     <Section style={message}>
-      <Img
-        src={"/logo.png"}
-        width="66"
-        height="22"
-        alt="Slyderz"
-        style={{ margin: "auto" }}
-      />
       <Heading style={global.heading}>You received a new order</Heading>
       <Text style={global.text}>
         A new order request has been received.{" "}

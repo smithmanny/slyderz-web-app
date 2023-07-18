@@ -9,6 +9,7 @@ import {
 import * as React from "react";
 
 import EmailFooter from "./components/Footer";
+import EmailHeader from "./components/Header";
 
 interface SlyderzEmailLayoutProps {
   previewText: string;
@@ -31,6 +32,7 @@ export const SlyderzEmailLayout = ({
             className="border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px]"
             style={style}
           >
+            <EmailHeader />
             {children}
             <EmailFooter />
           </Container>
