@@ -68,6 +68,9 @@ const dashboardRouter = router({
           where: {
             chefId: ctx.chef.id,
             sectionId: input.sectionId,
+            NOT: {
+              deleted: true
+            }
           },
           select: {
             id: true,
@@ -170,8 +173,14 @@ const dashboardRouter = router({
   createDish: chefProcedure
     .input(CreateDish)
     .mutation(async ({ ctx, input }) => {
-      const dish = await ctx.prisma.dish.create({
-        data: {
+      const dish = await ctx.prisma.dish.upsert({
+        where: {
+          name_chefId: {
+            name: input.name,
+            chefId: ctx.chef.id
+          }
+        },
+        create: {
           description: input.description,
           name: input.name,
           price: new Prisma.Decimal(input.price),
@@ -184,6 +193,19 @@ const dashboardRouter = router({
             }
           }
         },
+        update: {
+          description: input.description,
+          name: input.name,
+          price: new Prisma.Decimal(input.price),
+          sectionId: input.sectionId,
+          deleted: false,
+          image: {
+            create: {
+              imagePublicId: input.image.imagePublicId,
+              imageUrl: input.image.imageUrl,
+            }
+          }
+        }
       });
 
       return dish;
@@ -255,10 +277,14 @@ const dashboardRouter = router({
     .input(DestroyDish)
     .mutation(async ({ ctx, input }) => {
       try {
-        await ctx.prisma.dish.delete({
+        // OrderItem model needs dish so soft delete
+        await ctx.prisma.dish.update({
           where: {
             id: input.dishId,
           },
+          data: {
+            deleted: true
+          }
         });
 
         return true;
