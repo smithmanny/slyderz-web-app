@@ -111,6 +111,9 @@ const chefRouter = router({
           },
           select: {
             dishes: {
+              where: {
+                deleted: false,
+              },
               include: {
                 image: true
               }
