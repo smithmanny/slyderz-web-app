@@ -158,10 +158,11 @@ model Dish {
   price       Decimal     @db.Decimal(5, 2)
   image       DishPhoto[]
 
-  section   Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
-  sectionId String
-  chef      Chef    @relation(fields: [chefId], references: [id], onDelete: Cascade)
-  chefId    String
+  section    Section     @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  sectionId  String
+  chef       Chef        @relation(fields: [chefId], references: [id], onDelete: Cascade)
+  chefId     String
+  orderItems OrderItem[]
 
   @@unique([name, chefId])
 }
@@ -173,12 +174,14 @@ enum OrderStatus {
   DECLINED
 }
 
-model OrderItems {
+model OrderItem {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   quantity  Int
 
+  dish    Dish   @relation(fields: [dishId], references: [id])
+  dishId  String
   order   Order  @relation(fields: [orderId], references: [id])
   orderId String
 }
@@ -199,9 +202,9 @@ model Order {
   eventTime          String
   orderStatus        OrderStatus @default(PENDING)
 
-  user   AuthUser     @relation(fields: [userId], references: [id])
+  user   AuthUser    @relation(fields: [userId], references: [id])
   userId String
-  chef   Chef         @relation(fields: [chefId], references: [id])
+  chef   Chef        @relation(fields: [chefId], references: [id])
   chefId String
-  items  OrderItems[]
+  items  OrderItem[]
 }
