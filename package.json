@@ -51,6 +51,7 @@
   "cookies-next": "^2.1.2",
   "date-fns": "2.30.0",
   "final-form": "4.20.9",
+  "flagsmith": "^3.19.1",
   "lucia-auth": "^1.8.0",
   "mdi-material-ui": "7.7.0",
   "mui-rff": "6.1.4",

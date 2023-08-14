@@ -70,7 +70,7 @@ export function Form<S extends z.ZodType<any, any>>({
   function formatZodError(error: ZodError) {
     if (!error || typeof error.format !== "function") {
       throw new Error(
-        "The argument to formatZodError must be a zod error with error.format()"
+        "The argument to formatZodError must be a zod error with error.format()",
       );
     }
 

@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 
-import Layout from "app/core/layouts/Layout";
+import Layout from "app/layouts/Layout";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import CheckoutPage from "app/chefs/components/checkout/CheckoutPage";
 import CartEmpty from "app/checkout/components/CartEmpty";

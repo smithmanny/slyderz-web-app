@@ -5,7 +5,7 @@ import { ForgotPassword } from "app/auth/validations";
 import { trpc } from "server/utils/trpc";
 import { auth } from "integrations/auth/lucia";
 
-import Layout from "app/core/layouts/Layout";
+import Layout from "app/layouts/Layout";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Form, { TextField } from "app/core/components/form";
 import Typography from "app/core/components/shared/Typography";

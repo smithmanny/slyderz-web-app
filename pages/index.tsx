@@ -1,7 +1,14 @@
-import Layout from "app/core/layouts/Layout";
-import LoggedInContainer from "app/LoggedInLayout";
+import { useFlags } from "flagsmith/react";
+
+import Layout from "app/layouts/Layout";
+import BetaContainer from "app/beta";
+import LoggedInContainer from "app/home";
 
 const Home = () => {
+  const flags = useFlags(["is_beta"]);
+
+  if (flags.is_beta) return <BetaContainer />;
+
   return <LoggedInContainer />;
 };
 

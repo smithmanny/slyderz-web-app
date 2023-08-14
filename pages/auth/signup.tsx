@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
-import Layout from "app/core/layouts/Layout";
+import Layout from "app/layouts/Layout";
 import { SignupForm } from "app/auth/components/SignupForm";
 
 const SignupPage = () => {

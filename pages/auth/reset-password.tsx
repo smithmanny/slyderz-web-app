@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
 
-import Layout from "app/core/layouts/Layout";
+import Layout from "app/layouts/Layout";
 import Form, { TextField } from "app/core/components/form";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Typography from "app/core/components/shared/Typography";
