@@ -1,8 +1,8 @@
 import React from "react";
+import Router from "next/router";
 import Link from "next/link";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
-import PersonIcon from "@mui/icons-material/Person";
 import Toolbar from "@mui/material/Toolbar";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
 import { default as MuiAppBar } from "@mui/material/AppBar";
@@ -12,6 +12,9 @@ import { trpc } from "server/utils/trpc";
 import Box from "app/core/components/shared/Box";
 import Typography from "app/core/components/shared/Typography";
 import { Container } from "@mui/material";
+import TwitterIcon from "app/core/components/icons/Twitter";
+import InstagramIcon from "app/core/components/icons/Instagram";
+import FacebookIcon from "app/core/components/icons/Facebook";
 
 function ElevationScroll(props) {
   const { children, window } = props;
@@ -63,14 +66,36 @@ const Appbar = (props) => {
                   </Typography>
                 </Link>
 
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={1} alignItems="center">
                   <IconButton
                     aria-label="cart"
                     disableRipple
-                    // onClick={handleAccountModalClick}
-                    size="large"
+                    LinkComponent="a"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://twitter.com/slyderzapp"
                   >
-                    <PersonIcon fontSize="large" />
+                    <TwitterIcon />
+                  </IconButton>
+                  <IconButton
+                    aria-label="cart"
+                    disableRipple
+                    LinkComponent="a"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://www.instagram.com/slyderz_app/"
+                  >
+                    <InstagramIcon />
+                  </IconButton>
+                  <IconButton
+                    aria-label="cart"
+                    disableRipple
+                    LinkComponent="a"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://www.facebook.com/slyderz"
+                  >
+                    <FacebookIcon />
                   </IconButton>
                 </Stack>
               </Box>

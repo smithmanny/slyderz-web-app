@@ -13,7 +13,6 @@ type LayoutProps = {
 
 const Layout = ({ title, children }: LayoutProps) => {
   const flags = useFlags(["is_beta"]);
-  console.log("flags", flags);
 
   return (
     <>
