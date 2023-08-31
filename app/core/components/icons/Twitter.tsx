@@ -16,10 +16,10 @@ function TwitterIcon() {
         y2="49.954"
         gradientUnits="userSpaceOnUse"
       >
-        <stop offset="0" stop-color="#4b4b4b"></stop>
-        <stop offset=".247" stop-color="#3e3e3e"></stop>
-        <stop offset=".686" stop-color="#2b2b2b"></stop>
-        <stop offset="1" stop-color="#252525"></stop>
+        <stop offset="0" stopColor="#4b4b4b"></stop>
+        <stop offset=".247" stopColor="#3e3e3e"></stop>
+        <stop offset=".686" stopColor="#2b2b2b"></stop>
+        <stop offset="1" stopColor="#252525"></stop>
       </linearGradient>
       <path
         fill="url(#U8Yg0Q5gzpRbQDBSnSCfPa_yoQabS8l0qpr_gr1)"

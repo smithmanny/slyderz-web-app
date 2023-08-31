@@ -5,6 +5,7 @@ import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
 import Subscribe from './components/Subscribe'
 import HowItWorks from "./components/HowItWorks";
+import RocketIcon from "app/core/components/icons/Rocket";
 import './styles.css'
 
 const BetaContainer = () => {
@@ -14,7 +15,7 @@ const BetaContainer = () => {
         variant="h1"
         sx={{ fontWeight: "bold", textAlign: 'center' }}
       >
-        Slyderz is Coming Soon!
+        <Box component="span" sx={{ color: 'primary.main' }}>Slyderz</Box> is Coming Soon!
       </Typography>
 
       <Box sx={{ p: 1 }}>
@@ -33,8 +34,10 @@ const BetaContainer = () => {
       </section>
 
       <section>
-        <Grid container sx={{ paddingTop: 15 }}>
-          <Grid item xs={12} md={6}>image</Grid>
+        <Grid container sx={{ paddingTop: 15 }} spacing={2}>
+          <Grid item xs={12} md={6}>
+            <RocketIcon />
+          </Grid>
           <Grid item xs={12} md={6}>
             <Typography variant="h5" sx={{ fontWeight: 'bold' }}>Why Slyderz?</Typography>
             <ol className="ordered-list">
