@@ -1,16 +1,14 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { Contact, LibraryResponse } from "node-mailjet";
 import { LuciaTokenError } from "@lucia-auth/tokens";
 
 import { passwordResetToken } from "integrations/auth/lucia";
 import { emailVerificationToken } from "integrations/auth/lucia";
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 import { TRANSACTIONAL_EMAILS } from "types";
-import { mailjet, mailjetClient } from "app/utils/getMailjet";
 import sendSesEmail from "emails/utils/sendSesEmail";
-
 import { Signup, Login } from "app/auth/validations";
+import { createMailjetContact } from "app/helpers/mailjet";
 
 const authRouter = router({
   createUser: publicProcedure.input(Signup).mutation(async (opts) => {
@@ -29,37 +27,6 @@ const authRouter = router({
         message: "User already exists",
       });
     }
-
-    const createMailjetContact = async () => {
-      const body: Contact.PostContactBody = {
-        IsExcludedFromCampaigns: false,
-        Name: input.name,
-        Email: input.email,
-      };
-
-      try {
-        const contact: LibraryResponse<Contact.GetContactResponse> =
-          await mailjet.post("contact").request(body);
-        const contactId = contact?.body?.Data[0]?.ID;
-
-        if (contactId) {
-          await mailjetClient
-            .post("contact")
-            .id(contactId)
-            .action("managecontactslists")
-            .request({
-              ContactsLists: [
-                {
-                  ListID: 10251087, //Subscribers list
-                  Action: "addnoforce",
-                },
-              ],
-            });
-        }
-      } catch (err) {
-        console.log("User not added to email list cause of error...", err);
-      }
-    };
 
     const createUser = async () => {
       try {
@@ -92,7 +59,7 @@ const authRouter = router({
         });
 
         // Add user to email list
-        await createMailjetContact();
+        await createMailjetContact(input.email, input.name)
 
         // Issue email_activation token
         const token = await emailVerificationToken.issue(user.userId);

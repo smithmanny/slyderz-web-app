@@ -3,7 +3,7 @@ import type { GetServerSidePropsContext } from "next";
 
 import { auth, emailVerificationToken } from "integrations/auth/lucia";
 
-import Layout from "app/core/layouts/Layout";
+import Layout from "app/layouts/Layout";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import VerifyEmailForm from "app/auth/components/VerifyEmail";
 

@@ -13,7 +13,7 @@ import Box from "app/core/components/shared/Box";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Button from "app/core/components/shared/Button";
 import Typography from "app/core/components/shared/Typography";
-import Layout from "app/core/layouts/Layout";
+import Layout from "app/layouts/Layout";
 import OrderItems from "app/orders/components/OrderItems";
 import Divider from "app/core/components/shared/Divider";
 import { getStripeServer } from "app/utils/getStripe";

@@ -3,7 +3,7 @@ import {
   Form as FinalForm,
   FormProps as FinalFormProps,
 } from "react-final-form";
-import { FORM_ERROR } from "final-form";
+import { FORM_ERROR, FormApi } from "final-form";
 import * as z from "zod";
 import type { ZodError } from "zod";
 
@@ -70,7 +70,7 @@ export function Form<S extends z.ZodType<any, any>>({
   function formatZodError(error: ZodError) {
     if (!error || typeof error.format !== "function") {
       throw new Error(
-        "The argument to formatZodError must be a zod error with error.format()"
+        "The argument to formatZodError must be a zod error with error.format()",
       );
     }
 
@@ -88,7 +88,7 @@ export function Form<S extends z.ZodType<any, any>>({
     }
   };
 
-  async function _handleSubmit(values, formApi, cb) {
+  async function _handleSubmit(values: any, formApi: FormApi, cb: any) {
     if (mutation && mutation.toVariables) {
       const variables = mutation.toVariables(values);
 
@@ -109,6 +109,9 @@ export function Form<S extends z.ZodType<any, any>>({
         }
       }
     }
+
+    // cleanup form fields
+    formApi.restart();
 
     if (typeof onSubmit === "function") {
       return onSubmit(values, formApi, cb);

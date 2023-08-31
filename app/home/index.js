@@ -9,7 +9,6 @@ import Typography from "app/core/components/shared/Typography";
 
 const NearbyChefs = (props) => {
   const { data } = trpc.chef.fetchNearbyChefs.useQuery();
-
   return (
     <>
       {data?.map((chef, index) => (

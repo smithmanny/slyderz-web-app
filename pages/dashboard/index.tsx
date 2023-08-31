@@ -9,7 +9,7 @@ import { NoSSrConsumerContainer } from "app/core/components/shared/ConsumerConta
 import Grid from "app/core/components/shared/Grid";
 import Tabs from "app/core/components/shared/Tabs";
 import Tab from "app/core/components/shared/Tab";
-import Layout from "app/core/layouts/Layout";
+import Layout from "app/layouts/Layout";
 import IndexContainer from "app/dashboard/components/menu/IndexContainer";
 import HoursContainer from "app/dashboard/components/hours/HoursContainer";
 
