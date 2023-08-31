@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import Layout from "app/core/layouts/Layout";
+import Layout from "app/layouts/Layout";
 import AboutSection from "app/about/components/AboutSection";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Grid from "app/core/components/shared/Grid";

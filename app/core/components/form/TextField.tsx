@@ -9,13 +9,9 @@ interface TextProps extends TextFieldProps {
 }
 
 const TextField: FunctionComponent<TextProps> = (props) => (
-  <Grid item xs={props.xs} md={props.md}>
+  <Grid item xs={props.xs || 12} md={props.md}>
     <MuiTextField {...props} />
   </Grid>
 );
-
-TextField.defaultProps = {
-  xs: 12,
-};
 
 export default TextField;

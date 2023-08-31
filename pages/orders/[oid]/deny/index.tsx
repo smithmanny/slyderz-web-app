@@ -5,7 +5,7 @@ import Box from "app/core/components/shared/Box";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Button from "app/core/components/shared/Button";
 import Typography from "app/core/components/shared/Typography";
-import Layout from "app/core/layouts/Layout";
+import Layout from "app/layouts/Layout";
 import Divider from "app/core/components/shared/Divider";
 
 import { TRANSACTIONAL_EMAILS } from "types";
@@ -75,7 +75,7 @@ export const getServerSideProps = async function getServerSideProps({
   });
 
   await sendSesEmail({
-    to: "contact@slyderz.co",
+    to: order.user.email,
     type: TRANSACTIONAL_EMAILS.denyOrder,
     variables: {
       orderNumber: order.confirmationNumber,

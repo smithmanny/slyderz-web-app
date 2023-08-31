@@ -9,6 +9,20 @@ const chefRouter = router({
   fetchNearbyChefs: publicProcedure.query(async (opts) => {
     try {
       const nearbyChefs = await opts.ctx.prisma.chef.findMany({
+        where: {
+          NOT: {
+            hours: {
+              none: {}
+            }
+          },
+          AND: {
+            NOT: {
+              dishes: {
+                none: {}
+              }
+            }
+          }
+        },
         include: {
           user: {
             select: {
@@ -97,6 +111,9 @@ const chefRouter = router({
           },
           select: {
             dishes: {
+              where: {
+                deleted: false,
+              },
               include: {
                 image: true
               }

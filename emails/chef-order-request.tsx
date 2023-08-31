@@ -2,7 +2,6 @@ import {
   Column,
   Heading,
   Hr,
-  Img,
   Row,
   Section,
   Text,
@@ -13,10 +12,6 @@ import SlyderzEmailLayout from "emails";
 import EmailButton from "./components/EmailButton";
 import EmailOrderItem from "./components/OrderItem";
 import type { EmailNewOrderType } from "types";
-
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "";
 
 interface ChefOrderRequest extends EmailNewOrderType {
   orderApproveUrl: string;
@@ -38,13 +33,6 @@ export const EmailChefOrderRequest = ({
   >
     <Hr style={global.hr} />
     <Section style={message}>
-      <Img
-        src={`${baseUrl}/logo.png`}
-        width="66"
-        height="22"
-        alt="Slyderz"
-        style={{ margin: "auto" }}
-      />
       <Heading style={global.heading}>You received a new order</Heading>
       <Text style={global.text}>
         A new order request has been received.{" "}
@@ -80,7 +68,7 @@ export const EmailChefOrderRequest = ({
         </Column>
         <Column align="center">
           <Text style={global.paragraphWithBold}>Event Total</Text>
-          <Text style={track.number}>${orderTotal}</Text>
+          <Text style={track.number}>$ {orderTotal}</Text>
         </Column>
       </Row>
       <Row>

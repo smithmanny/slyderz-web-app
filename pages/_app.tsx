@@ -1,10 +1,12 @@
-import React, { Suspense, useEffect, ReactNode, ReactElement } from "react";
+import React, { Suspense, useEffect, ReactNode } from "react";
 import { Roboto_Serif } from "next/font/google";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Provider } from "react-redux";
 import { SnackbarProvider } from "notistack";
 import type { AppProps } from "next/app";
+import flagsmith from "flagsmith";
+import { FlagsmithProvider } from "flagsmith/react";
 
 import { trpc } from "server/utils/trpc";
 import store from "integrations/redux";
@@ -64,18 +66,25 @@ function Slyderz({ Component, pageProps }: MyAppProps) {
         }}
         preventDuplicate={true}
       >
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Suspense fallback={<LoadingIcon />}>
-            <SlyderzWrapper>
-              {getLayout(
-                <div className={roboto.className}>
-                  <Component {...pageProps} />
-                </div>
-              )}
-            </SlyderzWrapper>
-          </Suspense>
-        </ThemeProvider>
+        <FlagsmithProvider
+          options={{
+            environmentID: "27oW57Gst9Us3H7ogNaAzU",
+          }}
+          flagsmith={flagsmith}
+        >
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Suspense fallback={<LoadingIcon />}>
+              <SlyderzWrapper>
+                {getLayout(
+                  <div className={roboto.className}>
+                    <Component {...pageProps} />
+                  </div>,
+                )}
+              </SlyderzWrapper>
+            </Suspense>
+          </ThemeProvider>
+        </FlagsmithProvider>
       </SnackbarProvider>
     </Provider>
   );

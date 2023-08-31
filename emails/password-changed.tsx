@@ -1,21 +1,11 @@
-import { Img, Section, Text } from "@react-email/components";
+import { Section, Text } from "@react-email/components";
 import * as React from "react";
 
 import SlyderzEmailLayout from "emails";
 
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "";
-
 export const EmailPasswordChangedEmail = () => {
   return (
     <SlyderzEmailLayout previewText="You requested to change your password.">
-      <Img
-        src={`${baseUrl}/static/logo.png`}
-        width="40"
-        height="33"
-        alt="Slyderz"
-      />
       <Section>
         <Text style={text}>
           Your password has been changed. If this wasn&apos;t you, please email

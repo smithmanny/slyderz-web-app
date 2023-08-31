@@ -2,7 +2,6 @@ import {
   Column,
   Heading,
   Hr,
-  Img,
   Row,
   Section,
   Text,
@@ -30,13 +29,6 @@ export const EmailNewOrderApproved = ({
   >
     <Hr style={global.hr} />
     <Section style={message}>
-      <Img
-        src={`${baseUrl}/logo.png`}
-        width="66"
-        height="22"
-        alt="Slyderz"
-        style={{ margin: "auto" }}
-      />
       <Heading style={global.heading}>Your order has been approved 🥳</Heading>
       <Text style={global.text}>
         You&apos;re one step closer to an unforgettable experience. The card you
@@ -72,7 +64,7 @@ export const EmailNewOrderApproved = ({
         </Column>
         <Column>
           <Text style={global.paragraphWithBold}>Event Total</Text>
-          <Text style={track.number}>${orderTotal}</Text>
+          <Text style={track.number}>$ {orderTotal}</Text>
         </Column>
       </Row>
     </Section>

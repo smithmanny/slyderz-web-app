@@ -8,7 +8,7 @@ import { useAppSelector } from "integrations/redux";
 import { trpc } from "server/utils/trpc";
 import { auth } from "integrations/auth/lucia";
 
-import Layout from "app/core/layouts/Layout";
+import Layout from "app/layouts/Layout";
 import Button from "app/core/components/shared/Button";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Grid from "app/core/components/shared/Grid";
@@ -20,13 +20,13 @@ const DynamicStripeCardElement = dynamic(
   () => import("app/stripe/components/StripeCardElement"),
   {
     ssr: false,
-  }
+  },
 );
 const DynamicStripeSavedCards = dynamic(
   () => import("app/stripe/components/StripeSavedCards"),
   {
     ssr: false,
-  }
+  },
 );
 
 export async function getServerSideProps(ctx) {

@@ -13,7 +13,7 @@ import Box from "app/core/components/shared/Box";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Button from "app/core/components/shared/Button";
 import Typography from "app/core/components/shared/Typography";
-import Layout from "app/core/layouts/Layout";
+import Layout from "app/layouts/Layout";
 import OrderItems from "app/orders/components/OrderItems";
 import Divider from "app/core/components/shared/Divider";
 import { getStripeServer } from "app/utils/getStripe";
@@ -59,7 +59,7 @@ export const getServerSideProps = async function getServerSideProps({
               description: true,
               name: true,
               price: true,
-              image: true
+              image: true,
             },
           },
         },
@@ -99,16 +99,16 @@ export const getServerSideProps = async function getServerSideProps({
   // Stripe amount must be in cents
   const consumerServiceFee = order.amount * CONSUMER_SERVICE_FEE;
   const stripeOrderAmount = Number(
-    (parseFloat(String(order.amount + consumerServiceFee)) * 100).toString()
+    (parseFloat(String(order.amount + consumerServiceFee)) * 100).toString(),
   );
   const stripeApplicationFee = Number(
     (
       parseFloat(
         String(
-          order.amount * CHEF_SERVICE_FEE + order.amount * CONSUMER_SERVICE_FEE
-        )
+          order.amount * CHEF_SERVICE_FEE + order.amount * CONSUMER_SERVICE_FEE,
+        ),
       ) * 100
-    ).toString()
+    ).toString(),
   );
 
   const paymentIntent = await stripe.paymentIntents.create({
@@ -152,7 +152,7 @@ export const getServerSideProps = async function getServerSideProps({
   const address = `${order.address1} ${order.city}, ${order.state} ${order.zipcode}`;
 
   await sendSesEmail({
-    to: "contact@slyderz.co",
+    to: order.user.email,
     type: TRANSACTIONAL_EMAILS.confirmOrder,
     variables: {
       orderNumber: order.confirmationNumber,
@@ -162,12 +162,12 @@ export const getServerSideProps = async function getServerSideProps({
       orderSubtotal: order.amount,
       orderServiceFee: consumerServiceFee,
       orderTotal: order.amount + consumerServiceFee,
-      orderItems: order.items.map(d => ({
+      orderItems: order.items.map((d) => ({
         id: d.id,
         quantity: d.quantity,
         description: d.dish.description,
         name: d.dish.name,
-        image: d.dish?.image[0]?.imageUrl
+        image: d.dish?.image[0]?.imageUrl,
       })),
     },
   });

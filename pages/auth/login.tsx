@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 
-import Layout from "app/core/layouts/Layout";
+import Layout from "app/layouts/Layout";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import LoginForm from "app/auth/components/LoginForm";
 

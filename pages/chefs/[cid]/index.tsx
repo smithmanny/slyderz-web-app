@@ -16,7 +16,7 @@ import Tabs from "app/core/components/shared/Tabs";
 import TabPanel from "app/core/components/shared/TabPanel";
 import Tab from "app/core/components/shared/Tab";
 import Typography from "app/core/components/shared/Typography";
-import Layout from "app/core/layouts/Layout";
+import Layout from "app/layouts/Layout";
 import CartSummary from "app/core/components/cart/cartSummary";
 
 export async function getServerSideProps(ctx) {

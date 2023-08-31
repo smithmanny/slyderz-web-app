@@ -4,7 +4,7 @@ import Image from "next/image";
 
 import { trpc } from "server/utils/trpc";
 
-import Layout from "app/core/layouts/Layout";
+import Layout from "app/layouts/Layout";
 import AboutSection from "app/about/components/AboutSection";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Grid from "app/core/components/shared/Grid";
@@ -49,9 +49,9 @@ const Host = () => {
             </div>
             <Typography variant="subtitle2">
               Chefs have a platform to showcase their skills and create unique
-              menus. Connect with new clients and grow your business with
-              access to our customer base.
-              </Typography>
+              menus. Connect with new clients and grow your business with access
+              to our customer base.
+            </Typography>
           </Grid>
           <Grid item xs={12} md={4}>
             <div style={{ display: "flex" }}>

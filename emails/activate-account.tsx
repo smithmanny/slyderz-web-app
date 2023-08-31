@@ -1,4 +1,4 @@
-import { Heading, Hr, Img, Link, Section, Text } from "@react-email/components";
+import { Heading, Hr, Link, Section, Text } from "@react-email/components";
 import * as React from "react";
 
 import SlyderzEmailLayout from "./index";
@@ -8,25 +8,11 @@ interface EmailActivateAccountProps {
   activationUrl: string;
 }
 
-const baseUrl =
-  process.env.NODE_ENV === "production"
-    ? `https://${process.env.NEXT_PUBLIC_URL}`
-    : "";
-
 export const EmailActivateAccount = ({
   activationUrl,
 }: EmailActivateAccountProps) => {
   return (
     <SlyderzEmailLayout previewText="Activate email">
-      <Section className="mt-[32px]">
-        <Img
-          src={`${baseUrl}/logo.png`}
-          width="40"
-          height="37"
-          alt="Slyderz"
-          className="my-0 mx-auto"
-        />
-      </Section>
       <Heading className="text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0">
         Welcome to <strong>Slyderz</strong>
       </Heading>
