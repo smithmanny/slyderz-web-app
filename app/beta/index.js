@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Box from "@mui/material/Box";
 import Layout from "app/layouts/Layout";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
@@ -5,7 +6,8 @@ import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
 import Subscribe from './components/Subscribe'
 import HowItWorks from "./components/HowItWorks";
-import RocketIcon from "app/core/components/icons/Rocket";
+
+import { localImageLoader } from "app/helpers/imageLoaders";
 import './styles.css'
 
 const BetaContainer = () => {
@@ -34,9 +36,19 @@ const BetaContainer = () => {
       </section>
 
       <section>
-        <Grid container sx={{ paddingTop: 15 }} spacing={2}>
+        <Grid container sx={{ paddingTop: 15 }} spacing={1}>
           <Grid item xs={12} md={6}>
-            <RocketIcon />
+            {/* <RocketIcon /> */}
+            <div style={{ position: 'relative', maxWidth: 350, height: '100%', minHeight: 400 }}>
+              <Image
+                src="/our-mission-min.jpeg"
+                alt="Why Slyderz?"
+                fill
+                loader={localImageLoader}
+                sizes="(max-width: 768px) 100vw,
+                  (max-width: 1200px) 50vw"
+              />
+            </div>
           </Grid>
           <Grid item xs={12} md={6}>
             <Typography variant="h5" sx={{ fontWeight: 'bold' }}>Why Slyderz?</Typography>
