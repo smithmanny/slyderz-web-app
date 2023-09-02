@@ -6,6 +6,7 @@ import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
 import Subscribe from './components/Subscribe'
 import HowItWorks from "./components/HowItWorks";
+import Footer from "./components/Footer";
 
 import { localImageLoader } from "app/helpers/imageLoaders";
 import './styles.css'
@@ -68,6 +69,8 @@ const BetaContainer = () => {
           </Grid>
         </Grid>
       </section>
+
+      <Footer />
     </ConsumerContainer>
   );
 };
