@@ -1,4 +1,4 @@
-name: Deploy Slyderz
+name: Deploy staging
 on:
   workflow_dispatch:
 

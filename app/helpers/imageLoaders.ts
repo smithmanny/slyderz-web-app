@@ -1,3 +1,5 @@
+import getSiteUrl from "./getSiteUrl"
+
 export const localImageLoader = ({ src, width, quality }) => {
-  return `http://localhost:3000/${src}?w=${width}&q=${quality || 75}`
+  return `${getSiteUrl}/${src}?w=${width}&q=${quality || 75}`
 }
