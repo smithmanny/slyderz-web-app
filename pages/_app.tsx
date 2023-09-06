@@ -13,6 +13,7 @@ import store from "integrations/redux";
 import { theme } from "integrations/material-ui";
 import { useAppDispatch } from "integrations/redux";
 import { fetchUserData } from "integrations/redux/reducers/userReduer";
+import { RudderStack } from "app/utils/getRudderstack";
 
 import Box from "app/core/components/shared/Box";
 import CircularProgress from "app/core/components/shared/CircularProgress";
@@ -56,6 +57,10 @@ type MyAppProps = Omit<AppProps, "Component"> & {
 };
 function Slyderz({ Component, pageProps }: MyAppProps) {
   const getLayout = Component.getLayout || ((page: ReactNode) => page);
+
+  useEffect(() => {
+    RudderStack.getInstance();
+  }, []);
 
   return (
     <Provider store={store}>

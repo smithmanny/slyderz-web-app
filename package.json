@@ -66,6 +66,7 @@
   "react-dom": "18.2.0",
   "react-final-form": "6.5.9",
   "react-redux": "8.1.1",
+  "rudder-sdk-js": "^2.41.0",
   "secure-password": "^4.0.0",
   "sharp": "^0.32.1",
   "stripe": "12.12.0",
