@@ -1,9 +1,11 @@
 import Image from "next/image";
+import Link from "next/link";
 import Box from "@mui/material/Box";
 import Layout from "app/layouts/Layout";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
+import Button from "app/core/components/shared/Button";
 import Subscribe from './components/Subscribe'
 import HowItWorks from "./components/HowItWorks";
 import Footer from "./components/Footer";
@@ -39,7 +41,6 @@ const BetaContainer = () => {
       <section>
         <Grid container sx={{ paddingTop: 15 }} spacing={1}>
           <Grid item xs={12} md={6}>
-            {/* <RocketIcon /> */}
             <div style={{ position: 'relative', maxWidth: 350, height: '100%', minHeight: 400 }}>
               <Image
                 src="/our-mission-min.jpeg"
@@ -68,6 +69,14 @@ const BetaContainer = () => {
             </ol>
           </Grid>
         </Grid>
+      </section>
+
+      <section>
+        <div style={{ paddingTop: 100, paddingBottom: 80, textAlign: 'center' }}>
+          <Typography variant="h5" sx={{ fontWeight: 'bold' }}>Interested in cooking with Slyderz?</Typography>
+
+          <Button sx={{ mt: 2, py: 1 }} href="/landing/become-a-chef">Learn More</Button>
+        </div>
       </section>
 
       <Footer />
