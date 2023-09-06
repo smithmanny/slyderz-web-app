@@ -7069,6 +7069,11 @@ rimraf@^3.0.2:
   dependencies:
     glob "^7.1.3"
 
+rudder-sdk-js@^2.41.0:
+  version "2.41.0"
+  resolved "https://registry.yarnpkg.com/rudder-sdk-js/-/rudder-sdk-js-2.41.0.tgz#7b08271ce9fc1652cc6a56814924258814587642"
+  integrity sha512-wR5YMdv0gU8Dzngr2MBEwr/b+aatRPz6Dwv8+NNJwh8ANCXhyAzXgklw0hm/Icwgm1vhF5QEtbk9bsJVQXGaqA==
+
 run-applescript@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/run-applescript/-/run-applescript-5.0.0.tgz#e11e1c932e055d5c6b40d98374e0268d9b11899c"
