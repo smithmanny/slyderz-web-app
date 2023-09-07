@@ -11,6 +11,8 @@ export const RudderStack = (function() {
     window.rudderanalytics.ready(() => {
       console.log("RudderStack loaded...");
     });
+
+    return window.rudderanalytics
   }
 
   return {
