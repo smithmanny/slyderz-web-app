@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Layout from "app/layouts/Layout";
 import Button from "app/core/components/shared/Button";
@@ -32,15 +33,16 @@ function BlogPage({
         <Grid container>
           {blogPosts.map((bpt, i) => (
             <Grid item xs={12} key={`${bpt}-${i}`} component="article">
-              <Button
-                label={bpt.slug}
-                variant="text"
-                sx={{ fontWeight: "bold", mb: 4 }}
-                href={`/blog/${bpt.slug}`}
-                onClick={() => handleBlogPost(bpt.slug)}
-              >
-                {bpt.title}
-              </Button>
+              <Link passHref href={`/blog/${bpt.slug}`}>
+                <Button
+                  label={bpt.slug}
+                  variant="text"
+                  sx={{ fontWeight: "bold", mb: 4 }}
+                  onClick={() => handleBlogPost(bpt.slug)}
+                >
+                  {bpt.title}
+                </Button>
+              </Link>
             </Grid>
           ))}
         </Grid>

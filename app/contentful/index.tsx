@@ -27,7 +27,11 @@ type ContentfulProps = {
 };
 function ContentfulView(props: ContentfulProps) {
   const { document } = props;
-  return documentToReactComponents(document, options);
+  return (
+    <article style={{ marginTop: 50 }}>
+      {documentToReactComponents(document, options)}
+    </article>
+  );
 }
 
 export default ContentfulView;

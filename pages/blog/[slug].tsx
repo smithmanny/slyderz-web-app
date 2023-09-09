@@ -9,8 +9,9 @@ import type {
   GetStaticProps,
   GetStaticPaths,
 } from "next";
+import { readableDate } from "app/utils/dateHelpers";
 
-type ContentfulBlogPost = Partial<BlogPost> & {
+type ContentfulBlogPost = Omit<BlogPost, "document"> & {
   description: any;
 };
 
@@ -51,9 +52,12 @@ function BlogPage({
   blogPost,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
-    <ConsumerContainer>
-      <Typography sx={{ fontWeight: "bold", mb: 4 }}>
+    <ConsumerContainer maxWidth="lg">
+      <Typography variant="h4" sx={{ fontWeight: "bold" }}>
         {blogPost.title}
+      </Typography>
+      <Typography variant="caption">
+        {readableDate(new Date(blogPost.createdAt))}
       </Typography>
       <ContentfulView document={blogPost.description} />
     </ConsumerContainer>
