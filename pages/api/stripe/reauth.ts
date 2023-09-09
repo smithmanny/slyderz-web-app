@@ -25,7 +25,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
     throw new Error("Chef not found");
   }
 
-  // TODO: replace with prod url
   const createAccountLink = await stripe.accountLinks.create({
     account: user.chef.stripeAccountId,
     refresh_url: `${process.env.NEXT_PUBLIC_URL}/api/stripe/reauth`,

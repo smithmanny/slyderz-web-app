@@ -22,6 +22,8 @@
  },
  "dependencies": {
   "@aws-sdk/client-ses": "^3.363.0",
+  "@contentful/rich-text-react-renderer": "^15.17.1",
+  "@contentful/rich-text-types": "^16.2.1",
   "@date-io/core": "2.16.0",
   "@date-io/date-fns": "2.16.0",
   "@emotion/cache": "^11.11.0",
@@ -48,6 +50,7 @@
   "argon2": "^0.30.3",
   "classnames": "2.3.2",
   "cloudinary": "^1.37.3",
+  "contentful": "^10.5.1",
   "cookies-next": "^2.1.2",
   "date-fns": "2.30.0",
   "final-form": "4.20.9",
