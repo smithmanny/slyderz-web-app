@@ -26,6 +26,10 @@ on:
         required: true
       NEXT_PUBLIC_CAPTCHA_SITEKEY:
         required: true
+      CONTENTFUL_TOKEN:
+        required: true
+      CONTENTFUL_ACCESS_TOKEN:
+        required: true
 
 jobs:
   build:
