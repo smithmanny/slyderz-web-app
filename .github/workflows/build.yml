@@ -63,8 +63,9 @@ jobs:
       - name: Building Slyderz
         env:
           NEXT_PUBLIC_URL: "http://localhost:3000"
-          DATABASE_URL: ${{ secrets.DATABASE_URL}}
+          NEXT_PUBLIC_CAPTCHA_SITEKEY: ${{ secrets.NEXT_PUBLIC_CAPTCHA_SITEKEY}}
           NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: ${{ secrets.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}}
+          DATABASE_URL: ${{ secrets.DATABASE_URL}}
           SECRET_COOKIE_PASSWORD: ${{ secrets.SECRET_COOKIE_PASSWORD}}
           STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY}}
           STRIPE_ENDPOINT_SECRET: ${{ secrets.STRIPE_ENDPOINT_SECRET}}
@@ -75,7 +76,8 @@ jobs:
           MJ_APIKEY_PRIVATE: ${{ secrets.MJ_APIKEY_PRIVATE}}
           MJ_APIKEY_PUBLIC: ${{ secrets.MJ_APIKEY_PUBLIC}}
           CAPTCHA_SECRET: ${{ secrets.CAPTCHA_SECRET}}
-          NEXT_PUBLIC_CAPTCHA_SITEKEY: ${{ secrets.NEXT_PUBLIC_CAPTCHA_SITEKEY}}
+          CONTENTFUL_TOKEN: ${{ secrets.CONTENTFUL_TOKEN}}
+          CONTENTFUL_ACCESS_TOKEN: ${{ secrets.CONTENTFUL_ACCESS_TOKEN}}
         run: yarn run build
 
       - name: Upload Next build
