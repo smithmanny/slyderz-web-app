@@ -33,13 +33,13 @@ class ContentfulSingleton {
     });
   }
 
-  async getPost(entryId: string): Promise<any> {
+  public async getPost(entryId: string): Promise<any> {
     const blogPost = await this.client.getEntry(entryId);
 
     return blogPost
   }
 
-  async getAllPosts(): Promise<BlogPost[]> {
+  public async getAllPosts(): Promise<BlogPost[]> {
     const blogPosts: Array<BlogPost> = [];
     const entries = await this.client.getEntries();
     this.prepareEntries(entries, blogPosts)
