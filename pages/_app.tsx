@@ -1,5 +1,4 @@
 import React, { Suspense, useEffect, ReactNode } from "react";
-import { useRouter } from "next/router";
 import { Roboto_Serif } from "next/font/google";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -57,24 +56,23 @@ type MyAppProps = Omit<AppProps, "Component"> & {
   };
 };
 function Slyderz({ Component, pageProps }: MyAppProps) {
-  const router = useRouter();
   const getLayout = Component.getLayout || ((page: ReactNode) => page);
 
   useEffect(() => {
     new Promise((res, reject) => {
-      RudderStack.getInstance()
-        .then((rudderStack) => {
-          // Track page views
-          const handleRouteChange = () => rudderStack.page("$pageview");
-          router.events.on("routeChangeComplete", handleRouteChange);
+      RudderStack.getInstance();
+      // .then((rudderStack) => {
+      //   // Track page views
+      //   const handleRouteChange = () => rudderStack.page("$pageview");
+      //   router.events.on("routeChangeComplete", handleRouteChange);
 
-          return () => {
-            router.events.off("routeChangeComplete", handleRouteChange);
-          };
-        })
-        .catch((err) => console.log(err));
+      //   return () => {
+      //     router.events.off("routeChangeComplete", handleRouteChange);
+      //   };
+      // })
+      // .catch((err) => console.log(err));
     });
-  }, [router.events]);
+  }, []);
 
   return (
     <Provider store={store}>

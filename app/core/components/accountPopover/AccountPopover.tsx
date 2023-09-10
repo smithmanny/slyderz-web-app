@@ -30,6 +30,8 @@ const AccountPopover = (props: AccountPopver) => {
   const logout = trpc.auth.logout.useMutation({
     onSuccess: () => {
       dispatch(resetState());
+
+      window.posthog.reset();
       return handlePopoverClick("/");
     },
   });
