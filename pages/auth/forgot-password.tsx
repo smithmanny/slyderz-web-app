@@ -13,7 +13,7 @@ import Button from "app/core/components/shared/Button";
 
 export async function getServerSideProps(ctx) {
   const authRequest = auth.handleRequest(ctx);
-  const { session } = await authRequest.validateUser();
+  const session = await authRequest.validate();
 
   if (session) {
     return {

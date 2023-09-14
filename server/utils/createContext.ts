@@ -52,12 +52,12 @@ function getCartCookie(req, res) {
 const createContext = async (opts: CreateNextContextOptions) => {
   const authRequest = auth.handleRequest({ req: opts.req, res: opts.res });
   const cart = getCartCookie(opts.req, opts.res);
-  const { session, user } = await authRequest.validateUser();
+  const session = await authRequest.validate();
 
   const slyderzSession = {
     ...session,
     user: {
-      ...user,
+      ...session?.user,
     },
     cart,
   } as SessionType;

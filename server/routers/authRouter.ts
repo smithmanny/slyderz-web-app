@@ -9,6 +9,7 @@ import { TRANSACTIONAL_EMAILS } from "types";
 import sendSesEmail from "emails/utils/sendSesEmail";
 import { Signup, Login } from "app/auth/validations";
 import { createMailjetContact } from "app/helpers/mailjet";
+import { RoleType } from "@prisma/client";
 
 const authRouter = router({
   createUser: publicProcedure.input(Signup).mutation(async (opts) => {
@@ -46,15 +47,17 @@ const authRouter = router({
         }
 
         const user = await ctx.auth.createUser({
-          primaryKey: {
+          key: {
             providerId: "email",
             providerUserId: input.email.toLowerCase(),
             password: input.password,
           },
           attributes: {
+            emailVerified: false,
             name: input.name,
             email: input.email,
             stripeCustomerId: stripeCustomerId,
+            role: RoleType.USER
           },
         });
 
@@ -66,6 +69,10 @@ const authRouter = router({
 
         return {
           userId: user.userId,
+          name: user.name,
+          email: user.email,
+          stripeCustomerId: stripeCustomerId,
+          emailVerified: user.emailVerified,
           token,
         };
       } catch (err) {
@@ -86,7 +93,15 @@ const authRouter = router({
       variables: { activationUrl },
     });
 
-    const session = await ctx.auth.createSession(user.userId);
+    const session = await ctx.auth.createSession({
+      userId: user.userId,
+      attributes: {
+        stripeCustomerId: user.stripeCustomerId,
+        email: user.email,
+        emailVerified: user.emailVerified,
+        name: user.name,
+      },
+    });
     ctx.authRequest.setSession(session);
 
     return user.userId;
@@ -114,7 +129,16 @@ const authRouter = router({
 
     try {
       const key = await ctx.auth.useKey("email", input.email.toLowerCase(), input.password);
-      const session = await ctx.auth.createSession(key.userId);
+      const user = await ctx.auth.getUser(key.userId)
+      const session = await ctx.auth.createSession({
+      userId: key.userId,
+      attributes: {
+        stripeCustomerId: user.stripeCustomerId,
+        email: user.email,
+        emailVerified: user.emailVerified,
+        name: user.name,
+      },
+    });
       ctx.authRequest.setSession(session);
     } catch (err) {
       console.log("Failed logining in", err);
@@ -213,7 +237,15 @@ const authRouter = router({
         });
 
         // update key
-        const session = await opts.ctx.auth.createSession(user.userId);
+        const session = await opts.ctx.auth.createSession({
+      userId: user.userId,
+      attributes: {
+        stripeCustomerId: user.stripeCustomerId,
+        email: user.email,
+        emailVerified: user.emailVerified,
+        name: user.name,
+      },
+    });
         authRequest.setSession(session);
 
         await sendSesEmail({
