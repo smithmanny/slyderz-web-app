@@ -61,16 +61,6 @@ function Slyderz({ Component, pageProps }: MyAppProps) {
   useEffect(() => {
     new Promise((res, reject) => {
       RudderStack.getInstance();
-      // .then((rudderStack) => {
-      //   // Track page views
-      //   const handleRouteChange = () => rudderStack.page("$pageview");
-      //   router.events.on("routeChangeComplete", handleRouteChange);
-
-      //   return () => {
-      //     router.events.off("routeChangeComplete", handleRouteChange);
-      //   };
-      // })
-      // .catch((err) => console.log(err));
     });
   }, []);
 
