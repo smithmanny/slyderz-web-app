@@ -7,5 +7,6 @@ declare namespace Lucia {
     email: string;
     emailVerified: boolean;
     name: string;
+    role: string;
   };
 }

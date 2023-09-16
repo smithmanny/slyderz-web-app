@@ -6,8 +6,6 @@ import Toolbar from "@mui/material/Toolbar";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
 import { default as MuiAppBar } from "@mui/material/AppBar";
 
-import { trpc } from "server/utils/trpc";
-
 import Box from "app/core/components/shared/Box";
 import Typography from "app/core/components/shared/Typography";
 import { Container } from "@mui/material";
@@ -32,8 +30,6 @@ function ElevationScroll(props) {
 }
 
 const Appbar = (props) => {
-  const sendVerifyEmail = trpc.auth.sendConfirmEmailLink.useMutation({});
-
   return (
     <>
       <ElevationScroll>
