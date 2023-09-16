@@ -3,8 +3,8 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import dynamic from "next/dynamic";
 
-import { useAppSelector } from "integrations/redux";
 import { NoSSrConsumerContainer } from "app/core/components/shared/ConsumerContainer";
+import { trpc } from "server/utils/trpc";
 
 import Grid from "app/core/components/shared/Grid";
 import Tabs from "app/core/components/shared/Tabs";
@@ -59,15 +59,15 @@ export const Dashboard = (props) => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("md"));
   const [value, setValue] = React.useState(0);
-  const user = useAppSelector((state) => state.user);
+  const { data, isLoading } = trpc.chef.fetchChefPrivateProfile.useQuery();
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
-  if (user.loading) return <h1>LOADING</h1>;
+  if (isLoading) return <h1>LOADING</h1>;
 
-  if (user.chef.isChefProfileComplete) {
+  if (!data?.isOnboardingComplete) {
     return <DynamicOnboarding />;
   }
 

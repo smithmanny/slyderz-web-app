@@ -25,7 +25,7 @@ interface SlyderzSelectProps extends SelectProps {
 const Select: FunctionComponent<SlyderzSelectProps> = (props) => {
   const menuItems = props.items.map((item: MenuItemType, index: number) => {
     return (
-      <MenuItem key={item.label} value={item.value}>
+      <MenuItem key={`${item.label}-${index}`} value={item.value}>
         {item.label}
       </MenuItem>
     );

@@ -93,6 +93,7 @@ model Chef {
   updatedAt            DateTime @updatedAt
   stripeAccountId      String
   isOnboardingComplete Boolean  @default(false)
+  description          String   @default("")
 
   user            AuthUser        @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId          String

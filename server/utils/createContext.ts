@@ -16,6 +16,7 @@ type SessionType = {
     emailVerified: boolean;
     name: string;
     stripeCustomerId: string;
+    role: string
   };
   cart: Cart;
 };

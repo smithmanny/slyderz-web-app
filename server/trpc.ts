@@ -22,6 +22,21 @@ const isAuthed = t.middleware(({ next, ctx }) => {
   });
 });
 
+const isAdmin = t.middleware(({ next, ctx }) => {
+  if (!ctx.session?.userId || ctx.session.user?.role !== 'ADMIN') {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "Not authorized",
+    });
+  }
+
+  return next({
+    ctx: {
+      ...ctx,
+    },
+  });
+});
+
 const isChef = isAuthed.unstable_pipe(async ({ next, ctx }) => {
   const chef = await ctx.prisma.chef.findFirst({
     where: {
@@ -47,4 +62,5 @@ const isChef = isAuthed.unstable_pipe(async ({ next, ctx }) => {
 export const router = t.router;
 export const publicProcedure = t.procedure;
 export const protectedProcedure = t.procedure.use(isAuthed);
+export const adminProcedure = t.procedure.use(isAdmin);
 export const chefProcedure = t.procedure.use(isChef);

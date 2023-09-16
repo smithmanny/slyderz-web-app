@@ -1,5 +1,4 @@
-export type Role = "ADMIN" | "USER" | "CHEF";
-export const CHEF_SERVICE_FEE = 0.03; // 3%
+export const CHEF_SERVICE_FEE = 0.15; // 15%
 export const CONSUMER_SERVICE_FEE = 0.1; // 10%
 export interface CartItem {
   chefId: number;

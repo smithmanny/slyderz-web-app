@@ -1,6 +1,7 @@
-import { router, protectedProcedure, chefProcedure } from "../trpc";
+import { router, chefProcedure } from "../trpc";
 
 import { UploadHeadshotUrl } from "app/onboarding/validations";
+import { AddChefDescription } from "app/onboarding/validations";
 
 const chefRouter = router({
   completeOnboardingHeadshot: chefProcedure
@@ -12,6 +13,23 @@ const chefRouter = router({
           },
           data: {
             onboardingState: "COMPLETE_SERVSAFE",
+          }
+        })
+      } catch (err) {
+        console.log(err);
+      }
+    }),
+  completeOnboardingDescription: chefProcedure
+    .input(AddChefDescription)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.prisma.chef.update({
+          where: {
+            id: ctx.chef.id
+          },
+          data: {
+            description: input.description,
+            isOnboardingComplete: true
           }
         })
       } catch (err) {

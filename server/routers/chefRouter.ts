@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { nextSunday, nextMonday, nextTuesday, nextWednesday, nextThursday, nextFriday, nextSaturday } from 'date-fns'
 
-import { router, publicProcedure, protectedProcedure } from "../trpc";
+import { router, publicProcedure, chefProcedure, protectedProcedure } from "../trpc";
 import { GetChefDishesType } from "app/chefs/validations";
 import { convertDayToInt } from "app/utils/time";
 
@@ -66,22 +66,27 @@ const chefRouter = router({
       default_currency: "USD",
     });
 
-    const chef = await ctx.prisma.chef.create({
+    const chef = ctx.prisma.chef.create({
       data: {
         stripeAccountId: stripeAccount.id,
         userId: user.id,
       },
     });
 
-    const createAccountLink = await ctx.stripe.accountLinks.create({
+    const createAccountLink = ctx.stripe.accountLinks.create({
       account: stripeAccount.id,
       refresh_url: `${process.env.NEXT_PUBLIC_URL}/api/stripe/reauth`,
       return_url: `${process.env.NEXT_PUBLIC_URL}/dashboard`,
       type: "account_onboarding",
     });
 
+    // Set user role to chef
+    const convertUserToChef = ctx.auth.updateUserAttributes(user.id, {
+      role: 'CHEF',
+    });
+
     try {
-      const [_, accountLink] = await Promise.all([chef, createAccountLink]);
+      const [_, accountLink] = await Promise.all([chef, createAccountLink, convertUserToChef]);
 
       return accountLink.url;
     } catch (err) {
@@ -208,6 +213,12 @@ const chefRouter = router({
           message: "Chef not found",
           cause: err,
         });
+      }
+    }),
+  fetchChefPrivateProfile: chefProcedure
+    .query(async ({ ctx, input }) => {
+      return {
+        isOnboardingComplete: ctx.chef.isOnboardingComplete
       }
     }),
 });
