@@ -13,20 +13,6 @@ enum RoleType {
   USER
 }
 
-model Address {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  address1  String
-  address2  String?
-  city      String
-  state     String
-  zipcode   String
-
-  user   AuthUser @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String   @unique
-}
-
 model AuthUser {
   id               String     @id @default(cuid())
   createdAt        DateTime   @default(now())
@@ -43,6 +29,7 @@ model AuthUser {
   orders       Order[]
   auth_session AuthSession[]
   auth_key     AuthKey[]
+  tokens       Token[]
 
   @@map("auth_user")
 }
@@ -66,6 +53,28 @@ model AuthKey {
 
   @@index([user_id])
   @@map("auth_key")
+}
+
+model Token {
+  id        String @id @default(cuid())
+  createdAt String
+
+  user   AuthUser @relation(references: [id], fields: [userId], onDelete: Cascade)
+  userId String
+}
+
+model Address {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  address1  String
+  address2  String?
+  city      String
+  state     String
+  zipcode   String
+
+  user   AuthUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String   @unique
 }
 
 model UserPhoto {

@@ -2,6 +2,7 @@ import { lucia } from "lucia";
 import { idToken } from "@lucia-auth/tokens";
 import { nextjs } from "lucia/middleware";
 import { prisma } from "@lucia-auth/adapter-prisma";
+import db from 'db'
 import "lucia-auth/polyfill/node";
 
 import prismaClient from "db";
@@ -25,6 +26,11 @@ export const auth = lucia({
 });
 
 const EXPIRES_IN = 1000 * 60 * 60 * 2; // 2 hours
+
+const isWithinExpiration = (expiresIn: number) => {
+	const currentTime = new Date().getTime();
+	return currentTime < expiresIn;
+}
 
 const generateVerificationToken = async (userId: string) => {
 	const storedUserTokens = await db.getTokensByUserId(userId); // github uses 128+ for password reset tokens
