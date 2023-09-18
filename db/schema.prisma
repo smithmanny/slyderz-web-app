@@ -56,8 +56,9 @@ model AuthKey {
 }
 
 model Token {
-  id        String @id @default(cuid())
-  createdAt String
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  expiresAt DateTime
 
   user   AuthUser @relation(references: [id], fields: [userId], onDelete: Cascade)
   userId String
