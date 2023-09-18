@@ -12,5 +12,17 @@ module.exports = {
         pathname: 'slyderz/image/upload',
       }
     ],
-  }
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/login',
+        destination: '/auth/login',
+      },
+      {
+        source: '/signup',
+        destination: '/auth/signup',
+      },
+    ]
+  },
 };

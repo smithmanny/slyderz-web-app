@@ -71,7 +71,7 @@ export const SignupForm = (props: SignupFormProps) => {
 
       <div style={{ marginTop: "1rem", color: "#000" }}>
         Or{" "}
-        <Link href="/auth/login" style={{ color: "#000" }}>
+        <Link href="/login" style={{ color: "#000" }}>
           Log In
         </Link>
       </div>

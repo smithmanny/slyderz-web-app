@@ -29,7 +29,8 @@ const chefRouter = router({
           },
           data: {
             description: input.description,
-            isOnboardingComplete: true
+            isOnboardingComplete: true,
+            onboardingState: 'DONE'
           }
         })
       } catch (err) {
