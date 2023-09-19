@@ -69,7 +69,7 @@ const LoginForm = (props: LoginFormProps) => {
 
       <div style={{ marginTop: "1rem", color: "#000" }}>
         Or{" "}
-        <Link href="/auth/signup" style={{ color: "#000" }}>
+        <Link href="/signup" style={{ color: "#000" }}>
           Sign Up
         </Link>
       </div>

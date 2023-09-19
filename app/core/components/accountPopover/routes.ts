@@ -15,13 +15,13 @@ export const loggedOutRoutes: Array<LoggedOutRouteType> = [
     id: 0,
     icon: AddIcon,
     name: "Login",
-    route: "/auth/login",
+    route: "/login",
   },
   {
     id: 1,
     icon: AddIcon,
     name: "Register",
-    route: "/auth/signup",
+    route: "/signup",
   },
 ];
 export const loggedInRoutes: Array<LoggedInRouteType> = [
