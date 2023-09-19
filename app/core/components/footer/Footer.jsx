@@ -20,7 +20,7 @@ const FooterLinks = (props) => {
     },
     {
       name: "Blog",
-      route: "/"
+      route: "/blog"
     },
     {
       name: "Terms",
