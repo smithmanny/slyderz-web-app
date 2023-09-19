@@ -48,7 +48,7 @@ const authRouter = router({
         const user = await ctx.auth.createUser({
           primaryKey: {
             providerId: "email",
-            providerUserId: input.email,
+            providerUserId: input.email.toLowerCase(),
             password: input.password,
           },
           attributes: {
@@ -113,7 +113,7 @@ const authRouter = router({
     const ctx = opts.ctx;
 
     try {
-      const key = await ctx.auth.useKey("email", input.email, input.password);
+      const key = await ctx.auth.useKey("email", input.email.toLowerCase(), input.password);
       const session = await ctx.auth.createSession(key.userId);
       ctx.authRequest.setSession(session);
     } catch (err) {
