@@ -1,5 +1,5 @@
 import { lucia } from "lucia";
-import { nextjs } from "lucia/middleware";
+import { nextjs_future } from "lucia/middleware";
 import { prisma } from "@lucia-auth/adapter-prisma";
 import { isWithinExpiration } from "lucia/utils"; // v2 beta.0
 import db from 'db'
@@ -16,7 +16,7 @@ export const auth = lucia({
 		key: 'authKey'
 	}),
   env,
-  middleware: nextjs(),
+  middleware: nextjs_future(),
   getUserAttributes: (userData) => {
     return {
       stripeCustomerId: userData.stripeCustomerId,

@@ -40,7 +40,7 @@ export const getServerSideProps = async function getServerSideProps(ctx) {
     props: {
       cart,
       cid,
-      userId: session.userId,
+      userId: session.user.userId,
     },
   };
 };

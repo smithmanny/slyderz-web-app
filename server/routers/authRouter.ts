@@ -108,9 +108,9 @@ const authRouter = router({
   getSession: publicProcedure.query(async (opts) => {
     const session = opts.ctx.session;
 
-    if (session.sessionId && session.userId) {
+    if (session.sessionId && session.user.userId) {
       return {
-        userId: session.userId,
+        userId: session.user.userId,
       };
     }
 
@@ -119,7 +119,7 @@ const authRouter = router({
   logout: protectedProcedure.mutation(async (opts) => {
     const session = opts.ctx.session;
 
-    await opts.ctx.auth.invalidateAllUserSessions(session.userId);
+    await opts.ctx.auth.invalidateAllUserSessions(session.user.userId);
     opts.ctx.authRequest.setSession(null);
   }),
   login: publicProcedure.input(Login).mutation(async (opts) => {

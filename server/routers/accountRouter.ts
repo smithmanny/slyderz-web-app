@@ -36,7 +36,7 @@ const accountRouter = router({
       }
     }),
   deleteAccount: protectedProcedure.mutation(async (opts) => {
-    const userId = opts.ctx.session.userId;
+    const userId = opts.ctx.session.user.userId;
 
     try {
       return await opts.ctx.auth.deleteUser(userId);
@@ -49,7 +49,7 @@ const accountRouter = router({
     }
   }),
   fetchAccountPicture: protectedProcedure.query(async (opts) => {
-    const userId = opts.ctx.session.userId;
+    const userId = opts.ctx.session.user.userId;
     const ctx = opts.ctx;
 
     try {
@@ -83,7 +83,7 @@ const accountRouter = router({
           data: {
             imagePublicId: input.publicId,
             imageUrl: input.image,
-            userId: ctx.session.userId
+            userId: ctx.session.user.userId
           },
         })
       } catch (err: any) {
@@ -113,7 +113,7 @@ const accountRouter = router({
     .mutation(async ({ ctx, input }) => {
       const address = await ctx.prisma.address.create({
         data: {
-          userId: ctx.session.userId,
+          userId: ctx.session.user.userId,
           ...input,
         },
         select: {
@@ -132,7 +132,7 @@ const accountRouter = router({
     .mutation(async ({ ctx, input }) => {
       await ctx.prisma.address.update({
         where: {
-          userId: ctx.session.userId,
+          userId: ctx.session.user.userId,
         },
         data: {
           ...input,

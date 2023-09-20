@@ -41,7 +41,7 @@ const chefRouter = router({
   }),
   createChef: protectedProcedure.mutation(async ({ ctx, input }) => {
     const user = await ctx.prisma.authUser.findFirstOrThrow({
-      where: { id: ctx.session.userId },
+      where: { id: ctx.session.user.userId },
       select: {
         id: true,
         email: true,

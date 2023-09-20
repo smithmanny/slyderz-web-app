@@ -50,7 +50,7 @@ export const getServerSideProps = async function getServerSideProps({
   return {
     props: {
       confirmationNumber,
-      userId: session.userId,
+      userId: session.user.userId,
     },
   };
 };

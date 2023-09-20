@@ -14,9 +14,18 @@ import { ConvertUserToChefManually } from "app/beta/validations";
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const authRequest = auth.handleRequest(ctx);
-  const { user } = await authRequest.validateUser();
+  const session = await authRequest.validate();
 
-  if (user.role !== RoleType.ADMIN) {
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  if (session.user.role !== RoleType.ADMIN) {
     return {
       redirect: {
         destination: "/",

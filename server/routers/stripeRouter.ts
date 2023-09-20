@@ -10,7 +10,7 @@ const accountRouter = router({
         customer: opts.ctx.session.user.stripeCustomerId,
         payment_method_types: ["card"],
         metadata: {
-          userId: opts.ctx.session.userId,
+          userId: opts.ctx.session.user.userId,
         },
         usage: "off_session",
       });
@@ -27,7 +27,7 @@ const accountRouter = router({
   }),
   createAccountLinkMutation: protectedProcedure.mutation(async ({ ctx }) => {
     const user = await ctx.prisma.authUser.findFirstOrThrow({
-      where: { id: ctx.session.userId },
+      where: { id: ctx.session.user.userId },
       select: {
         id: true,
         email: true,

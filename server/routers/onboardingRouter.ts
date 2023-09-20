@@ -40,7 +40,7 @@ const chefRouter = router({
   fetchOnboardingState: chefProcedure.query(async ({ ctx }) => {
     const chef = await ctx.prisma.chef.findFirstOrThrow({
       where: {
-        userId: ctx.session.userId,
+        userId: ctx.session.user.userId,
       },
       select: {
         id: true,

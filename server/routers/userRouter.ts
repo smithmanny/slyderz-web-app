@@ -73,15 +73,15 @@ const userRouter = router({
 
     if (session.sessionId) {
       const stripePayments = getStripePayments(session.user.stripeCustomerId);
-      const userAddress = getAddress(session.userId);
-      const chefStatus = getChefStatus(session.userId);
+      const userAddress = getAddress(session.user.userId);
+      const chefStatus = getChefStatus(session.user.userId);
       const [_paymentMethods, _address, _checkUserChefStatus] =
         await Promise.all([stripePayments, userAddress, chefStatus]);
 
       paymentMethods = _paymentMethods;
       address = _address;
       checkUserChefStatus = _checkUserChefStatus;
-      userId = session.userId;
+      userId = session.user.userId;
       email = {
         emailAddress: session.user.email,
         isVerified: session.user.emailVerified

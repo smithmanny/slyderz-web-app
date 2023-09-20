@@ -17,7 +17,7 @@ type HomePage = {
 
 export const getServerSideProps = (async (ctx: GetServerSidePropsContext) => {
   const authRequest = auth.handleRequest(ctx);
-  const { session } = await authRequest.validateUser();
+  const session = await authRequest.validate();
 
   return {
     props: {

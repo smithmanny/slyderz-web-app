@@ -110,7 +110,7 @@ const dashboardRouter = router({
   getChefHours: chefProcedure.query(async ({ ctx }) => {
     const chef = await ctx.prisma.chef.findFirstOrThrow({
       where: {
-        userId: ctx.session.userId,
+        userId: ctx.session.user.userId,
       },
     });
     const hours = await ctx.prisma.hours.findMany({
