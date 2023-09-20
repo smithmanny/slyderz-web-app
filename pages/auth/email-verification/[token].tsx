@@ -1,7 +1,10 @@
 import { LuciaTokenError } from "@lucia-auth/tokens";
-import type { GetServerSidePropsContext } from "next";
 
-import { auth, emailVerificationToken } from "integrations/auth/lucia";
+import {
+  auth,
+  validateToken,
+  invalidateAllUserTokens,
+} from "integrations/auth/lucia";
 
 import Layout from "app/layouts/Layout";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
@@ -31,17 +34,17 @@ export async function getServerSideProps(ctx) {
   }
 
   try {
-    const token = await emailVerificationToken.validate(tokenParams);
+    const userId = await validateToken(tokenParams);
     const [user] = await Promise.all([
-      auth.getUser(token.userId),
-      auth.invalidateAllUserSessions(token.userId),
-      auth.updateUserAttributes(token.userId, {
+      auth.getUser(userId),
+      invalidateAllUserTokens(userId),
+      auth.updateUserAttributes(userId, {
         emailVerified: true,
       }),
     ]);
 
     const session = await auth.createSession({
-      userId: token.userId,
+      userId,
       attributes: {
         stripeCustomerId: user.stripeCustomerId,
         email: user.email,

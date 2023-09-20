@@ -2,8 +2,7 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { LuciaTokenError } from "@lucia-auth/tokens";
 
-import { passwordResetToken } from "integrations/auth/lucia";
-import { emailVerificationToken } from "integrations/auth/lucia";
+import { generateVerificationToken, validateToken, invalidateAllUserTokens } from "integrations/auth/lucia";
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 import { TRANSACTIONAL_EMAILS } from "types";
 import sendSesEmail from "emails/utils/sendSesEmail";
@@ -65,7 +64,7 @@ const authRouter = router({
         await createMailjetContact(input.email, input.name)
 
         // Issue email_activation token
-        const token = await emailVerificationToken.issue(user.userId);
+        const token = await generateVerificationToken(user.userId);
 
         return {
           userId: user.userId,
@@ -167,7 +166,7 @@ const authRouter = router({
       }
 
       const user = opts.ctx.auth.transformDatabaseUser(dbUser);
-      const token = await emailVerificationToken.issue(user.userId);
+      const token = await generateVerificationToken(user.userId);
 
       const activationUrl = `${process.env.NEXT_PUBLIC_URL}/auth/email-verification/${token.toString()}`;
       sendSesEmail({
@@ -196,7 +195,7 @@ const authRouter = router({
       }
 
       const user = opts.ctx.auth.transformDatabaseUser(dbUser);
-      const token = await passwordResetToken.issue(user.userId);
+      const token = await generateVerificationToken(user.userId);
 
       await sendSesEmail({
         to: user.email,
@@ -220,13 +219,13 @@ const authRouter = router({
       const authRequest = opts.ctx.authRequest;
 
       try {
-        const token = await passwordResetToken.validate(input.token);
-        const user = await opts.ctx.auth.getUser(token.userId);
+        const userId = await validateToken(input.token);
+        const user = await opts.ctx.auth.getUser(userId);
 
         // Invalidate all sessions, user tokens and update password
         await Promise.all([
           opts.ctx.auth.invalidateAllUserSessions(user.userId),
-          passwordResetToken.invalidateAllUserTokens(user.userId),
+          invalidateAllUserTokens(user.userId),
           opts.ctx.auth.updateKeyPassword("email", user.email, input.password),
         ]).catch(err => {
           throw new TRPCError({
@@ -238,14 +237,14 @@ const authRouter = router({
 
         // update key
         const session = await opts.ctx.auth.createSession({
-      userId: user.userId,
-      attributes: {
-        stripeCustomerId: user.stripeCustomerId,
-        email: user.email,
-        emailVerified: user.emailVerified,
-        name: user.name,
-      },
-    });
+          userId: user.userId,
+          attributes: {
+            stripeCustomerId: user.stripeCustomerId,
+            email: user.email,
+            emailVerified: user.emailVerified,
+            name: user.name,
+          },
+        });
         authRequest.setSession(session);
 
         await sendSesEmail({
