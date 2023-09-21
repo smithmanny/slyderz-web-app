@@ -55,7 +55,7 @@ const authRouter = router({
             emailVerified: false,
             name: input.name,
             email: input.email,
-            stripeCustomerId: stripeCustomerId,
+            stripeCustomerId,
             role: RoleType.USER
           },
         });
@@ -72,6 +72,7 @@ const authRouter = router({
           email: user.email,
           stripeCustomerId: stripeCustomerId,
           emailVerified: user.emailVerified,
+          role: user.role,
           token,
         };
       } catch (err) {
@@ -99,6 +100,7 @@ const authRouter = router({
         email: user.email,
         emailVerified: user.emailVerified,
         name: user.name,
+        role: user.role
       },
     });
     ctx.authRequest.setSession(session);
@@ -136,6 +138,7 @@ const authRouter = router({
         email: user.email,
         emailVerified: user.emailVerified,
         name: user.name,
+        role: user.role
       },
     });
       ctx.authRequest.setSession(session);
@@ -243,6 +246,7 @@ const authRouter = router({
             email: user.email,
             emailVerified: user.emailVerified,
             name: user.name,
+            role: user.role
           },
         });
         authRequest.setSession(session);

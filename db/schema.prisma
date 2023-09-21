@@ -41,6 +41,12 @@ model AuthSession {
   idle_expires   BigInt
   user           AuthUser @relation(references: [id], fields: [user_id], onDelete: Cascade)
 
+  stripeCustomerId String   @default("")
+  emailVerified    Boolean  @default(false)
+  email            String   @default("")
+  name             String   @default("")
+  role             RoleType @default(USER)
+
   @@index([user_id])
   @@map("auth_session")
 }

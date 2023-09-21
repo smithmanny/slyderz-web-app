@@ -50,6 +50,7 @@ export async function getServerSideProps(ctx) {
         email: user.email,
         emailVerified: user.emailVerified,
         name: user.name,
+        role: user.role,
       },
     });
     authRequest.setSession(session);

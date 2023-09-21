@@ -17,6 +17,14 @@ export const auth = lucia({
 	}),
   env,
   middleware: nextjs_future(),
+	getSessionAttributes: (databaseSession) => {
+		return {
+			stripeCustomerId: databaseSession.stripeCustomerId,
+			emailVeried: databaseSession.emailVerified,
+			email: databaseSession.email,
+			name: databaseSession.name,
+		};
+	},
   getUserAttributes: (userData) => {
     return {
       stripeCustomerId: userData.stripeCustomerId,
