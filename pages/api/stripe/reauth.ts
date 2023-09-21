@@ -9,7 +9,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse, ctx) => {
   const { session } = ctx;
 
   const user = await db.authUser.findFirstOrThrow({
-    where: { id: session.userId },
+    where: { id: session.user.userId },
     select: {
       id: true,
       email: true,

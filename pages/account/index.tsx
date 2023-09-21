@@ -31,7 +31,7 @@ const DynamicStripeSavedCards = dynamic(
 
 export async function getServerSideProps(ctx) {
   const authRequest = auth.handleRequest(ctx);
-  const { session } = await authRequest.validateUser();
+  const session = await authRequest.validate();
 
   if (!session) {
     return {
@@ -43,14 +43,16 @@ export async function getServerSideProps(ctx) {
   }
 
   return {
-    props: {},
+    props: {
+      user: session.user,
+    },
   };
 }
 
 const Account = (props) => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  const user = useAppSelector((state) => state.user);
+  // const user = useAppSelector((state) => state.user);
   const utils = trpc.useContext();
 
   const invalidatePictureQuery = async () => {
@@ -81,7 +83,7 @@ const Account = (props) => {
   });
 
   const initialValues = {
-    name: user.name,
+    name: props.user.name,
   };
 
   return (
@@ -172,11 +174,12 @@ const Account = (props) => {
         <Typography variant="h6" sx={{ mt: 6 }} gutterBottom>
           <strong>Payment Methods</strong>
         </Typography>
-        {user.stripeCards.length > 0 ? (
+        {/* TODO */}
+        {/* {user.stripeCards.length > 0 ? (
           <DynamicStripeSavedCards paymentMethods={user.stripeCards} />
         ) : (
           <DynamicStripeCardElement />
-        )}
+        )} */}
 
         {/* Delete Account */}
         <Typography variant="h6" sx={{ mt: 6 }} gutterBottom>

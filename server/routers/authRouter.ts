@@ -2,13 +2,13 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { LuciaTokenError } from "@lucia-auth/tokens";
 
-import { passwordResetToken } from "integrations/auth/lucia";
-import { emailVerificationToken } from "integrations/auth/lucia";
+import { generateVerificationToken, validateToken, invalidateAllUserTokens } from "integrations/auth/lucia";
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 import { TRANSACTIONAL_EMAILS } from "types";
 import sendSesEmail from "emails/utils/sendSesEmail";
 import { Signup, Login } from "app/auth/validations";
 import { createMailjetContact } from "app/helpers/mailjet";
+import { RoleType } from "@prisma/client";
 
 const authRouter = router({
   createUser: publicProcedure.input(Signup).mutation(async (opts) => {
@@ -46,15 +46,17 @@ const authRouter = router({
         }
 
         const user = await ctx.auth.createUser({
-          primaryKey: {
+          key: {
             providerId: "email",
             providerUserId: input.email.toLowerCase(),
             password: input.password,
           },
           attributes: {
+            emailVerified: false,
             name: input.name,
             email: input.email,
-            stripeCustomerId: stripeCustomerId,
+            stripeCustomerId,
+            role: RoleType.USER
           },
         });
 
@@ -62,10 +64,15 @@ const authRouter = router({
         await createMailjetContact(input.email, input.name)
 
         // Issue email_activation token
-        const token = await emailVerificationToken.issue(user.userId);
+        const token = await generateVerificationToken(user.userId);
 
         return {
           userId: user.userId,
+          name: user.name,
+          email: user.email,
+          stripeCustomerId: stripeCustomerId,
+          emailVerified: user.emailVerified,
+          role: user.role,
           token,
         };
       } catch (err) {
@@ -86,7 +93,16 @@ const authRouter = router({
       variables: { activationUrl },
     });
 
-    const session = await ctx.auth.createSession(user.userId);
+    const session = await ctx.auth.createSession({
+      userId: user.userId,
+      attributes: {
+        stripeCustomerId: user.stripeCustomerId,
+        email: user.email,
+        emailVerified: user.emailVerified,
+        name: user.name,
+        role: user.role
+      },
+    });
     ctx.authRequest.setSession(session);
 
     return user.userId;
@@ -94,9 +110,9 @@ const authRouter = router({
   getSession: publicProcedure.query(async (opts) => {
     const session = opts.ctx.session;
 
-    if (session.sessionId && session.userId) {
+    if (session.sessionId && session.user.userId) {
       return {
-        userId: session.userId,
+        userId: session.user.userId,
       };
     }
 
@@ -105,7 +121,7 @@ const authRouter = router({
   logout: protectedProcedure.mutation(async (opts) => {
     const session = opts.ctx.session;
 
-    await opts.ctx.auth.invalidateAllUserSessions(session.userId);
+    await opts.ctx.auth.invalidateAllUserSessions(session.user.userId);
     opts.ctx.authRequest.setSession(null);
   }),
   login: publicProcedure.input(Login).mutation(async (opts) => {
@@ -114,7 +130,17 @@ const authRouter = router({
 
     try {
       const key = await ctx.auth.useKey("email", input.email.toLowerCase(), input.password);
-      const session = await ctx.auth.createSession(key.userId);
+      const user = await ctx.auth.getUser(key.userId)
+      const session = await ctx.auth.createSession({
+      userId: key.userId,
+      attributes: {
+        stripeCustomerId: user.stripeCustomerId,
+        email: user.email,
+        emailVerified: user.emailVerified,
+        name: user.name,
+        role: user.role
+      },
+    });
       ctx.authRequest.setSession(session);
     } catch (err) {
       console.log("Failed logining in", err);
@@ -143,7 +169,7 @@ const authRouter = router({
       }
 
       const user = opts.ctx.auth.transformDatabaseUser(dbUser);
-      const token = await emailVerificationToken.issue(user.userId);
+      const token = await generateVerificationToken(user.userId);
 
       const activationUrl = `${process.env.NEXT_PUBLIC_URL}/auth/email-verification/${token.toString()}`;
       sendSesEmail({
@@ -172,7 +198,7 @@ const authRouter = router({
       }
 
       const user = opts.ctx.auth.transformDatabaseUser(dbUser);
-      const token = await passwordResetToken.issue(user.userId);
+      const token = await generateVerificationToken(user.userId);
 
       await sendSesEmail({
         to: user.email,
@@ -196,13 +222,13 @@ const authRouter = router({
       const authRequest = opts.ctx.authRequest;
 
       try {
-        const token = await passwordResetToken.validate(input.token);
-        const user = await opts.ctx.auth.getUser(token.userId);
+        const userId = await validateToken(input.token);
+        const user = await opts.ctx.auth.getUser(userId);
 
         // Invalidate all sessions, user tokens and update password
         await Promise.all([
           opts.ctx.auth.invalidateAllUserSessions(user.userId),
-          passwordResetToken.invalidateAllUserTokens(user.userId),
+          invalidateAllUserTokens(user.userId),
           opts.ctx.auth.updateKeyPassword("email", user.email, input.password),
         ]).catch(err => {
           throw new TRPCError({
@@ -213,7 +239,16 @@ const authRouter = router({
         });
 
         // update key
-        const session = await opts.ctx.auth.createSession(user.userId);
+        const session = await opts.ctx.auth.createSession({
+          userId: user.userId,
+          attributes: {
+            stripeCustomerId: user.stripeCustomerId,
+            email: user.email,
+            emailVerified: user.emailVerified,
+            name: user.name,
+            role: user.role
+          },
+        });
         authRequest.setSession(session);
 
         await sendSesEmail({

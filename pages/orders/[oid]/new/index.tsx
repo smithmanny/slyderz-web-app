@@ -16,7 +16,7 @@ export const getServerSideProps = async function getServerSideProps({
   params,
 }) {
   const authRequest = auth.handleRequest({ req, res });
-  const { session } = await authRequest.validateUser();
+  const session = await authRequest.validate();
 
   if (!params?.oid) {
     return {
@@ -50,7 +50,7 @@ export const getServerSideProps = async function getServerSideProps({
   return {
     props: {
       confirmationNumber,
-      userId: session.userId,
+      userId: session.user.userId,
     },
   };
 };

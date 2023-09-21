@@ -137,9 +137,8 @@ export const getServerSideProps = async function getServerSideProps({
     };
   }
 
-  await stripe.paymentIntents.capture(paymentIntent.id);
-
-  await db.order.update({
+  const capturePayment = stripe.paymentIntents.capture(paymentIntent.id);
+  const updateOrder = db.order.update({
     where: {
       confirmationNumber,
     },
@@ -147,6 +146,8 @@ export const getServerSideProps = async function getServerSideProps({
       orderStatus: "ACCEPTED",
     },
   });
+
+  await Promise.all([capturePayment, updateOrder]);
 
   const eventDate = new Date(order.eventDate);
   const address = `${order.address1} ${order.city}, ${order.state} ${order.zipcode}`;

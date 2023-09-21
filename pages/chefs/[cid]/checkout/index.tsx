@@ -22,7 +22,7 @@ interface CheckoutTypes {
 
 export const getServerSideProps = async function getServerSideProps(ctx) {
   const authRequest = auth.handleRequest(ctx);
-  const { session } = await authRequest.validateUser();
+  const session = await authRequest.validate();
 
   if (!session) {
     return {
@@ -40,7 +40,7 @@ export const getServerSideProps = async function getServerSideProps(ctx) {
     props: {
       cart,
       cid,
-      userId: session.userId,
+      userId: session.user.userId,
     },
   };
 };

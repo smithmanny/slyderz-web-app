@@ -66,7 +66,7 @@ const checkoutRouter = router({
               },
             },
             paymentMethodId,
-            userId: ctx.session.userId,
+            userId: ctx.session.user.userId,
           },
           select: {
             amount: true,

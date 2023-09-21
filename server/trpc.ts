@@ -8,7 +8,7 @@ const t = initTRPC.context<typeof context>().create({
 });
 
 const isAuthed = t.middleware(({ next, ctx }) => {
-  if (!ctx.session?.userId) {
+  if (!ctx.session?.user.userId) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
       message: "Please log in",
@@ -40,7 +40,7 @@ const isAdmin = t.middleware(({ next, ctx }) => {
 const isChef = isAuthed.unstable_pipe(async ({ next, ctx }) => {
   const chef = await ctx.prisma.chef.findFirst({
     where: {
-      userId: ctx.session.userId,
+      userId: ctx.session.user.userId,
     },
   });
 
