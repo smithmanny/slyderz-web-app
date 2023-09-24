@@ -10,7 +10,7 @@ import {
 } from "app/cart/validations";
 import type { CartItem } from "types";
 
-const chefRouter = router({
+const cartRouter = router({
   getUserCart: publicProcedure.query(async ({ ctx }) => {
     return ctx.session.cart;
   }),
@@ -122,4 +122,4 @@ const chefRouter = router({
     }),
 });
 
-export default chefRouter;
+export default cartRouter;

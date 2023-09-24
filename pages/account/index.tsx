@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import { useSnackbar } from "notistack";
 
 import { UpdatePassword } from "app/auth/validations";
-import { useAppSelector } from "integrations/redux";
 import { trpc } from "server/utils/trpc";
 import { auth } from "integrations/auth/lucia";
 
@@ -52,27 +51,26 @@ export async function getServerSideProps(ctx) {
 const Account = (props) => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  // const user = useAppSelector((state) => state.user);
   const utils = trpc.useContext();
 
   const invalidatePictureQuery = async () => {
-    await utils.account.fetchAccountPicture.invalidate();
+    await utils.user.fetchAccountPicture.invalidate();
     enqueueSnackbar("Profile picture updated", {
       variant: "success",
     });
   };
 
-  const fetchProfileImage = trpc.account.fetchAccountPicture.useQuery();
-  const setAccountPicture = trpc.account.setAccountPicture.useMutation({
+  const fetchProfileImage = trpc.user.fetchAccountPicture.useQuery();
+  const setAccountPicture = trpc.user.setAccountPicture.useMutation({
     onSuccess: invalidatePictureQuery,
   });
   const updatePassword = trpc.auth.updatePassword.useMutation();
-  const deleteAccount = trpc.account.deleteAccount.useMutation({
+  const deleteAccount = trpc.user.deleteAccount.useMutation({
     onSuccess: () => {
       return router.replace("/");
     },
   });
-  const destroyImage = trpc.account.deleteAccountPicture.useMutation({
+  const destroyImage = trpc.user.deleteAccountPicture.useMutation({
     onSuccess: invalidatePictureQuery,
     onError: (err) => {
       console.log(err);

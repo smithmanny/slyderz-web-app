@@ -14,7 +14,7 @@ interface StripeSavedCardsType {
 function StripeSavedCards(props: StripeSavedCardsType) {
   const { paymentMethods } = props;
   const router = useRouter();
-  const deletePaymentMethod = trpc.account.deletePaymentMethod.useMutation({
+  const deletePaymentMethod = trpc.user.deletePaymentMethod.useMutation({
     onSuccess: () => {
       // TODO: update redux instead
       return router.reload();

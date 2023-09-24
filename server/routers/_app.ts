@@ -1,5 +1,4 @@
 import { router } from "../trpc";
-import accountRouter from "./accountRouter";
 import adminRouter from "./adminRouter";
 import authRouter from "./authRouter";
 import betaRouter from "./betaRouter";
@@ -13,7 +12,6 @@ import userRouter from "./userRouter";
 
 export const appRouter = router({
   auth: authRouter,
-  account: accountRouter,
   admin: adminRouter,
   beta: betaRouter,
   cart: cartRouter,

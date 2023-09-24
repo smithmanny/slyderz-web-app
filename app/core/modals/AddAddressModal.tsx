@@ -10,7 +10,7 @@ import Modal from "app/core/components/shared/Modal";
 
 const AddAddressModal = ({ show, onClose, ...props }) => {
   const dispatch = useAppDispatch();
-  const addAddressMutation = trpc.account.createAddress.useMutation({
+  const addAddressMutation = trpc.user.createAddress.useMutation({
     onSuccess: (input) => {
       dispatch(addAddress(input));
       return onClose();
