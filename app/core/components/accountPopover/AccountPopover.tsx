@@ -33,10 +33,11 @@ const AccountPopover = (props: AccountPopver) => {
   const router = useRouter();
   const utils = trpc.useContext();
   const logout = trpc.auth.logout.useMutation({
-    onSuccess: () => {
-      utils.invalidate();
+    onSuccess: async () => {
+      await utils.user.invalidate();
 
-      window.posthog.reset();
+      // TODO
+      // window.posthog.reset();
       return handlePopoverClick("/");
     },
   });

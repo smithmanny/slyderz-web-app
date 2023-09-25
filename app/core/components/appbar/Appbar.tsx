@@ -10,6 +10,7 @@ import useScrollTrigger from "@mui/material/useScrollTrigger";
 import { default as MuiAppBar } from "@mui/material/AppBar";
 import Alert from "@mui/material/Alert";
 import Collapse from "@mui/material/Collapse";
+import { useFlags } from "flagsmith/react";
 
 import { trpc } from "server/utils/trpc";
 import useUser from "app/hooks/useUser";
@@ -18,6 +19,7 @@ import Box from "app/core/components/shared/Box";
 import Typography from "app/core/components/shared/Typography";
 import { Container } from "@mui/material";
 import Button from "../shared/Button";
+import BetaAppbar from "app/beta/components/Appbar";
 
 const AccountPopover = dynamic(
   () => import("app/core/components/accountPopover"),
@@ -49,6 +51,7 @@ const Appbar = (props) => {
   const user = useUser();
   const isAccountOpen = Boolean(accountAnchorEl);
   const accountId = isAccountOpen ? "account-popover" : null;
+  const flags = useFlags(["is_beta"]);
 
   const handleVerifyEmailAlertOnClose = useCallback(() => {
     setShowVerifyEmailAlert(false);
@@ -77,6 +80,8 @@ const Appbar = (props) => {
 
     await sendVerifyEmail.mutateAsync({ email: user.email.emailAddress });
   };
+
+  if (flags.is_beta.enabled && !user) return <BetaAppbar />;
 
   return (
     <>
