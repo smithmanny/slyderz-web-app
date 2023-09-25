@@ -1,8 +1,6 @@
 import { TRPCError } from "@trpc/server";
-import type { Address } from "@prisma/client";
-
 import getCloudinary from "app/utils/getCloudinary";
-import { router, publicProcedure, protectedProcedure } from "../trpc";
+import { router, protectedProcedure } from "../trpc";
 import {
   DeleteStripePaymentMethod,
   CreateImageType,
@@ -10,14 +8,10 @@ import {
   AddUserAddressType,
 } from "app/account/validations";
 
-interface UserChefStatusType {
-  isChef: boolean;
-  isChefProfileComplete: boolean;
-}
-
 const userRouter = router({
-  fetchInitialData: publicProcedure.query(async (opts) => {
+  fetchUserData: protectedProcedure.query(async (opts) => {
     const ctx = opts.ctx;
+    const { user } = ctx.session;
 
     async function getStripePayments(stripeCustomerId: string) {
       const paymentMethods = await ctx.stripe.paymentMethods.list({
@@ -49,62 +43,40 @@ const userRouter = router({
       return user.address;
     }
 
-    async function getChefStatus(userId: string) {
-      const chef = await ctx.prisma.chef.findFirst({
-        where: { userId: userId },
-        select: {
-          stripeAccountId: true,
-          isOnboardingComplete: true,
+    async function isUserChef() {
+      return ctx.prisma.chef.findFirst({
+        where: {
+          userId: ctx.session.user.userId,
         },
       });
-
-      if (!chef) {
-        return { isChef: false, isChefProfileComplete: false };
-      }
-
-      if (chef.isOnboardingComplete) {
-        return { isChef: true, isChefProfileComplete: true };
-      } else {
-        return { isChef: true, isChefProfileComplete: false };
-      }
     }
 
-    const session = ctx.session;
-    let userId = "";
-    let paymentMethods: Array<any> = [];
-    let address: Address | object | null = {};
-    let email = {};
-    let name = "";
-    let checkUserChefStatus: UserChefStatusType = {
-      isChef: false,
-      isChefProfileComplete: false,
-    };
+    const [paymentMethods, address, chef] =
+      await Promise.all([
+        getStripePayments(user.stripeCustomerId),
+        getAddress(user.userId),
+        isUserChef()
+      ]);
 
-    if (session.sessionId) {
-      const stripePayments = getStripePayments(session.user.stripeCustomerId);
-      const userAddress = getAddress(session.user.userId);
-      const chefStatus = getChefStatus(session.user.userId);
-      const [_paymentMethods, _address, _checkUserChefStatus] =
-        await Promise.all([stripePayments, userAddress, chefStatus]);
-
-      paymentMethods = _paymentMethods;
-      address = _address;
-      checkUserChefStatus = _checkUserChefStatus;
-      userId = session.user.userId;
-      email = {
-        emailAddress: session.user.email,
-        isVerified: session.user.emailVerified
-      } as { emailAddress: string, isVerified: boolean};
-      name = session.user.name;
+    const userId = user.userId;
+    const email = {
+      emailAddress: user.email,
+      isVerified: user.emailVerified
+    } as { emailAddress: string, isVerified: boolean};
+    const name = user.name;
+    const isChef = {
+      isChef: !!chef || false,
+      isChefProfileComplete: chef?.isOnboardingComplete || false,
+      onboardingState: chef?.onboardingState
     }
 
     return {
       paymentMethods,
       address,
-      checkUserChefStatus,
       userId,
       email,
       name,
+      chef: isChef
     };
   }),
   deletePaymentMethod: protectedProcedure

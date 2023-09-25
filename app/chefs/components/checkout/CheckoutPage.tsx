@@ -3,10 +3,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import ArrowBack from "@mui/icons-material/ArrowBack";
 
-import { useAppSelector } from "integrations/redux";
 import { styled } from "integrations/material-ui";
 import { trpc } from "server/utils/trpc";
-import type { AddAddressType } from "integrations/redux/reducers/userReduer";
 
 import Form, { Select } from "app/core/components/form";
 import Button from "app/core/components/shared/Button";
@@ -67,24 +65,30 @@ interface CheckoutPageTypes {
   chefId: string;
   eventDate: Date;
   eventTime: string;
-  userId: number;
+  user: any;
   openAddressModal: () => void;
 }
+type AddAddressType = {
+  address1: string;
+  address2?: string | null;
+  city: string;
+  state: string;
+  zipcode: string;
+};
 
 const CheckoutPage = ({
   chefId,
   eventDate,
   eventTime,
   openAddressModal,
+  user,
 }: CheckoutPageTypes) => {
   const router = useRouter();
   const [processing, setProcessing] = useState(false);
 
   const createOrder = trpc.checkout.createCheckout.useMutation();
-  const stripePaymentMethods = useAppSelector(
-    (state) => state.user.stripeCards,
-  );
-  const address = useAppSelector((state) => state.user.address);
+  const stripePaymentMethods = user?.paymentMethods;
+  const address = user?.address;
   const isAddressEmpty = Object.keys(address).length === 0;
 
   const handleSubmit = async (values) => {

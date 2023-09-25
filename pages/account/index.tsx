@@ -2,10 +2,14 @@ import React from "react";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import { useSnackbar } from "notistack";
+import { createServerSideHelpers } from "@trpc/react-query/server";
 
 import { UpdatePassword } from "app/auth/validations";
 import { trpc } from "server/utils/trpc";
 import { auth } from "integrations/auth/lucia";
+import createContext from "server/utils/createContext";
+import { appRouter } from "server/routers/_app";
+import useUser from "app/hooks/useUser";
 
 import Layout from "app/layouts/Layout";
 import Button from "app/core/components/shared/Button";
@@ -41,9 +45,16 @@ export async function getServerSideProps(ctx) {
     };
   }
 
+  const helpers = createServerSideHelpers({
+    router: appRouter,
+    ctx: await createContext(ctx),
+  });
+
+  await helpers.user.fetchUserData.prefetch();
+
   return {
     props: {
-      user: session.user,
+      trpcState: helpers.dehydrate(),
     },
   };
 }
@@ -52,6 +63,8 @@ const Account = (props) => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const utils = trpc.useContext();
+  const user = useUser();
+  const paymentMethods = user?.paymentMethods || [];
 
   const invalidatePictureQuery = async () => {
     await utils.user.fetchAccountPicture.invalidate();
@@ -81,7 +94,7 @@ const Account = (props) => {
   });
 
   const initialValues = {
-    name: props.user.name,
+    name: user?.name,
   };
 
   return (
@@ -172,12 +185,12 @@ const Account = (props) => {
         <Typography variant="h6" sx={{ mt: 6 }} gutterBottom>
           <strong>Payment Methods</strong>
         </Typography>
-        {/* TODO */}
-        {/* {user.stripeCards.length > 0 ? (
-          <DynamicStripeSavedCards paymentMethods={user.stripeCards} />
+
+        {paymentMethods.length > 0 ? (
+          <DynamicStripeSavedCards paymentMethods={paymentMethods} />
         ) : (
           <DynamicStripeCardElement />
-        )} */}
+        )}
 
         {/* Delete Account */}
         <Typography variant="h6" sx={{ mt: 6 }} gutterBottom>

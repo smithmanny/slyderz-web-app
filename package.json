@@ -75,7 +75,7 @@
   "react-redux": "8.1.1",
   "rudder-sdk-js": "^2.41.0",
   "secure-password": "^4.0.0",
-  "sharp": "^0.32.1",
+  "sharp": "^0.32.6",
   "stripe": "12.12.0",
   "superjson": "^1.12.4",
   "uuid": "9.0.0",

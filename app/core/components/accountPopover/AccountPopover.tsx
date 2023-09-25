@@ -10,26 +10,31 @@ import Popover from "app/core/components/shared/Popover";
 import { loggedInRoutes, loggedOutRoutes, chefLoggedInRoutes } from "./routes";
 
 import { trpc } from "server/utils/trpc";
-import { useAppSelector, useAppDispatch } from "integrations/redux";
-import { logout as resetState } from "integrations/redux/reducers/userReduer";
-import type { ChefType } from "integrations/redux/reducers/userReduer";
+import { OnboardingState } from "@prisma/client";
 
+type ChefType = {
+  isChef: boolean;
+  isChefProfileComplete: boolean;
+  onboardingState: OnboardingState | undefined;
+};
 interface AccountPopver {
   id: string | null;
   open: boolean;
   onClose: () => void;
   anchorEl: any;
-  chef: ChefType;
+  user: {
+    userId: string;
+    chef?: ChefType;
+  };
 }
 
 const AccountPopover = (props: AccountPopver) => {
-  const { chef, onClose, ...rest } = props;
+  const { user, onClose, ...rest } = props;
   const router = useRouter();
-  const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user);
+  const utils = trpc.useContext();
   const logout = trpc.auth.logout.useMutation({
     onSuccess: () => {
-      dispatch(resetState());
+      utils.invalidate();
 
       window.posthog.reset();
       return handlePopoverClick("/");
@@ -43,11 +48,11 @@ const AccountPopover = (props: AccountPopver) => {
       chefLoggedIn: chefLoggedInRoutes,
     };
 
-    if (user.userId && !user.chef.isChef) {
+    if (user.userId && !user?.chef?.isChef) {
       return routes.loggedIn;
     }
 
-    if (user.userId && user.chef.isChef) {
+    if (user.userId && user?.chef?.isChef) {
       return routes.chefLoggedIn;
     }
 

@@ -3,10 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import type { TypedUseSelectorHook } from "react-redux";
 
 import modals from "./reducers/modalReducer";
-import user from "./reducers/userReduer";
 
 const store = configureStore({
-  reducer: combineReducers({ modals, user }),
+  reducer: combineReducers({ modals }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

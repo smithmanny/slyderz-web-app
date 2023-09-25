@@ -9,15 +9,17 @@ import AddAddressModal from "app/core/modals/AddAddressModal";
 import { getCookieServer } from "server/utils/cookieHelpers";
 import { auth } from "integrations/auth/lucia";
 import { Cart } from "types";
+import createContext from "server/utils/createContext";
+import { appRouter } from "server/routers/_app";
+import { createServerSideHelpers } from "@trpc/react-query/server";
 
 interface CheckoutTypes {
   cart: Cart;
   cid: string;
-  eventDate: Date;
-  eventTime: string;
-  paymentIntent: any;
-  setupIntentId: number;
-  userId: number;
+  // eventDate: Date;
+  // eventTime: string;
+  // paymentIntent: any;
+  user: any;
 }
 
 export const getServerSideProps = async function getServerSideProps(ctx) {
@@ -34,19 +36,28 @@ export const getServerSideProps = async function getServerSideProps(ctx) {
   }
 
   const { cid } = ctx.query;
+  if (!cid) throw new Error("Chef not found!");
+
   const cart = getCookieServer("cart", { req: ctx.req, res: ctx.res });
+  const helpers = createServerSideHelpers({
+    router: appRouter,
+    ctx: await createContext(ctx),
+  });
+
+  const user = await helpers.user.fetchUserData.fetch();
 
   return {
     props: {
       cart,
       cid,
-      userId: session.user.userId,
+      user,
+      trpcState: helpers.dehydrate(),
     },
   };
 };
 
 const Checkout = (props: CheckoutTypes) => {
-  const { cart, cid, userId } = props;
+  const { cart, cid, user } = props;
   const isCartEmpty = cart.items.length === 0 || cart.total === 0;
   const [showAddressModal, setShowAddressModal] = useState(false);
   const closeAddressModal = useCallback(() => setShowAddressModal(false), []);
@@ -61,7 +72,7 @@ const Checkout = (props: CheckoutTypes) => {
           <CheckoutPage
             eventDate={cart.eventDate}
             eventTime={cart.eventTime}
-            userId={userId}
+            user={user}
             chefId={cid}
             openAddressModal={openAddressModal}
           />

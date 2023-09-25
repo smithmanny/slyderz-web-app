@@ -2,7 +2,8 @@ import React, { ReactNode } from "react";
 import Head from "next/head";
 import { useFlags } from "flagsmith/react";
 
-import { useAppSelector } from "integrations/redux";
+import useUser from "app/hooks/useUser";
+
 import Appbar from "app/core/components/appbar";
 import Footer from "app/core/components/footer";
 import BetaLayout from "./BetaLayout";
@@ -14,7 +15,7 @@ type LayoutProps = {
 
 const Layout = ({ title, children }: LayoutProps) => {
   const flags = useFlags(["is_beta"]);
-  const user = useAppSelector((state) => state.user);
+  const user = useUser();
 
   return (
     <>
@@ -22,7 +23,7 @@ const Layout = ({ title, children }: LayoutProps) => {
         <title>{title || "Slyderz"}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {flags.is_beta.enabled && !user.userId ? (
+      {flags.is_beta.enabled && !user ? (
         <BetaLayout>{children}</BetaLayout>
       ) : (
         <React.Fragment>
