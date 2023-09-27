@@ -5,6 +5,7 @@ import {
   validateToken,
   invalidateAllUserTokens,
 } from "integrations/auth/lucia";
+import { createMailjetContact } from "app/helpers/mailjet";
 
 import Layout from "app/layouts/Layout";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
@@ -12,17 +13,7 @@ import VerifyEmailForm from "app/auth/components/VerifyEmail";
 
 export async function getServerSideProps(ctx) {
   const authRequest = auth.handleRequest(ctx);
-  const session = await authRequest.validate();
   const tokenParams = ctx.query?.token as string;
-
-  if (session?.user?.emailVerified) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
 
   if (!tokenParams) {
     return {
@@ -42,6 +33,27 @@ export async function getServerSideProps(ctx) {
         emailVerified: true,
       }),
     ]);
+
+    if (!user) {
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
+    }
+
+    // Add user to email list
+    await createMailjetContact(user.email, user.name);
+
+    if (user.emailVerified) {
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
+    }
 
     const session = await auth.createSession({
       userId,

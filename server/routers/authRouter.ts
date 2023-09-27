@@ -7,7 +7,6 @@ import { router, publicProcedure, protectedProcedure } from "../trpc";
 import { TRANSACTIONAL_EMAILS } from "types";
 import sendSesEmail from "emails/utils/sendSesEmail";
 import { Signup, Login } from "app/auth/validations";
-import { createMailjetContact } from "app/helpers/mailjet";
 import { RoleType } from "@prisma/client";
 
 const authRouter = router({
@@ -59,9 +58,6 @@ const authRouter = router({
             role: RoleType.USER
           },
         });
-
-        // Add user to email list
-        await createMailjetContact(input.email, input.name)
 
         // Issue email_activation token
         const token = await generateVerificationToken(user.userId);
