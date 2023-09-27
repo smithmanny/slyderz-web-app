@@ -9,7 +9,7 @@
   "email": "email dev --port 3002",
   "build": "NODE_ENV=production next build && prisma migrate deploy",
   "start": "next start",
-  "studio": "npx prisma studio",
+  "studio": "pnpm dlx prisma studio",
   "lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx .",
   "lint:fix": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx . --fix",
   "test": "jest",
