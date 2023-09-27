@@ -38,6 +38,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+
       - name: Cache Next JS
         uses: actions/cache@v3
         with:
@@ -46,19 +49,19 @@ jobs:
             ~/.yarn
             ${{ github.workspace }}/.next/cache
           # Generate a new cache whenever packages or source files change.
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
           # If source files changed but packages didn't, rebuild from a prior cache.
           restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
 
       - name: Use Node 18
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
-          cache: yarn
+          cache: pnpm
 
       - name: Install packages
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Building Slyderz
         env:
@@ -78,7 +81,7 @@ jobs:
           CAPTCHA_SECRET: ${{ secrets.CAPTCHA_SECRET}}
           CONTENTFUL_TOKEN: ${{ secrets.CONTENTFUL_TOKEN}}
           CONTENTFUL_ACCESS_TOKEN: ${{ secrets.CONTENTFUL_ACCESS_TOKEN}}
-        run: yarn run build
+        run: pnpm run build
 
       - name: Upload Next build
         uses: actions/upload-artifact@v3
