@@ -23,7 +23,7 @@ function UploadHeadshotPreview(props: UploadHeadshotPreviewType) {
     trpc.onboarding.completeOnboardingHeadshot.useMutation({
       onSuccess: props.invalidateOnboardingState,
     });
-  const destroyAccountImage = trpc.account.deleteAccountPicture.useMutation({
+  const destroyAccountImage = trpc.user.deleteAccountPicture.useMutation({
     onSuccess: props.invalidateOnboardingState,
     onError: (err) => console.log(err),
   });
@@ -78,8 +78,8 @@ function UploadHeadshot(props: UploadHeadshotType) {
     await utils.onboarding.fetchOnboardingState.invalidate();
   }, [utils.onboarding.fetchOnboardingState]);
 
-  const fetchProfileImage = trpc.account.fetchAccountPicture.useQuery();
-  const setAccountPicture = trpc.account.setAccountPicture.useMutation({
+  const fetchProfileImage = trpc.user.fetchAccountPicture.useQuery();
+  const setAccountPicture = trpc.user.setAccountPicture.useMutation({
     onSuccess: invalidateOnboardingState,
   });
 

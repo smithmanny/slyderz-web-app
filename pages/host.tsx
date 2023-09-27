@@ -3,17 +3,20 @@ import { useSnackbar } from "notistack";
 import Image from "next/image";
 
 import { trpc } from "server/utils/trpc";
+import useUser from "app/hooks/useUser";
+import { useFlags } from "flagsmith/react";
 
 import Layout from "app/layouts/Layout";
 import AboutSection from "app/about/components/AboutSection";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
-import Box from "app/core/components/shared/Box";
 import Button from "app/core/components/shared/Button";
 
 const Host = () => {
+  const flags = useFlags(["is_beta"]);
   const router = useRouter();
+  const user = useUser();
   const { enqueueSnackbar } = useSnackbar();
   const createChef = trpc.chef.createChef.useMutation({
     onSuccess: async (url) => {
@@ -25,6 +28,19 @@ const Host = () => {
   });
 
   const handleCreateChef = async () => await createChef.mutateAsync();
+
+  let showSignupChefButton = false;
+
+  if (user && !user.chef.isChef) {
+    showSignupChefButton = true;
+  }
+  if (flags.is_beta.enabled && user) {
+    showSignupChefButton = true;
+
+    if (user.chef.isChef) {
+      showSignupChefButton = false;
+    }
+  }
   return (
     <ConsumerContainer>
       <Grid container spacing={2}>
@@ -104,16 +120,18 @@ const Host = () => {
           }}
         />
 
-        <Grid item xs={12} textAlign="center">
-          <Typography variant="h4">Ready to get started?</Typography>
-          <Button
-            label="Become a host"
-            sx={{ mt: 2 }}
-            onClick={handleCreateChef}
-          >
-            Become a host
-          </Button>
-        </Grid>
+        {showSignupChefButton && (
+          <Grid item xs={12} textAlign="center">
+            <Typography variant="h4">Ready to get started?</Typography>
+            <Button
+              label="Become a host"
+              sx={{ mt: 2 }}
+              onClick={handleCreateChef}
+            >
+              Become a host
+            </Button>
+          </Grid>
+        )}
       </Grid>
     </ConsumerContainer>
   );

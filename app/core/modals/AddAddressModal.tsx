@@ -1,18 +1,16 @@
 import React from "react";
 
-import { useAppDispatch } from "integrations/redux";
 import { AddUserAddress } from "app/users/validations";
-import { addAddress } from "integrations/redux/reducers/userReduer";
 import { trpc } from "server/utils/trpc";
 
 import Form, { TextField } from "app/core/components/form";
 import Modal from "app/core/components/shared/Modal";
 
 const AddAddressModal = ({ show, onClose, ...props }) => {
-  const dispatch = useAppDispatch();
-  const addAddressMutation = trpc.account.createAddress.useMutation({
-    onSuccess: (input) => {
-      dispatch(addAddress(input));
+  const utils = trpc.useContext();
+  const addAddressMutation = trpc.user.createAddress.useMutation({
+    onSuccess: async (input) => {
+      await utils.user.fetchUserData.invalidate();
       return onClose();
     },
   });

@@ -7,17 +7,19 @@ import Stack from "@mui/material/Stack";
 import PersonIcon from "@mui/icons-material/Person";
 import Toolbar from "@mui/material/Toolbar";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
-import { useAppSelector } from "integrations/redux";
 import { default as MuiAppBar } from "@mui/material/AppBar";
 import Alert from "@mui/material/Alert";
 import Collapse from "@mui/material/Collapse";
+import { useFlags } from "flagsmith/react";
 
 import { trpc } from "server/utils/trpc";
+import useUser from "app/hooks/useUser";
 
 import Box from "app/core/components/shared/Box";
 import Typography from "app/core/components/shared/Typography";
 import { Container } from "@mui/material";
 import Button from "../shared/Button";
+import BetaAppbar from "app/beta/components/Appbar";
 
 const AccountPopover = dynamic(
   () => import("app/core/components/accountPopover"),
@@ -46,9 +48,10 @@ const Appbar = (props) => {
   const router = useRouter();
   const [accountAnchorEl, setAccountAnchorEl] = useState(null);
   const [showVerifyEmailAlert, setShowVerifyEmailAlert] = useState(true);
-  const user = useAppSelector((state) => state.user);
+  const user = useUser();
   const isAccountOpen = Boolean(accountAnchorEl);
   const accountId = isAccountOpen ? "account-popover" : null;
+  const flags = useFlags(["is_beta"]);
 
   const handleVerifyEmailAlertOnClose = useCallback(() => {
     setShowVerifyEmailAlert(false);
@@ -71,8 +74,14 @@ const Appbar = (props) => {
   }, [router]);
 
   const handleVerifyEmailAlert = async () => {
+    if (!user) {
+      throw new Error("Must be logged in!");
+    }
+
     await sendVerifyEmail.mutateAsync({ email: user.email.emailAddress });
   };
+
+  if (flags.is_beta.enabled && !user) return <BetaAppbar />;
 
   return (
     <>
@@ -86,7 +95,7 @@ const Appbar = (props) => {
           }}
           {...props}
         >
-          {user.userId && !user.email.isVerified && (
+          {user && !user?.email.isVerified && (
             <Collapse in={showVerifyEmailAlert}>
               <Alert
                 variant="filled"
@@ -128,7 +137,7 @@ const Appbar = (props) => {
                 </Link>
 
                 <Stack direction="row" spacing={2} alignItems="center">
-                  {user.chef.isChef && (
+                  {user?.chef.isChef && (
                     <Link href="/dashboard">
                       <Button
                         label="chef dashboard"
@@ -140,22 +149,26 @@ const Appbar = (props) => {
                       </Button>
                     </Link>
                   )}
-                  <IconButton
-                    aria-label="cart"
-                    disableRipple
-                    onClick={handleAccountModalClick}
-                    size="large"
-                  >
-                    <PersonIcon fontSize="large" />
-                  </IconButton>
+                  {user && (
+                    <>
+                      <IconButton
+                        aria-label="cart"
+                        disableRipple
+                        onClick={handleAccountModalClick}
+                        size="large"
+                      >
+                        <PersonIcon fontSize="large" />
+                      </IconButton>
 
-                  <AccountPopover
-                    id={accountId}
-                    open={isAccountOpen}
-                    onClose={closeAccountModal}
-                    anchorEl={accountAnchorEl}
-                    chef={user.chef}
-                  />
+                      <AccountPopover
+                        id={accountId}
+                        open={isAccountOpen}
+                        onClose={closeAccountModal}
+                        anchorEl={accountAnchorEl}
+                        user={user}
+                      />
+                    </>
+                  )}
                 </Stack>
               </Box>
             </Toolbar>

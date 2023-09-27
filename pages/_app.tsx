@@ -11,8 +11,6 @@ import { FlagsmithProvider } from "flagsmith/react";
 import { trpc } from "server/utils/trpc";
 import store from "integrations/redux";
 import { theme } from "integrations/material-ui";
-import { useAppDispatch } from "integrations/redux";
-import { fetchUserData } from "integrations/redux/reducers/userReduer";
 import { RudderStack } from "app/utils/getRudderstack";
 
 import Box from "app/core/components/shared/Box";
@@ -38,18 +36,6 @@ function LoadingIcon() {
   );
 }
 
-function SlyderzWrapper({ children }) {
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(fetchUserData())
-      .unwrap()
-      .catch((err) => console.log("Failed fetching initial data", err));
-  }, [dispatch]);
-
-  return children;
-}
-
 type MyAppProps = Omit<AppProps, "Component"> & {
   Component: AppProps["Component"] & {
     getLayout?: (page: ReactNode) => ReactNode;
@@ -59,9 +45,7 @@ function Slyderz({ Component, pageProps }: MyAppProps) {
   const getLayout = Component.getLayout || ((page: ReactNode) => page);
 
   useEffect(() => {
-    new Promise((res, reject) => {
-      RudderStack.getInstance();
-    });
+    RudderStack.getInstance();
   }, []);
 
   return (
@@ -82,13 +66,11 @@ function Slyderz({ Component, pageProps }: MyAppProps) {
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <Suspense fallback={<LoadingIcon />}>
-              <SlyderzWrapper>
-                {getLayout(
-                  <div className={roboto.className}>
-                    <Component {...pageProps} />
-                  </div>,
-                )}
-              </SlyderzWrapper>
+              {getLayout(
+                <div className={roboto.className}>
+                  <Component {...pageProps} />
+                </div>,
+              )}
             </Suspense>
           </ThemeProvider>
         </FlagsmithProvider>

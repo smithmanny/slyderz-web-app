@@ -2,19 +2,19 @@ import React from "react";
 import { useRouter } from "next/router";
 
 import { trpc } from "server/utils/trpc";
-import { StripePaymentType } from "integrations/redux/reducers/userReduer";
+import Stripe from "stripe";
 
 import Box from "app/core/components/shared/Box";
 import Button from "app/core/components/shared/Button";
 import Typography from "app/core/components/shared/Typography";
 
 interface StripeSavedCardsType {
-  paymentMethods: Array<StripePaymentType>;
+  paymentMethods: Array<Stripe.PaymentMethod>;
 }
 function StripeSavedCards(props: StripeSavedCardsType) {
   const { paymentMethods } = props;
   const router = useRouter();
-  const deletePaymentMethod = trpc.account.deletePaymentMethod.useMutation({
+  const deletePaymentMethod = trpc.user.deletePaymentMethod.useMutation({
     onSuccess: () => {
       // TODO: update redux instead
       return router.reload();
@@ -32,7 +32,7 @@ function StripeSavedCards(props: StripeSavedCardsType) {
             mb: 1,
           }}
         >
-          <Typography>{stripePaymentMethod.card.last4}</Typography>
+          <Typography>{stripePaymentMethod?.card?.last4}</Typography>
           <Box
             sx={{
               display: "flex",

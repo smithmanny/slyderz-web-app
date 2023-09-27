@@ -2,8 +2,6 @@ import Link from "next/link";
 
 import { Signup } from "app/auth/validations";
 import { trpc } from "server/utils/trpc";
-import { useAppDispatch } from "integrations/redux";
-import { updateUser } from "integrations/redux/reducers/userReduer";
 
 import Form, { TextField } from "app/core/components/form";
 import Grid from "app/core/components/shared/Grid";
@@ -15,10 +13,10 @@ type SignupFormProps = {
 };
 
 export const SignupForm = (props: SignupFormProps) => {
-  const dispatch = useAppDispatch();
+  const utils = trpc.useContext();
   const createUser = trpc.auth.createUser.useMutation({
-    onSuccess: (userId) => {
-      dispatch(updateUser({ userId }));
+    onSuccess: async () => {
+      await utils.user.fetchUserData.prefetch();
     },
   });
 
