@@ -1,4 +1,3 @@
-import Image from "next/image";
 import PropTypes from "prop-types";
 import { CldImage } from "next-cloudinary";
 
@@ -11,11 +10,11 @@ import { ReactElement } from "react";
 interface AboutSectionProps {
   component?: ReactElement;
   description?: string;
-  direction: string;
+  direction?: string;
   image?: string;
   title: string;
-  type: string;
-  MainProps: object;
+  type?: string;
+  MainProps?: object;
 }
 
 interface OurStoryBulletPointType {

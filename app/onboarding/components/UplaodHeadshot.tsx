@@ -94,10 +94,14 @@ function UploadHeadshot(props: UploadHeadshotType) {
       <CldUploadWidget
         uploadPreset="user_profile_pic"
         onError={(err) => console.log("ERROR uploading headshot", err)}
-        onUpload={(res) => {
+        onUpload={(res: any) => {
+          const picture = res.info;
+
+          if (!picture) return null;
+
           setAccountPicture.mutateAsync({
-            image: res.info.secure_url,
-            publicId: res.info.public_id,
+            image: picture.secure_url,
+            publicId: picture.public_id,
           });
         }}
         options={{
