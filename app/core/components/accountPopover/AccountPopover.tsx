@@ -34,7 +34,7 @@ const AccountPopover = (props: AccountPopver) => {
   const utils = trpc.useContext();
   const logout = trpc.auth.logout.useMutation({
     onSuccess: async () => {
-      await utils.user.invalidate();
+      await utils.user.fetchUserData.invalidate();
 
       // TODO
       // window.posthog.reset();

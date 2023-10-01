@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import getCloudinary from "app/utils/getCloudinary";
-import { router, protectedProcedure } from "../trpc";
+import { router, protectedProcedure, publicProcedure } from "../trpc";
 import {
   DeleteStripePaymentMethod,
   CreateImageType,
@@ -9,9 +9,13 @@ import {
 } from "app/account/validations";
 
 const userRouter = router({
-  fetchUserData: protectedProcedure.query(async (opts) => {
+  fetchUserData: publicProcedure.query(async (opts) => {
     const ctx = opts.ctx;
     const { user } = ctx.session;
+
+    if (Object.keys(user).length === 0) {
+      return null
+    }
 
     async function getStripePayments(stripeCustomerId: string) {
       const paymentMethods = await ctx.stripe.paymentMethods.list({
