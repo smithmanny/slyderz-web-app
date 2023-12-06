@@ -10,7 +10,6 @@ import useScrollTrigger from "@mui/material/useScrollTrigger";
 import { default as MuiAppBar } from "@mui/material/AppBar";
 import Alert from "@mui/material/Alert";
 import Collapse from "@mui/material/Collapse";
-import { useFlags } from "flagsmith/react";
 
 import { trpc } from "server/utils/trpc";
 import useUser from "app/hooks/useUser";
@@ -19,7 +18,6 @@ import Box from "app/core/components/shared/Box";
 import Typography from "app/core/components/shared/Typography";
 import { Container } from "@mui/material";
 import Button from "../shared/Button";
-import BetaAppbar from "app/beta/components/Appbar";
 
 const AccountPopover = dynamic(
   () => import("app/core/components/accountPopover"),
@@ -51,7 +49,6 @@ const Appbar = (props) => {
   const user = useUser();
   const isAccountOpen = Boolean(accountAnchorEl);
   const accountId = isAccountOpen ? "account-popover" : null;
-  const flags = useFlags(["is_beta"]);
 
   const handleVerifyEmailAlertOnClose = useCallback(() => {
     setShowVerifyEmailAlert(false);
@@ -80,8 +77,6 @@ const Appbar = (props) => {
 
     await sendVerifyEmail.mutateAsync({ email: user.email.emailAddress });
   };
-
-  if (flags.is_beta.enabled && !user) return <BetaAppbar />;
 
   return (
     <>
@@ -142,33 +137,31 @@ const Appbar = (props) => {
                       <Button
                         label="chef dashboard"
                         variant="text"
-                        // onClick={navigateToDashboard}
+                        onClick={navigateToDashboard}
                         sx={{ color: "black", fontWeight: 600 }}
                       >
                         Your Dashboard
                       </Button>
                     </Link>
                   )}
-                  {user && (
-                    <>
-                      <IconButton
-                        aria-label="cart"
-                        disableRipple
-                        onClick={handleAccountModalClick}
-                        size="large"
-                      >
-                        <PersonIcon fontSize="large" />
-                      </IconButton>
+                  <>
+                    <IconButton
+                      aria-label="cart"
+                      disableRipple
+                      onClick={handleAccountModalClick}
+                      size="large"
+                    >
+                      <PersonIcon fontSize="large" />
+                    </IconButton>
 
-                      <AccountPopover
-                        id={accountId}
-                        open={isAccountOpen}
-                        onClose={closeAccountModal}
-                        anchorEl={accountAnchorEl}
-                        user={user}
-                      />
-                    </>
-                  )}
+                    <AccountPopover
+                      id={accountId}
+                      open={isAccountOpen}
+                      onClose={closeAccountModal}
+                      anchorEl={accountAnchorEl}
+                      user={user}
+                    />
+                  </>
                 </Stack>
               </Box>
             </Toolbar>

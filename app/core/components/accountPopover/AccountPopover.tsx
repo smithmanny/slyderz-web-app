@@ -22,10 +22,10 @@ interface AccountPopver {
   open: boolean;
   onClose: () => void;
   anchorEl: any;
-  user: {
+  user?: {
     userId: string;
     chef?: ChefType;
-  };
+  } | null;
 }
 
 const AccountPopover = (props: AccountPopver) => {
@@ -36,8 +36,7 @@ const AccountPopover = (props: AccountPopver) => {
     onSuccess: async () => {
       await utils.user.fetchUserData.invalidate();
 
-      // TODO
-      // window.posthog.reset();
+      window.rudderanalytics.reset();
       return handlePopoverClick("/");
     },
   });
@@ -49,11 +48,11 @@ const AccountPopover = (props: AccountPopver) => {
       chefLoggedIn: chefLoggedInRoutes,
     };
 
-    if (user.userId && !user?.chef?.isChef) {
+    if (user?.userId && !user?.chef?.isChef) {
       return routes.loggedIn;
     }
 
-    if (user.userId && user?.chef?.isChef) {
+    if (user?.userId && user?.chef?.isChef) {
       return routes.chefLoggedIn;
     }
 
@@ -93,7 +92,7 @@ const AccountPopover = (props: AccountPopver) => {
             />
           </ListItemButton>
         ))}
-        {user.userId ? (
+        {user?.userId ? (
           <ListItemButton onClick={async () => logout.mutateAsync()}>
             <ListItemText
               primary="Sign out"

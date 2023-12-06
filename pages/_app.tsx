@@ -47,7 +47,6 @@ function Slyderz({ Component, pageProps }: MyAppProps) {
   useEffect(() => {
     RudderStack.getInstance();
   }, []);
-
   return (
     <Provider store={store}>
       <SnackbarProvider
