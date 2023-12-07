@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { router, adminProcedure } from "../trpc";
 import { ConvertUserToChefManually } from "app/beta/validations";
-import { RoleType } from "@prisma/client";
+import { RoleType } from ".prisma/client";
 
 const adminRouter = router({
   fetchAllCustomers: adminProcedure.query(async (opts) => {

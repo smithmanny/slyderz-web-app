@@ -4,7 +4,7 @@ import { nextSunday, nextMonday, nextTuesday, nextWednesday, nextThursday, nextF
 import { router, publicProcedure, chefProcedure, protectedProcedure } from "../trpc";
 import { GetChefDishesType } from "app/chefs/validations";
 import { convertDayToInt } from "app/utils/time";
-import { RoleType } from "@prisma/client";
+import { RoleType } from ".prisma/client";
 
 const chefRouter = router({
   fetchNearbyChefs: publicProcedure.query(async (opts) => {

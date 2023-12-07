@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
-import type { DaysOfWeekTypeEnum } from "@prisma/client";
+import type { DaysOfWeekTypeEnum } from ".prisma/client";
 import Image from "next/image";
 
 import { formatNumberToCurrency } from "app/utils/time";
