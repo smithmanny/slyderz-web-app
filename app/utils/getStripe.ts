@@ -15,7 +15,7 @@ const getStripe = () => {
 export const getStripeServer = (): StripeServerType => {
   if (!stripeServer) {
     return new StripeServer(process.env.STRIPE_SECRET_KEY || "", {
-      apiVersion: "2022-11-15",
+      apiVersion: "2023-10-16",
     });
   }
 

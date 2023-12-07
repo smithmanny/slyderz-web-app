@@ -3,7 +3,8 @@ import { nextjs_future } from "lucia/middleware";
 import { prisma } from "@lucia-auth/adapter-prisma";
 import { isWithinExpiration } from "lucia/utils"; // v2 beta.0
 import db from 'db'
-import "lucia-auth/polyfill/node";
+import { TokenError } from "app/utils/errors";
+import "lucia/polyfill/node";
 
 import prismaClient from "db";
 
@@ -56,15 +57,20 @@ const generateToken = async (userId: string) => {
 };
 
 export const validateToken = async (token: string) => {
-	const storedToken = await db.token.findFirstOrThrow({where: {id: token}});
-	await db.token.delete({where: {id: token}});
+	try {
+		const storedToken = await db.token.findFirstOrThrow({where: {id: token}});
+		await db.token.delete({where: {id: token}});
 
-	const tokenExpires = Number(storedToken.expiresAt); // bigint => number conversion
-	if (!isWithinExpiration(tokenExpires)) {
-		// should throw a vague error to user (expired *or* invalid token)
-		throw new Error("Expired token");
+		const tokenExpires = Number(storedToken.expiresAt); // bigint => number conversion
+		if (!isWithinExpiration(tokenExpires)) {
+			// should throw a vague error to user (expired *or* invalid token)
+			throw new TokenError("Expired token");
+		}
+
+		return storedToken.userId;
+	} catch (err) {
+		throw new TokenError('Invalid token')
 	}
-	return storedToken.userId;
 };
 
 export const invalidateAllUserTokens = async (userId: string) => {
