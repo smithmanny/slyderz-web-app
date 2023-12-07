@@ -9,7 +9,7 @@ import { NoSSrConsumerContainer } from "app/core/components/shared/ConsumerConta
 import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
 import Form, { Select } from "app/core/components/form";
-import { RoleType } from "@prisma/client";
+import { RoleType } from ".prisma/client";
 import { ConvertUserToChefManually } from "app/beta/validations";
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {

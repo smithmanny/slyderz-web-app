@@ -10,7 +10,7 @@ import { NoSSrConsumerContainer } from "app/core/components/shared/ConsumerConta
 import Box from "app/core/components/shared/Box";
 import Typography from "app/core/components/shared/Typography";
 
-import type { OnboardingState } from "@prisma/client";
+import type { OnboardingState } from ".prisma/client";
 import { trpc } from "server/utils/trpc";
 
 import UploadHeadshot from "./components/UplaodHeadshot";

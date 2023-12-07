@@ -10,7 +10,7 @@ import Popover from "app/core/components/shared/Popover";
 import { loggedInRoutes, loggedOutRoutes, chefLoggedInRoutes } from "./routes";
 
 import { trpc } from "server/utils/trpc";
-import { OnboardingState } from "@prisma/client";
+import { OnboardingState } from ".prisma/client";
 
 type ChefType = {
   isChef: boolean;

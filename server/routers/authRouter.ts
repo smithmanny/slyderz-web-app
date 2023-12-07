@@ -6,7 +6,7 @@ import { router, publicProcedure, protectedProcedure } from "../trpc";
 import { TRANSACTIONAL_EMAILS } from "types";
 import sendSesEmail from "emails/utils/sendSesEmail";
 import { Signup, Login } from "app/auth/validations";
-import { RoleType } from "@prisma/client";
+import { RoleType } from ".prisma/client";
 import { TokenError } from "app/utils/errors";
 
 const authRouter = router({
