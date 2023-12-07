@@ -14,14 +14,15 @@
   "lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx .",
   "lint:fix": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx . --fix",
   "test": "jest",
-  "test:watch": "jest --watch"
+  "test:watch": "jest --watch",
+  "postinstall": "pnpm dlx prisma generate"
  },
  "prisma": {
   "schema": "db/schema.prisma"
  },
  "lint-staged": {
   "*.{js,ts,tsx}": [
-   "yarn run lint"
+   "pnpm run lint"
   ]
  },
  "dependencies": {
