@@ -4,7 +4,7 @@ import { prisma } from "@lucia-auth/adapter-prisma";
 import { isWithinExpiration } from "lucia/utils"; // v2 beta.0
 import db from 'db'
 import { TokenError } from "app/utils/errors";
-import "lucia-auth/polyfill/node";
+import "lucia/polyfill/node";
 
 import prismaClient from "db";
 

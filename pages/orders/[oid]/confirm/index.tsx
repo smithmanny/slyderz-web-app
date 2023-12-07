@@ -123,6 +123,7 @@ export const getServerSideProps = async function getServerSideProps({
     transfer_data: {
       destination: order.chef.stripeAccountId,
     },
+    return_url: process.env.NEXT_PUBLIC_URL,
     metadata: {
       userId: order.user.id,
     },
