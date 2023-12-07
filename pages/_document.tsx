@@ -14,6 +14,17 @@ class MyDocument extends Document {
             name="p:domain_verify"
             content="d9a0531c70e05a526b6dc638bb535a50"
           />
+          <meta property="og:title" content="Slyderz" />
+          <meta
+            property="og:description"
+            content="All-in-one platform for chefs & caterers."
+          />
+          <meta property="og:url" content="https://slyderz.co" />
+          <meta property="og:site_name" content="Slyderz" />
+          <meta property="og:image" content="/public/open-graph.png" />
+          <meta property="og:image:type" content="image/png" />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
         </Head>
         <body>
           <Main />
