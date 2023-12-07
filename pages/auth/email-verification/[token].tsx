@@ -1,4 +1,4 @@
-import { LuciaTokenError } from "@lucia-auth/tokens";
+import { TokenError } from "app/utils/errors";
 
 import {
   auth,
@@ -67,11 +67,15 @@ export async function getServerSideProps(ctx) {
     });
     authRequest.setSession(session);
   } catch (e) {
-    if (e instanceof LuciaTokenError && e.message === "EXPIRED_TOKEN") {
-      console.log("TOKEN_EXPIRED", e);
+    if (e instanceof TokenError && e.message === "Expired token") {
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
     }
-    if (e instanceof LuciaTokenError && e.message === "INVALID_TOKEN") {
-      console.log("TOKEN_INVALID", e);
+    if (e instanceof TokenError && e.message === "Invalid token") {
       return {
         redirect: {
           destination: "/",

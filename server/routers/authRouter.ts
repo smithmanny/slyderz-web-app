@@ -1,6 +1,5 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { LuciaTokenError } from "@lucia-auth/tokens";
 
 import { generateVerificationToken, validateToken, invalidateAllUserTokens } from "integrations/auth/lucia";
 import { router, publicProcedure, protectedProcedure } from "../trpc";
@@ -8,6 +7,7 @@ import { TRANSACTIONAL_EMAILS } from "types";
 import sendSesEmail from "emails/utils/sendSesEmail";
 import { Signup, Login } from "app/auth/validations";
 import { RoleType } from "@prisma/client";
+import { TokenError } from "app/utils/errors";
 
 const authRouter = router({
   createUser: publicProcedure.input(Signup).mutation(async (opts) => {
@@ -253,10 +253,14 @@ const authRouter = router({
         });
       } catch (e) {
         console.log("Error resetting password", e);
-        if (e instanceof LuciaTokenError && e.message === "EXPIRED_TOKEN") {
-          // expired token/link
+        if (e instanceof TokenError && e.message === "Expired token") {
+          throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message: "Please try again",
+            cause: e,
+          });
         }
-        if (e instanceof LuciaTokenError && e.message === "INVALID_TOKEN") {
+        if (e instanceof TokenError && e.message === "Invalid token") {
           throw new TRPCError({
             code: "UNAUTHORIZED",
             message: "Please try again",
