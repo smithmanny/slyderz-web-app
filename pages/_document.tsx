@@ -21,7 +21,10 @@ class MyDocument extends Document {
           />
           <meta property="og:url" content="https://slyderz.co" />
           <meta property="og:site_name" content="Slyderz" />
-          <meta property="og:image" content="/public/open-graph.png" />
+          <meta
+            property="og:image"
+            content={`${process.env.NEXT_PUBLIC_URL}/api/og`}
+          />
           <meta property="og:image:type" content="image/png" />
           <meta property="og:image:width" content="1200" />
           <meta property="og:image:height" content="630" />
