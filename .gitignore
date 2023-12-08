@@ -8,15 +8,11 @@ node_modules
 web_modules/
 .react-email
 
-# blitz
-/.blitz/
 /.next/
 *.sqlite
-.now
-.blitz-console-history
-blitz-log.log
 
 build
+build/
 
 # misc
 .DS_Store

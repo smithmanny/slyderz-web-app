@@ -1,1 +1,0 @@
-self.__REACT_LOADABLE_MANIFEST={"../node_modules/@blitzjs/rpc/dist/chunks/rpc.mjs -> debug":{id:1227,files:[]},"index.tsx -> app/core/layouts/LoggedInLayout":{id:6620,files:["static/chunks/620.f79300c7b6afede4.js"]}};
