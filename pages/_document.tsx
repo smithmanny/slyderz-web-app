@@ -21,10 +21,21 @@ class MyDocument extends Document {
           />
           <meta property="og:url" content="https://slyderz.co" />
           <meta property="og:site_name" content="Slyderz" />
-          <meta property="og:image" content="/public/open-graph.png" />
-          <meta property="og:image:type" content="image/png" />
+          <meta
+            property="og:image"
+            content={`${process.env.NEXT_PUBLIC_URL}/api/og`}
+          />
+          <meta property="og:image:type" content="image/svg" />
           <meta property="og:image:width" content="1200" />
           <meta property="og:image:height" content="630" />
+          {/* Twitter OG */}
+          <meta
+            property="twitter:image"
+            content={`${process.env.NEXT_PUBLIC_URL}/api/og`}
+          />
+          <meta property="twitter:image:type" content="image/svg" />
+          <meta property="twitter:image:width" content="1200" />
+          <meta property="twitter:image:height" content="630" />
         </Head>
         <body>
           <Main />
