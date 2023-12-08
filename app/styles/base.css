@@ -8,6 +8,10 @@ body {
   height: 100%;
 }
 
+html {
+  font-family: var(--font-roboto-slab);
+}
+
 main {
   flex: 1
 }

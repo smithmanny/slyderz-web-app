@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, ReactNode } from "react";
-import { Roboto_Serif } from "next/font/google";
+import { Roboto_Slab } from "next/font/google";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Provider } from "react-redux";
@@ -18,7 +18,10 @@ import CircularProgress from "app/core/components/shared/CircularProgress";
 
 import "app/styles/base.css";
 
-const roboto = Roboto_Serif({ subsets: ["latin"] });
+const roboto = Roboto_Slab({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+});
 
 function LoadingIcon() {
   return (

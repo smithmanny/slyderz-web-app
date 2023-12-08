@@ -4,17 +4,16 @@ import Image from "next/image";
 
 import { trpc } from "server/utils/trpc";
 import useUser from "app/hooks/useUser";
-import { useFlags } from "flagsmith/react";
 
 import Layout from "app/layouts/Layout";
-import AboutSection from "app/about/components/AboutSection";
+import AboutSection from "app/host/components/AboutSection";
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
 import Grid from "app/core/components/shared/Grid";
 import Typography from "app/core/components/shared/Typography";
 import Button from "app/core/components/shared/Button";
+import styles from "app/host/style.module.css";
 
 const Host = () => {
-  const flags = useFlags(["is_beta"]);
   const router = useRouter();
   const user = useUser();
   const { enqueueSnackbar } = useSnackbar();
@@ -27,20 +26,21 @@ const Host = () => {
     },
   });
 
-  const handleCreateChef = async () => await createChef.mutateAsync();
+  const handleCreateChef = async () => {
+    try {
+      await createChef.mutateAsync();
+    } catch (err) {
+      //TODO open auth modal
+      console.log("FAILED", err);
+    }
+  };
 
   let showSignupChefButton = false;
 
-  if (user && !user.chef.isChef) {
+  if ((user && !user.chef.isChef) || !user) {
     showSignupChefButton = true;
   }
-  if (flags.is_beta.enabled && user) {
-    showSignupChefButton = true;
 
-    if (user.chef.isChef) {
-      showSignupChefButton = false;
-    }
-  }
   return (
     <ConsumerContainer>
       <Grid container spacing={2}>
@@ -59,7 +59,7 @@ const Host = () => {
                   marginRight: 2,
                 }}
               />
-              <Typography variant="h3" gutterBottom>
+              <Typography variant="h3" gutterBottom fontWeight="bold">
                 Showcase your cooking skills
               </Typography>
             </div>
@@ -80,7 +80,7 @@ const Host = () => {
                   marginRight: 2,
                 }}
               />
-              <Typography variant="h3" gutterBottom>
+              <Typography variant="h3" gutterBottom fontWeight="bold">
                 Flexibility. No Contracts.
               </Typography>
             </div>
@@ -100,7 +100,7 @@ const Host = () => {
                   marginRight: 2,
                 }}
               />
-              <Typography variant="h3" gutterBottom>
+              <Typography variant="h3" gutterBottom fontWeight="bold">
                 Instant payments
               </Typography>
             </div>
@@ -112,7 +112,58 @@ const Host = () => {
         </Grid>
         <AboutSection
           title="How it works"
-          description="Slyderz provides a platform to showcase their talents, connect with new clients, and grow their business. Our chefs have access to a dashboard where they can manage their availability, create and update their menus, and track their bookings. Plus, our platform makes it easy for chefs to receive payment and manage their finances, so they can focus on what they do best - cooking delicious food."
+          component={
+            <>
+              <Typography variant="subtitle2">
+                Slyderz provides a platform to showcase their talents, connect
+                with new clients, and grow their business. Our chefs have access
+                to a dashboard where they can:
+              </Typography>
+              <ul className={styles.list}>
+                <li>
+                  <Typography variant="subtitle2">
+                    Manage their availability
+                  </Typography>
+                </li>
+                <li>
+                  <Typography variant="subtitle2">
+                    Create and update their menus
+                  </Typography>
+                </li>
+                <li>
+                  <Typography variant="subtitle2">
+                    Track their bookings
+                  </Typography>
+                </li>
+              </ul>
+              <Typography variant="subtitle2">
+                Plus, our platform makes it easy for chefs to receive payment
+                and manage their finances, so they can focus on what they do
+                best - <strong>cooking delicious food.</strong>
+              </Typography>
+              <br />
+              <Typography variant="subtitle2">
+                As a personal chef for Slyderz, you&apos;ll be tasked with
+                cooking your favorite meals in homes around you. The typical
+                time our chefs are at a client&apos;s home is typically 60-75
+                minutes.
+              </Typography>
+              <Typography variant="subtitle2">
+                Before the customer event, Slyderz will pay-out 20% of the money
+                upfront to the chef to get the necessary ingredients and
+                groceries, the remainder will be paid out upon completion of the
+                event. You&apos;ll bring the cookware (pots, pans, knives, etc)
+                while the client provides the appliances and serve-ware.
+              </Typography>
+              <br />
+              <Typography variant="subtitle2">
+                You&apos;ll also be responsible for creating your own menu and
+                setting your own prices. You keep 85% of the check and 100% of
+                tips. The 15% we collect allows us to fund our advertisement
+                budget, customer support, payment processing, etc.
+              </Typography>
+            </>
+          }
           MainProps={{
             sx: {
               my: 8,
@@ -122,7 +173,7 @@ const Host = () => {
 
         {showSignupChefButton && (
           <Grid item xs={12} textAlign="center">
-            <Typography variant="h4">Ready to get started?</Typography>
+            <Typography variant="h4">All sounds good to you?</Typography>
             <Button
               label="Become a host"
               sx={{ mt: 2 }}
