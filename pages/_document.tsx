@@ -23,7 +23,7 @@ class MyDocument extends Document {
           <meta property="og:site_name" content="Slyderz" />
           <meta
             property="og:image"
-            content={`${process.env.NEXT_PUBLIC_URL}/api/og`}
+            content={`https://${process.env.NEXT_PUBLIC_URL}/api/og`}
           />
           <meta property="og:image:type" content="image/svg" />
           <meta property="og:image:width" content="1200" />
