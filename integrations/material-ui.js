@@ -41,7 +41,7 @@ const MuiTheme = createTheme({
       fontWeight: 450,
     },
     subtitle2: {
-      fontWeight: 300,
+      fontWeight: 540,
       fontSize: 16,
     },
     allVariants: {
