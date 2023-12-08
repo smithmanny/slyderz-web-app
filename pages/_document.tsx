@@ -21,6 +21,7 @@ class MyDocument extends Document {
           />
           <meta property="og:url" content="https://slyderz.co" />
           <meta property="og:site_name" content="Slyderz" />
+          <meta property="og:type" content="website" />
           <meta
             property="og:image"
             content={`https://${process.env.NEXT_PUBLIC_URL}/api/og`}
