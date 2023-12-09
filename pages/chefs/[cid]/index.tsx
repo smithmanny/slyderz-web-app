@@ -7,17 +7,17 @@ import { trpc } from "server/utils/trpc";
 import createContext from "server/utils/createContext";
 import { appRouter } from "server/routers/_app";
 
-import Avatar from "app/core/components/shared/Avatar";
-import Box from "app/core/components/shared/Box";
-import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
-import Menu from "app/chefs/components/menu";
-import Grid from "app/core/components/shared/Grid";
-import Tabs from "app/core/components/shared/Tabs";
-import TabPanel from "app/core/components/shared/TabPanel";
-import Tab from "app/core/components/shared/Tab";
-import Typography from "app/core/components/shared/Typography";
+import Avatar from "app/components/shared/Avatar";
+import Box from "app/components/shared/Box";
+import ConsumerContainer from "app/components/shared/ConsumerContainer";
+import Menu from "app/components/chefs/menu";
+import Grid from "app/components/shared/Grid";
+import Tabs from "app/components/shared/Tabs";
+import TabPanel from "app/components/shared/TabPanel";
+import Tab from "app/components/shared/Tab";
+import Typography from "app/components/shared/Typography";
 import Layout from "app/layouts/Layout";
-import CartSummary from "app/core/components/cart/cartSummary";
+import CartSummary from "app/components/cart/cartSummary";
 
 export async function getServerSideProps(ctx) {
   const helpers = createServerSideHelpers({

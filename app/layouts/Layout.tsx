@@ -1,8 +1,8 @@
 import React, { ReactNode } from "react";
 import Head from "next/head";
 
-import Appbar from "app/core/components/appbar";
-import Footer from "app/core/components/footer";
+import Appbar from "app/components/appbar";
+import Footer from "app/components/footer";
 
 type LayoutProps = {
   title?: string;

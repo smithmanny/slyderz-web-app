@@ -1,9 +1,9 @@
 import Box from "@mui/material/Box";
 import Layout from "app/layouts/Layout";
-import AboutSection from "app/about/components/AboutSection";
-import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
-import Grid from "app/core/components/shared/Grid";
-import Typography from "app/core/components/shared/Typography";
+import AboutSection from "app/components/AboutSection";
+import ConsumerContainer from "app/components/shared/ConsumerContainer";
+import Grid from "app/components/shared/Grid";
+import Typography from "app/components/shared/Typography";
 
 const About = () => {
   return (

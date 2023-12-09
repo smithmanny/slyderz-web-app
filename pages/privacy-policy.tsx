@@ -1,7 +1,7 @@
 import Layout from "app/layouts/Layout";
-import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
-import Box from "app/core/components/shared/Box";
-import Typography from "app/core/components/shared/Typography";
+import ConsumerContainer from "app/components/shared/ConsumerContainer";
+import Box from "app/components/shared/Box";
+import Typography from "app/components/shared/Typography";
 
 const PrivacyPolicy = () => {
   return (

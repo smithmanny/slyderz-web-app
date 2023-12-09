@@ -2,10 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import Box from "@mui/material/Box";
 import Layout from "app/layouts/Layout";
-import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
-import Grid from "app/core/components/shared/Grid";
-import Typography from "app/core/components/shared/Typography";
-import Button from "app/core/components/shared/Button";
+import ConsumerContainer from "app/components/shared/ConsumerContainer";
+import Grid from "app/components/shared/Grid";
+import Typography from "app/components/shared/Typography";
+import Button from "app/components/shared/Button";
 import Subscribe from './components/Subscribe'
 import HowItWorks from "./components/HowItWorks";
 import Footer from "./components/Footer";

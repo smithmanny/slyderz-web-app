@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { useSnackbar } from "notistack";
 import { createServerSideHelpers } from "@trpc/react-query/server";
 
-import { UpdatePassword } from "app/auth/validations";
+import { UpdatePassword } from "validations/authValidations";
 import { trpc } from "server/utils/trpc";
 import { auth } from "integrations/auth/lucia";
 import createContext from "server/utils/createContext";
@@ -12,21 +12,21 @@ import { appRouter } from "server/routers/_app";
 import useUser from "app/hooks/useUser";
 
 import Layout from "app/layouts/Layout";
-import Button from "app/core/components/shared/Button";
-import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
-import Grid from "app/core/components/shared/Grid";
-import Typography from "app/core/components/shared/Typography";
-import Form, { TextField } from "app/core/components/form";
-import UploadImage from "app/core/components/shared/UploadImage";
+import Button from "app/components/shared/Button";
+import ConsumerContainer from "app/components/shared/ConsumerContainer";
+import Grid from "app/components/shared/Grid";
+import Typography from "app/components/shared/Typography";
+import Form, { TextField } from "app/components/form";
+import UploadImage from "app/components/shared/UploadImage";
 
 const DynamicStripeCardElement = dynamic(
-  () => import("app/stripe/components/StripeCardElement"),
+  () => import("app/components/stripe/StripeCardElement"),
   {
     ssr: false,
   },
 );
 const DynamicStripeSavedCards = dynamic(
-  () => import("app/stripe/components/StripeSavedCards"),
+  () => import("app/components/stripe/StripeSavedCards"),
   {
     ssr: false,
   },
@@ -62,7 +62,7 @@ export async function getServerSideProps(ctx) {
 const Account = (props) => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  const utils = trpc.useContext();
+  const utils = trpc.useUtils();
   const user = useUser();
   const paymentMethods = user?.paymentMethods || [];
 

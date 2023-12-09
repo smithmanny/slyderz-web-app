@@ -1,7 +1,7 @@
 import { router, chefProcedure } from "../trpc";
 
-import { UploadHeadshotUrl } from "app/onboarding/validations";
-import { AddChefDescription } from "app/onboarding/validations";
+import { UploadHeadshotUrl } from "validations/onboardingValidations";
+import { AddChefDescription } from "validations/onboardingValidations";
 
 const chefRouter = router({
   completeOnboardingHeadshot: chefProcedure

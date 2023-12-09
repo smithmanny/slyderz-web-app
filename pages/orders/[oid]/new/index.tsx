@@ -4,10 +4,10 @@ import { useRouter } from "next/router";
 import completedOrderIcon from "public/completed-order.svg";
 import { auth } from "integrations/auth/lucia";
 
-import Box from "app/core/components/shared/Box";
-import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
-import Button from "app/core/components/shared/Button";
-import Typography from "app/core/components/shared/Typography";
+import Box from "app/components/shared/Box";
+import ConsumerContainer from "app/components/shared/ConsumerContainer";
+import Button from "app/components/shared/Button";
+import Typography from "app/components/shared/Typography";
 import Layout from "app/layouts/Layout";
 
 export const getServerSideProps = async function getServerSideProps({
