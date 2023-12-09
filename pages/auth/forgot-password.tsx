@@ -1,15 +1,15 @@
 import { useState } from "react";
 import Link from "next/link";
 
-import { ForgotPassword } from "app/auth/validations";
+import { ForgotPassword } from "validations/authValidations";
 import { trpc } from "server/utils/trpc";
 import { auth } from "integrations/auth/lucia";
 
 import Layout from "app/layouts/Layout";
-import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
-import Form, { TextField } from "app/core/components/form";
-import Typography from "app/core/components/shared/Typography";
-import Button from "app/core/components/shared/Button";
+import ConsumerContainer from "app/components/shared/ConsumerContainer";
+import Form, { TextField } from "app/components/form";
+import Typography from "app/components/shared/Typography";
+import Button from "app/components/shared/Button";
 
 export async function getServerSideProps(ctx) {
   const authRequest = auth.handleRequest(ctx);

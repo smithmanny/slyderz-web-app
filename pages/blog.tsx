@@ -1,10 +1,10 @@
 import React from "react";
 import Link from "next/link";
-import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
+import ConsumerContainer from "app/components/shared/ConsumerContainer";
 import Layout from "app/layouts/Layout";
-import Button from "app/core/components/shared/Button";
-import Typography from "app/core/components/shared/Typography";
-import Grid from "app/core/components/shared/Grid";
+import Button from "app/components/shared/Button";
+import Typography from "app/components/shared/Typography";
+import Grid from "app/components/shared/Grid";
 import contentfulClient, { BlogPost } from "app/helpers/contentful";
 import type { InferGetStaticPropsType, GetStaticProps } from "next";
 

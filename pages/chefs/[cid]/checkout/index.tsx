@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from "react";
 
 import Layout from "app/layouts/Layout";
-import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
-import CheckoutPage from "app/chefs/components/checkout/CheckoutPage";
-import CartEmpty from "app/checkout/components/CartEmpty";
-import AddAddressModal from "app/core/modals/AddAddressModal";
+import ConsumerContainer from "app/components/shared/ConsumerContainer";
+import CheckoutPage from "app/components/cart/checkout/CheckoutPage";
+import CartEmpty from "app/components/checkout/CartEmpty";
+import AddAddressModal from "app/modals/AddAddressModal";
 
 import { getCookieServer } from "server/utils/cookieHelpers";
 import { auth } from "integrations/auth/lucia";

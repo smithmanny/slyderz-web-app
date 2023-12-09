@@ -1,12 +1,12 @@
 import { useRouter } from "next/router";
 import db from "db";
 
-import Box from "app/core/components/shared/Box";
-import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
-import Button from "app/core/components/shared/Button";
-import Typography from "app/core/components/shared/Typography";
+import Box from "app/components/shared/Box";
+import ConsumerContainer from "app/components/shared/ConsumerContainer";
+import Button from "app/components/shared/Button";
+import Typography from "app/components/shared/Typography";
 import Layout from "app/layouts/Layout";
-import Divider from "app/core/components/shared/Divider";
+import Divider from "app/components/shared/Divider";
 
 import { TRANSACTIONAL_EMAILS } from "types";
 import sendSesEmail from "emails/utils/sendSesEmail";

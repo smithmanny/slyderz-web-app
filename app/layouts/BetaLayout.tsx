@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-import Appbar from "app/beta/components/Appbar";
+import Appbar from "app/components/beta/Appbar";
 
 type BetaLayoutProps = {
   children: ReactNode;

@@ -8,8 +8,8 @@ import {
 import { createMailjetContact } from "app/helpers/mailjet";
 
 import Layout from "app/layouts/Layout";
-import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
-import VerifyEmailForm from "app/auth/components/VerifyEmail";
+import ConsumerContainer from "app/components/shared/ConsumerContainer";
+import VerifyEmailForm from "app/components/auth/VerifyEmail";
 
 export async function getServerSideProps(ctx) {
   const authRequest = auth.handleRequest(ctx);

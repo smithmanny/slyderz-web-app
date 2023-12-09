@@ -1,6 +1,6 @@
 import Layout from "app/layouts/Layout";
-import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
-import Typography from "app/core/components/shared/Typography";
+import ConsumerContainer from "app/components/shared/ConsumerContainer";
+import Typography from "app/components/shared/Typography";
 
 const TermsAndCondition = () => (
   <ConsumerContainer>

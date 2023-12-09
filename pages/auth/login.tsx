@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import { auth } from "integrations/auth/lucia";
 
 import Layout from "app/layouts/Layout";
-import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
-import LoginForm from "app/auth/components/LoginForm";
+import ConsumerContainer from "app/components/shared/ConsumerContainer";
+import LoginForm from "app/components/auth/LoginForm";
 
 export async function getServerSideProps(ctx) {
   const authRequest = auth.handleRequest(ctx);

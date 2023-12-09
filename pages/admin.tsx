@@ -5,12 +5,12 @@ import { auth } from "integrations/auth/lucia";
 import { trpc } from "server/utils/trpc";
 
 import Layout from "app/layouts/Layout";
-import { NoSSrConsumerContainer } from "app/core/components/shared/ConsumerContainer";
-import Grid from "app/core/components/shared/Grid";
-import Typography from "app/core/components/shared/Typography";
-import Form, { Select } from "app/core/components/form";
+import { NoSSrConsumerContainer } from "app/components/shared/ConsumerContainer";
+import Grid from "app/components/shared/Grid";
+import Typography from "app/components/shared/Typography";
+import Form, { Select } from "app/components/form";
 import { RoleType } from ".prisma/client";
-import { ConvertUserToChefManually } from "app/beta/validations";
+import { ConvertUserToChefManually } from "validations/betaValidations";
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const authRequest = auth.handleRequest(ctx);

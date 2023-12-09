@@ -3,15 +3,15 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import dynamic from "next/dynamic";
 
-import { NoSSrConsumerContainer } from "app/core/components/shared/ConsumerContainer";
+import { NoSSrConsumerContainer } from "app/components/shared/ConsumerContainer";
 import { trpc } from "server/utils/trpc";
 
-import Grid from "app/core/components/shared/Grid";
-import Tabs from "app/core/components/shared/Tabs";
-import Tab from "app/core/components/shared/Tab";
+import Grid from "app/components/shared/Grid";
+import Tabs from "app/components/shared/Tabs";
+import Tab from "app/components/shared/Tab";
 import Layout from "app/layouts/Layout";
-import IndexContainer from "app/dashboard/components/menu/IndexContainer";
-import HoursContainer from "app/dashboard/components/hours/HoursContainer";
+import IndexContainer from "app/components/dashboard/menu/IndexContainer";
+import HoursContainer from "app/components/dashboard/hours/HoursContainer";
 
 const DynamicOnboarding = dynamic(() => import("app/onboarding"), {
   ssr: false,

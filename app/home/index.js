@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { trpc } from "server/utils/trpc";
 
-import Card, { CardContent, CardMedia } from "app/core/components/shared/Card";
-import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
-import Button from "app/core/components/shared/Button";
-import Grid from "app/core/components/shared/Grid";
-import Typography from "app/core/components/shared/Typography";
+import Card, { CardContent, CardMedia } from "app/components/shared/Card";
+import ConsumerContainer from "app/components/shared/ConsumerContainer";
+import Button from "app/components/shared/Button";
+import Grid from "app/components/shared/Grid";
+import Typography from "app/components/shared/Typography";
 
 const NearbyChefs = (props) => {
   const { data } = trpc.chef.fetchNearbyChefs.useQuery();

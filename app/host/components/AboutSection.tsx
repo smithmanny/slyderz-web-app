@@ -1,8 +1,8 @@
 import { CldImage } from "next-cloudinary";
 
-import Box from "app/core/components/shared/Box";
-import Grid from "app/core/components/shared/Grid";
-import Typography from "app/core/components/shared/Typography";
+import Box from "app/components/shared/Box";
+import Grid from "app/components/shared/Grid";
+import Typography from "app/components/shared/Typography";
 import { ReactElement } from "react";
 
 interface AboutSectionProps {

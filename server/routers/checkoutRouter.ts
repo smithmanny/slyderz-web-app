@@ -5,7 +5,7 @@ import { setCookie } from "server/utils/cookieHelpers";
 
 import { readableDate } from "app/utils/dateHelpers";
 import sendSesEmail from "emails/utils/sendSesEmail";
-import { CreateCartType } from "app/checkout/validations";
+import { CreateCartType } from "validations/checkoutValidations";
 import {
   TRANSACTIONAL_EMAILS,
   CHEF_SERVICE_FEE,

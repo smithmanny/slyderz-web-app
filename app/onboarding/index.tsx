@@ -5,16 +5,16 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import StepContent from "@mui/material/StepContent";
 import Paper from "@mui/material/Paper";
-import Button from "app/core/components/shared/Button";
-import { NoSSrConsumerContainer } from "app/core/components/shared/ConsumerContainer";
-import Box from "app/core/components/shared/Box";
-import Typography from "app/core/components/shared/Typography";
+import Button from "app/components/shared/Button";
+import { NoSSrConsumerContainer } from "app/components/shared/ConsumerContainer";
+import Box from "app/components/shared/Box";
+import Typography from "app/components/shared/Typography";
 
 import type { OnboardingState } from ".prisma/client";
 import { trpc } from "server/utils/trpc";
 
-import UploadHeadshot from "./components/UplaodHeadshot";
-import ProfileDescription from "./components/ProfileDescription";
+import UploadHeadshot from "../components/onboarding/UplaodHeadshot";
+import ProfileDescription from "../components/onboarding/ProfileDescription";
 
 interface StepsType {
   id: OnboardingState;

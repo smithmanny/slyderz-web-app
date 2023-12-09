@@ -2,9 +2,9 @@ import { useRouter } from "next/router";
 
 import { auth } from "integrations/auth/lucia";
 
-import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
+import ConsumerContainer from "app/components/shared/ConsumerContainer";
 import Layout from "app/layouts/Layout";
-import { SignupForm } from "app/auth/components/SignupForm";
+import { SignupForm } from "app/components/auth/SignupForm";
 
 export async function getServerSideProps(ctx) {
   const authRequest = auth.handleRequest(ctx);

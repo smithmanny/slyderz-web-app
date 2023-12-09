@@ -13,8 +13,8 @@ import store from "integrations/redux";
 import { theme } from "integrations/material-ui";
 import { RudderStack } from "app/utils/getRudderstack";
 
-import Box from "app/core/components/shared/Box";
-import CircularProgress from "app/core/components/shared/CircularProgress";
+import Box from "app/components/shared/Box";
+import CircularProgress from "app/components/shared/CircularProgress";
 
 import "app/styles/base.css";
 

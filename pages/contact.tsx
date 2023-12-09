@@ -2,10 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 
 import Layout from "app/layouts/Layout";
-import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
-import Grid from "app/core/components/shared/Grid";
-import Typography from "app/core/components/shared/Typography";
-import Form, { TextField } from "app/core/components/form";
+import ConsumerContainer from "app/components/shared/ConsumerContainer";
+import Grid from "app/components/shared/Grid";
+import Typography from "app/components/shared/Typography";
+import Form, { TextField } from "app/components/form";
 
 const Contact = () => {
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);

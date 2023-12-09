@@ -2,7 +2,7 @@ import { TRPCError } from "@trpc/server";
 import { nextSunday, nextMonday, nextTuesday, nextWednesday, nextThursday, nextFriday, nextSaturday } from 'date-fns'
 
 import { router, publicProcedure, chefProcedure, protectedProcedure } from "../trpc";
-import { GetChefDishesType } from "app/chefs/validations";
+import { GetChefDishesType } from "validations/chefsValidations";
 import { convertDayToInt } from "app/utils/time";
 import { RoleType } from ".prisma/client";
 

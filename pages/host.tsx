@@ -7,10 +7,10 @@ import useUser from "app/hooks/useUser";
 
 import Layout from "app/layouts/Layout";
 import AboutSection from "app/host/components/AboutSection";
-import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
-import Grid from "app/core/components/shared/Grid";
-import Typography from "app/core/components/shared/Typography";
-import Button from "app/core/components/shared/Button";
+import ConsumerContainer from "app/components/shared/ConsumerContainer";
+import Grid from "app/components/shared/Grid";
+import Typography from "app/components/shared/Typography";
+import Button from "app/components/shared/Button";
 import styles from "app/host/style.module.css";
 
 const Host = () => {

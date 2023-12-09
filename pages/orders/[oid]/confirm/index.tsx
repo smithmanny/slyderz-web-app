@@ -9,13 +9,13 @@ import {
 } from "types";
 import sendSesEmail from "emails/utils/sendSesEmail";
 
-import Box from "app/core/components/shared/Box";
-import ConsumerContainer from "app/core/components/shared/ConsumerContainer";
-import Button from "app/core/components/shared/Button";
-import Typography from "app/core/components/shared/Typography";
+import Box from "app/components/shared/Box";
+import ConsumerContainer from "app/components/shared/ConsumerContainer";
+import Button from "app/components/shared/Button";
+import Typography from "app/components/shared/Typography";
 import Layout from "app/layouts/Layout";
-import OrderItems from "app/orders/components/OrderItems";
-import Divider from "app/core/components/shared/Divider";
+import OrderItems from "app/components/orders/OrderItems";
+import Divider from "app/components/shared/Divider";
 import { getStripeServer } from "app/utils/getStripe";
 
 const stripe = getStripeServer();
