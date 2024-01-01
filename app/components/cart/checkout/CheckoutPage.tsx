@@ -6,7 +6,7 @@ import ArrowBack from "@mui/icons-material/ArrowBack";
 import { styled } from "integrations/material-ui";
 import { trpc } from "server/utils/trpc";
 
-import Form, { Select } from "app/components/form";
+import Form, { Select } from "app/components/legacy_form";
 import Button from "app/components/shared/Button";
 import Box from "app/components/shared/Box";
 import CheckoutCartSummary from "app/components/cart/cartSummary/CheckoutCartSummary";

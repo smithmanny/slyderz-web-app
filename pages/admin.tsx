@@ -1,14 +1,14 @@
 import type { GetServerSidePropsContext } from "next";
 import { useSnackbar } from "notistack";
 
-import { auth } from "integrations/auth/lucia";
+import { auth } from "app/lib/auth";
 import { trpc } from "server/utils/trpc";
 
-import Layout from "app/layouts/Layout";
+import Layout from "app/layout";
 import { NoSSrConsumerContainer } from "app/components/shared/ConsumerContainer";
 import Grid from "app/components/shared/Grid";
 import Typography from "app/components/shared/Typography";
-import Form, { Select } from "app/components/form";
+import Form, { Select } from "app/components/legacy_form";
 import { RoleType } from ".prisma/client";
 import { ConvertUserToChefManually } from "validations/betaValidations";
 

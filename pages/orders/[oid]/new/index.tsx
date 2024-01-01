@@ -2,13 +2,13 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 
 import completedOrderIcon from "public/completed-order.svg";
-import { auth } from "integrations/auth/lucia";
+import { auth } from "app/lib/auth";
 
 import Box from "app/components/shared/Box";
 import ConsumerContainer from "app/components/shared/ConsumerContainer";
 import Button from "app/components/shared/Button";
 import Typography from "app/components/shared/Typography";
-import Layout from "app/layouts/Layout";
+import Layout from "app/layout";
 
 export const getServerSideProps = async function getServerSideProps({
   req,

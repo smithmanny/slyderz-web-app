@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { createServerSideHelpers } from "@trpc/react-query/server";
 import { CldImage } from "next-cloudinary";
@@ -16,7 +17,7 @@ import Tabs from "app/components/shared/Tabs";
 import TabPanel from "app/components/shared/TabPanel";
 import Tab from "app/components/shared/Tab";
 import Typography from "app/components/shared/Typography";
-import Layout from "app/layouts/Layout";
+import Layout from "app/layouts/PagesLayout";
 import CartSummary from "app/components/cart/cartSummary";
 
 export async function getServerSideProps(ctx) {

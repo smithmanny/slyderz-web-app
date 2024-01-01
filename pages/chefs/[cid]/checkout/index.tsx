@@ -1,13 +1,13 @@
 import React, { useCallback, useState } from "react";
 
-import Layout from "app/layouts/Layout";
+import Layout from "app/layout";
 import ConsumerContainer from "app/components/shared/ConsumerContainer";
 import CheckoutPage from "app/components/cart/checkout/CheckoutPage";
 import CartEmpty from "app/components/checkout/CartEmpty";
 import AddAddressModal from "app/modals/AddAddressModal";
 
 import { getCookieServer } from "server/utils/cookieHelpers";
-import { auth } from "integrations/auth/lucia";
+import { auth } from "app/lib/auth";
 import { Cart } from "types";
 import createContext from "server/utils/createContext";
 import { appRouter } from "server/routers/_app";

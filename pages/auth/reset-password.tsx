@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Link from "next/link";
 
-import Layout from "app/layouts/Layout";
-import Form, { TextField } from "app/components/form";
+import Layout from "app/layout";
+import Form, { TextField } from "app/components/legacy_form";
 import ConsumerContainer from "app/components/shared/ConsumerContainer";
 import Typography from "app/components/shared/Typography";
 import { trpc } from "server/utils/trpc";

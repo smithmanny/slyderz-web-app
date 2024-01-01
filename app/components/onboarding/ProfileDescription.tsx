@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 
 import { trpc } from "server/utils/trpc";
 
-import Form, { TextField } from "app/components/form";
+import Form, { TextField } from "app/components/legacy_form";
 import Typography from "app/components/shared/Typography";
 import { AddChefDescription } from "../../../validations/onboardingValidations";
 

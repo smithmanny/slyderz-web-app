@@ -6,7 +6,7 @@ import { trpc } from "server/utils/trpc";
 import Typography from "app/components/shared/Typography";
 import Box from "app/components/shared/Box";
 import Grid from "app/components/shared/Grid";
-import Form, { TextField } from "app/components/form";
+import Form, { TextField } from "app/components/legacy_form";
 
 type LoginFormProps = {
   onSuccess?: () => void;

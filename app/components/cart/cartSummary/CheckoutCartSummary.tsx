@@ -5,7 +5,7 @@ import { formatNumberToCurrency } from "app/utils/time";
 import { CONSUMER_SERVICE_FEE } from "types";
 import { trpc } from "server/utils/trpc";
 
-import Form from "app/components/form";
+import Form from "app/components/legacy_form";
 import Box from "app/components/shared/Box";
 import Grid from "app/components/shared/Grid";
 import Typography from "app/components/shared/Typography";

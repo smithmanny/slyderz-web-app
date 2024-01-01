@@ -1,6 +1,6 @@
 import React from "react";
 import ConsumerContainer from "app/components/shared/ConsumerContainer";
-import Layout from "app/layouts/Layout";
+import Layout from "app/layout";
 import Typography from "app/components/shared/Typography";
 import ContentfulView from "integrations/contentful";
 import contentfulClient, { BlogPost } from "app/helpers/contentful";

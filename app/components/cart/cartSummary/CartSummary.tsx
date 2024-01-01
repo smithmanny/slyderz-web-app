@@ -9,7 +9,7 @@ import { convertDayToInt, todAM, todPM } from "app/utils/time";
 import { Cart, CONSUMER_SERVICE_FEE } from "types";
 import { trpc } from "server/utils/trpc";
 
-import Form, { DatePicker, Select } from "app/components/form";
+import Form, { DatePicker, Select } from "app/components/legacy_form";
 import Button from "app/components/shared/Button";
 import Box from "app/components/shared/Box";
 import Grid from "app/components/shared/Grid";

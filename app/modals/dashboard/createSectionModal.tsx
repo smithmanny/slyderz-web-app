@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { trpc } from "server/utils/trpc";
 
-import Form, { TextField } from "app/components/form";
+import Form, { TextField } from "app/components/legacy_form";
 import Modal from "app/components/shared/Modal";
 
 function CreateSectionModal({ refetch, show, onClose, ...props }) {

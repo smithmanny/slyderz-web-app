@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 
-import Layout from "app/layouts/Layout";
+import Layout from "app/layout";
 import ConsumerContainer from "app/components/shared/ConsumerContainer";
 import Grid from "app/components/shared/Grid";
 import Typography from "app/components/shared/Typography";
-import Form, { TextField } from "app/components/form";
+import Form, { TextField } from "app/components/legacy_form";
 
 const Contact = () => {
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);

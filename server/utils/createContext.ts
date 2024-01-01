@@ -4,7 +4,7 @@ import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
 
 import { getStripeServer } from "app/utils/getStripe";
 import prisma from "db";
-import { auth } from "integrations/auth/lucia";
+import { auth } from "app/lib/auth";
 import { Cart } from "types";
 
 type SessionType = {

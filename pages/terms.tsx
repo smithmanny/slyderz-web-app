@@ -1,4 +1,4 @@
-import Layout from "app/layouts/Layout";
+import Layout from "app/layout";
 import ConsumerContainer from "app/components/shared/ConsumerContainer";
 import Typography from "app/components/shared/Typography";
 

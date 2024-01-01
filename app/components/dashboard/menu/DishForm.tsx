@@ -6,7 +6,7 @@ import { useSnackbar } from "notistack";
 import { formatNumberToCurrency } from "app/utils/time";
 import { trpc } from "server/utils/trpc";
 
-import Form, { TextField } from "app/components/form";
+import Form, { TextField } from "app/components/legacy_form";
 import Grid from "app/components/shared/Grid";
 import UploadImage from "app/components/shared/UploadImage";
 

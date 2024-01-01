@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
-import { generateVerificationToken, validateToken, invalidateAllUserTokens } from "integrations/auth/lucia";
+import { generateVerificationToken, validateToken, invalidateAllUserTokens } from "app/lib/auth";
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 import { TRANSACTIONAL_EMAILS } from "types";
 import sendSesEmail from "emails/utils/sendSesEmail";

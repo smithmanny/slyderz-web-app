@@ -3,11 +3,11 @@ import Link from "next/link";
 
 import { ForgotPassword } from "validations/authValidations";
 import { trpc } from "server/utils/trpc";
-import { auth } from "integrations/auth/lucia";
+import { auth } from "app/lib/auth";
 
-import Layout from "app/layouts/Layout";
+import Layout from "app/layout";
 import ConsumerContainer from "app/components/shared/ConsumerContainer";
-import Form, { TextField } from "app/components/form";
+import Form, { TextField } from "app/components/legacy_form";
 import Typography from "app/components/shared/Typography";
 import Button from "app/components/shared/Button";
 

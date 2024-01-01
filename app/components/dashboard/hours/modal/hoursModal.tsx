@@ -3,7 +3,7 @@ import React from "react";
 import { todAM, todPM, weekdays } from "app/utils/time";
 import { trpc } from "server/utils/trpc";
 
-import Form, { Checkbox, Select } from "app/components/form";
+import Form, { Checkbox, Select } from "app/components/legacy_form";
 import Modal from "app/components/shared/Modal";
 
 type CreateSectionModalProps = {

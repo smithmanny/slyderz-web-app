@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Signup } from "validations/authValidations";
 import { trpc } from "server/utils/trpc";
 
-import Form, { TextField } from "app/components/form";
+import Form, { TextField } from "app/components/legacy_form";
 import Grid from "app/components/shared/Grid";
 import Box from "app/components/shared/Box";
 import Typography from "app/components/shared/Typography";

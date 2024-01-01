@@ -1,7 +1,7 @@
 
 /// <reference types="lucia" />
 declare namespace Lucia {
-  type Auth = import("../integrations/auth/lucia.js").Auth;
+  type Auth = import("../app/lib/auth.js").Auth;
   type DatabaseSessionAttributes = {
 		stripeCustomerId: string;
     emailVerified: boolean
