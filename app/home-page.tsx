@@ -6,7 +6,7 @@ type HomePageTypes = {
   nearbyChefs: any;
 };
 
-export default function Example(props: HomePageTypes) {
+export default function HomePage(props: HomePageTypes) {
   return (
     <div className="bg-white">
       <div className="relative isolate px-6 pt-14 lg:px-8">
@@ -51,7 +51,7 @@ export default function Example(props: HomePageTypes) {
           />
         </div> */}
 
-        <div>
+        <div className="max-w-screen-2xl mx-auto">
           <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-6">
             Nearby Chefs
           </h3>

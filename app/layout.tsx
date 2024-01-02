@@ -4,7 +4,7 @@ import { Roboto_Slab } from "next/font/google";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 
 import Appbar from "app/components/AppBar";
-import Footer from "app/components/footer";
+import Footer from "app/components/Footer";
 import "app/styles/base.css";
 
 const roboto = Roboto_Slab({
@@ -75,7 +75,7 @@ const Layout = ({ title, children }: LayoutProps) => {
         <main>
           <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
         </main>
-        {/* <Footer /> */}
+        <Footer />
       </body>
     </html>
   );
