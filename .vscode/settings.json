@@ -8,7 +8,7 @@
   "git.ignoreLimitWarning": true,
   // Run ESLint each time you save a file
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   },
   // Disable Prettier for JavaScript and React (but not for HTML, CSS or others in future)
   "[javascriptreact]": {

@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { auth } from "app/lib/auth";
 
 import ConsumerContainer from "app/components/shared/ConsumerContainer";
-import Layout from "app/layout";
+import Layout from "app/layouts/PagesLayout";
 import { SignupForm } from "app/components/auth/SignupForm";
 
 export async function getServerSideProps(ctx) {

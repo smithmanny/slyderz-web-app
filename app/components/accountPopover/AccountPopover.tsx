@@ -7,7 +7,11 @@ import ListItemText from "@mui/material/ListItemText";
 import PersonIcon from "@mui/icons-material/Person";
 
 import Popover from "app/components/shared/Popover";
-import { loggedInRoutes, loggedOutRoutes, chefLoggedInRoutes } from "./routes";
+import {
+  loggedInRoutes,
+  loggedOutRoutes,
+  chefLoggedInRoutes,
+} from "../../utils/routes";
 
 import { trpc } from "server/utils/trpc";
 import { OnboardingState } from ".prisma/client";

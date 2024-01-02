@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import { Roboto_Slab } from "next/font/google";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 
-import Appbar from "app/components/appbar";
+import Appbar from "app/components/AppBar";
 import Footer from "app/components/footer";
 import "app/styles/base.css";
 
@@ -71,7 +71,7 @@ const Layout = ({ title, children }: LayoutProps) => {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={roboto.variable}>
-        {/* <Appbar /> */}
+        <Appbar />
         <main>
           <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
         </main>

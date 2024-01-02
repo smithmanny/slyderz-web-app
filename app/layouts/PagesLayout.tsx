@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import Head from "next/head";
 
-import Appbar from "app/components/appbar";
+import Appbar from "app/components/legacy_appbar";
 import Footer from "app/components/footer";
 
 type LayoutProps = {
