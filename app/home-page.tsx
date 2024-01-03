@@ -57,25 +57,29 @@ export default function HomePage(props: HomePageTypes) {
           </h3>
 
           <div className="grid grid-flow-col auto-cols-max gap-4">
-            <Card className="w-[225px] h-80">
-              <div className="group relative bg-black h-80 flex rounded-[0.75rem]">
-                <img
-                  alt="Developer"
-                  src="https://images.unsplash.com/photo-1603871165848-0aa92c869fa1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=772&q=80"
-                  className="absolute inset-0 h-full w-full object-cover opacity-75 transition-opacity group-hover:opacity-50 rounded-[0.75rem]"
-                />
+            {props.nearbyChefs.map((chef, i) => (
+              <Link href={`/chefs/${chef.id}`} key={chef.userId}>
+                <Card className="w-[225px] h-80">
+                  <div className="group relative bg-black h-80 flex rounded-[0.75rem]">
+                    <img
+                      alt="Developer"
+                      src="https://images.unsplash.com/photo-1603871165848-0aa92c869fa1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=772&q=80"
+                      className="absolute inset-0 h-full w-full object-cover opacity-75 transition-opacity group-hover:opacity-50 rounded-[0.75rem]"
+                    />
 
-                <div className="relative p-2 pb-4 mt-auto">
-                  <p className="text-sm font-medium uppercase tracking-widest text-pink-500">
-                    Soul Food
-                  </p>
+                    <div className="relative p-2 pb-4 mt-auto">
+                      <p className="text-sm font-medium uppercase tracking-widest text-pink-500">
+                        Soul Food
+                      </p>
 
-                  <p className="text-xl font-bold text-white text-wrap">
-                    Waynewenaslkdasdasdassd
-                  </p>
-                </div>
-              </div>
-            </Card>
+                      <p className="text-xl font-bold text-white text-wrap">
+                        {chef.user.name}
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              </Link>
+            ))}
           </div>
         </div>
       </div>

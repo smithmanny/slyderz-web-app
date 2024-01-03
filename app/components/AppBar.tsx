@@ -1,3 +1,4 @@
+import Link from "next/link";
 import UserPopover from "app/components/UserPopover";
 import Announcement from "app/components/Announcement";
 
@@ -9,11 +10,13 @@ export default function AppBar() {
         <div className="relative flex h-16 items-center justify-between">
           <div className="flex flex-1 items-center justify-center">
             <div className="flex flex-1 items-center">
-              <img
-                className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                alt="Your Company"
-              />
+              <Link href="/">
+                <img
+                  className="h-8 w-auto"
+                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                  alt="Your Company"
+                />
+              </Link>
             </div>
           </div>
           {/* Right side of navbar */}
