@@ -8,7 +8,7 @@ import Box from "app/components/shared/Box";
 import ConsumerContainer from "app/components/shared/ConsumerContainer";
 import Button from "app/components/shared/Button";
 import Typography from "app/components/shared/Typography";
-import Layout from "app/layout";
+import Layout from "app/(landing)/layout";
 
 export const getServerSideProps = async function getServerSideProps({
   req,

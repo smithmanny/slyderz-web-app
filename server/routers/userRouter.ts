@@ -6,7 +6,7 @@ import {
   CreateImageType,
   DestroyImageType,
   AddUserAddressType,
-} from "validations/aboutValidations";
+} from "app/validations/aboutValidations";
 
 const userRouter = router({
   fetchUserData: publicProcedure.query(async (opts) => {

@@ -2,32 +2,32 @@
 
 import { Fragment } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, Transition } from "@headlessui/react";
+import logoutMutation from "app/actions/mutations/logoutMutation";
 
 import {
   loggedInRoutes,
   loggedOutRoutes,
   chefLoggedInRoutes,
 } from "app/utils/routes";
+import { Button } from "./ui/button";
+import { localImageLoader } from "app/lib/utils";
+
+import type { User } from "lucia";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const user = {
-  userId: null,
-  chef: {
-    isChef: false,
-  },
-};
-
-const fetchListItems = () => {
+const fetchListItems = (user) => {
   const routes = {
     loggedIn: loggedInRoutes,
     loggedOut: loggedOutRoutes,
     chefLoggedIn: chefLoggedInRoutes,
   };
 
+  // TODO: fix session context
   if (user?.userId && !user?.chef?.isChef) {
     return routes.loggedIn;
   }
@@ -39,18 +39,24 @@ const fetchListItems = () => {
   return routes.loggedOut;
 };
 
-export default function AppBar() {
-  const routes = fetchListItems();
+interface AppBarProps {
+  user: User | undefined;
+}
+export default function AppBar(props: AppBarProps) {
+  const routes = fetchListItems(props.user);
   return (
     <Menu as="div" className="relative ml-3">
       <div>
         <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
           <span className="absolute -inset-1.5" />
           <span className="sr-only">Open user menu</span>
-          <img
+          <Image
             className="h-8 w-8 rounded-full"
             src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-            alt=""
+            alt="Open user popover menu"
+            height={256}
+            width={256}
+            loader={localImageLoader}
           />
         </Menu.Button>
       </div>
@@ -68,7 +74,7 @@ export default function AppBar() {
             <Menu.Item key={`${route.name}-${i}`}>
               {({ active }) => (
                 <Link
-                  href="/auth/signup"
+                  href={route.route}
                   className={classNames(
                     active ? "bg-gray-100" : "",
                     `block px-4 py-2 text-md text-gray-700 ${
@@ -81,7 +87,7 @@ export default function AppBar() {
               )}
             </Menu.Item>
           ))}
-          {user && (
+          {props.user && (
             <Menu.Item>
               {({ active }) => (
                 <div
@@ -104,9 +110,13 @@ export default function AppBar() {
                       d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                     />
                   </svg>
-                  <a href="#" className="block text-md text-red-600 pl-2">
+                  <Button
+                    onClick={logoutMutation}
+                    className="block text-md text-red-600 pl-2 hover:text-red-600"
+                    variant="ghost"
+                  >
                     Sign out
-                  </a>
+                  </Button>
                 </div>
               )}
             </Menu.Item>

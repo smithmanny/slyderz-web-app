@@ -1,8 +1,8 @@
 import { router, publicProcedure } from "../trpc";
 import {
   AddUserToMailjet,
-} from "validations/betaValidations";
-import { createMailjetContact } from "app/helpers/mailjet";
+} from "app/validations/betaValidations";
+import { createMailjetContact } from "app/lib/mailjet";
 
 const betaRouter = router({
   addUserToMailjet: publicProcedure

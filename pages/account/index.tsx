@@ -4,14 +4,14 @@ import dynamic from "next/dynamic";
 import { useSnackbar } from "notistack";
 import { createServerSideHelpers } from "@trpc/react-query/server";
 
-import { UpdatePassword } from "validations/authValidations";
+import { UpdatePassword } from "app/validations/authValidations";
 import { trpc } from "server/utils/trpc";
 import { auth } from "app/lib/auth";
 import createContext from "server/utils/createContext";
 import { appRouter } from "server/routers/_app";
 import useUser from "app/hooks/useUser";
 
-import Layout from "app/layout";
+import Layout from "app/layouts/PagesLayout";
 import Button from "app/components/shared/Button";
 import ConsumerContainer from "app/components/shared/ConsumerContainer";
 import Grid from "app/components/shared/Grid";

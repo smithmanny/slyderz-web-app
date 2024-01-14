@@ -1,6 +1,6 @@
 import React from "react";
 
-import { AddUserAddress } from "validations/userValidations";
+import { AddUserAddress } from "app/validations/userValidations";
 import { trpc } from "server/utils/trpc";
 
 import Form, { TextField } from "app/components/legacy_form";

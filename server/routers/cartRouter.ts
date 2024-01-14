@@ -7,7 +7,7 @@ import {
   UpdateCartItem,
   DestroyCartItem,
   CreateCartType,
-} from "validations/cartValidations";
+} from "app/validations/cartValidations";
 import type { CartItem } from "types";
 
 const cartRouter = router({

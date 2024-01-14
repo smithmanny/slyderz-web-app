@@ -1,11 +1,11 @@
 import React from "react";
 import Link from "next/link";
 import ConsumerContainer from "app/components/shared/ConsumerContainer";
-import Layout from "app/layout";
+import Layout from "app/(landing)/layout";
 import Button from "app/components/shared/Button";
 import Typography from "app/components/shared/Typography";
 import Grid from "app/components/shared/Grid";
-import contentfulClient, { BlogPost } from "app/helpers/contentful";
+import contentfulClient, { BlogPost } from "app/lib/contentful";
 import type { InferGetStaticPropsType, GetStaticProps } from "next";
 
 export const getStaticProps: GetStaticProps<{

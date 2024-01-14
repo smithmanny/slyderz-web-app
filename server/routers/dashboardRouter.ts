@@ -15,7 +15,7 @@ import {
   DestroyDish,
   CreateHours,
   DeleteSection,
-} from "validations/dashboardValidations";
+} from "app/validations/dashboardValidations";
 
 const dashboardRouter = router({
   createSection: chefProcedure

@@ -1,12 +1,16 @@
+import { cache } from "react";
 import { lucia } from "lucia";
 import { nextjs_future } from "lucia/middleware";
 import { prisma } from "@lucia-auth/adapter-prisma";
 import { isWithinExpiration } from "lucia/utils"; // v2 beta.0
+import * as context from "next/headers";
+
 import db from 'db'
 import { TokenError } from "app/utils/errors";
-import "lucia/polyfill/node";
-
+import { AuthError } from "./errors";
 import prismaClient from "db";
+
+import "lucia/polyfill/node";
 
 const env = process.env.NODE_ENV === 'development' ? 'DEV' : 'PROD'
 
@@ -18,6 +22,9 @@ export const auth = lucia({
 	}),
   env,
   middleware: nextjs_future(),
+	sessionCookie: {
+		expires: false
+	},
 	getSessionAttributes: (databaseSession) => {
 		return {
 			stripeCustomerId: databaseSession.stripeCustomerId,
@@ -36,6 +43,22 @@ export const auth = lucia({
     };
   },
 });
+
+export const getSession = cache(() => {
+	const authRequest = auth.handleRequest("GET", context)
+	return authRequest.validate()
+
+})
+export const getProtectedSession = cache(async() => {
+	const authRequest = auth.handleRequest("GET", context)
+	const session = await authRequest.validate()
+
+	if (!session) {
+		throw new AuthError()
+	}
+
+	return session
+})
 
 const EXPIRES_IN = 1000 * 60 * 60 * 2; // 2 hours
 

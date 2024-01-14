@@ -1,9 +1,9 @@
 import React from "react";
 import ConsumerContainer from "app/components/shared/ConsumerContainer";
-import Layout from "app/layout";
+import Layout from "app/(landing)/layout";
 import Typography from "app/components/shared/Typography";
 import ContentfulView from "integrations/contentful";
-import contentfulClient, { BlogPost } from "app/helpers/contentful";
+import contentfulClient, { BlogPost } from "app/lib/contentful";
 import type {
   InferGetStaticPropsType,
   GetStaticProps,

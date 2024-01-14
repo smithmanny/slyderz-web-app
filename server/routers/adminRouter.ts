@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { router, adminProcedure } from "../trpc";
-import { ConvertUserToChefManually } from "validations/betaValidations";
+import { ConvertUserToChefManually } from "app/validations/betaValidations";
 import { RoleType } from ".prisma/client";
 
 const adminRouter = router({

@@ -1,9 +1,9 @@
 import Box from "@mui/material/Box";
 import { useSnackbar } from "notistack";
-import Layout from "app/layout";
+import Layout from "app/(landing)/layout";
 import Form, { TextField } from "app/components/legacy_form";
 import { trpc } from "server/utils/trpc";
-import { AddUserToMailjet } from "validations/betaValidations";
+import { AddUserToMailjet } from "app/validations/betaValidations";
 
 const Subscribe = () => {
   const { enqueueSnackbar } = useSnackbar();

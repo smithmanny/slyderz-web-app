@@ -4,13 +4,13 @@ import { useSnackbar } from "notistack";
 import { auth } from "app/lib/auth";
 import { trpc } from "server/utils/trpc";
 
-import Layout from "app/layout";
+import Layout from "app/(landing)/layout";
 import { NoSSrConsumerContainer } from "app/components/shared/ConsumerContainer";
 import Grid from "app/components/shared/Grid";
 import Typography from "app/components/shared/Typography";
 import Form, { Select } from "app/components/legacy_form";
 import { RoleType } from ".prisma/client";
-import { ConvertUserToChefManually } from "validations/betaValidations";
+import { ConvertUserToChefManually } from "app/validations/betaValidations";
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const authRequest = auth.handleRequest(ctx);

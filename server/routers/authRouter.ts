@@ -5,7 +5,7 @@ import { generateVerificationToken, validateToken, invalidateAllUserTokens } fro
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 import { TRANSACTIONAL_EMAILS } from "types";
 import sendSesEmail from "emails/utils/sendSesEmail";
-import { Signup, Login } from "validations/authValidations";
+import { Signup, Login } from "app/validations/authValidations";
 import { RoleType } from ".prisma/client";
 import { TokenError } from "app/utils/errors";
 

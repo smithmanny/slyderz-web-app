@@ -1,11 +1,11 @@
 export const CHEF_SERVICE_FEE = 0.15; // 15%
 export const CONSUMER_SERVICE_FEE = 0.1; // 10%
 export interface CartItem {
-  chefId: number;
+  chefId: string;
   id: string;
   name: string;
   price: number;
-  dishId: number;
+  dishId: string;
   quantity: number;
 }
 export interface EmailBodyType {
@@ -31,7 +31,7 @@ export interface EmailBodyResponseType {
 export interface Cart {
   eventDate?: Date | null;
   eventTime?: string | null;
-  items: Array<any>;
+  items: Array<CartItem>;
   total: number;
 }
 

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { trpc } from "server/utils/trpc";
 import useUser from "app/hooks/useUser";
 
-import Layout from "app/layout";
+import Layout from "app/(landing)/layout";
 import AboutSection from "app/host/components/AboutSection";
 import ConsumerContainer from "app/components/shared/ConsumerContainer";
 import Grid from "app/components/shared/Grid";

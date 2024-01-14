@@ -8,7 +8,7 @@ export const formatNumberToCurrency = (number: number) => {
 // Render times for chef hours
 interface TimeType {
   label: string;
-  value: string | null;
+  value: string;
 }
 
 const renderHours = (tod = "AM") => {
@@ -17,7 +17,6 @@ const renderHours = (tod = "AM") => {
 
   for (let x = 1; x <= hours; x++) {
     for (let y = 0; y < 60; y += 30) {
-      const date = new Date();
       let time = `${x}:${y} ${tod}`;
 
       if (y === 0) {

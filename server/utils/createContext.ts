@@ -2,7 +2,7 @@ import { inferAsyncReturnType } from "@trpc/server";
 import { getCookie, setCookie } from "cookies-next";
 import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
 
-import { getStripeServer } from "app/utils/getStripe";
+import { getStripeServer } from "app/lib/stripe";
 import prisma from "db";
 import { auth } from "app/lib/auth";
 import { Cart } from "types";

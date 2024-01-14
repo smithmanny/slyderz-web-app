@@ -9,7 +9,7 @@ import { trpc } from "server/utils/trpc";
 import Grid from "app/components/shared/Grid";
 import Tabs from "app/components/shared/Tabs";
 import Tab from "app/components/shared/Tab";
-import Layout from "app/layout";
+import Layout from "app/(landing)/layout";
 import IndexContainer from "app/components/dashboard/menu/IndexContainer";
 import HoursContainer from "app/components/dashboard/hours/HoursContainer";
 

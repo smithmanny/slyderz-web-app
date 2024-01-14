@@ -1,11 +1,11 @@
 import { useState } from "react";
 import Link from "next/link";
 
-import { ForgotPassword } from "validations/authValidations";
+import { ForgotPassword } from "app/validations/authValidations";
 import { trpc } from "server/utils/trpc";
 import { auth } from "app/lib/auth";
 
-import Layout from "app/layout";
+import Layout from "app/(landing)/layout";
 import ConsumerContainer from "app/components/shared/ConsumerContainer";
 import Form, { TextField } from "app/components/legacy_form";
 import Typography from "app/components/shared/Typography";

@@ -1,9 +1,9 @@
 import { TokenError } from "app/utils/errors";
 
 import { auth, validateToken, invalidateAllUserTokens } from "app/lib/auth";
-import { createMailjetContact } from "app/helpers/mailjet";
+import { createMailjetContact } from "app/lib/mailjet";
 
-import Layout from "app/layout";
+import Layout from "app/(landing)/layout";
 import ConsumerContainer from "app/components/shared/ConsumerContainer";
 import VerifyEmailForm from "app/components/auth/VerifyEmail";
 

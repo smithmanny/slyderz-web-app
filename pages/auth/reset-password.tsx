@@ -1,12 +1,12 @@
 import { useState } from "react";
 import Link from "next/link";
 
-import Layout from "app/layout";
+import Layout from "app/(landing)/layout";
 import Form, { TextField } from "app/components/legacy_form";
 import ConsumerContainer from "app/components/shared/ConsumerContainer";
 import Typography from "app/components/shared/Typography";
 import { trpc } from "server/utils/trpc";
-import { ResetPassword } from "validations/authValidations";
+import { ResetPassword } from "app/validations/authValidations";
 
 export const getServerSideProps = async ({ query }) => {
   if (!query.token) {

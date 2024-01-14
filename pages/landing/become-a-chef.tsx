@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import Layout from "app/layout";
+import Layout from "app/(landing)/layout";
 import ConsumerContainer from "app/components/shared/ConsumerContainer";
 
 const BecomeAChef = () => {

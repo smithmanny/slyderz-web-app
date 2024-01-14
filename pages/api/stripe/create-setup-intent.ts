@@ -1,4 +1,4 @@
-import { getStripeServer } from "app/utils/getStripe";
+import { getStripeServer } from "app/lib/stripe";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const stripe = getStripeServer();
