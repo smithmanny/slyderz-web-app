@@ -14,11 +14,11 @@ export default async function ChefCheckoutPage({
 }: {
   params: { cid: string };
 }) {
-  const userAddresses = fetchUserAddress();
+  const userAddress = fetchUserAddress();
   const userCart = getCartCookie();
   const userPaymentMethods = fetchUserPaymentMethodsQuery();
-  const [addresses, cart, paymentMethods] = await Promise.all([
-    userAddresses,
+  const [address, cart, paymentMethods] = await Promise.all([
+    userAddress,
     userCart,
     userPaymentMethods,
   ]);
@@ -47,9 +47,13 @@ export default async function ChefCheckoutPage({
         {/* Right Section */}
         <section className="col-span-4 md:col-span-2">
           <CheckoutForm
+            chefId={params.cid}
             cartTotal={cart.total}
-            addresses={addresses}
+            cartItems={cart.items}
+            address={address}
             paymentMethods={paymentMethods}
+            eventDate={cart.eventDate}
+            eventTime={cart.eventTime}
           />
         </section>
       </div>

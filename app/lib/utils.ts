@@ -1,7 +1,7 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
-import { CONSUMER_SERVICE_FEE } from "types";
+import { CONSUMER_SERVICE_FEE, CHEF_SERVICE_FEE } from "types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -24,6 +24,8 @@ export const localImageLoader = ({ src, width, quality }: { src: string, width: 
 }
 
 export const getConsumerServiceFee = (cartTotal: number) => cartTotal * CONSUMER_SERVICE_FEE;
+
+export const getChefServiceFee = (cartTotal: number) => cartTotal * CHEF_SERVICE_FEE;
 
 export const getConsumerCartTotal = (cartTotal: number) => {
   const serviceFee = getConsumerServiceFee(cartTotal)

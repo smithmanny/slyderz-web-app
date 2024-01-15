@@ -22,10 +22,18 @@ import { Button } from "app/components/ui/button";
 import { useSlyderzForm } from "app/hooks/useSlyderzForm";
 import { formatNumberToCurrency } from "app/utils/time";
 import { getConsumerServiceFee, getConsumerCartTotal } from "app/lib/utils";
+import createCheckoutMutation from "app/actions/mutations/createCheckout";
+
+import { CartItem } from "types";
+import type { Address } from ".prisma/client";
 
 interface CheckoutFormProps {
+  chefId: string;
   cartTotal: number;
-  addresses: any;
+  cartItems: Array<CartItem>;
+  address: Address;
+  eventDate: string;
+  eventTime: string;
   paymentMethods: Array<any>;
 }
 export default function CheckoutForm(props: CheckoutFormProps) {
@@ -34,9 +42,10 @@ export default function CheckoutForm(props: CheckoutFormProps) {
     paymentMethod: z.string(),
   });
   const form = useSlyderzForm(formSchema, {
-    selectedAddress: "",
-    paymentMethod: "",
+    selectedAddress: props.address?.id || "",
+    paymentMethod: props.paymentMethods[0]?.id || "",
   });
+  const values = form.getValues();
 
   return (
     <Form {...form}>
@@ -54,11 +63,8 @@ export default function CheckoutForm(props: CheckoutFormProps) {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {[props.addresses].map((address, i) => (
-                    <SelectItem
-                      key={`${address}-${i}`}
-                      value={JSON.stringify(address)}
-                    >
+                  {[props.address].map((address, i) => (
+                    <SelectItem key={`${address}-${i}`} value={address.id}>
                       {address.address1}
                     </SelectItem>
                   ))}
@@ -125,17 +131,20 @@ export default function CheckoutForm(props: CheckoutFormProps) {
 
         <Button
           className="mt-4"
-          disabled={!form.getValues().eventTime}
+          disabled={!values.selectedAddress || !values.paymentMethod}
           onClick={async (e) => {
             e.preventDefault();
             e.stopPropagation();
 
-            const { eventDate, eventTime } = form.getValues();
-            // await createCartMutation({
-            //   eventDate,
-            //   eventTime,
-            //   chefId: props.chefId,
-            // });
+            await createCheckoutMutation({
+              eventDate: props.eventDate,
+              eventTime: props.eventTime,
+              address: values.selectedAddress,
+              chefId: props.chefId,
+              cartTotal: props.cartTotal,
+              paymentMethodId: values.paymentMethod,
+              cartItems: props.cartItems,
+            });
           }}
         >
           Checkout

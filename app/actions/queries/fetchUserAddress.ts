@@ -6,23 +6,11 @@ export default async function fetchUserAddress() {
   const initPrisma = getPrisma()
   const [session, prisma] = await Promise.all([userSession, initPrisma])
 
-  const user = await prisma.authUser.findUniqueOrThrow({
+  const address = await prisma.address.findUniqueOrThrow({
     where: {
-      id: session.user.userId,
-    },
-    select: {
-      address: {
-        select: {
-          id: true,
-          address1: true,
-          address2: true,
-          city: true,
-          state: true,
-          zipcode: true,
-        },
-      },
+      userId: session.user.userId,
     },
   });
 
-  return user.address;
+  return address;
 }
