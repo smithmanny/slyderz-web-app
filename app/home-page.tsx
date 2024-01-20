@@ -22,7 +22,7 @@ export default function HomePage(props: HomePageTypes) {
             }}
           />
         </div>
-        <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+        <div className="mx-auto max-w-2xl py-32 sm:py-48">
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
               Unforgettable Dining with Slyderz
@@ -32,7 +32,7 @@ export default function HomePage(props: HomePageTypes) {
               home.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
-              <Button className="text-md" asChild>
+              <Button className="text-md" size="lg" asChild>
                 <Link href="/about">Learn More</Link>
               </Button>
             </div>

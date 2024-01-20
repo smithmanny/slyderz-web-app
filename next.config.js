@@ -1,7 +1,7 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ['res.cloudinary.com', 'images.unsplash.com'],
+    domains: ['res.cloudinary.com', 'images.unsplash.com', "lottie.host"],
     minimumCacheTTL: 60,
     loader: "cloudinary",
     path: "https://res.cloudinary.com/slyderz/image/upload",
@@ -12,17 +12,5 @@ module.exports = {
         pathname: 'slyderz/image/upload',
       }
     ],
-  },
-  async rewrites() {
-    return [
-      {
-        source: '/login',
-        destination: '/auth/login',
-      },
-      {
-        source: '/signup',
-        destination: '/auth/signup',
-      },
-    ]
   },
 };

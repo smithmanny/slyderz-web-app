@@ -13,7 +13,7 @@ export function isObject(value: unknown): value is Record<string, unknown> {
 }
 
 type TypedFormDataValue = FormDataEntryValue | Blob
-export function validFormData<T extends Record<string, TypedFormDataValue>>(formData: FormData) {
+export function requiredFormData<T extends Record<string, TypedFormDataValue>>(formData: FormData) {
   const entries = Object.fromEntries(formData.entries())
 
   return {...entries} as T

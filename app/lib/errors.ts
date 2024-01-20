@@ -55,6 +55,54 @@ export class NotFoundError extends Error {
   }
 }
 
+export class UnknownError extends Error {
+  public readonly cause?: Error;
+  public readonly code;
+
+  constructor(opts: {
+    message?: string;
+    cause?: unknown;
+  }) {
+    const cause = getCauseFromUnknown(opts.cause);
+    const message = opts.message ?? cause?.message ?? "Unknown error!";
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore https://github.com/tc39/proposal-error-cause
+    super(message, { cause });
+
+    this.name = 'NotFoundError';
+
+    if (!this.cause) {
+      // idk why this is needed, but it is
+      this.cause = cause;
+    }
+  }
+}
+
+export class TokenError extends Error {
+  public readonly cause?: Error;
+  public readonly code;
+
+  constructor(opts: {
+    message?: string;
+    cause?: unknown;
+  }) {
+    const cause = getCauseFromUnknown(opts.cause);
+    const message = opts.message ?? cause?.message ?? "Token error!";
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore https://github.com/tc39/proposal-error-cause
+    super(message, { cause });
+
+    this.name = 'TokenError';
+
+    if (!this.cause) {
+      // idk why this is needed, but it is
+      this.cause = cause;
+    }
+  }
+}
+
 export class AuthError extends Error {
   public readonly code;
 

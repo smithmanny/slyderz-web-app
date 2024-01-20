@@ -5,9 +5,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from 'zod'
 
 interface DefaultValuesType {
-  [index: string]: string
+  [index: string]: string | number | Array<string | number>
 }
-export function useSlyderzForm(formSchema: any, defaultValues: DefaultValuesType) {
+export function useSlyderzForm(formSchema: z.ZodSchema, defaultValues: DefaultValuesType) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues,

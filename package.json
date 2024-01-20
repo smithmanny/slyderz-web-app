@@ -39,6 +39,7 @@
   "@headlessui/react": "^1.7.17",
   "@heroicons/react": "^2.1.1",
   "@hookform/resolvers": "^3.3.4",
+  "@lottiefiles/react-lottie-player": "^3.5.3",
   "@lucia-auth/adapter-prisma": "^3.0.2",
   "@mui/icons-material": "^5.14.19",
   "@mui/material": "^5.14.20",

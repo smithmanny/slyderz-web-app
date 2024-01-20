@@ -73,7 +73,7 @@ const Layout = async ({ title, children }: LayoutProps) => {
   const session = await getSession();
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(roboto.className)}>
+      <body className={cn(roboto.className, "min-h-full")}>
         <Appbar
           user={session?.user}
           className="max-w-screen-xl relative mx-auto"

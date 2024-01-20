@@ -5,7 +5,7 @@ import type StripeServerType from "stripe";
 let stripePromise: Promise<Stripe | null>;
 let stripeServer: StripeServerType;
 
-const getStripe = () => {
+export const getStripe = () => {
   if (!stripePromise) {
     stripePromise = loadStripe("pk_test_GrN77dvsAhUuGliIXge1nUD8");
   }
@@ -22,4 +22,3 @@ export const getStripeServer = (): StripeServerType => {
   return stripeServer;
 };
 
-export default getStripe;

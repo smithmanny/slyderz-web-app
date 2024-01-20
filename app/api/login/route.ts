@@ -3,13 +3,13 @@ import { revalidatePath } from 'next/cache'
 import { auth } from "app/lib/auth";
 import * as context from "next/headers";
 import { NextResponse } from "next/server";
-import { validFormData } from "app/lib/utils";
+import { requiredFormData } from "app/lib/utils";
 
 import type { NextRequest } from "next/server";
 
 export const POST = async (request: NextRequest) => {
   const formData = await request.formData();
-  const { email, password } = validFormData<{ email: string, password: string }>(formData)
+  const { email, password } = requiredFormData<{ email: string, password: string }>(formData)
 
   try {
       const key = await auth.useKey("email", email.toLowerCase(), password);
