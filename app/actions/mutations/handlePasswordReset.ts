@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import * as context from "next/headers";
+import { redirect } from "next/navigation";
 
 import { validateToken, invalidateAllUserTokens } from "app/lib/auth";
 import { auth } from "app/lib/auth";
@@ -55,7 +56,6 @@ export default async function handlePasswordResetMutation(token: string, input: 
       type: TRANSACTIONAL_EMAILS.passwordReset,
     });
   } catch (e) {
-    console.log("Error resetting password", e);
     if (e instanceof TokenError && e.message === "Expired token") {
       throw new TokenError({
         cause: e,
@@ -67,4 +67,6 @@ export default async function handlePasswordResetMutation(token: string, input: 
       });
     }
   }
+
+  redirect("/")
 }

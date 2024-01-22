@@ -6,7 +6,7 @@ import { isWithinExpiration } from "lucia/utils"; // v2 beta.0
 import * as context from "next/headers";
 
 import db from 'db'
-import { TokenError } from "app/utils/errors";
+import { TokenError } from "app/lib/errors";
 import { AuthError } from "./errors";
 import prismaClient from "db";
 
@@ -87,12 +87,17 @@ export const validateToken = async (token: string) => {
 		const tokenExpires = Number(storedToken.expiresAt); // bigint => number conversion
 		if (!isWithinExpiration(tokenExpires)) {
 			// should throw a vague error to user (expired *or* invalid token)
-			throw new TokenError("Expired token");
+			throw new TokenError({
+				message: "Expired token",
+			});
 		}
 
 		return storedToken.userId;
 	} catch (err) {
-		throw new TokenError('Invalid token')
+		throw new TokenError({
+			message: 'Invalid token',
+			cause: err
+		})
 	}
 };
 

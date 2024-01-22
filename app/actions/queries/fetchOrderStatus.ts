@@ -79,15 +79,15 @@ export default async function fetchOrderStatusQuery(input: z.infer<typeof FetchO
         },
       });
 
-      // await sendSesEmail({
-      //   to: order.user.email,
-      //   type: TRANSACTIONAL_EMAILS.denyOrder,
-      //   variables: {
-      //     orderNumber: order.confirmationNumber,
-      //   },
-      // });
+      await sendSesEmail({
+        to: order.user.email,
+        type: TRANSACTIONAL_EMAILS.denyOrder,
+        variables: {
+          orderNumber: order.confirmationNumber,
+        },
+      });
     return
-    case 2: // accepted state
+    case 2: { // accepted state
       const stripe = getStripeServer()
       const consumerServiceFee = getConsumerServiceFee(order.amount);
       // Stripe amount must be in cents
@@ -141,26 +141,27 @@ export default async function fetchOrderStatusQuery(input: z.infer<typeof FetchO
       const eventDate = new Date(order.eventDate);
       const address = `${order.address1} ${order.city}, ${order.state} ${order.zipcode}`;
 
-      // await sendSesEmail({
-      //   to: order.user.email,
-      //   type: TRANSACTIONAL_EMAILS.confirmOrder,
-      //   variables: {
-      //     orderNumber: order.confirmationNumber,
-      //     orderDate: readableDate(eventDate),
-      //     orderTime: order.eventTime,
-      //     orderLocation: address,
-      //     orderSubtotal: order.amount,
-      //     orderServiceFee: consumerServiceFee,
-      //     orderTotal: order.amount + consumerServiceFee,
-      //     orderItems: order.items.map((d) => ({
-      //       id: d.id,
-      //       quantity: d.quantity,
-      //       description: d.dish.description,
-      //       name: d.dish.name,
-      //       image: d.dish?.image[0]?.imageUrl,
-      //     })),
-      //   },
-      // });
+      await sendSesEmail({
+        to: order.user.email,
+        type: TRANSACTIONAL_EMAILS.confirmOrder,
+        variables: {
+          orderNumber: order.confirmationNumber,
+          orderDate: readableDate(eventDate),
+          orderTime: order.eventTime,
+          orderLocation: address,
+          orderSubtotal: order.amount,
+          orderServiceFee: consumerServiceFee,
+          orderTotal: order.amount + consumerServiceFee,
+          orderItems: order.items.map((d) => ({
+            id: d.id,
+            quantity: d.quantity,
+            description: d.dish.description,
+            name: d.dish.name,
+            image: d.dish?.image[0]?.imageUrl,
+          })),
+        },
+      });
+    }
     return;
     default:
       throw new Error("There is a problem with order.")

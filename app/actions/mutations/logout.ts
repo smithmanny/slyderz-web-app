@@ -1,12 +1,13 @@
+"use server"
+
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation';
 
 import { auth } from "app/lib/auth";
 import * as context from "next/headers";
 
-import type { NextRequest } from "next/server";
-
-export const POST = async (request: NextRequest) => {
-	const authRequest = auth.handleRequest(request.method, context);
+export default async function logoutMutation() {
+  const authRequest = auth.handleRequest("POST", context);
 	// check if user is authenticated
 	const session = await authRequest.validate();
 
@@ -21,10 +22,5 @@ export const POST = async (request: NextRequest) => {
 	authRequest.setSession(null);
 
 	revalidatePath('/')
-	return new Response(null, {
-		status: 302,
-		headers: {
-			Location: "/"
-		}
-	});
-};
+	redirect("/")
+}

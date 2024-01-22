@@ -4,7 +4,7 @@ import { Fragment } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, Transition } from "@headlessui/react";
-import logoutMutation from "app/actions/mutations/logoutMutation";
+import logoutMutation from "app/actions/mutations/logout";
 
 import {
   loggedInRoutes,
@@ -111,7 +111,7 @@ export default function AppBar(props: AppBarProps) {
                     />
                   </svg>
                   <Button
-                    onClick={logoutMutation}
+                    onClick={async () => await logoutMutation()}
                     className="block text-md text-red-600 pl-2 hover:text-red-600"
                     variant="ghost"
                   >
