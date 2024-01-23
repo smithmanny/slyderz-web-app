@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
+import { Toaster } from "app/components/ui/sonner";
 
 import Appbar from "app/components/AppBar";
 import Footer from "app/components/Footer";
@@ -77,6 +78,7 @@ const Layout = async ({ title, children }: LayoutProps) => {
       <body className={cn(roboto.className, "min-h-full")}>
         <Appbar className="sticky top-0" user={session?.user} />
         <main>{children}</main>
+        <Toaster />
         <Footer />
       </body>
     </html>
