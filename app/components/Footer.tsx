@@ -14,31 +14,18 @@ export default function Footer() {
               <ul className="mt-6 space-y-4 text-sm">
                 <li>
                   <Link
-                    href="#"
+                    href="/about"
                     className="text-white transition hover:opacity-75"
                   >
-                    {" "}
-                    About{" "}
+                    About
                   </Link>
                 </li>
-
                 <li>
                   <Link
-                    href="#"
+                    href="/blog"
                     className="text-white transition hover:opacity-75"
                   >
-                    {" "}
-                    Meet the Team{" "}
-                  </Link>
-                </li>
-
-                <li>
-                  <Link
-                    href="#"
-                    className="text-white transition hover:opacity-75"
-                  >
-                    {" "}
-                    Accounts Review{" "}
+                    Blog
                   </Link>
                 </li>
               </ul>
@@ -52,7 +39,7 @@ export default function Footer() {
               <ul className="mt-6 space-y-4 text-sm">
                 <li>
                   <Link
-                    href="#"
+                    href="/contact"
                     className="text-white transition hover:opacity-75"
                   >
                     {" "}
@@ -69,22 +56,12 @@ export default function Footer() {
                     FAQs{" "}
                   </Link>
                 </li>
-
-                <li>
-                  <Link
-                    href="#"
-                    className="text-white transition hover:opacity-75"
-                  >
-                    {" "}
-                    Live Chat{" "}
-                  </Link>
-                </li>
               </ul>
             </div>
 
             <div className="col-span-2 sm:col-span-1">
               <h4 className="scroll-m-20 text-xl font-semibold tracking-wide text-white">
-                Legal
+                Cities
               </h4>
 
               <ul className="mt-6 space-y-4 text-sm">
@@ -94,37 +71,7 @@ export default function Footer() {
                     className="text-white transition hover:opacity-75"
                   >
                     {" "}
-                    Accessibility{" "}
-                  </Link>
-                </li>
-
-                <li>
-                  <Link
-                    href="#"
-                    className="text-white transition hover:opacity-75"
-                  >
-                    {" "}
-                    Returns Policy{" "}
-                  </Link>
-                </li>
-
-                <li>
-                  <Link
-                    href="#"
-                    className="text-white transition hover:opacity-75"
-                  >
-                    {" "}
-                    Refund Policy{" "}
-                  </Link>
-                </li>
-
-                <li>
-                  <Link
-                    href="#"
-                    className="text-white transition hover:opacity-75"
-                  >
-                    {" "}
-                    Hiring Statistics{" "}
+                    Atlanta
                   </Link>
                 </li>
               </ul>
@@ -133,7 +80,7 @@ export default function Footer() {
             <ul className="col-span-2 flex justify-start gap-6 lg:col-span-5 lg:justify-end">
               <li>
                 <Link
-                  href="/"
+                  href="https://www.facebook.com/slyderz"
                   rel="noreferrer"
                   target="_blank"
                   className="text-white transition hover:opacity-75"
@@ -157,7 +104,7 @@ export default function Footer() {
 
               <li>
                 <Link
-                  href="/"
+                  href="https://www.instagram.com/slyderz_app/"
                   rel="noreferrer"
                   target="_blank"
                   className="text-white transition hover:opacity-75"
@@ -181,7 +128,7 @@ export default function Footer() {
 
               <li>
                 <Link
-                  href="/"
+                  href="https://twitter.com/slyderzapp"
                   rel="noreferrer"
                   target="_blank"
                   className="text-white transition hover:opacity-75"
