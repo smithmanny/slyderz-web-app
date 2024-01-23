@@ -2,11 +2,7 @@ import Image from "next/image";
 
 import Container from "app/components/Container";
 
-import { getSession } from "app/lib/auth";
-
-export default async function HomePage() {
-  const session = await getSession();
-
+export default async function AboutPage() {
   return (
     <Container className="bg-white">
       <div className="relative isolate px-2 sm:px-6 lg:px-8">
@@ -109,7 +105,8 @@ export default async function HomePage() {
 
               <p>
                 Say goodbye to crowded restaurants and enjoy a personalized
-                dining experience that's tailored to your preferences and needs.
+                dining experience that&apos;s tailored to your preferences and
+                needs.
               </p>
             </div>
             <div>
@@ -129,9 +126,9 @@ export default async function HomePage() {
 
               <p>
                 With our convenient booking and payment system, you can relax
-                and enjoy your meal without any hassle. Whether you're planning
-                a dinner party or a romantic evening, Slyderz takes care of
-                everything so you can sit back and savor the moment.
+                and enjoy your meal without any hassle. Whether you&apos;re
+                planning a dinner party or a romantic evening, Slyderz takes
+                care of everything so you can sit back and savor the moment.
               </p>
             </div>
           </section>

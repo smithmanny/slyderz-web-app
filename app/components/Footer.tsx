@@ -158,11 +158,20 @@ export default function Footer() {
             <ul className="mt-8 flex flex-wrap justify-start gap-4 text-xs sm:mt-0 lg:justify-end">
               <li>
                 <Link
-                  href="#"
+                  href="/terms-and-conditions"
+                  className="text-white transition hover:opacity-75"
+                >
+                  Terms & Conditions
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  href="/privacy-policy"
                   className="text-white transition hover:opacity-75"
                 >
                   {" "}
-                  Terms & Conditions{" "}
+                  Privacy Policy
                 </Link>
               </li>
 
@@ -172,17 +181,7 @@ export default function Footer() {
                   className="text-white transition hover:opacity-75"
                 >
                   {" "}
-                  Privacy Policy{" "}
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  href="#"
-                  className="text-white transition hover:opacity-75"
-                >
-                  {" "}
-                  Cookies{" "}
+                  Cookies
                 </Link>
               </li>
             </ul>

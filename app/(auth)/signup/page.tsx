@@ -5,7 +5,7 @@ import Container from "app/components/Container";
 
 import { getSession } from "app/lib/auth";
 
-export default async function LoginPage() {
+export default async function SignupPage() {
   const session = await getSession();
 
   if (session?.user) {

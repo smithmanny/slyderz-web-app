@@ -3,7 +3,7 @@ import Container from "app/components/Container";
 import { getSession } from "app/lib/auth";
 import BecomeHostButton from "./BecomeHostButton";
 
-export default async function HomePage() {
+export default async function HostPage() {
   const session = await getSession();
 
   return (
