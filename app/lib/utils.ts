@@ -33,7 +33,7 @@ export const getConsumerCartTotal = (cartTotal: number) => {
   return cartTotal + serviceFee
 }
 
-// Date/Time
+/************************** Date/Time helpers **************************/
 export const convertDayToInt = (day: string): number => {
   const daysOfWeek = {
     SUNDAY: 0,
@@ -46,4 +46,20 @@ export const convertDayToInt = (day: string): number => {
   };
 
   return daysOfWeek[day];
+};
+
+export const transfromDateToReadableTime = (date: Date): string => {
+  return date.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
+
+export const readableDate = (date: Date): string => {
+  return date.toLocaleDateString(undefined, {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 };

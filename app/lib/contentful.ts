@@ -1,22 +1,22 @@
 export type BlogPost = {
-  id: string
+  id: string;
   title: string;
   document: any;
-  createdAt: string,
-  slug: string
+  createdAt: string;
+  slug: string;
 };
 import type { ContentfulClientApi } from "contentful";
 
 class ContentfulSingleton {
   private contentful = require("contentful");
   private client: ContentfulClientApi<any> = this.contentful.createClient({
-      space: process.env.CONTENTFUL_TOKEN,
-      environment: "master", // defaults to 'master' if not set
-      accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
-    });
+    space: process.env.CONTENTFUL_TOKEN,
+    environment: "master", // defaults to 'master' if not set
+    accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
+  });
 
   private stringifySlug(slug: string) {
-    return slug.replaceAll(' ', '-')
+    return slug.replaceAll(" ", "-");
   }
 
   private prepareEntries(entries: any, array: Array<BlogPost>) {
@@ -33,23 +33,26 @@ class ContentfulSingleton {
     });
   }
 
-  public async getPost(entryId: string): Promise<any> {
-    const blogPost = await this.client.getEntry(entryId);
+  public async getPost(slug: string): Promise<BlogPost> {
+    const blogPosts = await this.getAllPosts();
+    const blogPost = blogPosts.find((post) => post.slug === slug);
 
-    return blogPost
+    if (!blogPost) throw new Error("Blog does not exists");
+
+    return blogPost;
   }
 
   public async getAllPosts(): Promise<BlogPost[]> {
     const blogPosts: Array<BlogPost> = [];
     const entries = await this.client.getEntries();
-    this.prepareEntries(entries, blogPosts)
+    this.prepareEntries(entries, blogPosts);
 
-    return blogPosts
+    return blogPosts;
   }
 }
 
-const contentfulClient = new ContentfulSingleton()
+const contentfulClient = new ContentfulSingleton();
 
-Object.freeze(contentfulClient)
+Object.freeze(contentfulClient);
 
-export default contentfulClient
+export default contentfulClient;

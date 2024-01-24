@@ -2,14 +2,12 @@ import React, { Suspense, useEffect, ReactNode } from "react";
 import { Roboto_Slab } from "next/font/google";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { Provider } from "react-redux";
 import { SnackbarProvider } from "notistack";
 import type { AppProps } from "next/app";
 import flagsmith from "flagsmith";
 import { FlagsmithProvider } from "flagsmith/react";
 
 import { trpc } from "server/utils/trpc";
-import store from "integrations/redux";
 import { theme } from "integrations/material-ui";
 import { RudderStack } from "app/utils/getRudderstack";
 
@@ -51,33 +49,31 @@ function Slyderz({ Component, pageProps }: MyAppProps) {
     RudderStack.getInstance();
   }, []);
   return (
-    <Provider store={store}>
-      <SnackbarProvider
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "center",
+    <SnackbarProvider
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "center",
+      }}
+      preventDuplicate={true}
+    >
+      <FlagsmithProvider
+        options={{
+          environmentID: "27oW57Gst9Us3H7ogNaAzU",
         }}
-        preventDuplicate={true}
+        flagsmith={flagsmith}
       >
-        <FlagsmithProvider
-          options={{
-            environmentID: "27oW57Gst9Us3H7ogNaAzU",
-          }}
-          flagsmith={flagsmith}
-        >
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Suspense fallback={<LoadingIcon />}>
-              {getLayout(
-                <div className={roboto.className}>
-                  <Component {...pageProps} />
-                </div>,
-              )}
-            </Suspense>
-          </ThemeProvider>
-        </FlagsmithProvider>
-      </SnackbarProvider>
-    </Provider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Suspense fallback={<LoadingIcon />}>
+            {getLayout(
+              <div className={roboto.className}>
+                <Component {...pageProps} />
+              </div>,
+            )}
+          </Suspense>
+        </ThemeProvider>
+      </FlagsmithProvider>
+    </SnackbarProvider>
   );
 }
 

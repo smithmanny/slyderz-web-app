@@ -39,11 +39,18 @@ export default function Footer() {
               <ul className="mt-6 space-y-4 text-sm">
                 <li>
                   <Link
+                    href="/host"
+                    className="text-white transition hover:opacity-75"
+                  >
+                    Become a host
+                  </Link>
+                </li>
+                <li>
+                  <Link
                     href="/contact"
                     className="text-white transition hover:opacity-75"
                   >
-                    {" "}
-                    Contact{" "}
+                    Contact
                   </Link>
                 </li>
 
@@ -52,8 +59,7 @@ export default function Footer() {
                     href="#"
                     className="text-white transition hover:opacity-75"
                   >
-                    {" "}
-                    FAQs{" "}
+                    FAQs
                   </Link>
                 </li>
               </ul>
@@ -67,10 +73,9 @@ export default function Footer() {
               <ul className="mt-6 space-y-4 text-sm">
                 <li>
                   <Link
-                    href="#"
+                    href="/"
                     className="text-white transition hover:opacity-75"
                   >
-                    {" "}
                     Atlanta
                   </Link>
                 </li>
@@ -170,18 +175,7 @@ export default function Footer() {
                   href="/privacy-policy"
                   className="text-white transition hover:opacity-75"
                 >
-                  {" "}
                   Privacy Policy
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  href="#"
-                  className="text-white transition hover:opacity-75"
-                >
-                  {" "}
-                  Cookies
                 </Link>
               </li>
             </ul>
