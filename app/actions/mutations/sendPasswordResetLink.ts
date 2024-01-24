@@ -4,7 +4,7 @@ import { z } from "zod";
 
 import { auth } from "app/lib/auth";
 import { generateVerificationToken } from "app/lib/auth";
-import { getPrisma } from "app/lib/prisma";
+import prisma from "db";
 import sendSesEmail from "emails/utils/sendSesEmail";
 
 import { TRANSACTIONAL_EMAILS } from "types";
@@ -14,7 +14,6 @@ export default async function sendPasswordResetLinkMutation(input: FormData) {
   const email = input.get("email")?.toString()
   sendPasswordResetLinkSchema.parse(email)
 
-  const prisma = await getPrisma()
   const dbUser = await prisma.authUser.findFirst({
     where: {
       email

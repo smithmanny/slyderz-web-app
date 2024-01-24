@@ -4,7 +4,7 @@ import randomstring from "randomstring";
 import { z } from "zod";
 import { redirect } from "next/navigation";
 
-import { getPrisma } from "app/lib/prisma";
+import prisma from "db";
 import { getProtectedSession } from "app/lib/auth";
 import { getConsumerServiceFee, getChefServiceFee, readableDate } from "app/lib/utils";
 import sendSesEmail from "emails/utils/sendSesEmail";
@@ -32,7 +32,6 @@ export default async function createCheckoutMutation(input: z.infer<typeof Creat
   CreateCheckoutSchema.parse(input)
 
   const session = await getProtectedSession()
-  const prisma = await getPrisma()
   const cart = await getCartCookie()
 
   // verify chef exists before creating order

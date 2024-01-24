@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import InputAdornment from "@mui/material/InputAdornment";
 import { useSnackbar } from "notistack";
 
-import { formatNumberToCurrency } from "app/utils/time";
+import { formatNumberToCurrency } from "app/lib/utils";
 import { trpc } from "server/utils/trpc";
 
 import Form, { TextField } from "app/components/legacy_form";

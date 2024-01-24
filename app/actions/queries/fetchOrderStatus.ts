@@ -2,7 +2,7 @@
 
 import { z } from "zod"
 
-import { getPrisma } from "app/lib/prisma"
+import prisma from "db";
 import { getStripeServer } from "app/lib/stripe"
 import { getChefServiceFee, getConsumerServiceFee, readableDate } from "app/lib/utils"
 import sendSesEmail from "emails/utils/sendSesEmail"
@@ -15,8 +15,6 @@ const FetchOrderStatusQuerySchema = z.object({
 })
 export default async function fetchOrderStatusQuery(input: z.infer<typeof FetchOrderStatusQuerySchema>) {
   FetchOrderStatusQuerySchema.parse(input)
-
-  const prisma = await getPrisma()
 
   const order = await prisma.order.findFirstOrThrow({
     where: {

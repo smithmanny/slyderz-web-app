@@ -20,8 +20,11 @@ import {
 import { Button } from "app/components/ui/button";
 
 import { useSlyderzForm } from "app/hooks/useSlyderzForm";
-import { formatNumberToCurrency } from "app/utils/time";
-import { getConsumerServiceFee, getConsumerCartTotal } from "app/lib/utils";
+import {
+  getConsumerServiceFee,
+  getConsumerCartTotal,
+  formatNumberToCurrency,
+} from "app/lib/utils";
 import createCheckoutMutation from "app/actions/mutations/createCheckout";
 
 import { CartItem } from "types";

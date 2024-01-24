@@ -4,7 +4,7 @@ import * as context from "next/headers";
 
 import { auth, generateVerificationToken } from "app/lib/auth";
 import { UnknownError } from "app/lib/errors";
-import { getPrisma } from "app/lib/prisma";
+import prisma from "db";
 import { getStripeServer } from "app/lib/stripe";
 import { requiredFormData } from "app/lib/utils";
 import sendSesEmail from "emails/utils/sendSesEmail";
@@ -14,7 +14,6 @@ import { RoleType } from ".prisma/client";
 
 export default async function signupMutation(input: FormData) {
   const { email, name, password } = requiredFormData<{ email: string, name: string, password: string }>(input)
-  const prisma = await getPrisma()
   const stripe = getStripeServer()
 
   const userExists = await prisma.authUser.findFirst({

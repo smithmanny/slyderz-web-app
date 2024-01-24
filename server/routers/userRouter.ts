@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import getCloudinary from "app/utils/getCloudinary";
+import getCloudinary from "app/lib/cloudinary";
 import { router, protectedProcedure, publicProcedure } from "../trpc";
 import {
   DeleteStripePaymentMethod,

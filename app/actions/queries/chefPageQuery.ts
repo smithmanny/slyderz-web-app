@@ -1,13 +1,11 @@
 'use server'
 
 import { nextSunday, nextMonday, nextTuesday, nextWednesday, nextThursday, nextFriday, nextSaturday } from 'date-fns'
-import { getPrisma } from 'app/lib/prisma';
+import prisma from "db";
 import { convertDayToInt } from "app/lib/utils";
 import { NotFoundError } from 'app/lib/errors';
 
 export default async function chefProfileQuery(chefId: string) {
-  const prisma = await getPrisma()
-
   try {
         const chef = await prisma.chef.findFirstOrThrow({
           where: {

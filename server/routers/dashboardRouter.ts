@@ -2,7 +2,7 @@ import { TRPCError } from "@trpc/server";
 import { Prisma } from ".prisma/client";
 
 import { router, chefProcedure } from "../trpc";
-import getCloudinary from "app/utils/getCloudinary";
+import getCloudinary from "app/lib/cloudinary";
 
 import {
   CreateSection,

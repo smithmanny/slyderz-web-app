@@ -1,11 +1,9 @@
-import HomePage from "../home-page";
-import { getPrisma } from "../lib/prisma";
+import HomePage from "./home-page";
+import prisma from "db";
 
 async function getNearbyChefs() {
-  const prisma = await getPrisma();
-
   try {
-    const nearbyChefs = prisma.chef.findMany({
+    const nearbyChefs = await prisma.chef.findMany({
       where: {
         NOT: {
           hours: {

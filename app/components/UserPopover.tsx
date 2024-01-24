@@ -10,7 +10,7 @@ import {
   loggedInRoutes,
   loggedOutRoutes,
   chefLoggedInRoutes,
-} from "app/utils/routes";
+} from "app/lib/routes";
 import { Button } from "./ui/button";
 import { localImageLoader } from "app/lib/utils";
 

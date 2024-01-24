@@ -11,7 +11,7 @@ import {
   loggedInRoutes,
   loggedOutRoutes,
   chefLoggedInRoutes,
-} from "../../utils/routes";
+} from "../../lib/routes";
 
 import { trpc } from "server/utils/trpc";
 import { OnboardingState } from ".prisma/client";

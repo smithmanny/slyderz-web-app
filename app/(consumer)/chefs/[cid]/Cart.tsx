@@ -30,9 +30,8 @@ import {
 import { Button } from "app/components/ui/button";
 import { Calendar } from "app/components/ui/calendar";
 
-import { cn } from "app/lib/utils";
+import { cn, convertDayToInt, todAM, todPM } from "app/lib/utils";
 import { useSlyderzForm } from "app/hooks/useSlyderzForm";
-import { convertDayToInt, todAM, todPM } from "app/utils/time";
 import { createCartMutation } from "app/actions/mutations/createCart";
 
 import type { DaysOfWeekTypeEnum } from ".prisma/client";

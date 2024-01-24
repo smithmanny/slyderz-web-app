@@ -1,6 +1,13 @@
 import { SESParamsType } from "types";
+import { SES } from "@aws-sdk/client-ses";
 
-function createEmailParams({
+const REGION = "us-east-1";
+
+export const ses = new SES({
+  region: REGION,
+});
+
+export function createEmailParams({
   subject,
   to,
   htmlContent,
@@ -35,5 +42,3 @@ function createEmailParams({
     Source: "contact@slyderz.co" /* required */,
   };
 }
-
-export default createEmailParams;

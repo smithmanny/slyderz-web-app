@@ -3,7 +3,7 @@ import { nextSunday, nextMonday, nextTuesday, nextWednesday, nextThursday, nextF
 
 import { router, publicProcedure, chefProcedure, protectedProcedure } from "../trpc";
 import { GetChefDishesType } from "app/validations/chefsValidations";
-import { convertDayToInt } from "app/utils/time";
+import { convertDayToInt } from "app/lib/utils";
 import { RoleType } from ".prisma/client";
 
 const chefRouter = router({

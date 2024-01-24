@@ -3,14 +3,13 @@
 import { redirect } from "next/navigation";
 
 import { auth } from "app/lib/auth";
-import { getPrisma } from "app/lib/prisma";
+import prisma from "db";
 import { getStripeServer } from "app/lib/stripe";
 import { UnknownError } from "app/lib/errors";
 
 import { RoleType } from ".prisma/client";
 
 export default async function createChefMutation(userId: string) {
-  const prisma = await getPrisma()
   const stripe = getStripeServer()
 
   const user = await prisma.authUser.findFirstOrThrow({

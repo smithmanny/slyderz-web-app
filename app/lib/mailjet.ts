@@ -1,5 +1,15 @@
-import { mailjet, mailjetClient } from "app/utils/getMailjet";
+import Mailjet, { Client } from "node-mailjet";
 import { Contact, LibraryResponse } from "node-mailjet";
+
+const mailjet = new Mailjet({
+  apiKey: process.env.MJ_APIKEY_PUBLIC,
+  apiSecret: process.env.MJ_APIKEY_PRIVATE,
+});
+
+const mailjetClient = new Client({
+  apiKey: process.env.MJ_APIKEY_PUBLIC,
+  apiSecret: process.env.MJ_APIKEY_PRIVATE,
+});
 
 export const createMailjetContact = async (email: string, name?: string) => {
   let body: Contact.PostContactBody = {

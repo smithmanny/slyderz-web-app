@@ -1,7 +1,6 @@
 import { render } from '@react-email/render';
 
-import ses from "app/utils/aws/sesClient";
-import createEmailParams from "app/utils/aws/createEmailParams";
+import { createEmailParams, ses } from "app/lib/aws";
 import EmailActivateAccount from "emails/activate-account";
 import EmailForgotPasswordEmail from "emails/forgot-password";
 import EmailPasswordChangedEmail from "emails/password-changed";

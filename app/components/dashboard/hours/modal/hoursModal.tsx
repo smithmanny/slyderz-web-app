@@ -1,6 +1,6 @@
 import React from "react";
 
-import { todAM, todPM, weekdays } from "app/utils/time";
+import { todAM, todPM, weekdays } from "app/lib/utils";
 import { trpc } from "server/utils/trpc";
 
 import Form, { Checkbox, Select } from "app/components/legacy_form";
