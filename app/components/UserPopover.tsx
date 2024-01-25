@@ -39,10 +39,10 @@ const fetchListItems = (user) => {
   return routes.loggedOut;
 };
 
-interface AppBarProps {
+interface UserPopoverProps {
   user: User | undefined;
 }
-export default function AppBar(props: AppBarProps) {
+export default function UserPopover(props: UserPopoverProps) {
   const routes = fetchListItems(props.user);
   return (
     <Menu as="div" className="relative ml-3">
