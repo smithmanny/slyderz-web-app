@@ -55,15 +55,15 @@ export const convertDayToInt = (day: string): number => {
 		["THURSDAY", 4],
 		["FRIDAY", 5],
 		["SATURDAY", 6],
-	])
+	]);
 
-	const validDay = daysOfWeek.get(day)
+	const validDay = daysOfWeek.get(day);
 
 	if (!validDay) {
-		throw new Error("Invalid day")
+		throw new Error("Invalid day");
 	}
 
-	return validDay
+	return validDay;
 };
 
 export const transfromDateToReadableTime = (date: Date): string => {

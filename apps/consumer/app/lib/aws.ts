@@ -1,5 +1,4 @@
 import { SES } from "@aws-sdk/client-ses";
-import { render } from "jsx-email"
 import EmailActivateAccount from "emails/activate-account";
 import EmailChefOrderRequest from "emails/chef-order-request";
 import EmailForgotPasswordEmail from "emails/forgot-password";
@@ -7,6 +6,7 @@ import EmailNewOrder from "emails/new-order";
 import EmailNewOrderApproved from "emails/order-approved";
 import EmailNewOrderDenied from "emails/order-denied";
 import EmailPasswordChangedEmail from "emails/password-changed";
+import { render } from "jsx-email";
 
 import { SESParamsType, SendSesEmailType, TRANSACTIONAL_EMAILS } from "types";
 
