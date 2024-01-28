@@ -4,7 +4,7 @@ import { z } from "zod";
 import { generateVerificationToken, validateToken, invalidateAllUserTokens } from "app/lib/auth";
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 import { TRANSACTIONAL_EMAILS } from "types";
-import sendSesEmail from "emails/utils/sendSesEmail";
+import sendSesEmail from "app/lib/aws";
 import { Signup, Login } from "app/validations/authValidations";
 import { RoleType } from ".prisma/client";
 import { TokenError } from "app/utils/errors";

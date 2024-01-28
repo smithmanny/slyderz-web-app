@@ -4,7 +4,7 @@ import { router, protectedProcedure } from "../trpc";
 import { setCookie } from "server/utils/cookieHelpers";
 
 import { readableDate } from "app/utils/dateHelpers";
-import sendSesEmail from "emails/utils/sendSesEmail";
+import sendSesEmail from "app/lib/aws";
 import { CreateCartType } from "app/validations/checkoutValidations";
 import {
   TRANSACTIONAL_EMAILS,
