@@ -2,8 +2,11 @@
   "name": "slyderz",
   "private": true,
   "scripts": {
-    "build": "pnpm --filter slyderz-consumer build ",
+    "build": "pnpm --filter slyderz-consumer build",
     "dev": "pnpm --filter slyderz-consumer dev",
+    "start": "pnpm --filter slyderz-consumer start",
+    "migrate": "pnpm --filter slyderz-consumer migrate",
+    "studio": "pnpm --filter slyderz-consumer studio",
     "lint": "pnpm --filter slyderz-consumer lint",
     "emails": "pnpm --filter transactional dev"
   },

@@ -19,7 +19,7 @@ export const SlyderzEmailLayout = ({
 		<Html>
 			<Head />
 			<Preview>{previewText}</Preview>
-			<Tailwind>
+			<Tailwind production>
 				<Body className="bg-white my-auto mx-auto font-sans">
 					<Container
 						className="border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px]"

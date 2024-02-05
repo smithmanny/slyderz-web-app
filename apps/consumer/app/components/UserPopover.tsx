@@ -2,16 +2,15 @@
 
 import { Menu, Transition } from "@headlessui/react";
 import logoutMutation from "app/actions/mutations/logout";
-import Image from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
 
+import { Avatar, AvatarImage } from "app/components/ui/avatar";
 import {
 	chefLoggedInRoutes,
 	loggedInRoutes,
 	loggedOutRoutes,
 } from "app/lib/routes";
-import { localImageLoader } from "app/lib/utils";
 import { Button } from "./ui/button";
 
 import type { User } from "lucia";
@@ -41,23 +40,25 @@ const fetchListItems = (user: any) => {
 
 interface UserPopoverProps {
 	user: User | undefined;
+	profilePhoto: string | undefined;
 }
 export default function UserPopover(props: UserPopoverProps) {
 	const routes = fetchListItems(props.user);
+	const nameFirstLetter = props.user?.name.split("")[0];
 	return (
 		<Menu as="div" className="relative ml-3">
 			<div>
 				<Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
 					<span className="absolute -inset-1.5" />
 					<span className="sr-only">Open user menu</span>
-					<Image
-						className="h-8 w-8 rounded-full"
-						src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-						alt="Open user popover menu"
-						height={256}
-						width={256}
-						loader={localImageLoader}
-					/>
+					<Avatar>
+						<AvatarImage
+							src={
+								props.profilePhoto ||
+								"https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+							}
+						/>
+					</Avatar>
 				</Menu.Button>
 			</div>
 			<Transition

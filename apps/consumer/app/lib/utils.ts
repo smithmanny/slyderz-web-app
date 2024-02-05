@@ -2,6 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 import { CHEF_SERVICE_FEE, CONSUMER_SERVICE_FEE } from "types";
+import { OnboardingState } from ".prisma/client";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -45,6 +46,22 @@ const SITE_URL = process.env.NEXT_PUBLIC_URL ?? "http://localhost:3000";
 
 export const getSiteUrl = SITE_URL;
 
+export const getImageUrl = ({
+	userId,
+	fileName,
+}: { userId: string; fileName: string }) => {
+	return `https://assets.slyderz.co/users/${userId}/${fileName}`;
+};
+
+export const onboardingSteps = new Map([
+	[OnboardingState.SETUP_STRIPE, "Setup your stripe account"],
+	[OnboardingState.UPLOAD_HEADSHOT, "Upload your headshot"],
+	[
+		OnboardingState.COMPLETE_SERVSAFE,
+		"Complete ServSafe food handler certification",
+	],
+]);
+
 /************************** Date/Time helpers **************************/
 export const convertDayToInt = (day: string): number => {
 	const daysOfWeek = new Map([
@@ -59,7 +76,7 @@ export const convertDayToInt = (day: string): number => {
 
 	const validDay = daysOfWeek.get(day);
 
-	if (!validDay) {
+	if (validDay === undefined) {
 		throw new Error("Invalid day");
 	}
 

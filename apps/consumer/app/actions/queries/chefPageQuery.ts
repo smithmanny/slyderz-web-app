@@ -14,45 +14,44 @@ import {
 import prisma from "db";
 
 export default async function chefProfileQuery(chefId: string) {
+	const chef = await prisma.chef.findFirstOrThrow({
+		where: {
+			id: chefId,
+			// AND: {
+			// 	hours: {
+			// 		some: {
+			// 			daysOfWeek: {
+			// 				isEmpty: false, // Prevent page from showing if chef hours are not set
+			// 			},
+			// 		},
+			// 	},
+			// },
+		},
+		select: {
+			dishes: {
+				where: {
+					deleted: false,
+				},
+				include: {
+					image: true,
+				},
+			},
+			hours: {
+				select: {
+					daysOfWeek: true,
+					endTime: true,
+					startTime: true,
+				},
+			},
+			user: {
+				select: {
+					name: true,
+					image: true,
+				},
+			},
+		},
+	});
 	try {
-		const chef = await prisma.chef.findFirstOrThrow({
-			where: {
-				id: chefId,
-				AND: {
-					hours: {
-						some: {
-							daysOfWeek: {
-								isEmpty: false, // Prevent page from showing if chef hours are not set
-							},
-						},
-					},
-				},
-			},
-			select: {
-				dishes: {
-					where: {
-						deleted: false,
-					},
-					include: {
-						image: true,
-					},
-				},
-				hours: {
-					select: {
-						daysOfWeek: true,
-						endTime: true,
-						startTime: true,
-					},
-				},
-				user: {
-					select: {
-						name: true,
-						image: true,
-					},
-				},
-			},
-		});
-
 		const getNextAvailableChefDay = () => {
 			const chefWorkingDays: Array<number> = [];
 			const today = new Date();
@@ -124,6 +123,7 @@ export default async function chefProfileQuery(chefId: string) {
 			hours: chef.hours,
 		};
 	} catch (err) {
+		console.log("err", err);
 		throw new NotFoundError({
 			message: "Chef not found",
 			cause: err,

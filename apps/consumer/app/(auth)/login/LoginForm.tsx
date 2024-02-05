@@ -62,7 +62,11 @@ export default function LoginForm() {
 						<FormItem>
 							<FormLabel>Password</FormLabel>
 							<FormControl>
-								<Input placeholder="Enter your password" {...field} />
+								<Input
+									placeholder="Enter your password"
+									type="password"
+									{...field}
+								/>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -70,7 +74,7 @@ export default function LoginForm() {
 				/>
 				<div className="text-sm">
 					<Link
-						href="#"
+						href="/forgot-password"
 						className="font-semibold text-indigo-600 hover:text-indigo-500"
 					>
 						Forgot password?

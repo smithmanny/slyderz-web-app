@@ -86,9 +86,8 @@ model Address {
 }
 
 model UserPhoto {
-  id            String @id @unique @default(cuid())
-  imageUrl      String
-  imagePublicId String @unique
+  id       String @id @unique @default(cuid())
+  imageUrl String
 
   user   AuthUser @relation(references: [id], fields: [userId], onDelete: Cascade)
   userId String   @unique
@@ -98,8 +97,6 @@ enum OnboardingState {
   SETUP_STRIPE
   UPLOAD_HEADSHOT
   COMPLETE_SERVSAFE
-  ADD_PROFILE_DESCRIPTION
-  DONE
 }
 
 model Chef {
