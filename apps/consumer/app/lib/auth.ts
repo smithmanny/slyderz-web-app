@@ -66,11 +66,13 @@ export const getChefSession = cache(async () => {
 		throw new AuthError();
 	}
 
-	const chef = await db.chef.findFirstOrThrow({ where: { userId: session.user.userId } })
+	const chef = await db.chef.findFirstOrThrow({
+		where: { userId: session.user.userId },
+	});
 
 	return {
 		session,
-		chef
+		chef,
 	};
 });
 

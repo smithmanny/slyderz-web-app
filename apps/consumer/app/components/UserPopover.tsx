@@ -40,7 +40,7 @@ const fetchListItems = (user: any) => {
 
 interface UserPopoverProps {
 	user: User | undefined;
-	profilePhoto: string | undefined;
+	profilePhoto?: string | undefined;
 }
 export default function UserPopover(props: UserPopoverProps) {
 	const routes = fetchListItems(props.user);

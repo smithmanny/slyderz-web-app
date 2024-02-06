@@ -41,7 +41,7 @@ export default function HeadshotOnboardingStep() {
 				setImageUrl(data.imageUrl);
 			}
 		} catch (err) {
-			console.log("Failed to upload", err)
+			console.log("Failed to upload", err);
 		}
 	};
 	return (
@@ -52,10 +52,18 @@ export default function HeadshotOnboardingStep() {
 					<AvatarFallback>SLY</AvatarFallback>
 				</Avatar>
 
-				<Input onChange={handleFileChange} id="headshot" type="file" accept="image/png, image/jpeg" />
+				<Input
+					onChange={handleFileChange}
+					id="headshot"
+					type="file"
+					accept="image/png, image/jpeg"
+				/>
 			</div>
 
-			<OnboardingNextButton disabled={imageUrl === ""} mutation={handleOnboardingStepMutation} />
+			<OnboardingNextButton
+				disabled={imageUrl === ""}
+				mutation={handleOnboardingStepMutation}
+			/>
 		</>
 	);
 }

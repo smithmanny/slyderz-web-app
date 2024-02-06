@@ -1,6 +1,6 @@
 "use server";
 
-import { cache } from 'react'
+import { cache } from "react";
 
 import prisma from "db";
 
@@ -13,4 +13,4 @@ export default cache(async function getProfileImageQuery() {
 			userId: session.user.userId,
 		},
 	});
-})
+});

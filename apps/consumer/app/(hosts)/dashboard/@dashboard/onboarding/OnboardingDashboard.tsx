@@ -55,12 +55,15 @@ function OnboardingWrapper(props: OnboardingWrapperProps) {
 
 interface OnboardingNextButtonProps {
 	disabled: boolean;
-	mutation: () => Promise<void>
+	mutation: () => Promise<void>;
 }
 export function OnboardingNextButton(props: OnboardingNextButtonProps) {
 	return (
 		<div className="text-right mt-4 border-t-2 pt-4">
-			<Button disabled={props.disabled} onClick={async () => await props.mutation()}>
+			<Button
+				disabled={props.disabled}
+				onClick={async () => await props.mutation()}
+			>
 				Next step
 			</Button>
 		</div>

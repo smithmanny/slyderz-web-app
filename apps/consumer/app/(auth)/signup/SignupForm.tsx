@@ -69,7 +69,11 @@ export default function SignupForm() {
 						<FormItem>
 							<FormLabel>Password</FormLabel>
 							<FormControl>
-								<Input placeholder="Enter your password" type="password" {...field} />
+								<Input
+									placeholder="Enter your password"
+									type="password"
+									{...field}
+								/>
 							</FormControl>
 							<FormMessage />
 						</FormItem>

@@ -45,11 +45,11 @@ export async function PUT(request: Request) {
 				userId: session.user.userId,
 			},
 			update: {
-				imageUrl
+				imageUrl,
 			},
 			create: {
 				imageUrl,
-				userId: session.user.userId
+				userId: session.user.userId,
 			},
 		});
 

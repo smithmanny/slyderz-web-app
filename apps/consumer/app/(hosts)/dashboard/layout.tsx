@@ -51,7 +51,6 @@ const Layout = async ({ children, dashboard }: LayoutProps) => {
 								</div>
 								<div className="py-8 px-4 md:px-8">{dashboard}</div>
 							</div>
-
 						</section>
 					</div>
 				</Container>

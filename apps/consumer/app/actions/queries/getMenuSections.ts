@@ -1,14 +1,14 @@
-"use server"
+"use server";
 
-import prisma from "db"
-import { getChefSession } from "app/lib/auth"
+import { getChefSession } from "app/lib/auth";
+import prisma from "db";
 
 export default async function getMenuSectionsQuery() {
-  const { chef } = await getChefSession()
+	const { chef } = await getChefSession();
 
-  return await prisma.section.findMany({
-    where: {
-      chefId: chef.id
-    }
-  })
+	return await prisma.section.findMany({
+		where: {
+			chefId: chef.id,
+		},
+	});
 }

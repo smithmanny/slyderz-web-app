@@ -17,7 +17,7 @@ export default async function getOnboardingStateQuery() {
 			id: true,
 			stripeAccountId: true,
 			onboardingState: true,
-			isOnboardingComplete: true
+			isOnboardingComplete: true,
 		},
 	});
 
@@ -36,13 +36,13 @@ export default async function getOnboardingStateQuery() {
 
 			return {
 				onboardingState: updatedChef.onboardingState,
-				isOnboardingComplete: updatedChef.isOnboardingComplete
-			}
+				isOnboardingComplete: updatedChef.isOnboardingComplete,
+			};
 		}
 	}
 
 	return {
 		onboardingState: chef.onboardingState,
-		isOnboardingComplete: chef.isOnboardingComplete
-	}
+		isOnboardingComplete: chef.isOnboardingComplete,
+	};
 }
