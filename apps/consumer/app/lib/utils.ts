@@ -1,6 +1,8 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+import prisma from "db";
+
 import { CHEF_SERVICE_FEE, CONSUMER_SERVICE_FEE } from "types";
 import { OnboardingState } from ".prisma/client";
 

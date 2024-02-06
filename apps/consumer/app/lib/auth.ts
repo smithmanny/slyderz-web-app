@@ -58,6 +58,21 @@ export const getProtectedSession = cache(async () => {
 
 	return session;
 });
+export const getChefSession = cache(async () => {
+	const authRequest = auth.handleRequest("GET", context);
+	const session = await authRequest.validate();
+
+	if (!session) {
+		throw new AuthError();
+	}
+
+	const chef = await db.chef.findFirstOrThrow({ where: { userId: session.user.userId } })
+
+	return {
+		session,
+		chef
+	};
+});
 
 const EXPIRES_IN = 1000 * 60 * 60 * 2; // 2 hours
 

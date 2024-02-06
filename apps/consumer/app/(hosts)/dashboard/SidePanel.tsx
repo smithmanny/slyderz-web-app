@@ -28,12 +28,12 @@ export default function SidePanel() {
 	const isHoursActive = getLinkState(url, "hours");
 	const isPaymentMethodActive = getLinkState(url, "payment_method");
 	return (
-		<ul className="space-y-1">
+		<ul className="space-y-1 bg-green-50 h-svh">
 			<li>
 				<Link
 					href="/dashboard"
 					className={cn(
-						"flex items-center gap-2 rounded-lg pl-1 py-2 text-gray-700",
+						"flex items-center gap-2 rounded-lg pl-4 py-2 text-gray-700",
 						isDashboardActive ? "bg-gray-100" : null,
 					)}
 				>
@@ -66,7 +66,7 @@ export default function SidePanel() {
 				<Link
 					href="/dashboard/menu"
 					className={cn(
-						"flex items-center gap-2 rounded-lg pl-1 py-2 text-gray-700 hover:bg-gray-100 hover:text-gray-700",
+						"flex items-center gap-2 rounded-lg pl-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-gray-700",
 						isMenuActive ? "bg-gray-100" : null,
 					)}
 				>
@@ -94,7 +94,7 @@ export default function SidePanel() {
 				<Link
 					href="/dashboard/hours"
 					className={cn(
-						"flex items-center gap-2 rounded-lg pl-1 py-2 text-gray-700 hover:bg-gray-100 hover:text-gray-700",
+						"flex items-center gap-2 rounded-lg pl-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-gray-700",
 						isHoursActive ? "bg-gray-100" : null,
 					)}
 				>
@@ -122,7 +122,7 @@ export default function SidePanel() {
 				<Link
 					href="/dashboard/payment-method"
 					className={cn(
-						"flex items-center gap-2 rounded-lg pl-1 py-2 text-gray-700 hover:bg-gray-100 hover:text-gray-700",
+						"flex items-center gap-2 rounded-lg pl-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-gray-700",
 						isPaymentMethodActive ? "bg-gray-100" : null,
 					)}
 				>
