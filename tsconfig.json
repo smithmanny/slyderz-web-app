@@ -1,49 +1,20 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Default",
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "es6",
-      "esnext"
-    ],
-    "baseUrl": ".",
-    "allowJs": true,
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "incremental": false,
+    "isolatedModules": true,
+    "lib": ["es2022", "DOM", "DOM.Iterable"],
+    "module": "NodeNext",
+    "moduleDetection": "force",
+    "moduleResolution": "NodeNext",
+    "noUncheckedIndexedAccess": true,
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "strictNullChecks": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "noUncheckedIndexedAccess": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "tsBuildInfoFile": ".tsbuildinfo",
-    "noImplicitAny": false,
-    "noImplicitThis": true,
-    "plugins": [
-      {
-        "name": "next"
-      },
-      {
-        "name": "typescript-eslint-language-service"
-      }
-    ]
-  },
-  "exclude": [
-    "node_modules",
-    "**/*.e2e.ts",
-    "cypress"
-  ],
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "types",
-    ".next/types/**/*.ts"
-  ]
+    "target": "ES2022"
+  }
 }
