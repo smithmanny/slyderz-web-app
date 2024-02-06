@@ -1,5 +1,0 @@
-{
-  "extends": [
-    "../consumer/biome.json"
-  ]
-}
