@@ -9,12 +9,12 @@
     "dev": "next dev",
     "build": "NODE_ENV=production next build && prisma migrate deploy",
     "start": "next start",
-    "studio": "pnpm dlx prisma studio",
-    "migrate": "pnpm dlx prisma migrate dev",
+    "studio": "pnpm exec prisma studio",
+    "migrate": "pnpm exec prisma migrate dev",
     "lint": "pnpm dlx @biomejs/biome check --apply ./app",
     "test": "jest",
     "test:watch": "jest --watch",
-    "postinstall": "pnpm dlx prisma generate"
+    "postinstall": "pnpm exec prisma generate"
   },
   "prisma": {
     "schema": "db/schema.prisma"

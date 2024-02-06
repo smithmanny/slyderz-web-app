@@ -17,5 +17,5 @@ declare namespace Lucia {
 	};
 }
 
-declare module 'uuid'
-declare module 'randomstring'
+declare module "uuid";
+declare module "randomstring";
