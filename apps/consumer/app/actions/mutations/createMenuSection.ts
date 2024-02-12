@@ -16,10 +16,19 @@ export default async function createMenuSectionMutation(
 	const { chef } = await getChefSession();
 
 	try {
-		await prisma.section.create({
-			data: {
+		await prisma.section.upsert({
+			where: {
+				name_chefId: {
+					name: input.name.toLowerCase(),
+					chefId: chef.id,
+				},
+			},
+			create: {
 				name: input.name.toLowerCase(),
 				chefId: chef.id,
+			},
+			update: {
+				isActive: true,
 			},
 		});
 

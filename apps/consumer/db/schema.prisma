@@ -145,6 +145,7 @@ model Section {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   name      String   @unique
+  isActive  Boolean  @default(true)
 
   dishes Dish[]
   chef   Chef   @relation(fields: [chefId], references: [id], onDelete: Cascade)
@@ -154,9 +155,8 @@ model Section {
 }
 
 model DishPhoto {
-  id            String @id @unique @default(cuid())
-  imageUrl      String
-  imagePublicId String @unique
+  id       String @id @unique @default(cuid())
+  imageUrl String
 
   dish   Dish?   @relation(fields: [dishId], references: [id], onDelete: Cascade)
   dishId String?

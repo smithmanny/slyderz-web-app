@@ -10,7 +10,7 @@ export default function HeadshotOnboardingStep() {
 	const [imageUrl, setImageUrl] = useState<string>("");
 
 	useEffect(() => {
-		fetch("/api/onboarding/get-headshot", {
+		fetch("/api/onboarding/headshot", {
 			method: "GET",
 		})
 			.then((res) => res.json())
@@ -31,7 +31,7 @@ export default function HeadshotOnboardingStep() {
 		formData.set("file", file);
 
 		try {
-			const res = await fetch("/api/upload", {
+			const res = await fetch("/api/onboarding/headshot", {
 				method: "PUT",
 				body: formData,
 			});

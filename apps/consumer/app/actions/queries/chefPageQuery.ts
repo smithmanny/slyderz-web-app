@@ -123,7 +123,6 @@ export default async function chefProfileQuery(chefId: string) {
 			hours: chef.hours,
 		};
 	} catch (err) {
-		console.log("err", err);
 		throw new NotFoundError({
 			message: "Chef not found",
 			cause: err,
