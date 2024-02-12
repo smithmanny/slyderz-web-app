@@ -1,5 +1,6 @@
 import { cn } from "app/lib/utils";
 import React, { ReactNode } from "react";
+import { Label } from "./ui/label";
 
 interface FormProps extends React.ComponentProps<"form"> {
 	action: string;

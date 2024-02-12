@@ -106,7 +106,7 @@ export default async function fetchOrderStatusQuery(
 						parseFloat(
 							String(
 								getChefServiceFee(order.amount) +
-									getConsumerServiceFee(order.amount),
+								getConsumerServiceFee(order.amount),
 							),
 						) * 100
 					).toString(),

@@ -15,7 +15,7 @@ export function isObject(value: unknown): value is Record<string, unknown> {
 	return !!value && !Array.isArray(value) && typeof value === "object";
 }
 
-type TypedFormDataValue = FormDataEntryValue | Blob;
+type TypedFormDataValue = FormDataEntryValue | Blob | number;
 export function requiredFormData<T extends Record<string, TypedFormDataValue>>(
 	formData: FormData,
 ) {
@@ -51,7 +51,12 @@ export const getSiteUrl = SITE_URL;
 export const getImageUrl = ({
 	userId,
 	fileName,
-}: { userId: string; fileName: string }) => {
+	category
+}: { userId: string; fileName: string, category?: string }) => {
+	if (category) {
+		return `https://assets.slyderz.co/users/${userId}/${category}/${fileName}`;
+	}
+
 	return `https://assets.slyderz.co/users/${userId}/${fileName}`;
 };
 
@@ -63,6 +68,13 @@ export const onboardingSteps = new Map([
 		"Complete ServSafe food handler certification",
 	],
 ]);
+
+export const formatNumberToCurrency = (number: number) => {
+	return new Intl.NumberFormat("en-IN", {
+		style: "currency",
+		currency: "USD",
+	}).format(number);
+};
 
 /************************** Date/Time helpers **************************/
 export const convertDayToInt = (day: string): number => {
@@ -99,13 +111,6 @@ export const readableDate = (date: Date): string => {
 		month: "long",
 		day: "numeric",
 	});
-};
-
-export const formatNumberToCurrency = (number: number) => {
-	return new Intl.NumberFormat("en-IN", {
-		style: "currency",
-		currency: "USD",
-	}).format(number);
 };
 
 // Render times for chef hours

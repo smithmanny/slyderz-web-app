@@ -1,21 +1,51 @@
-import AddMenuSectionButton from "./AddMenuSection";
+import CreateDishButton from "./CreateDishButton";
+import EditMenuSectionButton from "./EditMenuSection";
+import MenuTable from "./MenuTable";
 
 import getMenuSectionsQuery from "app/actions/queries/getMenuSections";
+import getMenuDishesQuery from "app/actions/queries/getMenuDishes";
+
+import { Prisma } from ".prisma/client"
+
+type MenuTableDishSection = {
+	id: string
+	name: string
+}
+type MenuTableDish = {
+	id: string
+	name: string
+	price: Prisma.Decimal
+	deleted: boolean
+	section: MenuTableDishSection
+}
+const generateMenuTableData = (dishes: Array<MenuTableDish>) => {
+	return dishes.map(dish => ({
+		id: dish.id,
+		amount: Number(dish.price),
+		name: dish.name,
+		section: dish.section.name,
+	}))
+}
 
 export default async function MenuDashboardPage() {
-	const menuSections = await getMenuSectionsQuery();
+	const getMenuSections = getMenuSectionsQuery();
+	const getMenuDishes = getMenuDishesQuery();
+	const [menuSections, menuDishes] = await Promise.all([getMenuSections, getMenuDishes])
+	const dishes = generateMenuTableData(menuDishes)
 	return (
 		<div>
 			<span className="flex justify-between">
 				<h1 className="text-2xl font-bold tracking-tight text-gray-900">
 					Menu
 				</h1>
-				<AddMenuSectionButton />
+
+				<div className="flex gap-3">
+					<EditMenuSectionButton sections={menuSections} />
+					<CreateDishButton sections={menuSections} />
+				</div>
 			</span>
 
-			{menuSections.map((section) => (
-				<h1 key={section.id}>{section.name}</h1>
-			))}
+			<MenuTable dishes={dishes} />
 		</div>
 	);
 }

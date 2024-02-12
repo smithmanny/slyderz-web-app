@@ -12,7 +12,6 @@ interface AppBarTypes {
 export default function AppBar(props: AppBarTypes) {
 	return (
 		<nav className={cn("fixed w-full bg-transparent z-50", props.className)}>
-			<Announcement />
 			<div
 				className={cn(
 					"max-w-screen-2xl mx-auto px-2 sm:px-6 lg:px-8 z-50",
