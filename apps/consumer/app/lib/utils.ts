@@ -51,8 +51,8 @@ export const getSiteUrl = SITE_URL;
 export const getImageUrl = ({
 	userId,
 	fileName,
-	category
-}: { userId: string; fileName: string, category?: string }) => {
+	category,
+}: { userId: string; fileName: string; category?: string }) => {
 	if (category) {
 		return `https://assets.slyderz.co/users/${userId}/${category}/${fileName}`;
 	}

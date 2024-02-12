@@ -1,8 +1,8 @@
 "use client";
 
+import { TrashIcon } from "@radix-ui/react-icons";
 import { toast } from "sonner";
 import { z } from "zod";
-import { TrashIcon } from "@radix-ui/react-icons";
 
 import { Button } from "app/components/ui/button";
 import {
@@ -28,11 +28,11 @@ import { deleteMenuSectionMutation } from "app/actions/mutations/deleteMenuSecti
 import { useSlyderzForm } from "app/hooks/useSlyderzForm";
 
 type SectionType = {
-	id: string
-	name: string
-}
+	id: string;
+	name: string;
+};
 interface AddMenuSectionButtonProps {
-	sections: Array<SectionType>
+	sections: Array<SectionType>;
 }
 export default function AddMenuSectionButton(props: AddMenuSectionButtonProps) {
 	const formSchema = z.object({
@@ -52,8 +52,8 @@ export default function AddMenuSectionButton(props: AddMenuSectionButtonProps) {
 				return toast.error(err.message);
 			}
 
-			form.reset()
-			return toast.success("Section successfully created")
+			form.reset();
+			return toast.success("Section successfully created");
 		}
 
 		toast.error("Section name can't be empty");
@@ -92,21 +92,28 @@ export default function AddMenuSectionButton(props: AddMenuSectionButtonProps) {
 
 						<ul>
 							<FormLabel>Edit Section</FormLabel>
-							{props.sections.map(section => (
+							{props.sections.map((section) => (
 								<li key={section.id} className="flex">
 									<h6 className="flex-1 capitalize">{section.name}</h6>
-									<Button variant="ghost" size="icon" onClick={async (e) => {
-										e.preventDefault()
-										e.stopPropagation()
+									<Button
+										variant="ghost"
+										size="icon"
+										onClick={async (e) => {
+											e.preventDefault();
+											e.stopPropagation();
 
-										const { message, error } = await deleteMenuSectionMutation({ sectionId: section.id })
+											const { message, error } =
+												await deleteMenuSectionMutation({
+													sectionId: section.id,
+												});
 
-										if (error) {
-											return toast.error(message)
-										}
+											if (error) {
+												return toast.error(message);
+											}
 
-										toast.success(message)
-									}}>
+											toast.success(message);
+										}}
+									>
 										<TrashIcon className="text-red-600 h-4 w-4" />
 									</Button>
 								</li>

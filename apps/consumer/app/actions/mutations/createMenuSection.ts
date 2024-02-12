@@ -20,17 +20,17 @@ export default async function createMenuSectionMutation(
 			where: {
 				name_chefId: {
 					name: input.name.toLowerCase(),
-					chefId: chef.id
-				}
+					chefId: chef.id,
+				},
 			},
 			create: {
 				name: input.name.toLowerCase(),
 				chefId: chef.id,
 			},
 			update: {
-				isActive: true
-			}
-		})
+				isActive: true,
+			},
+		});
 
 		revalidatePath("/dashboard/menu");
 	} catch (err: any) {

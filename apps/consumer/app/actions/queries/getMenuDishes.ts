@@ -18,9 +18,9 @@ export default async function getMenuDishesQuery() {
 			section: {
 				select: {
 					id: true,
-					name: true
-				}
-			}
-		}
+					name: true,
+				},
+			},
+		},
 	});
 }

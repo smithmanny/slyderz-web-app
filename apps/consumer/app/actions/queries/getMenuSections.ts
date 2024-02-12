@@ -9,7 +9,7 @@ export default async function getMenuSectionsQuery() {
 	return await prisma.section.findMany({
 		where: {
 			chefId: chef.id,
-			isActive: true
+			isActive: true,
 		},
 	});
 }
