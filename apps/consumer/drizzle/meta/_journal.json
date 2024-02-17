@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1708054369564,
+      "tag": "0000_colossal_shadow_king",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1708118064670,
+      "tag": "0001_thin_bucky",
+      "breakpoints": true
+    }
+  ]
+}
