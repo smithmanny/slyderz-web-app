@@ -1,5 +1,5 @@
 {
-  "id": "ebeda68a-a1e2-4561-9369-938178fd1d40",
+  "id": "6a329a7d-380e-463c-9cec-a45340c84a67",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -10,22 +10,23 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "text",
-          "primaryKey": true,
+          "type": "serial",
+          "primaryKey": false,
           "notNull": true
         },
         "created_at": {
           "name": "created_at",
           "type": "timestamp(3)",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "default": "now()"
         },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp(3)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "default": "now()"
         },
         "description": {
           "name": "description",
@@ -53,13 +54,13 @@
         },
         "section_id": {
           "name": "section_id",
-          "type": "text",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true
         },
         "chef_id": {
           "name": "chef_id",
-          "type": "text",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true
         },
@@ -71,16 +72,7 @@
           "default": true
         }
       },
-      "indexes": {
-        "dishes_name_chefId_key": {
-          "name": "dishes_name_chefId_key",
-          "columns": [
-            "name",
-            "chef_id"
-          ],
-          "isUnique": true
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
         "dishes_section_id_sections_id_fk": {
           "name": "dishes_section_id_sections_id_fk",
@@ -109,8 +101,24 @@
           "onUpdate": "cascade"
         }
       },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "compositePrimaryKeys": {
+        "dishes_chef_id_name_pk": {
+          "name": "dishes_chef_id_name_pk",
+          "columns": [
+            "chef_id",
+            "name"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "dishes_id_unique": {
+          "name": "dishes_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id"
+          ]
+        }
+      }
     },
     "dishes_to_orders": {
       "name": "dishes_to_orders",
@@ -118,13 +126,13 @@
       "columns": {
         "dish_id": {
           "name": "dish_id",
-          "type": "text",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true
         },
         "order_id": {
           "name": "order_id",
-          "type": "text",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true
         }
@@ -175,7 +183,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "text",
+          "type": "serial",
           "primaryKey": true,
           "notNull": true
         },
@@ -183,18 +191,19 @@
           "name": "created_at",
           "type": "timestamp(3)",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "default": "now()"
         },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp(3)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "default": "now()"
         },
-        "days_of_week_type": {
-          "name": "days_of_week_type",
-          "type": "days_of_week_type[]",
+        "days_of_week": {
+          "name": "days_of_week",
+          "type": "text[]",
           "primaryKey": false,
           "notNull": false
         },
@@ -212,7 +221,7 @@
         },
         "chef_id": {
           "name": "chef_id",
-          "type": "text",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true
         }
@@ -242,22 +251,23 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "text",
-          "primaryKey": true,
+          "type": "serial",
+          "primaryKey": false,
           "notNull": true
         },
         "created_at": {
           "name": "created_at",
           "type": "timestamp(3)",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "default": "now()"
         },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp(3)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "default": "now()"
         },
         "name": {
           "name": "name",
@@ -267,7 +277,7 @@
         },
         "chef_id": {
           "name": "chef_id",
-          "type": "text",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true
         },
@@ -279,23 +289,7 @@
           "default": true
         }
       },
-      "indexes": {
-        "sections_name_key": {
-          "name": "sections_name_key",
-          "columns": [
-            "name"
-          ],
-          "isUnique": true
-        },
-        "sections_name_chefId_key": {
-          "name": "sections_name_chefId_key",
-          "columns": [
-            "name",
-            "chef_id"
-          ],
-          "isUnique": true
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
         "sections_chef_id_chefs_id_fk": {
           "name": "sections_chef_id_chefs_id_fk",
@@ -311,8 +305,24 @@
           "onUpdate": "cascade"
         }
       },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "compositePrimaryKeys": {
+        "sections_chef_id_name_pk": {
+          "name": "sections_chef_id_name_pk",
+          "columns": [
+            "chef_id",
+            "name"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "sections_id_unique": {
+          "name": "sections_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id"
+          ]
+        }
+      }
     },
     "orders": {
       "name": "orders",
@@ -320,7 +330,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "text",
+          "type": "serial",
           "primaryKey": true,
           "notNull": true
         },
@@ -328,14 +338,15 @@
           "name": "created_at",
           "type": "timestamp(3)",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "default": "now()"
         },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp(3)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "default": "now()"
         },
         "amount": {
           "name": "amount",
@@ -399,40 +410,32 @@
         },
         "order_status": {
           "name": "order_status",
-          "type": "order_status",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
           "default": "'PENDING'"
         },
-        "user_dd": {
-          "name": "user_dd",
-          "type": "text",
+        "user_id": {
+          "name": "user_id",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true
         },
         "chef_id": {
           "name": "chef_id",
-          "type": "text",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true
         }
       },
-      "indexes": {
-        "orders_confirmationNumber_key": {
-          "name": "orders_confirmationNumber_key",
-          "columns": [
-            "confirmation_number"
-          ],
-          "isUnique": true
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
-        "orders_user_dd_users_id_fk": {
-          "name": "orders_user_dd_users_id_fk",
+        "orders_user_id_users_id_fk": {
+          "name": "orders_user_id_users_id_fk",
           "tableFrom": "orders",
           "tableTo": "users",
           "columnsFrom": [
-            "user_dd"
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -455,7 +458,15 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "orders_confirmation_number_unique": {
+          "name": "orders_confirmation_number_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "confirmation_number"
+          ]
+        }
+      }
     },
     "chefs": {
       "name": "chefs",
@@ -463,45 +474,46 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "text",
+          "type": "serial",
           "primaryKey": true,
           "notNull": true
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp(3)",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "default": "now()"
         },
-        "updatedAt": {
-          "name": "updatedAt",
+        "updated_at": {
+          "name": "updated_at",
           "type": "timestamp(3)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "default": "now()"
         },
-        "stripeAccountId": {
-          "name": "stripeAccountId",
+        "stripe_account_id": {
+          "name": "stripe_account_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "isOnboardingComplete": {
-          "name": "isOnboardingComplete",
+        "is_onboarding_complete": {
+          "name": "is_onboarding_complete",
           "type": "boolean",
           "primaryKey": false,
           "notNull": true,
           "default": false
         },
-        "userId": {
-          "name": "userId",
-          "type": "text",
+        "user_id": {
+          "name": "user_id",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true
         },
         "onboarding_state": {
           "name": "onboarding_state",
-          "type": "onboarding_state",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
           "default": "'SETUP_STRIPE'"
@@ -514,22 +526,14 @@
           "default": "''"
         }
       },
-      "indexes": {
-        "chefs_userId_key": {
-          "name": "chefs_userId_key",
-          "columns": [
-            "userId"
-          ],
-          "isUnique": true
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
-        "chefs_userId_users_id_fk": {
-          "name": "chefs_userId_users_id_fk",
+        "chefs_user_id_users_id_fk": {
+          "name": "chefs_user_id_users_id_fk",
           "tableFrom": "chefs",
           "tableTo": "users",
           "columnsFrom": [
-            "userId"
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -539,7 +543,22 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "chefs_stripe_account_id_unique": {
+          "name": "chefs_stripe_account_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "stripe_account_id"
+          ]
+        },
+        "chefs_user_id_unique": {
+          "name": "chefs_user_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "user_id"
+          ]
+        }
+      }
     },
     "keys": {
       "name": "keys",
@@ -547,7 +566,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "text",
+          "type": "serial",
           "primaryKey": true,
           "notNull": true
         },
@@ -559,27 +578,12 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "text",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true
         }
       },
-      "indexes": {
-        "keys_id_key": {
-          "name": "keys_id_key",
-          "columns": [
-            "id"
-          ],
-          "isUnique": true
-        },
-        "keys_user_id_idx": {
-          "name": "keys_user_id_idx",
-          "columns": [
-            "user_id"
-          ],
-          "isUnique": false
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
         "keys_user_id_users_id_fk": {
           "name": "keys_user_id_users_id_fk",
@@ -604,13 +608,13 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "text",
+          "type": "serial",
           "primaryKey": true,
           "notNull": true
         },
         "user_id": {
           "name": "user_id",
-          "type": "text",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true
         },
@@ -656,28 +660,13 @@
         },
         "role": {
           "name": "role",
-          "type": "RoleType",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
           "default": "'USER'"
         }
       },
-      "indexes": {
-        "sessions_id_key": {
-          "name": "sessions_id_key",
-          "columns": [
-            "id"
-          ],
-          "isUnique": true
-        },
-        "sessions_user_id_idx": {
-          "name": "sessions_user_id_idx",
-          "columns": [
-            "user_id"
-          ],
-          "isUnique": false
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
         "sessions_user_id_users_id_fk": {
           "name": "sessions_user_id_users_id_fk",
@@ -702,38 +691,39 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "text",
+          "type": "serial",
           "primaryKey": true,
           "notNull": true
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "expires_at": {
+          "name": "expires_at",
           "type": "timestamp(3)",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
         },
-        "expiresAt": {
-          "name": "expiresAt",
-          "type": "timestamp(3)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "userId": {
-          "name": "userId",
-          "type": "text",
+        "user_id": {
+          "name": "user_id",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "tokens_userId_users_id_fk": {
-          "name": "tokens_userId_users_id_fk",
+        "tokens_user_id_users_id_fk": {
+          "name": "tokens_user_id_users_id_fk",
           "tableFrom": "tokens",
           "tableTo": "users",
           "columnsFrom": [
-            "userId"
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -751,22 +741,23 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "text",
+          "type": "serial",
           "primaryKey": true,
           "notNull": true
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp(3)",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "default": "now()"
         },
-        "updatedAt": {
-          "name": "updatedAt",
+        "updated_at": {
+          "name": "updated_at",
           "type": "timestamp(3)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "default": "now()"
         },
         "name": {
           "name": "name",
@@ -788,7 +779,7 @@
         },
         "role": {
           "name": "role",
-          "type": "RoleType",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
           "default": "'USER'"
@@ -813,78 +804,28 @@
           "notNull": false
         }
       },
-      "indexes": {
-        "users_email_key": {
-          "name": "users_email_key",
-          "columns": [
-            "email"
-          ],
-          "isUnique": true
-        },
-        "users_stripeCustomerId_key": {
-          "name": "users_stripeCustomerId_key",
-          "columns": [
-            "stripe_customer_id"
-          ],
-          "isUnique": true
-        }
-      },
+      "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    }
-  },
-  "enums": {
-    "days_of_week_type": {
-      "name": "days_of_week_type",
-      "values": {
-        "SUNDAY": "SUNDAY",
-        "MONDAY": "MONDAY",
-        "TUESDAY": "TUESDAY",
-        "WEDNESDAY": "WEDNESDAY",
-        "THURSDAY": "THURSDAY",
-        "FRIDAY": "FRIDAY",
-        "SATURDAY": "SATURDAY"
-      }
-    },
-    "order_status": {
-      "name": "order_status",
-      "values": {
-        "PENDING": "PENDING",
-        "ACCEPTED": "ACCEPTED",
-        "COMPLETED": "COMPLETED",
-        "DECLINED": "DECLINED"
-      }
-    },
-    "DaysOfWeekType": {
-      "name": "DaysOfWeekType",
-      "values": {
-        "SUNDAY": "SUNDAY",
-        "MONDAY": "MONDAY",
-        "TUESDAY": "TUESDAY",
-        "WEDNESDAY": "WEDNESDAY",
-        "THURSDAY": "THURSDAY",
-        "FRIDAY": "FRIDAY",
-        "SATURDAY": "SATURDAY"
-      }
-    },
-    "onboarding_state": {
-      "name": "onboarding_state",
-      "values": {
-        "SETUP_STRIPE": "SETUP_STRIPE",
-        "UPLOAD_HEADSHOT": "UPLOAD_HEADSHOT",
-        "COMPLETE_SERVSAFE": "COMPLETE_SERVSAFE"
-      }
-    },
-    "RoleType": {
-      "name": "RoleType",
-      "values": {
-        "ADMIN": "ADMIN",
-        "CHEF": "CHEF",
-        "USER": "USER"
+      "uniqueConstraints": {
+        "users_email_unique": {
+          "name": "users_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        },
+        "users_stripe_customer_id_unique": {
+          "name": "users_stripe_customer_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "stripe_customer_id"
+          ]
+        }
       }
     }
   },
+  "enums": {},
   "schemas": {},
   "_meta": {
     "columns": {},

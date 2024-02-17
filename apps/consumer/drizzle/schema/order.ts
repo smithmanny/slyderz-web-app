@@ -1,17 +1,15 @@
-import { pgTable, uniqueIndex, pgEnum, text, timestamp, integer } from "drizzle-orm/pg-core"
+import { pgTable, text, timestamp, integer, serial } from "drizzle-orm/pg-core"
 import { relations } from 'drizzle-orm';
 
 import { chefs, users } from "./user";
 import { dishesToOrders } from "./menu";
 
-export const orderStatus = pgEnum("order_status", ['PENDING', 'ACCEPTED', 'COMPLETED', 'DECLINED'])
-
 export const orders = pgTable("orders", {
-  id: text("id").primaryKey().notNull(),
-  createdAt: timestamp("created_at", { precision: 3, mode: 'string' }).defaultNow().notNull(),
-  updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }).defaultNow().notNull(),
+  id: serial("id").primaryKey(),
+  createdAt: timestamp("created_at", { precision: 3, mode: 'string' }).defaultNow(),
+  updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }).defaultNow(),
   amount: integer("amount").notNull(),
-  confirmationNumber: text("confirmation_number").notNull(),
+  confirmationNumber: text("confirmation_number").notNull().unique(),
   paymentMethodId: text("payment_method_id").notNull(),
   address1: text("address1").notNull(),
   address2: text("address2"),
@@ -20,15 +18,12 @@ export const orders = pgTable("orders", {
   zipcode: text("zipcode").notNull(),
   eventDate: timestamp("event_date", { precision: 3, mode: 'string' }).notNull(),
   eventTime: text("event_time").notNull(),
-  orderStatus: orderStatus("order_status").default('PENDING').notNull(),
-  userId: text("user_dd").notNull().references(() => users.id, { onDelete: "restrict", onUpdate: "cascade" }),
-  chefId: text("chef_id").notNull().references(() => chefs.id, { onDelete: "restrict", onUpdate: "cascade" }),
-},
-  (table) => {
-    return {
-      confirmationNumberKey: uniqueIndex("orders_confirmationNumber_key").on(table.confirmationNumber),
-    }
-  });
+  orderStatus: text("order_status", {
+    enum: ['PENDING', 'ACCEPTED', 'COMPLETED', 'DECLINED']
+  }).default('PENDING').notNull(),
+  userId: serial("user_id").notNull().references(() => users.id, { onDelete: "restrict", onUpdate: "cascade" }),
+  chefId: serial("chef_id").notNull().references(() => chefs.id, { onDelete: "restrict", onUpdate: "cascade" }),
+});
 export const ordersRelations = relations(orders, ({ one, many }) => ({
   user: one(users, {
     fields: [orders.userId],

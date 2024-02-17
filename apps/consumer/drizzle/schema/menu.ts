@@ -1,23 +1,20 @@
-import { pgTable, uniqueIndex, pgEnum, text, timestamp, boolean, numeric, primaryKey } from "drizzle-orm/pg-core"
+import { pgTable, text, timestamp, boolean, numeric, primaryKey, serial } from "drizzle-orm/pg-core"
 import { relations } from 'drizzle-orm';
 
 import { chefs } from "drizzle/schema/user";
 import { orders } from "./order";
 
-export const daysOfWeekType = pgEnum("days_of_week_type", ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'])
-
 export const sections = pgTable("sections", {
-  id: text("id").primaryKey().notNull(),
-  createdAt: timestamp("created_at", { precision: 3, mode: 'string' }).defaultNow().notNull(),
-  updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }).defaultNow().notNull(),
+  id: serial("id").unique(),
+  createdAt: timestamp("created_at", { precision: 3, mode: 'string' }).defaultNow(),
+  updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }).defaultNow(),
   name: text("name").notNull(),
-  chefId: text("chef_id").notNull().references(() => chefs.id, { onDelete: "cascade", onUpdate: "cascade" }),
+  chefId: serial("chef_id").notNull().references(() => chefs.id, { onDelete: "cascade", onUpdate: "cascade" }),
   isActive: boolean("is_active").default(true).notNull(),
 },
   (table) => {
     return {
-      nameKey: uniqueIndex("sections_name_key").on(table.name),
-      nameChefIdKey: uniqueIndex("sections_name_chefId_key").on(table.name, table.chefId),
+      pk: primaryKey({ columns: [table.chefId, table.name] })
     }
   });
 export const sectionsRelations = relations(sections, ({ one, many }) => ({
@@ -29,13 +26,13 @@ export const sectionsRelations = relations(sections, ({ one, many }) => ({
 }));
 
 export const hours = pgTable("hours", {
-  id: text("id").primaryKey().notNull(),
-  createdAt: timestamp("created_at", { precision: 3, mode: 'string' }).defaultNow().notNull(),
-  updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }).defaultNow().notNull(),
-  daysOfWeek: daysOfWeekType("days_of_week_type").array(),
+  id: serial("id").primaryKey(),
+  createdAt: timestamp("created_at", { precision: 3, mode: 'string' }).defaultNow(),
+  updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }).defaultNow(),
+  daysOfWeek: text("days_of_week", { enum: ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'] }).array(),
   startTime: text("start_time"),
   endTime: text("end_time"),
-  chefId: text("chef_id").notNull().references(() => chefs.id, { onDelete: "cascade", onUpdate: "cascade" }),
+  chefId: serial("chef_id").notNull().references(() => chefs.id, { onDelete: "cascade", onUpdate: "cascade" }),
 });
 export const hoursRelations = relations(hours, ({ one }) => ({
   chef: one(chefs, {
@@ -45,20 +42,20 @@ export const hoursRelations = relations(hours, ({ one }) => ({
 }));
 
 export const dishes = pgTable("dishes", {
-  id: text("id").primaryKey().notNull(),
-  createdAt: timestamp("created_at", { precision: 3, mode: 'string' }).defaultNow().notNull(),
-  updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }).defaultNow().notNull(),
+  id: serial("id").unique(),
+  createdAt: timestamp("created_at", { precision: 3, mode: 'string' }).defaultNow(),
+  updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }).defaultNow(),
   description: text("description").notNull(),
   name: text("name").notNull(),
   imageUrl: text("image_url").notNull(),
   price: numeric("price", { precision: 5, scale: 2 }).notNull(),
-  sectionId: text("section_id").notNull().references(() => sections.id, { onDelete: "cascade", onUpdate: "cascade" }),
-  chefId: text("chef_id").notNull().references(() => chefs.id, { onDelete: "cascade", onUpdate: "cascade" }),
+  sectionId: serial("section_id").notNull().references(() => sections.id, { onDelete: "cascade", onUpdate: "cascade" }),
+  chefId: serial("chef_id").notNull().references(() => chefs.id, { onDelete: "cascade", onUpdate: "cascade" }),
   isActive: boolean("is_active").default(true).notNull(),
 },
   (table) => {
     return {
-      nameChefIdKey: uniqueIndex("dishes_name_chefId_key").on(table.name, table.chefId),
+      pk: primaryKey({ columns: [table.chefId, table.name] })
     }
   });
 export const dishesRelations = relations(dishes, ({ one, many }) => ({
@@ -74,10 +71,10 @@ export const dishesRelations = relations(dishes, ({ one, many }) => ({
 }));
 
 export const dishesToOrders = pgTable('dishes_to_orders', {
-  dishId: text('dish_id').notNull().references(() => dishes.id),
-  orderId: text('order_id').notNull().references(() => orders.id),
+  dishId: serial("dish_id").notNull().references(() => dishes.id),
+  orderId: serial("order_id").notNull().references(() => orders.id),
 }, (t) => ({
-  pk: primaryKey(t.dishId, t.orderId),
+  pk: primaryKey({ columns: [t.dishId, t.orderId] }),
 }),
 );
 export const dishesToOrdersRelations = relations(dishesToOrders, ({ one }) => ({

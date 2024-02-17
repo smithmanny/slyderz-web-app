@@ -4,9 +4,11 @@ import { nextjs_future } from "lucia/middleware";
 import { isWithinExpiration } from "lucia/utils"; // v2 beta.0
 import * as context from "next/headers";
 import { cache } from "react";
+import { eq } from "drizzle-orm";
 
 import { TokenError } from "app/lib/errors";
-import db from "db";
+import { db } from "drizzle";
+import { tokens } from "drizzle/schema/user";
 import prismaClient from "db";
 import { AuthError } from "./errors";
 
@@ -66,9 +68,13 @@ export const getChefSession = cache(async () => {
 		throw new AuthError();
 	}
 
-	const chef = await db.chef.findFirstOrThrow({
-		where: { userId: session.user.userId },
+	const chef = await db.query.chefs.findFirst({
+		where: (chefs, { eq }) => eq(chefs.userId, session.user.userId),
 	});
+
+	if (!chef) {
+		throw new Error("Chef not found")
+	}
 
 	return {
 		session,
@@ -82,17 +88,19 @@ const generateToken = async (userId: string) => {
 	const expiresAt = new Date(new Date().getTime() + EXPIRES_IN);
 
 	// delete all user tokens
-	const deleteToken = db.token.deleteMany({ where: { userId } });
-	const createToken = db.token.create({
-		data: {
-			expiresAt,
-			userId,
-		},
-	});
+	// await db.delete(tokens).where(eq(tokens.userId, userId))
 
-	const [_, token] = await Promise.all([deleteToken, createToken]);
+	// // const createToken = await db.tokens.create({
+	// // 	data: {
+	// // 		expiresAt,
+	// // 		userId,
+	// // 	},
+	// // });
+	// const createToken = await db.insert(tokens).values({
+	// 	userId
+	// })
 
-	return token.id;
+	// return token.id;
 };
 
 export const validateToken = async (token: string) => {
@@ -140,3 +148,22 @@ export const generateVerificationToken = async (userId: string) => {
 };
 
 export type Auth = typeof auth;
+
+const drizzleAdapter = () => {
+	getUser: async (userId: string) => {
+
+	};
+	setUser: (user: UserSchema, key: KeySchema | null) => Promise<void>;
+	updateUser: (
+		userId: string,
+		partialUser: Partial<UserSchema>
+	) => Promise<void>;
+	deleteUser: (userId: string) => Promise<void>;
+
+	getKey: (keyId: string) => Promise<KeySchema | null>;
+	getKeysByUserId: (userId: string) => Promise<KeySchema[]>;
+	setKey: (key: KeySchema) => Promise<void>;
+	updateKey: (keyId: string, partialKey: Partial<KeySchema>) => Promise<void>;
+	deleteKey: (keyId: string) => Promise<void>;
+	deleteKeysByUserId: (userId: string) => Promise<void>;
+}
