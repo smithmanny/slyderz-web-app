@@ -1,13 +1,15 @@
 "use server";
 
 import * as context from "next/headers";
+import { eq } from 'drizzle-orm';
 
 import { auth, generateVerificationToken } from "app/lib/auth";
 import { sendSesEmail } from "app/lib/aws";
 import { UnknownError } from "app/lib/errors";
 import { getStripeServer } from "app/lib/stripe";
 import { requiredFormData } from "app/lib/utils";
-import prisma from "db";
+import { db } from "drizzle";
+import { users } from "drizzle/schema/user";
 
 import { TRANSACTIONAL_EMAILS } from "types";
 import { RoleType } from ".prisma/client";
@@ -20,11 +22,7 @@ export default async function signupMutation(input: FormData) {
 	}>(input);
 	const stripe = getStripeServer();
 
-	const userExists = await prisma.authUser.findFirst({
-		where: {
-			email,
-		},
-	});
+	const userExists = await db.select().from(users).where(eq(users.email, email.toLowerCase()))
 
 	if (userExists) {
 		throw new Error("User already exists");
@@ -83,9 +81,8 @@ export default async function signupMutation(input: FormData) {
 	};
 
 	const user = await createUser();
-	const activationUrl = `${
-		process.env.NEXT_PUBLIC_URL
-	}/email-verification/${user.token.toString()}`;
+	const activationUrl = `${process.env.NEXT_PUBLIC_URL
+		}/email-verification/${user.token.toString()}`;
 	sendSesEmail({
 		to: email,
 		type: TRANSACTIONAL_EMAILS.activation,

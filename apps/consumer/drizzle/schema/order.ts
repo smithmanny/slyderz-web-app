@@ -9,7 +9,7 @@ export const orderStatus = pgEnum("order_status", ['PENDING', 'ACCEPTED', 'COMPL
 export const orders = pgTable("orders", {
   id: text("id").primaryKey().notNull(),
   createdAt: timestamp("created_at", { precision: 3, mode: 'string' }).defaultNow().notNull(),
-  updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }).notNull(),
+  updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }).defaultNow().notNull(),
   amount: integer("amount").notNull(),
   confirmationNumber: text("confirmation_number").notNull(),
   paymentMethodId: text("payment_method_id").notNull(),

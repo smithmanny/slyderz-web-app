@@ -5,13 +5,12 @@ import { hours, sections, dishes } from "./menu";
 import { orders } from "./order";
 
 export const roleType = pgEnum("RoleType", ['ADMIN', 'CHEF', 'USER'])
-export const daysOfWeekType = pgEnum("days_of_week_type", ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'])
 export const onboardingState = pgEnum("onboarding_state", ['SETUP_STRIPE', 'UPLOAD_HEADSHOT', 'COMPLETE_SERVSAFE'])
 
 export const users = pgTable("users", {
   id: text("id").primaryKey().notNull(),
   createdAt: timestamp("created_at", { precision: 3, mode: 'string' }).defaultNow().notNull(),
-  updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }).notNull(),
+  updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }).defaultNow().notNull(),
   name: text("name").notNull(),
   email: text("email").notNull(),
   stripeCustomerId: text("stripe_customer_id").notNull(),
@@ -78,7 +77,7 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
 export const tokens = pgTable("tokens", {
   id: text("id").primaryKey().notNull(),
   createdAt: timestamp("created_at", { precision: 3, mode: 'string' }).defaultNow().notNull(),
-  expiresAt: timestamp("expires_at", { precision: 3, mode: 'string' }).notNull(),
+  expiresAt: timestamp("expires_at", { precision: 3, mode: 'string' }).defaultNow().notNull(),
   userId: text("user_id").notNull().references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
 });
 export const tokensRelations = relations(tokens, ({ one }) => ({
@@ -91,7 +90,7 @@ export const tokensRelations = relations(tokens, ({ one }) => ({
 export const chefs = pgTable("chefs", {
   id: text("id").primaryKey().notNull(),
   createdAt: timestamp("created_at", { precision: 3, mode: 'string' }).defaultNow().notNull(),
-  updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }).notNull(),
+  updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }).defaultNow().notNull(),
   stripeAccountId: text("stripe_account_id").notNull(),
   isOnboardingComplete: boolean("is_onboarding_complete").default(false).notNull(),
   userId: text("user_id").notNull().references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),

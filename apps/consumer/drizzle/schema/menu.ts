@@ -9,7 +9,7 @@ export const daysOfWeekType = pgEnum("days_of_week_type", ['SUNDAY', 'MONDAY', '
 export const sections = pgTable("sections", {
   id: text("id").primaryKey().notNull(),
   createdAt: timestamp("created_at", { precision: 3, mode: 'string' }).defaultNow().notNull(),
-  updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }).notNull(),
+  updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }).defaultNow().notNull(),
   name: text("name").notNull(),
   chefId: text("chef_id").notNull().references(() => chefs.id, { onDelete: "cascade", onUpdate: "cascade" }),
   isActive: boolean("is_active").default(true).notNull(),
@@ -31,7 +31,7 @@ export const sectionsRelations = relations(sections, ({ one, many }) => ({
 export const hours = pgTable("hours", {
   id: text("id").primaryKey().notNull(),
   createdAt: timestamp("created_at", { precision: 3, mode: 'string' }).defaultNow().notNull(),
-  updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }).notNull(),
+  updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }).defaultNow().notNull(),
   daysOfWeek: daysOfWeekType("days_of_week_type").array(),
   startTime: text("start_time"),
   endTime: text("end_time"),
@@ -47,7 +47,7 @@ export const hoursRelations = relations(hours, ({ one }) => ({
 export const dishes = pgTable("dishes", {
   id: text("id").primaryKey().notNull(),
   createdAt: timestamp("created_at", { precision: 3, mode: 'string' }).defaultNow().notNull(),
-  updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }).notNull(),
+  updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }).defaultNow().notNull(),
   description: text("description").notNull(),
   name: text("name").notNull(),
   imageUrl: text("image_url").notNull(),

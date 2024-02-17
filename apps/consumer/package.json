@@ -7,14 +7,16 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "NODE_ENV=production next build && pnpm run migrate:generate",
+    "build": "NODE_ENV=production next build && pnpm run migrate",
     "start": "next start",
     "studio": "pnpm exec drizzle-kit studio --port 8000",
-    "migrate:generate": "pnpm exec drizzle-kit generate:pg",
+    "migrate": "pnpm exec drizzle-kit generate:pg && pnpm run migrate:apply",
+    "migrate:apply": "pnpm exec tsx ./drizzle/migrate.ts",
+    "migrate:rollback": "pnpm exec drizzle-kit drop",
     "lint": "pnpm exec @biomejs/biome check --apply ./app",
     "test": "jest",
     "test:watch": "jest --watch",
-    "postinstall": "pnpm run migrate:generate"
+    "postinstall": "pnpm run migrate"
   },
   "prisma": {
     "schema": "db/schema.prisma"
