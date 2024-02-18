@@ -8,7 +8,7 @@ import { eq } from "drizzle-orm";
 
 import { TokenError } from "app/lib/errors";
 import { db } from "drizzle";
-import { tokens } from "drizzle/schema/user";
+import { tokens, users, keys } from "drizzle/schema/user";
 import prismaClient from "db";
 import { AuthError } from "./errors";
 
@@ -69,7 +69,7 @@ export const getChefSession = cache(async () => {
 	}
 
 	const chef = await db.query.chefs.findFirst({
-		where: (chefs, { eq }) => eq(chefs.userId, session.user.userId),
+		where: (chefs, { eq }) => eq(chefs.userId, Number(session.user.userId)),
 	});
 
 	if (!chef) {
@@ -84,31 +84,56 @@ export const getChefSession = cache(async () => {
 
 const EXPIRES_IN = 1000 * 60 * 60 * 2; // 2 hours
 
-const generateToken = async (userId: string) => {
-	const expiresAt = new Date(new Date().getTime() + EXPIRES_IN);
+const generateToken = async (userId: number) => {
+	const expiresAt = new Date(new Date().getTime() + EXPIRES_IN).toISOString();
 
-	// delete all user tokens
-	// await db.delete(tokens).where(eq(tokens.userId, userId))
+	const tokenId = await db.transaction(async (tx) => {
+		try {
+			// delete all user tokens
+			const deleteToken = tx.delete(tokens).where(eq(tokens.userId, userId))
+			const insertToken = tx.insert(tokens).values({
+				userId: Number(userId),
+				expiresAt
+			}).returning({ id: tokens.id })
 
-	// // const createToken = await db.tokens.create({
-	// // 	data: {
-	// // 		expiresAt,
-	// // 		userId,
-	// // 	},
-	// // });
-	// const createToken = await db.insert(tokens).values({
-	// 	userId
-	// })
+			const [undefined, token] = await Promise.all([deleteToken, insertToken])
 
-	// return token.id;
+			if (!token) {
+				return tx.rollback();
+			}
+
+			return token[0]?.id;
+		} catch (err) {
+			return tx.rollback();
+		}
+	})
+
+	return tokenId
 };
 
-export const validateToken = async (token: string) => {
+export const validateToken = async (tokenId: number) => {
 	try {
-		const storedToken = await db.token.findFirstOrThrow({
-			where: { id: token },
+		const storedToken = await db.query.tokens.findFirst({
+			where: (tokens, { eq }) => eq(tokens.id, tokenId),
 		});
-		await db.token.delete({ where: { id: token } });
+
+		if (!storedToken) {
+			throw new Error("Token not found")
+		}
+
+		await db.transaction(async (tx) => {
+			try {
+				const deleteToken = tx.delete(tokens).where(eq(tokens.id, storedToken.id))
+				const insertToken = db.insert(tokens).values({
+					id: storedToken.id
+				})
+
+				await Promise.all([deleteToken, insertToken])
+
+			} catch (err) {
+				return tx.rollback()
+			}
+		})
 
 		const tokenExpires = Number(storedToken.expiresAt); // bigint => number conversion
 		if (!isWithinExpiration(tokenExpires)) {
@@ -127,12 +152,14 @@ export const validateToken = async (token: string) => {
 	}
 };
 
-export const invalidateAllUserTokens = async (userId: string) => {
-	return db.token.deleteMany({ where: { id: userId } });
+export const invalidateAllUserTokens = async (userId: number) => {
+	return await db.delete(tokens).where(eq(tokens.userId, userId))
 };
 
-export const generateVerificationToken = async (userId: string) => {
-	const storedUserTokens = await db.token.findMany({ where: { userId } });
+export const generateVerificationToken = async (userId: number) => {
+	const storedUserTokens = await db.query.tokens.findMany({
+		where: (tokens, { eq }) => eq(tokens.userId, userId)
+	});
 
 	if (storedUserTokens.length > 0) {
 		const reusableStoredToken = storedUserTokens.find((token) => {
@@ -148,22 +175,3 @@ export const generateVerificationToken = async (userId: string) => {
 };
 
 export type Auth = typeof auth;
-
-const drizzleAdapter = () => {
-	getUser: async (userId: string) => {
-
-	};
-	setUser: (user: UserSchema, key: KeySchema | null) => Promise<void>;
-	updateUser: (
-		userId: string,
-		partialUser: Partial<UserSchema>
-	) => Promise<void>;
-	deleteUser: (userId: string) => Promise<void>;
-
-	getKey: (keyId: string) => Promise<KeySchema | null>;
-	getKeysByUserId: (userId: string) => Promise<KeySchema[]>;
-	setKey: (key: KeySchema) => Promise<void>;
-	updateKey: (keyId: string, partialKey: Partial<KeySchema>) => Promise<void>;
-	deleteKey: (keyId: string) => Promise<void>;
-	deleteKeysByUserId: (userId: string) => Promise<void>;
-}
