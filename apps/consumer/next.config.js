@@ -5,4 +5,8 @@ module.exports = {
 		domains: ["assets.slyderz.co", "images.unsplash.com", "lottie.host"],
 		minimumCacheTTL: 60,
 	},
+	webpack: (config) => {
+		config.externals.push("@node-rs/argon2", "@node-rs/bcrypt");
+		return config;
+	}
 };

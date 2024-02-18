@@ -21,8 +21,8 @@ export const orders = pgTable("orders", {
   orderStatus: text("order_status", {
     enum: ['PENDING', 'ACCEPTED', 'COMPLETED', 'DECLINED']
   }).default('PENDING').notNull(),
-  userId: serial("user_id").notNull().references(() => users.id, { onDelete: "restrict", onUpdate: "cascade" }),
-  chefId: serial("chef_id").notNull().references(() => chefs.id, { onDelete: "restrict", onUpdate: "cascade" }),
+  userId: integer("user_id").notNull().references(() => users.id, { onDelete: "restrict", onUpdate: "cascade" }),
+  chefId: integer("chef_id").notNull().references(() => chefs.id, { onDelete: "restrict", onUpdate: "cascade" }),
 });
 export const ordersRelations = relations(orders, ({ one, many }) => ({
   user: one(users, {

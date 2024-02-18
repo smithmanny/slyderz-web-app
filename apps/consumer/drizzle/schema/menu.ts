@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, boolean, numeric, primaryKey, serial } from "drizzle-orm/pg-core"
+import { pgTable, text, timestamp, boolean, numeric, primaryKey, serial, integer } from "drizzle-orm/pg-core"
 import { relations } from 'drizzle-orm';
 
 import { chefs } from "drizzle/schema/user";
@@ -9,7 +9,7 @@ export const sections = pgTable("sections", {
   createdAt: timestamp("created_at", { precision: 3, mode: 'string' }).defaultNow(),
   updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }).defaultNow(),
   name: text("name").notNull(),
-  chefId: serial("chef_id").notNull().references(() => chefs.id, { onDelete: "cascade", onUpdate: "cascade" }),
+  chefId: integer("chef_id").notNull().references(() => chefs.id, { onDelete: "cascade", onUpdate: "cascade" }),
   isActive: boolean("is_active").default(true).notNull(),
 },
   (table) => {
@@ -32,7 +32,7 @@ export const hours = pgTable("hours", {
   daysOfWeek: text("days_of_week", { enum: ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'] }).array(),
   startTime: text("start_time"),
   endTime: text("end_time"),
-  chefId: serial("chef_id").notNull().references(() => chefs.id, { onDelete: "cascade", onUpdate: "cascade" }),
+  chefId: integer("chef_id").notNull().references(() => chefs.id, { onDelete: "cascade", onUpdate: "cascade" }),
 });
 export const hoursRelations = relations(hours, ({ one }) => ({
   chef: one(chefs, {
@@ -49,8 +49,8 @@ export const dishes = pgTable("dishes", {
   name: text("name").notNull(),
   imageUrl: text("image_url").notNull(),
   price: numeric("price", { precision: 5, scale: 2 }).notNull(),
-  sectionId: serial("section_id").notNull().references(() => sections.id, { onDelete: "cascade", onUpdate: "cascade" }),
-  chefId: serial("chef_id").notNull().references(() => chefs.id, { onDelete: "cascade", onUpdate: "cascade" }),
+  sectionId: integer("section_id").notNull().references(() => sections.id, { onDelete: "cascade", onUpdate: "cascade" }),
+  chefId: integer("chef_id").notNull().references(() => chefs.id, { onDelete: "cascade", onUpdate: "cascade" }),
   isActive: boolean("is_active").default(true).notNull(),
 },
   (table) => {
@@ -71,8 +71,8 @@ export const dishesRelations = relations(dishes, ({ one, many }) => ({
 }));
 
 export const dishesToOrders = pgTable('dishes_to_orders', {
-  dishId: serial("dish_id").notNull().references(() => dishes.id),
-  orderId: serial("order_id").notNull().references(() => orders.id),
+  dishId: integer("dish_id").notNull().references(() => dishes.id),
+  orderId: integer("order_id").notNull().references(() => orders.id),
 }, (t) => ({
   pk: primaryKey({ columns: [t.dishId, t.orderId] }),
 }),
