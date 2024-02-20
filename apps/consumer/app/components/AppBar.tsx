@@ -7,7 +7,7 @@ import type { User } from "lucia";
 
 interface AppBarTypes {
 	className?: string;
-	user: User | undefined;
+	user: User | null;
 }
 export default function AppBar(props: AppBarTypes) {
 	return (

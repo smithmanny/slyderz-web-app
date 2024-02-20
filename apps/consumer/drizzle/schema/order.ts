@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, integer, serial } from "drizzle-orm/pg-core"
+import { pgTable, text, timestamp, integer, serial, numeric } from "drizzle-orm/pg-core"
 import { relations } from 'drizzle-orm';
 
 import { chefs, users } from "./user";
@@ -8,7 +8,9 @@ export const orders = pgTable("orders", {
   id: serial("id").primaryKey(),
   createdAt: timestamp("created_at", { precision: 3, mode: 'string' }).defaultNow(),
   updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }).defaultNow(),
-  amount: integer("amount").notNull(),
+  subtotal: numeric("subtotal", { precision: 15, scale: 6 }).notNull(),
+  total: numeric("total", { precision: 15, scale: 6 }).notNull(),
+  serviceFee: numeric("serviceFee", { precision: 15, scale: 6 }).notNull(),
   confirmationNumber: text("confirmation_number").notNull().unique(),
   paymentMethodId: text("payment_method_id").notNull(),
   address1: text("address1").notNull(),
@@ -33,5 +35,5 @@ export const ordersRelations = relations(orders, ({ one, many }) => ({
     fields: [orders.chefId],
     references: [chefs.id]
   }),
-  dishesToOrders: many(dishesToOrders)
+  dishes: many(dishesToOrders)
 }));

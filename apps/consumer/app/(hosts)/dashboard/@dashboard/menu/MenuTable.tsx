@@ -42,7 +42,7 @@ import {
 } from "app/components/ui/table";
 
 export type MenuTableColumns = {
-	id: string;
+	id: number;
 	amount: number;
 	name: string;
 	section: string;
@@ -146,7 +146,7 @@ export const columns: ColumnDef<MenuTableColumns>[] = [
 ];
 
 type MenuTableDish = {
-	id: string;
+	id: number;
 	name: string;
 	amount: number;
 	section: string;
@@ -231,9 +231,9 @@ export default function MenuTable(props: MenuTableProps) {
 											{header.isPlaceholder
 												? null
 												: flexRender(
-														header.column.columnDef.header,
-														header.getContext(),
-												  )}
+													header.column.columnDef.header,
+													header.getContext(),
+												)}
 										</TableHead>
 									);
 								})}

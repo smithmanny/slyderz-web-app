@@ -20,6 +20,7 @@ export const users = pgTable("users", {
   location: text("location")
 });
 export const usersRelations = relations(users, ({ one, many }) => ({
+  chef: one(chefs),
   sessions: many(sessions),
   tokens: many(tokens),
   orders: many(orders)

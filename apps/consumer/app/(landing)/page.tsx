@@ -1,46 +1,27 @@
-import prisma from "db";
 import HomePage from "./home-page";
 
+import { db } from "drizzle";
+
 export interface Chef {
-	id: string;
-	userId: string;
+	id: number;
 	user: {
+		id: number
 		name: string;
-		image: {
-			id: string;
-			imageUrl: string;
-		};
+		headshotUrl: string | null;
 	};
 }
 async function getNearbyChefs() {
-	return prisma.chef.findMany({
-		where: {
-			NOT: {
-				hours: {
-					none: {},
-				},
-			},
-			AND: {
-				NOT: {
-					dishes: {
-						none: {},
-					},
-				},
-			},
+	// TODO filter out chefs who have no hours or dishes
+	return await db.query.chefs.findMany({
+		with: {
+			dishes: true,
+			user: true
 		},
-		include: {
-			user: {
-				select: {
-					name: true,
-					image: true,
-				},
-			},
-		},
-	});
+	})
 }
 
 export default async function Page() {
-	const nearbyChefs = (await getNearbyChefs()) as Array<Chef>;
+	const nearbyChefs = await getNearbyChefs();
 
 	return <HomePage nearbyChefs={nearbyChefs} />;
 }

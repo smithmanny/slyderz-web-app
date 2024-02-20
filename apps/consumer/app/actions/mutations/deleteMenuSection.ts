@@ -2,19 +2,19 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { eq } from "drizzle-orm";
 
-import prisma from "db";
+import { db } from "drizzle";
+import { sections } from "drizzle/schema/menu";
 
 const deleteMenuSectionSchema = z.object({
-	sectionId: z.string(),
+	sectionId: z.number(),
 });
 export async function deleteMenuSectionMutation(
 	input: z.infer<typeof deleteMenuSectionSchema>,
 ) {
-	const dishesOnSection = await prisma.dish.findMany({
-		where: {
-			sectionId: input.sectionId,
-		},
+	const dishesOnSection = await db.query.dishes.findMany({
+		where: (dishes, { eq }) => eq(dishes.sectionId, input.sectionId),
 	});
 
 	if (dishesOnSection.length > 0) {
@@ -25,14 +25,12 @@ export async function deleteMenuSectionMutation(
 	}
 
 	try {
-		await prisma.section.update({
-			where: {
-				id: input.sectionId,
-			},
-			data: {
-				isActive: false,
-			},
-		});
+		await db
+			.update(sections)
+			.set({
+				isActive: false
+			})
+			.where(eq(sections.id, input.sectionId))
 	} catch (err) {
 		return {
 			message: "Failed to delete section",

@@ -1,22 +1,25 @@
 "use server";
 
-import * as context from "next/headers";
+import { cookies } from "next/headers";
+import { db } from "drizzle";
+import { eq } from "drizzle-orm";
 
 import { auth, invalidateAllUserTokens, validateToken } from "app/lib/auth";
 import { TokenError } from "app/lib/errors";
 import { createMailjetContact } from "app/lib/mailjet";
+import { users } from "drizzle/schema/user";
 
-export default async function verifyEmailMutation(token: string) {
-	const authRequest = auth.handleRequest("GET", context);
-
+export default async function verifyEmailMutation(token: number) {
 	const userId = await validateToken(token);
-	const [user] = await Promise.all([
-		auth.getUser(userId),
-		invalidateAllUserTokens(userId),
-		auth.updateUserAttributes(userId, {
-			emailVerified: true,
-		}),
-	]);
+	const user = await db.query.users.findFirst({
+		where: (users, { eq }) => eq(users.id, userId)
+	})
+
+	if (!user) {
+		throw new TokenError({
+			message: "User not found"
+		})
+	}
 
 	if (user.emailVerified) {
 		throw new TokenError({
@@ -24,18 +27,22 @@ export default async function verifyEmailMutation(token: string) {
 		});
 	}
 
-	// Add user to email list
-	await createMailjetContact(user.email, user.name);
+	const verifyEmail = db.update(users).set({
+		emailVerified: true
+	}).where(eq(users.id, userId))
 
-	const session = await auth.createSession({
-		userId,
-		attributes: {
-			stripeCustomerId: user.stripeCustomerId,
-			email: user.email,
-			emailVerified: user.emailVerified,
-			name: user.name,
-			role: user.role,
-		},
-	});
-	authRequest.setSession(session);
+	const [
+		x,
+		y,
+		z,
+		session
+	] = await Promise.all([
+		invalidateAllUserTokens(userId),
+		verifyEmail,
+		createMailjetContact(user.email, user.name),
+		auth.createSession(user.id, {})
+	]);
+
+	const sessionCookie = auth.createSessionCookie(session.id);
+	cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
 }

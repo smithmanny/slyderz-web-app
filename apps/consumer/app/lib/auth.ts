@@ -104,13 +104,14 @@ const generateToken = async (userId: number) => {
 				expiresAt: createDate(new TimeSpan(2, "h"))
 			}).returning({ id: tokens.id })
 
-			const [undefined, token] = await Promise.all([deleteToken, insertToken])
+			const [undefined, generatedToken] = await Promise.all([deleteToken, insertToken])
+			const token = generatedToken[0]
 
 			if (!token) {
 				return tx.rollback();
 			}
 
-			return token[0]?.id;
+			return token.id;
 		} catch (err) {
 			return tx.rollback();
 		}
@@ -163,6 +164,10 @@ export const validateToken = async (tokenId: number) => {
 
 export const invalidateAllUserTokens = async (userId: number) => {
 	return await db.delete(tokens).where(eq(tokens.userId, userId))
+};
+
+export const invalidateAllUserSessions = async (userId: number) => {
+	return await db.delete(sessions).where(eq(sessions.userId, userId))
 };
 
 export const generateVerificationToken = async (userId: number) => {

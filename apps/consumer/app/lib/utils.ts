@@ -32,13 +32,13 @@ export const localImageLoader = ({
 	return `${src}?w=${width}&q=${quality || 75}`;
 };
 
-export const getConsumerServiceFee = (cartTotal: number) =>
-	cartTotal * CONSUMER_SERVICE_FEE;
+export const getConsumerServiceFee = (cartTotal: string) =>
+	Number(cartTotal) * CONSUMER_SERVICE_FEE;
 
-export const getChefServiceFee = (cartTotal: number) =>
-	cartTotal * CHEF_SERVICE_FEE;
+export const getChefServiceFee = (cartTotal: string) =>
+	Number(cartTotal) * CHEF_SERVICE_FEE;
 
-export const getConsumerCartTotal = (cartTotal: number) => {
+export const getConsumerCartTotal = (cartTotal: string) => {
 	const serviceFee = getConsumerServiceFee(cartTotal);
 
 	return cartTotal + serviceFee;
@@ -52,7 +52,7 @@ export const getImageUrl = ({
 	userId,
 	fileName,
 	category,
-}: { userId: string; fileName: string; category?: string }) => {
+}: { userId: number; fileName: string; category?: string }) => {
 	if (category) {
 		return `https://assets.slyderz.co/users/${userId}/${category}/${fileName}`;
 	}

@@ -1,11 +1,13 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { Argon2id } from "oslo/password";
 
 import { auth } from "app/lib/auth";
+import { db } from "drizzle";
 import { requiredFormData } from "app/lib/utils";
-import * as context from "next/headers";
 
 export default async function loginMutation(prevState: any, input: FormData) {
 	const { email, password } = requiredFormData<{
@@ -13,28 +15,31 @@ export default async function loginMutation(prevState: any, input: FormData) {
 		password: string;
 	}>(input);
 
-	try {
-		const key = await auth.useKey("email", email.toLowerCase(), password);
-		const user = await auth.getUser(key.userId);
-		const session = await auth.createSession({
-			userId: key.userId,
-			attributes: {
-				stripeCustomerId: user.stripeCustomerId,
-				email: user.email,
-				emailVerified: user.emailVerified,
-				name: user.name,
-				role: user.role,
-			},
-		});
+	const foundUser = await db.query.users.findFirst({
+		where: (users, { eq }) => eq(users.email, email.toLowerCase())
+	})
+	const argon2id = new Argon2id();
 
-		const authRequest = auth.handleRequest("POST", context);
-		authRequest.setSession(session);
-
-		revalidatePath("/");
-		redirect("/");
-	} catch (err) {
+	if (!foundUser) {
 		return {
-			error: "Invalid email/password.",
-		};
+			error: true,
+			message: "Wrong email/password combonation"
+		}
 	}
+
+	try {
+		await argon2id.verify(foundUser?.hashedPassword, password)
+	} catch {
+		return {
+			error: true,
+			message: "Wrong email/password combonation"
+		}
+	}
+	const session = await auth.createSession(foundUser.id, {})
+	const sessionCookie = auth.createSessionCookie(session.id);
+
+	cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
+
+	revalidatePath("/");
+	redirect("/");
 }

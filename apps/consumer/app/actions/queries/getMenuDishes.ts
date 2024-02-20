@@ -1,26 +1,15 @@
 "use server";
 
 import { getChefSession } from "app/lib/auth";
-import prisma from "db";
+import { db } from "drizzle";
 
 export default async function getMenuDishesQuery() {
 	const { chef } = await getChefSession();
 
-	return await prisma.dish.findMany({
-		where: {
-			chefId: chef.id,
-		},
-		select: {
-			id: true,
-			name: true,
-			deleted: true,
-			price: true,
-			section: {
-				select: {
-					id: true,
-					name: true,
-				},
-			},
-		},
+	return await db.query.dishes.findMany({
+		where: (dishes, { eq }) => eq(dishes.chefId, chef.id),
+		with: {
+			section: true
+		}
 	});
 }

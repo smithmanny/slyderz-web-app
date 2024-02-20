@@ -1,11 +1,16 @@
 "use server";
 
-import * as context from "next/headers";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
+import { eq } from "drizzle-orm";
 import { z } from "zod";
+import { Argon2id } from "oslo/password";
 
 import { invalidateAllUserTokens, validateToken } from "app/lib/auth";
-import { auth } from "app/lib/auth";
+import { auth, invalidateAllUserSessions } from "app/lib/auth";
+import { db } from "drizzle";
+import { users } from "drizzle/schema/user";
 import { sendSesEmail } from "app/lib/aws";
 import { TokenError, UnknownError } from "app/lib/errors";
 import { requiredFormData } from "app/lib/utils";
@@ -17,7 +22,7 @@ const ResetPasswordFormSchema = z.object({
 	passwordConfirmation: z.string(),
 });
 export default async function handlePasswordResetMutation(
-	token: string,
+	token: number,
 	input: FormData,
 ) {
 	ResetPasswordFormSchema.parse(Object.fromEntries(input.entries()));
@@ -25,13 +30,26 @@ export default async function handlePasswordResetMutation(
 
 	try {
 		const userId = await validateToken(token);
-		const user = await auth.getUser(userId);
+		const user = await db.query.users.findFirst({
+			where: (users, { eq }) => eq(users.id, userId)
+		})
+
+		if (!user) {
+			throw new Error("User not found")
+		}
+
+		const argon2id = new Argon2id();
+		const hashedPassword = await argon2id.hash(password);
+		const updatePassword = db.update(users).set({
+			hashedPassword
+		})
+			.where(eq(users.id, user.id))
 
 		// Invalidate all sessions, user tokens and update password
 		await Promise.all([
-			auth.invalidateAllUserSessions(user.userId),
-			invalidateAllUserTokens(user.userId),
-			auth.updateKeyPassword("email", user.email, password),
+			invalidateAllUserSessions(user.id),
+			invalidateAllUserTokens(user.id),
+			updatePassword,
 		]).catch((err) => {
 			throw new UnknownError({
 				message: "Please try again",
@@ -39,19 +57,9 @@ export default async function handlePasswordResetMutation(
 			});
 		});
 
-		// update key
-		const session = await auth.createSession({
-			userId: user.userId,
-			attributes: {
-				stripeCustomerId: user.stripeCustomerId,
-				email: user.email,
-				emailVerified: user.emailVerified,
-				name: user.name,
-				role: user.role,
-			},
-		});
-		const authRequest = auth.handleRequest("GET", context);
-		authRequest.setSession(session);
+		const session = await auth.createSession(user.id, {})
+		const sessionCookie = auth.createSessionCookie(session.id)
+		cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
 
 		await sendSesEmail({
 			to: user.email,
@@ -70,5 +78,6 @@ export default async function handlePasswordResetMutation(
 		}
 	}
 
+	revalidatePath("/")
 	redirect("/");
 }

@@ -5,17 +5,15 @@ import MenuTable from "./MenuTable";
 import getMenuDishesQuery from "app/actions/queries/getMenuDishes";
 import getMenuSectionsQuery from "app/actions/queries/getMenuSections";
 
-import { Prisma } from ".prisma/client";
-
 type MenuTableDishSection = {
-	id: string;
+	id: number;
 	name: string;
 };
 type MenuTableDish = {
-	id: string;
+	id: number;
 	name: string;
-	price: Prisma.Decimal;
-	deleted: boolean;
+	price: string;
+	isActive: boolean;
 	section: MenuTableDishSection;
 };
 const generateMenuTableData = (dishes: Array<MenuTableDish>) => {

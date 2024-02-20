@@ -6,9 +6,9 @@ import SignupForm from "./SignupForm";
 import { getSession } from "app/lib/auth";
 
 export default async function SignupPage() {
-	const session = await getSession();
+	const { user } = await getSession();
 
-	if (session?.user) {
+	if (user) {
 		redirect("/");
 	}
 	return (

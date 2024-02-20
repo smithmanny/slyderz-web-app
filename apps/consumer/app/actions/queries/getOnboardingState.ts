@@ -1,38 +1,52 @@
 "use server";
 
-import { getProtectedSession } from "app/lib/auth";
-import { getStripeServer } from "app/lib/stripe";
-import prisma from "db";
+import { eq } from "drizzle-orm";
 
-import { OnboardingState } from ".prisma/client";
+import { getProtectedSession } from "app/lib/auth";
+import { NotFoundError } from "app/lib/errors";
+import { getStripeServer } from "app/lib/stripe";
+import { db } from "drizzle";
+import { chefs } from "drizzle/schema/user";
 
 export default async function getOnboardingStateQuery() {
-	const session = await getProtectedSession();
+	const { user } = await getProtectedSession();
 	const stripe = getStripeServer();
-	const chef = await prisma.chef.findFirstOrThrow({
-		where: {
-			userId: session.user.userId,
-		},
-		select: {
+
+	const chef = await db.query.chefs.findFirst({
+		where: (chefs, { eq }) => eq(chefs.userId, user.id),
+		columns: {
 			id: true,
 			stripeAccountId: true,
 			onboardingState: true,
-			isOnboardingComplete: true,
-		},
+			isOnboardingComplete: true
+		}
 	});
 
-	if (chef.onboardingState === OnboardingState.SETUP_STRIPE) {
+	if (!chef) {
+		throw new NotFoundError({
+			message: "Chef not found"
+		})
+	}
+
+	if (chef.onboardingState === "SETUP_STRIPE") {
 		const account = await stripe.accounts.retrieve(chef.stripeAccountId);
 
 		if (account.charges_enabled) {
-			const updatedChef = await prisma.chef.update({
-				where: {
-					id: chef.id,
-				},
-				data: {
-					onboardingState: "UPLOAD_HEADSHOT",
-				},
-			});
+			const data = await db
+				.update(chefs)
+				.set({
+					onboardingState: "UPLOAD_HEADSHOT"
+				})
+				.where(eq(chefs.id, chef.id))
+				.returning()
+
+			const updatedChef = data[0]
+
+			if (!updatedChef) {
+				throw new NotFoundError({
+					message: "Chef not found"
+				})
+			}
 
 			return {
 				onboardingState: updatedChef.onboardingState,

@@ -1,9 +1,11 @@
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { eq } from "drizzle-orm";
 
 import { getProtectedSession } from "app/lib/auth";
 import { UnknownError } from "app/lib/errors";
 import { getImageUrl } from "app/lib/utils";
-import prisma from "db";
+import { db } from "drizzle";
+import { users } from "drizzle/schema/user";
 
 const S3 = new S3Client({
 	region: "auto",
@@ -15,7 +17,7 @@ const S3 = new S3Client({
 });
 
 export async function PUT(request: Request) {
-	const session = await getProtectedSession();
+	const { user } = await getProtectedSession();
 	const formData = await request.formData();
 	const file = formData.get("file") as unknown as File;
 
@@ -29,29 +31,23 @@ export async function PUT(request: Request) {
 	try {
 		const command = new PutObjectCommand({
 			Bucket: "web-app",
-			Key: `users/${session.user.userId}/${file.name}`,
+			Key: `users/${user.id}/${file.name}`,
 			Body: buffer,
 		});
 
 		S3.send(command);
 
 		const imageUrl = getImageUrl({
-			userId: session.user.userId,
+			userId: user.id,
 			fileName: file.name,
 		});
 
-		await prisma.userPhoto.upsert({
-			where: {
-				userId: session.user.userId,
-			},
-			update: {
-				imageUrl,
-			},
-			create: {
-				imageUrl,
-				userId: session.user.userId,
-			},
-		});
+		await db
+			.update(users)
+			.set({
+				headshotUrl: imageUrl
+			})
+			.where(eq(users.id, user.id))
 
 		return Response.json({ imageUrl });
 	} catch (err) {
@@ -63,10 +59,10 @@ export async function PUT(request: Request) {
 }
 
 export async function GET() {
-	const session = await getProtectedSession();
-	const profilePic = await prisma.userPhoto.findFirst({
-		where: { userId: session.user.userId },
+	const { user } = await getProtectedSession();
+	const profilePic = await db.query.users.findFirst({
+		where: (users, { eq }) => eq(users.id, user.id),
 	});
 
-	return Response.json({ imageUrl: profilePic?.imageUrl });
+	return Response.json({ imageUrl: profilePic?.headshotUrl });
 }

@@ -1,15 +1,14 @@
 "use server";
 
+import { and } from "drizzle-orm";
+
 import { getChefSession } from "app/lib/auth";
-import prisma from "db";
+import { db } from "drizzle";
 
 export default async function getMenuSectionsQuery() {
 	const { chef } = await getChefSession();
 
-	return await prisma.section.findMany({
-		where: {
-			chefId: chef.id,
-			isActive: true,
-		},
+	return await db.query.sections.findMany({
+		where: (sections, { eq }) => and(eq(sections.chefId, chef.id), eq(sections.isActive, true))
 	});
 }

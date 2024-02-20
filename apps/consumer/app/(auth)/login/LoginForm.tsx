@@ -35,7 +35,7 @@ export default function LoginForm() {
 
 	useEffect(() => {
 		if (state?.error) {
-			toast.error(state.error);
+			toast.error(state.message);
 		}
 	}, [state]);
 

@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, boolean, numeric, primaryKey, serial, integer } from "drizzle-orm/pg-core"
+import { pgTable, text, timestamp, boolean, numeric, primaryKey, serial, integer, varchar } from "drizzle-orm/pg-core"
 import { relations } from 'drizzle-orm';
 
 import { chefs } from "drizzle/schema/user";
@@ -8,7 +8,7 @@ export const sections = pgTable("sections", {
   id: serial("id").unique(),
   createdAt: timestamp("created_at", { precision: 3, mode: 'string' }).defaultNow(),
   updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }).defaultNow(),
-  name: text("name").notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
   chefId: integer("chef_id").notNull().references(() => chefs.id, { onDelete: "cascade", onUpdate: "cascade" }),
   isActive: boolean("is_active").default(true).notNull(),
 },
@@ -46,9 +46,9 @@ export const dishes = pgTable("dishes", {
   createdAt: timestamp("created_at", { precision: 3, mode: 'string' }).defaultNow(),
   updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }).defaultNow(),
   description: text("description").notNull(),
-  name: text("name").notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
   imageUrl: text("image_url").notNull(),
-  price: numeric("price", { precision: 5, scale: 2 }).notNull(),
+  price: numeric("price", { precision: 15, scale: 6 }).notNull(),
   sectionId: integer("section_id").notNull().references(() => sections.id, { onDelete: "cascade", onUpdate: "cascade" }),
   chefId: integer("chef_id").notNull().references(() => chefs.id, { onDelete: "cascade", onUpdate: "cascade" }),
   isActive: boolean("is_active").default(true).notNull(),
@@ -73,6 +73,10 @@ export const dishesRelations = relations(dishes, ({ one, many }) => ({
 export const dishesToOrders = pgTable('dishes_to_orders', {
   dishId: integer("dish_id").notNull().references(() => dishes.id),
   orderId: integer("order_id").notNull().references(() => orders.id),
+  name: varchar("name", { length: 255 }).notNull(),
+  price: numeric("price", { precision: 15, scale: 6 }).notNull(),
+  imageUrl: text("image_url").notNull(),
+  quantity: integer("quantity").notNull()
 }, (t) => ({
   pk: primaryKey({ columns: [t.dishId, t.orderId] }),
 }),

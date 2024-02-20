@@ -1,29 +1,31 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { eq } from "drizzle-orm";
 
-import { auth } from "app/lib/auth";
 import { UnknownError } from "app/lib/errors";
 import { getStripeServer } from "app/lib/stripe";
-import prisma from "db";
+import { db } from "drizzle";
 
-import { RoleType } from ".prisma/client";
+import { chefs, users } from "drizzle/schema/user";
 
-export default async function createChefMutation(userId: string) {
+export default async function createChefMutation(userId: number) {
 	const stripe = getStripeServer();
 
-	const user = await prisma.authUser.findFirstOrThrow({
-		where: { id: userId },
-		select: {
+	const user = await db.query.users.findFirst({
+		where: (users, { eq }) => eq(users.id, userId),
+		columns: {
 			id: true,
 			email: true,
-			chef: {
-				select: {
-					stripeAccountId: true,
-				},
-			},
+		},
+		with: {
+			chef: true
 		},
 	});
+
+	if (!user) {
+		throw new Error("User not found")
+	}
 
 	if (user.chef?.stripeAccountId) redirect("/dashboard");
 
@@ -35,12 +37,10 @@ export default async function createChefMutation(userId: string) {
 		default_currency: "USD",
 	});
 
-	const chef = prisma.chef.create({
-		data: {
-			stripeAccountId: stripeAccount.id,
-			userId: user.id,
-		},
-	});
+	const chef = db.insert(chefs).values({
+		stripeAccountId: stripeAccount.id,
+		userId: user.id
+	})
 
 	const createAccountLink = stripe.accountLinks.create({
 		account: stripeAccount.id,
@@ -50,9 +50,10 @@ export default async function createChefMutation(userId: string) {
 	});
 
 	// Set user role to chef
-	const convertUserToChef = auth.updateUserAttributes(user.id, {
-		role: RoleType.CHEF,
-	});
+	const convertUserToChef = db.update(users).set({
+		role: "CHEF"
+	})
+		.where(eq(users.id, user.id))
 
 	try {
 		const [_, accountLink] = await Promise.all([

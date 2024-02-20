@@ -2,14 +2,12 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
-import { auth } from "app/lib/auth";
-import * as context from "next/headers";
+import { auth, getSession } from "app/lib/auth";
 
 export default async function logoutMutation() {
-	const authRequest = auth.handleRequest("POST", context);
-	// check if user is authenticated
-	const session = await authRequest.validate();
+	const { session } = await getSession()
 
 	if (!session) {
 		return new Response(null, {
@@ -17,9 +15,10 @@ export default async function logoutMutation() {
 		});
 	}
 	// make sure to invalidate the current session!
-	await auth.invalidateSession(session.sessionId);
+	await auth.invalidateSession(session.id);
+	const sessionCookie = auth.createBlankSessionCookie()
 	// delete session cookie
-	authRequest.setSession(null);
+	cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
 
 	revalidatePath("/");
 	redirect("/");

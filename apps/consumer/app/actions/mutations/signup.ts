@@ -1,7 +1,9 @@
 "use server";
 
-import * as context from "next/headers";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { eq } from 'drizzle-orm';
+import { Argon2id } from "oslo/password";
 
 import { auth, generateVerificationToken } from "app/lib/auth";
 import { sendSesEmail } from "app/lib/aws";
@@ -12,7 +14,6 @@ import { db } from "drizzle";
 import { users } from "drizzle/schema/user";
 
 import { TRANSACTIONAL_EMAILS } from "types";
-import { RoleType } from ".prisma/client";
 
 export default async function signupMutation(input: FormData) {
 	const { email, name, password } = requiredFormData<{
@@ -29,78 +30,66 @@ export default async function signupMutation(input: FormData) {
 	}
 
 	const createUser = async () => {
-		try {
-			let stripeCustomerId = "";
-
-			if (email === "shakhorsmith@gmail.com") {
-				stripeCustomerId = "cus_LpSKis9bilj3rP";
-			}
-
-			if (!stripeCustomerId) {
+		const user = await db.transaction(async (tx) => {
+			try {
 				const stripeCustomer = await stripe.customers.create({
 					email: email,
 					name,
 				});
 
-				stripeCustomerId = stripeCustomer.id;
-			}
-
-			const user = await auth.createUser({
-				key: {
-					providerId: "email",
-					providerUserId: email.toLowerCase(),
-					password,
-				},
-				attributes: {
+				const argon2id = new Argon2id();
+				const hashedPassword = await argon2id.hash(password);
+				const createdUser = await tx.insert(users).values({
 					emailVerified: false,
+					hashedPassword,
 					name: name,
 					email: email,
-					stripeCustomerId,
-					role: RoleType.USER,
-				},
-			});
+					stripeCustomerId: stripeCustomer.id,
+					role: "USER",
+				}).returning()
 
-			// Issue email_activation token
-			const token = await generateVerificationToken(user.userId);
+				const user = createdUser[0]
+				if (!user) {
+					return tx.rollback()
+				}
 
-			return {
-				userId: user.userId,
-				name: user.name,
-				email: user.email,
-				stripeCustomerId: stripeCustomerId,
-				emailVerified: user.emailVerified,
-				role: user.role,
-				token,
-			};
-		} catch (err) {
-			throw new UnknownError({
-				message: "User not created",
-				cause: err,
-			});
-		}
+				// Issue email_activation token
+				const token = await generateVerificationToken(user.id);
+
+				return {
+					userId: user.id,
+					name: user.name,
+					email: user.email,
+					stripeCustomerId: stripeCustomer.id,
+					emailVerified: user.emailVerified,
+					role: user.role,
+					token,
+				};
+			} catch (err) {
+				throw new UnknownError({
+					message: "User not created",
+					cause: err,
+				});
+			}
+		})
+
+		return user
 	};
 
 	const user = await createUser();
 	const activationUrl = `${process.env.NEXT_PUBLIC_URL
 		}/email-verification/${user.token.toString()}`;
+
 	sendSesEmail({
 		to: email,
 		type: TRANSACTIONAL_EMAILS.activation,
 		variables: { activationUrl },
 	});
 
-	const session = await auth.createSession({
-		userId: user.userId,
-		attributes: {
-			stripeCustomerId: user.stripeCustomerId,
-			email: user.email,
-			emailVerified: user.emailVerified,
-			name: user.name,
-			role: user.role,
-		},
-	});
-	const authRequest = auth.handleRequest("POST", context);
-	authRequest.setSession(session);
+	const session = await auth.createSession(user.userId, {});
+	const sessionCookie = auth.createSessionCookie(session.id);
 
-	return user.userId;
+	cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
+
+	redirect("/")
 }

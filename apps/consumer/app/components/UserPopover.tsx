@@ -39,7 +39,7 @@ const fetchListItems = (user: any) => {
 };
 
 interface UserPopoverProps {
-	user: User | undefined;
+	user: User | null;
 	profilePhoto?: string | undefined;
 }
 export default function UserPopover(props: UserPopoverProps) {
@@ -78,8 +78,7 @@ export default function UserPopover(props: UserPopoverProps) {
 									href={route.route}
 									className={classNames(
 										active ? "bg-gray-100" : "",
-										`block px-4 py-2 text-md text-gray-700 ${
-											route.name === "Sign up" ? "font-bold" : null
+										`block px-4 py-2 text-md text-gray-700 ${route.name === "Sign up" ? "font-bold" : null
 										}`,
 									)}
 								>

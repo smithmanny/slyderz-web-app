@@ -11,55 +11,35 @@ import {
 	nextTuesday,
 	nextWednesday,
 } from "date-fns";
-import prisma from "db";
+import { db } from "drizzle";
 
-export default async function chefProfileQuery(chefId: string) {
-	const chef = await prisma.chef.findFirstOrThrow({
-		where: {
-			id: chefId,
-			// AND: {
-			// 	hours: {
-			// 		some: {
-			// 			daysOfWeek: {
-			// 				isEmpty: false, // Prevent page from showing if chef hours are not set
-			// 			},
-			// 		},
-			// 	},
-			// },
-		},
-		select: {
-			dishes: {
-				where: {
-					deleted: false,
-				},
-				include: {
-					image: true,
-				},
-			},
-			hours: {
-				select: {
-					daysOfWeek: true,
-					endTime: true,
-					startTime: true,
-				},
-			},
-			user: {
-				select: {
-					name: true,
-					image: true,
-				},
-			},
-		},
-	});
+export default async function chefProfileQuery(chefId: number) {
+	const chef = await db.query.chefs.findFirst({
+		where: (chefs, { eq }) => eq(chefs.id, chefId),
+		with: {
+			hours: true,
+			dishes: true,
+			user: true
+		}
+	})
+
+	if (!chef) {
+		throw new NotFoundError({
+			message: "Chef not found"
+		})
+	}
+
 	try {
 		const getNextAvailableChefDay = () => {
 			const chefWorkingDays: Array<number> = [];
 			const today = new Date();
 
 			for (const hourBlock of chef.hours) {
-				for (const day of hourBlock.daysOfWeek) {
-					const matchedDay = convertDayToInt(day);
-					chefWorkingDays.push(matchedDay);
+				if (hourBlock.daysOfWeek) {
+					for (const day of hourBlock.daysOfWeek) {
+						const matchedDay = convertDayToInt(day);
+						chefWorkingDays.push(matchedDay);
+					}
 				}
 			}
 
@@ -119,7 +99,7 @@ export default async function chefProfileQuery(chefId: string) {
 			nextAvailableChefDay: nextAvailableChefDay,
 			dishes: chef.dishes,
 			chefName: chef.user.name,
-			chefImage: chef.user.image?.imageUrl,
+			chefImage: chef.user.headshotUrl,
 			hours: chef.hours,
 		};
 	} catch (err) {

@@ -1,6 +1,7 @@
 "use server";
 
 import { z } from "zod";
+import { eq } from "drizzle-orm";
 
 import { sendSesEmail } from "app/lib/aws";
 import { getStripeServer } from "app/lib/stripe";
@@ -9,7 +10,9 @@ import {
 	getConsumerServiceFee,
 	readableDate,
 } from "app/lib/utils";
-import prisma from "db";
+import { NotFoundError } from "app/lib/errors";
+import { db } from "drizzle";
+import { orders } from "drizzle/schema/order";
 
 import { TRANSACTIONAL_EMAILS } from "types";
 
@@ -22,48 +25,30 @@ export default async function fetchOrderStatusQuery(
 ) {
 	FetchOrderStatusQuerySchema.parse(input);
 
-	const order = await prisma.order.findFirstOrThrow({
-		where: {
-			confirmationNumber: input.confirmationNumber,
-		},
-		select: {
-			address1: true,
-			address2: true,
-			city: true,
-			state: true,
-			zipcode: true,
-			amount: true,
-			confirmationNumber: true,
-			eventDate: true,
-			eventTime: true,
-			orderStatus: true,
-			items: {
-				include: {
-					dish: {
-						select: {
-							description: true,
-							name: true,
-							image: true,
-						},
-					},
-				},
-			},
-			chefId: true,
-			paymentMethodId: true,
+	const order = await db.query.orders.findFirst({
+		where: (orders, { eq }) => eq(orders.confirmationNumber, input.confirmationNumber),
+		with: {
+			dishes: true,
 			chef: {
-				select: {
-					stripeAccountId: true,
-				},
+				columns: {
+					stripeAccountId: true
+				}
 			},
 			user: {
-				select: {
+				columns: {
 					id: true,
 					email: true,
-					stripeCustomerId: true,
-				},
-			},
-		},
+					stripeCustomerId: true
+				}
+			}
+		}
 	});
+
+	if (!order) {
+		throw new NotFoundError({
+			message: "Order not found"
+		})
+	}
 
 	if (order.orderStatus !== "PENDING") {
 		throw new Error("Wrong order status.");
@@ -73,14 +58,12 @@ export default async function fetchOrderStatusQuery(
 		case 0: // pending state
 			return;
 		case 1: // denied state
-			await prisma.order.update({
-				where: {
-					confirmationNumber: order.confirmationNumber,
-				},
-				data: {
-					orderStatus: "DECLINED",
-				},
-			});
+			await db
+				.update(orders)
+				.set({
+					orderStatus: "DECLINED"
+				})
+				.where(eq(orders.id, order.id))
 
 			await sendSesEmail({
 				to: order.user.email,
@@ -94,19 +77,19 @@ export default async function fetchOrderStatusQuery(
 			{
 				// accepted state
 				const stripe = getStripeServer();
-				const consumerServiceFee = getConsumerServiceFee(order.amount);
+				const consumerServiceFee = getConsumerServiceFee(order.subtotal);
 				// Stripe amount must be in cents
 				const stripeOrderAmount = Number(
 					(
-						parseFloat(String(order.amount + consumerServiceFee)) * 100
+						parseFloat(String(order.subtotal + consumerServiceFee)) * 100
 					).toString(),
 				);
 				const stripeApplicationFee = Number(
 					(
 						parseFloat(
 							String(
-								getChefServiceFee(order.amount) +
-									getConsumerServiceFee(order.amount),
+								getChefServiceFee(order.subtotal) +
+								getConsumerServiceFee(order.subtotal),
 							),
 						) * 100
 					).toString(),
@@ -135,14 +118,13 @@ export default async function fetchOrderStatusQuery(
 				}
 
 				const capturePayment = stripe.paymentIntents.capture(paymentIntent.id);
-				const updateOrder = prisma.order.update({
-					where: {
-						confirmationNumber: order.confirmationNumber,
-					},
-					data: {
-						orderStatus: "ACCEPTED",
-					},
-				});
+
+				const updateOrder = db
+					.update(orders)
+					.set({
+						orderStatus: "ACCEPTED"
+					})
+					.where(eq(orders.id, order.id))
 
 				await Promise.all([capturePayment, updateOrder]);
 
@@ -157,15 +139,13 @@ export default async function fetchOrderStatusQuery(
 						orderDate: readableDate(eventDate),
 						orderTime: order.eventTime,
 						orderLocation: address,
-						orderSubtotal: order.amount,
+						orderSubtotal: order.subtotal,
 						orderServiceFee: consumerServiceFee,
-						orderTotal: order.amount + consumerServiceFee,
-						orderItems: order.items.map((d) => ({
-							id: d.id,
-							quantity: d.quantity,
-							description: d.dish.description,
-							name: d.dish.name,
-							image: d.dish?.image[0]?.imageUrl,
+						orderTotal: order.total,
+						orderItems: order.dishes.map((dish) => ({
+							quantity: dish.quantity,
+							name: dish.name,
+							image: dish.imageUrl,
 						})),
 					},
 				});

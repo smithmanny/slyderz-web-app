@@ -4,7 +4,6 @@ import Container from "app/components/Container";
 import { CheckoutCartItem } from "../CartItem";
 import CheckoutForm from "./CheckoutForm";
 
-import fetchUserAddress from "app/actions/queries/fetchUserAddress";
 import fetchUserPaymentMethodsQuery from "app/actions/queries/fetchUserPaymentMethods";
 import { getCartCookie } from "app/lib/cookies";
 import { cn } from "app/lib/utils";
@@ -14,11 +13,11 @@ export default async function ChefCheckoutPage({
 }: {
 	params: { cid: string };
 }) {
-	const userAddress = fetchUserAddress();
+	// TODO: Address table deleted
+	// const userAddress = fetchUserAddress();
 	const userCart = getCartCookie();
 	const userPaymentMethods = fetchUserPaymentMethodsQuery();
-	const [address, cart, paymentMethods] = await Promise.all([
-		userAddress,
+	const [cart, paymentMethods] = await Promise.all([
 		userCart,
 		userPaymentMethods,
 	]);
@@ -50,7 +49,7 @@ export default async function ChefCheckoutPage({
 						chefId={params.cid}
 						cartTotal={cart.total}
 						cartItems={cart.items}
-						address={address}
+						address={ }
 						paymentMethods={paymentMethods}
 						eventDate={cart.eventDate}
 						eventTime={cart.eventTime}

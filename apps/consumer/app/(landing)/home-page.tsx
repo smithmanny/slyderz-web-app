@@ -58,7 +58,7 @@ export default function HomePage(props: HomePageTypes) {
 
 					<div className="grid grid-flow-col auto-cols-max gap-4">
 						{props.nearbyChefs.map((chef, i) => (
-							<Link href={`/chefs/${chef.id}`} key={chef.userId}>
+							<Link href={`/chefs/${chef.id}`} key={chef.user.id}>
 								<Card className="w-[225px] h-80">
 									<div className="group relative bg-black h-80 flex rounded-[0.75rem]">
 										<img
