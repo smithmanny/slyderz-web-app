@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
-import { setCookie } from "app/lib/cookies";
+import { setCartCookie } from "app/lib/cookies";
 
 import { Cart } from "types";
 
@@ -26,7 +26,7 @@ export async function createCartMutation(
 		cart.eventDate = input.eventDate.toISOString();
 		cart.eventTime = input.eventTime;
 
-		setCookie("cart", JSON.stringify(cart));
+		setCartCookie(JSON.stringify(cart));
 
 		redirect(`/chefs/${input.chefId}/checkout`);
 	} else {

@@ -19,7 +19,7 @@ type MenuTableDish = {
 const generateMenuTableData = (dishes: Array<MenuTableDish>) => {
 	return dishes.map((dish) => ({
 		id: dish.id,
-		amount: Number(dish.price),
+		amount: dish.price,
 		name: dish.name,
 		section: dish.section.name,
 	}));

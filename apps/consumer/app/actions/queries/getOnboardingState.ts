@@ -18,14 +18,14 @@ export default async function getOnboardingStateQuery() {
 			id: true,
 			stripeAccountId: true,
 			onboardingState: true,
-			isOnboardingComplete: true
-		}
+			isOnboardingComplete: true,
+		},
 	});
 
 	if (!chef) {
 		throw new NotFoundError({
-			message: "Chef not found"
-		})
+			message: "Chef not found",
+		});
 	}
 
 	if (chef.onboardingState === "SETUP_STRIPE") {
@@ -35,17 +35,17 @@ export default async function getOnboardingStateQuery() {
 			const data = await db
 				.update(chefs)
 				.set({
-					onboardingState: "UPLOAD_HEADSHOT"
+					onboardingState: "UPLOAD_HEADSHOT",
 				})
 				.where(eq(chefs.id, chef.id))
-				.returning()
+				.returning();
 
-			const updatedChef = data[0]
+			const updatedChef = data[0];
 
 			if (!updatedChef) {
 				throw new NotFoundError({
-					message: "Chef not found"
-				})
+					message: "Chef not found",
+				});
 			}
 
 			return {

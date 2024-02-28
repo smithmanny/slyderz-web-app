@@ -13,7 +13,7 @@ export default async function createSetupIntentMutation() {
 			customer: session.user.stripeCustomerId,
 			payment_method_types: ["card"],
 			metadata: {
-				userId: session.user.userId,
+				userId: session.user.id,
 			},
 			usage: "off_session",
 		});

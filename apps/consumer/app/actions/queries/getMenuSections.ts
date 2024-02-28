@@ -9,6 +9,7 @@ export default async function getMenuSectionsQuery() {
 	const { chef } = await getChefSession();
 
 	return await db.query.sections.findMany({
-		where: (sections, { eq }) => and(eq(sections.chefId, chef.id), eq(sections.isActive, true))
+		where: (sections, { eq }) =>
+			and(eq(sections.chefId, chef.id), eq(sections.isActive, true)),
 	});
 }

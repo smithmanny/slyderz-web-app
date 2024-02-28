@@ -1,7 +1,7 @@
 "use client";
 
+import { generateId } from "lucia";
 import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 
 import { Quantity } from "app/components/Quantity";
 import { Button } from "app/components/ui/button";
@@ -28,7 +28,7 @@ export default function ChefDish(props: ChefDishType) {
 	const [guestCount, setGuestCount] = useState<number>(1);
 	const [isDishDialogOpen, setIsDishDialogOpen] = useState<boolean>(false);
 	const input = {
-		id: uuidv4(),
+		id: generateId(10),
 		price: props.price,
 		name: props.name,
 		description: props.description,

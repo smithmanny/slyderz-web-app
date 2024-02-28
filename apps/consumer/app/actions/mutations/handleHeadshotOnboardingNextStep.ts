@@ -4,9 +4,9 @@ import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 import { getProtectedSession } from "app/lib/auth";
+import { NotFoundError } from "app/lib/errors";
 import { db } from "drizzle";
 import { chefs } from "drizzle/schema/user";
-import { NotFoundError } from "app/lib/errors";
 
 export default async function handleHeadshotOnboardingNextStepMutation() {
 	const { user } = await getProtectedSession();
@@ -15,14 +15,14 @@ export default async function handleHeadshotOnboardingNextStepMutation() {
 		where: (chefs, { eq }) => eq(chefs.userId, user.id),
 		columns: {
 			id: true,
-			onboardingState: true
-		}
+			onboardingState: true,
+		},
 	});
 
 	if (!chef) {
 		throw new NotFoundError({
-			message: "Chef not found"
-		})
+			message: "Chef not found",
+		});
 	}
 
 	if (chef.onboardingState !== "UPLOAD_HEADSHOT") {
@@ -32,9 +32,9 @@ export default async function handleHeadshotOnboardingNextStepMutation() {
 	await db
 		.update(chefs)
 		.set({
-			onboardingState: "COMPLETE_SERVSAFE"
+			onboardingState: "COMPLETE_SERVSAFE",
 		})
-		.where(eq(chefs.id, chef.id))
+		.where(eq(chefs.id, chef.id));
 
 	revalidatePath("/dashboard");
 }

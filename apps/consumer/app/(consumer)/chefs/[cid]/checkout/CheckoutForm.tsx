@@ -28,13 +28,13 @@ import {
 } from "app/lib/utils";
 
 import { CartItem } from "types";
-import type { Address } from ".prisma/client";
 
 interface CheckoutFormProps {
 	chefId: string;
-	cartTotal: number;
+	cartTotal: string;
+	subtotal: string;
 	cartItems: Array<CartItem>;
-	address: Address;
+	address: string;
 	eventDate: string;
 	eventTime: string;
 	paymentMethods: Array<any>;
@@ -45,7 +45,7 @@ export default function CheckoutForm(props: CheckoutFormProps) {
 		paymentMethod: z.string(),
 	});
 	const form = useSlyderzForm(formSchema, {
-		selectedAddress: props.address?.id || "",
+		selectedAddress: props.address || "",
 		paymentMethod: props.paymentMethods[0]?.id || "",
 	});
 	const values = form.getValues();
@@ -67,8 +67,8 @@ export default function CheckoutForm(props: CheckoutFormProps) {
 								</FormControl>
 								<SelectContent>
 									{[props.address].map((address, i) => (
-										<SelectItem key={address.id} value={address.id}>
-											{address.address1}
+										<SelectItem key={address} value={address}>
+											{address}
 										</SelectItem>
 									))}
 								</SelectContent>
@@ -105,7 +105,7 @@ export default function CheckoutForm(props: CheckoutFormProps) {
 				<div>
 					<div className="grid grid-cols-2 mb-2">
 						<p className="text-muted-foreground">Subtotal</p>
-						<p>{formatNumberToCurrency(props.cartTotal)}</p>
+						<p>{formatNumberToCurrency(Number(props.cartTotal))}</p>
 					</div>
 					<div className="grid grid-cols-2 mb-2">
 						<p className="text-muted-foreground">Taxes</p>
@@ -114,13 +114,13 @@ export default function CheckoutForm(props: CheckoutFormProps) {
 					<div className="grid grid-cols-2 mb-2 pb-2 border-b-2">
 						<p className="text-muted-foreground">Service fee</p>
 						<p>
-							{formatNumberToCurrency(getConsumerServiceFee(props.cartTotal))}
+							{formatNumberToCurrency(getConsumerServiceFee(props.subtotal))}
 						</p>
 					</div>
 					<div className="grid grid-cols-2">
 						<p>Total</p>
 						<p>
-							{formatNumberToCurrency(getConsumerCartTotal(props.cartTotal))}
+							{formatNumberToCurrency(getConsumerCartTotal(props.subtotal))}
 						</p>
 					</div>
 				</div>
@@ -141,7 +141,9 @@ export default function CheckoutForm(props: CheckoutFormProps) {
 							eventTime: props.eventTime,
 							address: values.selectedAddress,
 							chefId: props.chefId,
-							cartTotal: props.cartTotal,
+							subtotal: props.cartTotal,
+							serviceFee: props.cartTotal,
+							total: props.cartTotal,
 							paymentMethodId: values.paymentMethod,
 							cartItems: props.cartItems,
 						});

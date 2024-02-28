@@ -1,6 +1,7 @@
 "use server";
 
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { generateId } from "lucia";
 import { revalidatePath } from "next/cache";
 
 import { getChefSession } from "app/lib/auth";
@@ -26,7 +27,7 @@ export async function createDishMutation(input: FormData) {
 		description: string;
 		image: Blob;
 		price: string;
-		sectionId: number;
+		sectionId: string;
 	}>(input);
 	const bytes = await image.arrayBuffer();
 	const buffer = Buffer.from(bytes);
@@ -47,23 +48,27 @@ export async function createDishMutation(input: FormData) {
 			category: "dishes",
 		});
 
-		await db.insert(dishes).values({
-			description,
-			name,
-			price,
-			sectionId,
-			chefId: chef.id,
-			imageUrl
-		}).onConflictDoUpdate({
-			target: [dishes.chefId, dishes.name],
-			set: {
-				isActive: true,
-				price,
+		await db
+			.insert(dishes)
+			.values({
+				id: generateId(10),
 				description,
+				name,
+				price,
+				sectionId,
+				chefId: chef.id,
 				imageUrl,
-				sectionId
-			}
-		})
+			})
+			.onConflictDoUpdate({
+				target: [dishes.chefId, dishes.name],
+				set: {
+					isActive: true,
+					price,
+					description,
+					imageUrl,
+					sectionId,
+				},
+			});
 	} catch (err) {
 		throw new UnknownError({
 			message: "Unknow error uploading image",
@@ -74,6 +79,6 @@ export async function createDishMutation(input: FormData) {
 	revalidatePath("/dashboard/menu");
 
 	return {
-		message: "Dish successfully created"
+		message: "Dish successfully created",
 	};
 }

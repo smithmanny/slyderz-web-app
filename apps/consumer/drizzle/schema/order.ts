@@ -1,18 +1,18 @@
-import { pgTable, text, timestamp, integer, serial, numeric } from "drizzle-orm/pg-core"
 import { relations } from 'drizzle-orm';
+import { numeric, pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core"
 
-import { chefs, users } from "./user";
 import { dishesToOrders } from "./menu";
+import { chefs, users } from "./user";
 
 export const orders = pgTable("orders", {
-  id: serial("id").primaryKey(),
+  id: varchar("id", { length: 255 }).unique().primaryKey(),
   createdAt: timestamp("created_at", { precision: 3, mode: 'string' }).defaultNow(),
   updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }).defaultNow(),
   subtotal: numeric("subtotal", { precision: 15, scale: 6 }).notNull(),
   total: numeric("total", { precision: 15, scale: 6 }).notNull(),
   serviceFee: numeric("serviceFee", { precision: 15, scale: 6 }).notNull(),
   confirmationNumber: text("confirmation_number").notNull().unique(),
-  paymentMethodId: text("payment_method_id").notNull(),
+  paymentMethodId: varchar("payment_method_id", { length: 255 }).notNull(),
   address1: text("address1").notNull(),
   address2: text("address2"),
   city: text("city").notNull(),
@@ -21,10 +21,10 @@ export const orders = pgTable("orders", {
   eventDate: timestamp("event_date", { precision: 3, mode: 'string' }).notNull(),
   eventTime: text("event_time").notNull(),
   orderStatus: text("order_status", {
-    enum: ['PENDING', 'ACCEPTED', 'COMPLETED', 'DECLINED']
-  }).default('PENDING').notNull(),
-  userId: integer("user_id").notNull().references(() => users.id, { onDelete: "restrict", onUpdate: "cascade" }),
-  chefId: integer("chef_id").notNull().references(() => chefs.id, { onDelete: "restrict", onUpdate: "cascade" }),
+    enum: ['pending', 'accepted', 'completed', 'declined']
+  }).default('pending').notNull(),
+  userId: varchar("user_id", { length: 255 }).notNull().references(() => users.id, { onDelete: "restrict", onUpdate: "cascade" }),
+  chefId: varchar("chef_id", { length: 255 }).notNull().references(() => chefs.id, { onDelete: "restrict", onUpdate: "cascade" }),
 });
 export const ordersRelations = relations(orders, ({ one, many }) => ({
   user: one(users, {

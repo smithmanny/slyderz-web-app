@@ -1,19 +1,19 @@
 "use server";
 
+import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
-import { eq } from "drizzle-orm";
-import { z } from "zod";
 import { Argon2id } from "oslo/password";
+import { z } from "zod";
 
 import { invalidateAllUserTokens, validateToken } from "app/lib/auth";
 import { auth, invalidateAllUserSessions } from "app/lib/auth";
-import { db } from "drizzle";
-import { users } from "drizzle/schema/user";
 import { sendSesEmail } from "app/lib/aws";
 import { TokenError, UnknownError } from "app/lib/errors";
 import { requiredFormData } from "app/lib/utils";
+import { db } from "drizzle";
+import { users } from "drizzle/schema/user";
 
 import { TRANSACTIONAL_EMAILS } from "types";
 
@@ -31,19 +31,21 @@ export default async function handlePasswordResetMutation(
 	try {
 		const userId = await validateToken(token);
 		const user = await db.query.users.findFirst({
-			where: (users, { eq }) => eq(users.id, userId)
-		})
+			where: (users, { eq }) => eq(users.id, userId),
+		});
 
 		if (!user) {
-			throw new Error("User not found")
+			throw new Error("User not found");
 		}
 
 		const argon2id = new Argon2id();
 		const hashedPassword = await argon2id.hash(password);
-		const updatePassword = db.update(users).set({
-			hashedPassword
-		})
-			.where(eq(users.id, user.id))
+		const updatePassword = db
+			.update(users)
+			.set({
+				hashedPassword,
+			})
+			.where(eq(users.id, user.id));
 
 		// Invalidate all sessions, user tokens and update password
 		await Promise.all([
@@ -57,9 +59,13 @@ export default async function handlePasswordResetMutation(
 			});
 		});
 
-		const session = await auth.createSession(user.id, {})
-		const sessionCookie = auth.createSessionCookie(session.id)
-		cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
+		const session = await auth.createSession(user.id, {});
+		const sessionCookie = auth.createSessionCookie(session.id);
+		cookies().set(
+			sessionCookie.name,
+			sessionCookie.value,
+			sessionCookie.attributes,
+		);
 
 		await sendSesEmail({
 			to: user.email,
@@ -78,6 +84,6 @@ export default async function handlePasswordResetMutation(
 		}
 	}
 
-	revalidatePath("/")
+	revalidatePath("/");
 	redirect("/");
 }

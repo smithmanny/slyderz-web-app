@@ -9,7 +9,7 @@ export default async function getMenuDishesQuery() {
 	return await db.query.dishes.findMany({
 		where: (dishes, { eq }) => eq(dishes.chefId, chef.id),
 		with: {
-			section: true
-		}
+			section: true,
+		},
 	});
 }

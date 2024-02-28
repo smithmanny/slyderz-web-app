@@ -4,7 +4,7 @@ import { getSession } from "app/lib/auth";
 import BecomeHostButton from "./BecomeHostButton";
 
 export default async function HostPage() {
-	const session = await getSession();
+	const { session } = await getSession();
 
 	return (
 		<Container className="bg-white">
@@ -123,7 +123,7 @@ export default async function HostPage() {
 					<h3 className="pb-2 scroll-m-20 text-lg font-semibold tracking-tight">
 						All sounds good to you?
 					</h3>
-					<BecomeHostButton userId={session?.user.userId} />
+					<BecomeHostButton userId={session?.userId} />
 				</div>
 			</div>
 		</Container>

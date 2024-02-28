@@ -1,16 +1,16 @@
 "use server";
 
-import { z } from "zod";
 import { eq } from "drizzle-orm";
+import { z } from "zod";
 
 import { sendSesEmail } from "app/lib/aws";
+import { NotFoundError } from "app/lib/errors";
 import { getStripeServer } from "app/lib/stripe";
 import {
 	getChefServiceFee,
 	getConsumerServiceFee,
 	readableDate,
 } from "app/lib/utils";
-import { NotFoundError } from "app/lib/errors";
 import { db } from "drizzle";
 import { orders } from "drizzle/schema/order";
 
@@ -26,28 +26,29 @@ export default async function fetchOrderStatusQuery(
 	FetchOrderStatusQuerySchema.parse(input);
 
 	const order = await db.query.orders.findFirst({
-		where: (orders, { eq }) => eq(orders.confirmationNumber, input.confirmationNumber),
+		where: (orders, { eq }) =>
+			eq(orders.confirmationNumber, input.confirmationNumber),
 		with: {
 			dishes: true,
 			chef: {
 				columns: {
-					stripeAccountId: true
-				}
+					stripeAccountId: true,
+				},
 			},
 			user: {
 				columns: {
 					id: true,
 					email: true,
-					stripeCustomerId: true
-				}
-			}
-		}
+					stripeCustomerId: true,
+				},
+			},
+		},
 	});
 
 	if (!order) {
 		throw new NotFoundError({
-			message: "Order not found"
-		})
+			message: "Order not found",
+		});
 	}
 
 	if (order.orderStatus !== "PENDING") {
@@ -61,9 +62,9 @@ export default async function fetchOrderStatusQuery(
 			await db
 				.update(orders)
 				.set({
-					orderStatus: "DECLINED"
+					orderStatus: "DECLINED",
 				})
-				.where(eq(orders.id, order.id))
+				.where(eq(orders.id, order.id));
 
 			await sendSesEmail({
 				to: order.user.email,
@@ -89,7 +90,7 @@ export default async function fetchOrderStatusQuery(
 						parseFloat(
 							String(
 								getChefServiceFee(order.subtotal) +
-								getConsumerServiceFee(order.subtotal),
+									getConsumerServiceFee(order.subtotal),
 							),
 						) * 100
 					).toString(),
@@ -122,9 +123,9 @@ export default async function fetchOrderStatusQuery(
 				const updateOrder = db
 					.update(orders)
 					.set({
-						orderStatus: "ACCEPTED"
+						orderStatus: "ACCEPTED",
 					})
-					.where(eq(orders.id, order.id))
+					.where(eq(orders.id, order.id));
 
 				await Promise.all([capturePayment, updateOrder]);
 

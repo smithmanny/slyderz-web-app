@@ -1,16 +1,17 @@
-import { cookies } from "next/headers";
-import { cache } from "react";
-import { Lucia } from "lucia";
-import { TimeSpan, createDate, isWithinExpirationDate } from "oslo";
 import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
 import { eq } from "drizzle-orm";
+import { Lucia, generateId } from "lucia";
+import { cookies } from "next/headers";
+import { TimeSpan, createDate, isWithinExpirationDate } from "oslo";
+import { cache } from "react";
 
 import { TokenError } from "app/lib/errors";
 import { db } from "drizzle";
+import { sessions, tokens, users } from "drizzle/schema/user";
 import { AuthError } from "./errors";
-import { tokens, users, sessions } from "drizzle/schema/user";
 
-const domain = process.env.NODE_ENV === "development" ? "localhost:3000" : "slyderz.co";
+const domain =
+	process.env.NODE_ENV === "development" ? "localhost:3000" : "slyderz.co";
 const secure = process.env.NODE_ENV === "development" ? false : true;
 const adapter = new DrizzlePostgreSQLAdapter(db, sessions, users);
 
@@ -21,8 +22,8 @@ export const auth = new Lucia(adapter, {
 		attributes: {
 			secure,
 			sameSite: "strict",
-			domain
-		}
+			domain,
+		},
 	},
 	getSessionAttributes: (databaseSession: DatabaseSessionAttributes) => {
 		return {};
@@ -33,59 +34,58 @@ export const auth = new Lucia(adapter, {
 			email: userData.email,
 			emailVerified: userData.emailVerified,
 			name: userData.name,
-			userId: userData.userId,
+			role: userData.role,
 		};
 	},
 });
 
 export const getSession = cache(async () => {
-	const sessionId = cookies().get(auth.sessionCookieName)?.value ?? null
+	const sessionId = cookies().get(auth.sessionCookieName)?.value ?? null;
+
 	if (!sessionId) {
 		return {
 			user: null,
-			session: null
+			session: null,
 		};
 	}
 
-	const result = await auth.validateSession(sessionId as unknown as number);
+	const result = await auth.validateSession(sessionId);
 
-	if (result.session && result.session.fresh) {
-		return {
-			session: result.session,
-			user: result.user
-		}
+	if (result.session?.fresh) {
+		const sessionCookie = auth.createSessionCookie(result.session.id);
+		cookies().set(sessionCookie);
 	}
 
 	return {
-		user: null,
-		session: null
+		session: result.session,
+		user: result.user,
 	};
 });
 export const getProtectedSession = cache(async () => {
-	const { session, user } = await getSession()
+	const { session, user } = await getSession();
 
-	if (!session) {
+	if (!session || !user) {
 		throw new AuthError();
 	}
 
 	return {
 		session,
-		user
+		user,
 	};
 });
 export const getChefSession = cache(async () => {
 	const { session, user } = await getSession();
 
-	if (!session) {
+	if (!session || !user) {
 		throw new AuthError();
 	}
 
 	const chef = await db.query.chefs.findFirst({
-		where: (chefs, { eq }) => eq(chefs.userId, user.userId),
+		where: (chefs, { eq }) => eq(chefs.userId, user.id),
 	});
 
 	if (!chef) {
-		throw new Error("Chef not found")
+		throw new Error("Chef not found");
 	}
 
 	return {
@@ -94,57 +94,54 @@ export const getChefSession = cache(async () => {
 	};
 });
 
-const generateToken = async (userId: number) => {
-	const tokenId = await db.transaction(async (tx) => {
-		try {
-			// delete all user tokens
-			const deleteToken = tx.delete(tokens).where(eq(tokens.userId, userId))
-			const insertToken = tx.insert(tokens).values({
-				userId: Number(userId),
-				expiresAt: createDate(new TimeSpan(2, "h"))
-			}).returning({ id: tokens.id })
+const generateToken = async (userId: string) => {
+	const deleteToken = db.delete(tokens).where(eq(tokens.userId, userId));
+	const insertToken = db
+		.insert(tokens)
+		.values({
+			id: generateId(10),
+			userId,
+			expiresAt: createDate(new TimeSpan(2, "h")),
+		})
+		.returning({ id: tokens.id });
 
-			const [undefined, generatedToken] = await Promise.all([deleteToken, insertToken])
-			const token = generatedToken[0]
+	const [, generatedToken] = await Promise.all([deleteToken, insertToken]);
 
-			if (!token) {
-				return tx.rollback();
-			}
+	const token = generatedToken[0];
 
-			return token.id;
-		} catch (err) {
-			return tx.rollback();
-		}
-	})
+	if (!token) {
+		throw new Error("Token not created");
+	}
 
-	return tokenId
+	return token.id;
 };
 
-export const validateToken = async (tokenId: number) => {
+export const validateToken = async (tokenId: string) => {
 	try {
 		const storedToken = await db.query.tokens.findFirst({
 			where: (tokens, { eq }) => eq(tokens.id, tokenId),
 		});
 
 		if (!storedToken) {
-			throw new Error("Token not found")
+			throw new Error("Token not found");
 		}
 
 		await db.transaction(async (tx) => {
 			try {
-				const deleteToken = tx.delete(tokens).where(eq(tokens.id, storedToken.id))
+				const deleteToken = tx
+					.delete(tokens)
+					.where(eq(tokens.id, storedToken.id));
 				const insertToken = db.insert(tokens).values({
 					id: storedToken.id,
 					expiresAt: createDate(new TimeSpan(2, "h")),
-					userId: storedToken.userId
-				})
+					userId: storedToken.userId,
+				});
 
-				await Promise.all([deleteToken, insertToken])
-
+				await Promise.all([deleteToken, insertToken]);
 			} catch (err) {
-				return tx.rollback()
+				return tx.rollback();
 			}
-		})
+		});
 
 		const tokenExpires = storedToken.expiresAt;
 		if (!isWithinExpirationDate(tokenExpires)) {
@@ -162,17 +159,17 @@ export const validateToken = async (tokenId: number) => {
 	}
 };
 
-export const invalidateAllUserTokens = async (userId: number) => {
-	return await db.delete(tokens).where(eq(tokens.userId, userId))
+export const invalidateAllUserTokens = async (userId: string) => {
+	return await db.delete(tokens).where(eq(tokens.userId, userId));
 };
 
-export const invalidateAllUserSessions = async (userId: number) => {
-	return await db.delete(sessions).where(eq(sessions.userId, userId))
+export const invalidateAllUserSessions = async (userId: string) => {
+	return await db.delete(sessions).where(eq(sessions.userId, userId));
 };
 
-export const generateVerificationToken = async (userId: number) => {
+export const generateVerificationToken = async (userId: string) => {
 	const storedUserTokens = await db.query.tokens.findMany({
-		where: (tokens, { eq }) => eq(tokens.userId, userId)
+		where: (tokens, { eq }) => eq(tokens.userId, userId),
 	});
 
 	if (storedUserTokens.length > 0) {
@@ -198,12 +195,12 @@ declare module "lucia" {
 	}
 }
 
-interface DatabaseSessionAttributes {
-}
+// biome-ignore lint/complexity/noBannedTypes: <explanation>
+type DatabaseSessionAttributes = {};
 interface DatabaseUserAttributes {
 	stripeCustomerId: string;
 	email: string;
 	emailVerified: boolean;
 	name: string;
-	userId: number;
+	role: string;
 }

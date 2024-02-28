@@ -1,1 +1,0 @@
-ALTER TABLE "dishes_to_orders" DROP COLUMN IF EXISTS "description";

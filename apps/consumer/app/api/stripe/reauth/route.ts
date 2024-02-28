@@ -2,7 +2,7 @@ import { getChefSession } from "app/lib/auth";
 import { getStripeServer } from "app/lib/stripe";
 
 export async function POST() {
-	const { chef } = await getChefSession()
+	const { chef } = await getChefSession();
 	const stripe = getStripeServer();
 
 	const createAccountLink = await stripe.accountLinks.create({

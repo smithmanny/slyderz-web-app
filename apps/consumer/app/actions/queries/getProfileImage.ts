@@ -11,7 +11,7 @@ export default cache(async function getProfileImageQuery() {
 	return db.query.users.findFirst({
 		where: (users, { eq }) => eq(users.id, user.id),
 		columns: {
-			headshotUrl: true
-		}
+			headshotUrl: true,
+		},
 	});
 });

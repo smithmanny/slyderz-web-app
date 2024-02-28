@@ -13,20 +13,20 @@ import {
 } from "date-fns";
 import { db } from "drizzle";
 
-export default async function chefProfileQuery(chefId: number) {
+export default async function chefProfileQuery(chefId: string) {
 	const chef = await db.query.chefs.findFirst({
 		where: (chefs, { eq }) => eq(chefs.id, chefId),
 		with: {
 			hours: true,
 			dishes: true,
-			user: true
-		}
-	})
+			user: true,
+		},
+	});
 
-	if (!chef) {
+	if (!chef || !chef.dishes || !chef.hours) {
 		throw new NotFoundError({
-			message: "Chef not found"
-		})
+			message: "Chef not found",
+		});
 	}
 
 	try {

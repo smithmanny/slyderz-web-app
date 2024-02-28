@@ -1,8 +1,8 @@
 "use server";
 
+import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { eq } from "drizzle-orm";
 
 import { db } from "drizzle";
 import { sections } from "drizzle/schema/menu";
@@ -28,9 +28,9 @@ export async function deleteMenuSectionMutation(
 		await db
 			.update(sections)
 			.set({
-				isActive: false
+				isActive: false,
 			})
-			.where(eq(sections.id, input.sectionId))
+			.where(eq(sections.id, input.sectionId));
 	} catch (err) {
 		return {
 			message: "Failed to delete section",

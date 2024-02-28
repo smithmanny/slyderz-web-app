@@ -65,14 +65,11 @@ export const metadata: Metadata = {
 };
 
 const Layout = async ({ children }: { children: ReactNode }) => {
-	const session = await getSession();
+	const { user } = await getSession();
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body className={cn(roboto.className, "min-h-full")}>
-				<Appbar
-					user={session?.user}
-					className="max-w-screen-xl relative mx-auto"
-				/>
+				<Appbar user={user} className="max-w-screen-xl relative mx-auto" />
 				<main>{children}</main>
 				<Footer />
 			</body>

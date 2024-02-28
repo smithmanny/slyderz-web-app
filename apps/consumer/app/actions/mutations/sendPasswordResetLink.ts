@@ -12,11 +12,11 @@ import { TRANSACTIONAL_EMAILS } from "types";
 
 const sendPasswordResetLinkSchema = z.string().email();
 export default async function sendPasswordResetLinkMutation(input: FormData) {
-	const { email } = requiredFormData<{ email: string }>(input)
+	const { email } = requiredFormData<{ email: string }>(input);
 	sendPasswordResetLinkSchema.parse(email);
 
 	const user = await db.query.users.findFirst({
-		where: (users, { eq }) => eq(users.email, email)
+		where: (users, { eq }) => eq(users.email, email),
 	});
 
 	if (!user) {
@@ -29,8 +29,9 @@ export default async function sendPasswordResetLinkMutation(input: FormData) {
 		to: user.email,
 		type: TRANSACTIONAL_EMAILS.forgotPassword,
 		variables: {
-			resetPasswordUrl: `${process.env.NEXT_PUBLIC_URL
-				}/reset-password?token=${token.toString()}`,
+			resetPasswordUrl: `${
+				process.env.NEXT_PUBLIC_URL
+			}/reset-password?token=${token.toString()}`,
 		},
 	});
 

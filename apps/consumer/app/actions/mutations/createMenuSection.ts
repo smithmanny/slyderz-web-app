@@ -1,5 +1,6 @@
 "use server";
 
+import { generateId } from "lucia";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -17,15 +18,19 @@ export default async function createMenuSectionMutation(
 	const { chef } = await getChefSession();
 
 	try {
-		await db.insert(sections).values({
-			chefId: chef.id,
-			name: input.name.toLowerCase()
-		}).onConflictDoUpdate({
-			target: [sections.chefId, sections.name],
-			set: {
-				isActive: true,
-			}
-		})
+		await db
+			.insert(sections)
+			.values({
+				id: generateId(10),
+				chefId: chef.id,
+				name: input.name.toLowerCase(),
+			})
+			.onConflictDoUpdate({
+				target: [sections.chefId, sections.name],
+				set: {
+					isActive: true,
+				},
+			});
 
 		revalidatePath("/dashboard/menu");
 	} catch (err: any) {

@@ -45,9 +45,9 @@ export async function PUT(request: Request) {
 		await db
 			.update(users)
 			.set({
-				headshotUrl: imageUrl
+				headshotUrl: imageUrl,
 			})
-			.where(eq(users.id, user.id))
+			.where(eq(users.id, user.id));
 
 		return Response.json({ imageUrl });
 	} catch (err) {

@@ -6,7 +6,6 @@ import { Controller } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { Label } from "app/components//ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "app/components/ui/avatar";
 import { Button } from "app/components/ui/button";
 import {
@@ -26,6 +25,7 @@ import {
 	DialogTrigger,
 } from "app/components/ui/dialog";
 import { Input } from "app/components/ui/input";
+import { Label } from "app/components/ui/label";
 import {
 	Popover,
 	PopoverContent,
@@ -39,7 +39,7 @@ import createMenuSectionMutation from "app/actions/mutations/createMenuSection";
 import { useSlyderzForm } from "app/hooks/useSlyderzForm";
 
 interface DishModalProps {
-	sections: Array<{ label: string; value: string }>;
+	sections: Array<{ label: string; value: number }>;
 	closeModal: () => void;
 }
 function DishModal(props: DishModalProps) {
@@ -52,7 +52,7 @@ function DishModal(props: DishModalProps) {
 		name: z.string(),
 		description: z.string().max(250),
 		price: z.number().min(0),
-		sectionId: z.string(),
+		sectionId: z.number(),
 	});
 	const dishForm = useSlyderzForm(createDishSchema, {
 		image: "",
@@ -253,7 +253,7 @@ const generateMenuSectionsFormValues = (sections: Array<MenuSection>) => {
 };
 
 type MenuSection = {
-	id: string;
+	id: number;
 	name: string;
 };
 interface CreateDishButtonProps {

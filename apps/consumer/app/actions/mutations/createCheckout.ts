@@ -1,35 +1,36 @@
 "use server";
 
+import { generateId } from "lucia";
 import { redirect } from "next/navigation";
 import randomstring from "randomstring";
 import { z } from "zod";
 
 import { getProtectedSession } from "app/lib/auth";
 import { sendSesEmail } from "app/lib/aws";
-import { getCartCookie, setCookie } from "app/lib/cookies";
+import { getCartCookie, setCartCookie } from "app/lib/cookies";
+import { NotFoundError, UnknownError } from "app/lib/errors";
 import {
 	getChefServiceFee,
 	getConsumerServiceFee,
 	readableDate,
 } from "app/lib/utils";
 import { db } from "drizzle";
-import { orders } from "drizzle/schema/order";
 import { dishesToOrders } from "drizzle/schema/menu";
-import { NotFoundError, UnknownError } from "app/lib/errors";
+import { orders } from "drizzle/schema/order";
 
 import { TRANSACTIONAL_EMAILS } from "types";
 
 const CreateCheckoutSchema = z.object({
 	address: z.string(),
-	chefId: z.number(),
+	chefId: z.string(),
 	subtotal: z.string(),
 	serviceFee: z.string(),
 	total: z.string(),
 	cartItems: z.array(
 		z.object({
-			id: z.number(),
-			dishId: z.number(),
-			chefId: z.number(),
+			id: z.string(),
+			dishId: z.string(),
+			chefId: z.string(),
 			name: z.string(),
 			price: z.number(),
 			imageUrl: z.string(),
@@ -52,12 +53,12 @@ export default async function createCheckoutMutation(
 	const chef = await db.query.chefs.findFirst({
 		where: (chefs, { eq }) => eq(chefs.id, input.chefId),
 		with: {
-			user: true
-		}
+			user: true,
+		},
 	});
 
 	if (!chef) {
-		throw new Error("Chef not found")
+		throw new Error("Chef not found");
 	}
 
 	const order = await db.transaction(async (tx) => {
@@ -67,33 +68,37 @@ export default async function createCheckoutMutation(
 			length: 7,
 		})}`;
 		const consumerServiceFee = getConsumerServiceFee(cart.total);
-		const cartTotal = cart.total + consumerServiceFee
+		const cartTotal = cart.total + consumerServiceFee;
 
 		try {
-			const insertOrder = await tx.insert(orders).values({
-				serviceFee: String(consumerServiceFee),
-				subtotal: String(cart.total),
-				total: String(cartTotal),
-				chefId: input.chefId,
-				confirmationNumber: orderConfirmationNumber,
-				address1: "",
-				address2: "",
-				state: "",
-				city: "",
-				zipcode: "",
-				eventDate: input.eventDate,
-				eventTime: input.eventTime,
-				paymentMethodId: input.paymentMethodId,
-				userId: user.id,
-			}).returning()
+			const insertOrder = await tx
+				.insert(orders)
+				.values({
+					id: generateId(10),
+					serviceFee: String(consumerServiceFee),
+					subtotal: String(cart.total),
+					total: String(cartTotal),
+					chefId: input.chefId,
+					confirmationNumber: orderConfirmationNumber,
+					address1: "",
+					address2: "",
+					state: "",
+					city: "",
+					zipcode: "",
+					eventDate: input.eventDate,
+					eventTime: input.eventTime,
+					paymentMethodId: input.paymentMethodId,
+					userId: user.id,
+				})
+				.returning();
 
-			const order = insertOrder[0]
+			const order = insertOrder[0];
 
 			if (!order) {
 				tx.rollback();
 				throw new NotFoundError({
-					message: "Order not found"
-				})
+					message: "Order not found",
+				});
 			}
 
 			// create order items
@@ -104,21 +109,24 @@ export default async function createCheckoutMutation(
 				imageUrl: item.imageUrl,
 				price: String(item.price),
 				quantity: item.quantity,
-			}))
-			const orderItems = await db.insert(dishesToOrders).values(orderDishes).returning()
+			}));
+			const orderItems = await db
+				.insert(dishesToOrders)
+				.values(orderDishes)
+				.returning();
 
 			return {
 				...order,
 				items: {
-					...orderItems
-				}
-			}
+					...orderItems,
+				},
+			};
 		} catch (err) {
-			tx.rollback()
+			tx.rollback();
 			throw new UnknownError({
 				message: "Failed to create order",
-				cause: err
-			})
+				cause: err,
+			});
 		}
 	});
 
@@ -145,7 +153,7 @@ export default async function createCheckoutMutation(
 					quantity: item.quantity,
 					price: item.price,
 					name: item.name,
-					image: item.imageUrl
+					image: item.imageUrl,
 				})),
 			},
 		};
@@ -161,12 +169,14 @@ export default async function createCheckoutMutation(
 				orderLocation: address,
 				// orderSubtotal: order.amount,
 				// orderServiceFee: chefServiceFee,
-				orderTotal: String(Number(order.subtotal) - getChefServiceFee(order.subtotal)),
+				orderTotal: String(
+					Number(order.subtotal) - getChefServiceFee(order.subtotal),
+				),
 				orderItems: order.items.map((item) => ({
 					quantity: item.quantity,
 					price: String(item.price),
 					name: item.name,
-					image: item.imageUrl
+					image: item.imageUrl,
 				})),
 			},
 		};
@@ -187,7 +197,7 @@ export default async function createCheckoutMutation(
 			total: 0,
 		};
 
-		setCookie("cart", JSON.stringify(initialUserCart));
+		setCartCookie(JSON.stringify(initialUserCart));
 
 		redirect(`/orders/${order.confirmationNumber}/new`);
 	}

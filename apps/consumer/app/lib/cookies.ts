@@ -13,8 +13,20 @@ export async function getCartCookie() {
 
 	return {
 		items: [],
-		total: 0,
+		subtotal: "0",
+		serviceFee: "0",
+		total: "0",
 	} as Cart;
+}
+
+export async function setCartCookie(value: string) {
+	const cookieStore = cookies();
+
+	return cookieStore.set("cart", value, {
+		maxAge: 60 * 60 * 24 * 7, // One week
+		secure: process.env.NODE_ENV !== "development",
+		httpOnly: true,
+	});
 }
 
 export async function setCookie(name: string, value: string) {

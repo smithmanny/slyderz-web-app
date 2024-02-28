@@ -44,7 +44,7 @@ export default async function ChefPage({
 								name={dish.name}
 								description={dish.description}
 								price={Number(dish.price.toString())}
-								image={dish.image[0]?.imageUrl}
+								image={dish.imageUrl}
 								dishId={dish.id}
 								chefId={dish.chefId}
 							/>

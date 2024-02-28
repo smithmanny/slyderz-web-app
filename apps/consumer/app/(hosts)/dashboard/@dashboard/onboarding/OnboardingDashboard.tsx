@@ -6,13 +6,14 @@ import { PropsWithChildren, useEffect, useState } from "react";
 import { Button } from "app/components/ui/button";
 import { Card, CardContent } from "app/components/ui/card";
 import { onboardingSteps } from "app/lib/utils";
-
-import { OnboardingState } from ".prisma/client";
+import { chefs } from "drizzle/schema/user";
 
 const HeadshotStep = dynamic(() => import("./HeadshotOnboarding"));
 const StripeStep = dynamic(() => import("./StripeOnboarding"));
 const ServerSafeStep = dynamic(() => import("./FoodHandlerOnboarding"));
 
+const OnboardingStateEnum = chefs.onboardingState.enumValues;
+type OnboardingState = (typeof OnboardingStateEnum)[number];
 const onboardingStepsIndex: { [key: string]: number } = {
 	SETUP_STRIPE: 1,
 	UPLOAD_HEADSHOT: 2,
@@ -30,7 +31,7 @@ function OnboardingWrapper(props: OnboardingWrapperProps) {
 	const stepCount = onboardingStepsIndex[onboardingStep];
 
 	useEffect(() => {
-		if (props.state !== OnboardingState.SETUP_STRIPE) {
+		if (props.state !== "setup_stripe") {
 			setOnboardingStep(props.state);
 		}
 	}, [props.state]);
@@ -76,9 +77,9 @@ interface OnboardingDashboardProps extends PropsWithChildren {
 export default function OnboardingDashboard(props: OnboardingDashboardProps) {
 	return (
 		<OnboardingWrapper state={props.state}>
-			{props.state === OnboardingState.SETUP_STRIPE && <StripeStep />}
-			{props.state === OnboardingState.UPLOAD_HEADSHOT && <HeadshotStep />}
-			{props.state === OnboardingState.COMPLETE_SERVSAFE && <ServerSafeStep />}
+			{props.state === "setup_stripe" && <StripeStep />}
+			{props.state === "upload_headshot" && <HeadshotStep />}
+			{props.state === "complete_servsafe" && <ServerSafeStep />}
 		</OnboardingWrapper>
 	);
 }

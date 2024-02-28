@@ -1,3 +1,5 @@
+import { hours } from "drizzle/schema/menu";
+
 export const CHEF_SERVICE_FEE = 0.15; // 15%
 export const CONSUMER_SERVICE_FEE = 0.1; // 10%
 export interface CartItem {
@@ -7,6 +9,7 @@ export interface CartItem {
 	price: number;
 	dishId: string;
 	quantity: number;
+	imageUrl: string
 }
 export interface EmailBodyType {
 	cartItems: Array<CartItem>;
@@ -32,7 +35,9 @@ export interface Cart {
 	eventDate?: string | null;
 	eventTime?: string | null;
 	items: Array<CartItem>;
-	total: number;
+	total: string;
+	subtotal: string;
+	serviceFee: string;
 }
 
 // Email section
@@ -124,3 +129,6 @@ export type EmailNewOrderType = {
 	orderTotal: string;
 	orderItems: Array<EmailOrderItemsType>;
 };
+
+const dayEnum = hours.daysOfWeek.enumValues
+export type DaysOfWeekType = typeof dayEnum[number]

@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { z } from "zod";
 
-import { setCookie } from "app/lib/cookies";
+import { setCartCookie } from "app/lib/cookies";
 
 import { Cart, CartItem } from "types";
 
@@ -34,7 +34,7 @@ export async function addItemToCart(input: z.infer<typeof AddItemToCartProps>) {
 		cart.total = sum;
 		cart.items = [...cart.items, input];
 
-		setCookie("cart", JSON.stringify(cart));
+		setCartCookie(JSON.stringify(cart));
 
 		return cart;
 	}

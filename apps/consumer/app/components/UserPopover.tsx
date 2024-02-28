@@ -27,11 +27,11 @@ const fetchListItems = (user: any) => {
 	};
 
 	// TODO: fix session context
-	if (user?.userId && !user?.chef?.isChef) {
+	if (user?.id && !user?.chef?.isChef) {
 		return routes.loggedIn;
 	}
 
-	if (user?.userId && user?.chef?.isChef) {
+	if (user?.id && user?.chef?.isChef) {
 		return routes.chefLoggedIn;
 	}
 
@@ -40,7 +40,7 @@ const fetchListItems = (user: any) => {
 
 interface UserPopoverProps {
 	user: User | null;
-	profilePhoto?: string | undefined;
+	profilePhoto?: string | null;
 }
 export default function UserPopover(props: UserPopoverProps) {
 	const routes = fetchListItems(props.user);
@@ -78,7 +78,8 @@ export default function UserPopover(props: UserPopoverProps) {
 									href={route.route}
 									className={classNames(
 										active ? "bg-gray-100" : "",
-										`block px-4 py-2 text-md text-gray-700 ${route.name === "Sign up" ? "font-bold" : null
+										`block px-4 py-2 text-md text-gray-700 ${
+											route.name === "Sign up" ? "font-bold" : null
 										}`,
 									)}
 								>

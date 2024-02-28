@@ -66,12 +66,12 @@ export const metadata: Metadata = {
 };
 
 const Layout = async ({ children }: { children: ReactNode }) => {
-	const session = await getSession();
+	const { user } = await getSession();
 
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body className={cn(roboto.className, "min-h-full")}>
-				<Appbar className="sticky top-0" user={session?.user} />
+				<Appbar className="sticky top-0" user={user} />
 				<main>{children}</main>
 				<Toaster />
 				<Footer />

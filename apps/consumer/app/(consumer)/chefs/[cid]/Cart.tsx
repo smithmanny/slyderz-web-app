@@ -33,12 +33,10 @@ import { CartItem } from "./CartItem";
 import { createCartMutation } from "app/actions/mutations/createCart";
 import { useSlyderzForm } from "app/hooks/useSlyderzForm";
 import { cn, convertDayToInt, todAM, todPM } from "app/lib/utils";
-
-import type { Cart as CartType } from "types";
-import type { DaysOfWeekTypeEnum } from ".prisma/client";
+import type { Cart as CartType, DaysOfWeekType } from "types";
 
 type HoursType = {
-	daysOfWeek: Array<DaysOfWeekTypeEnum>;
+	daysOfWeek: Array<DaysOfWeekType>;
 	startTime: string | null;
 	endTime: string | null;
 };

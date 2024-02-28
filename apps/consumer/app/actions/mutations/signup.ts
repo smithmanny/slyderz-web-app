@@ -1,8 +1,9 @@
 "use server";
 
+import { eq } from "drizzle-orm";
+import { generateId } from "lucia";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { eq } from 'drizzle-orm';
 import { Argon2id } from "oslo/password";
 
 import { auth, generateVerificationToken } from "app/lib/auth";
@@ -23,13 +24,20 @@ export default async function signupMutation(input: FormData) {
 	}>(input);
 	const stripe = getStripeServer();
 
-	const userExists = await db.select().from(users).where(eq(users.email, email.toLowerCase()))
+	const fetchUser = await db
+		.select()
+		.from(users)
+		.where(eq(users.email, email.toLowerCase()));
+	const userExists = fetchUser[0];
 
 	if (userExists) {
 		throw new Error("User already exists");
 	}
 
 	const createUser = async () => {
+		const isAdmin =
+			process.env.NODE_ENV === "development" &&
+			email === "shakhorsmith@gmail.com";
 		const user = await db.transaction(async (tx) => {
 			try {
 				const stripeCustomer = await stripe.customers.create({
@@ -39,31 +47,34 @@ export default async function signupMutation(input: FormData) {
 
 				const argon2id = new Argon2id();
 				const hashedPassword = await argon2id.hash(password);
-				const createdUser = await tx.insert(users).values({
-					emailVerified: false,
-					hashedPassword,
-					name: name,
-					email: email,
-					stripeCustomerId: stripeCustomer.id,
-					role: "USER",
-				}).returning()
+				const createdUser = await tx
+					.insert(users)
+					.values({
+						id: generateId(10),
+						emailVerified: false,
+						hashedPassword,
+						name: name,
+						email: email,
+						stripeCustomerId: isAdmin
+							? "cus_LpSKis9bilj3rP"
+							: stripeCustomer.id,
+						role: "USER",
+					})
+					.returning();
 
-				const user = createdUser[0]
-				if (!user) {
-					return tx.rollback()
+				const insertedUser = createdUser[0];
+
+				if (!insertedUser) {
+					return tx.rollback();
 				}
 
-				// Issue email_activation token
-				const token = await generateVerificationToken(user.id);
-
 				return {
-					userId: user.id,
-					name: user.name,
-					email: user.email,
+					id: insertedUser.id,
+					name: insertedUser.name,
+					email: insertedUser.email,
 					stripeCustomerId: stripeCustomer.id,
-					emailVerified: user.emailVerified,
-					role: user.role,
-					token,
+					emailVerified: insertedUser.emailVerified,
+					role: insertedUser.role,
 				};
 			} catch (err) {
 				throw new UnknownError({
@@ -71,14 +82,16 @@ export default async function signupMutation(input: FormData) {
 					cause: err,
 				});
 			}
-		})
+		});
 
-		return user
+		return user;
 	};
 
 	const user = await createUser();
-	const activationUrl = `${process.env.NEXT_PUBLIC_URL
-		}/email-verification/${user.token.toString()}`;
+	const token = await generateVerificationToken(user.id);
+	const activationUrl = `${
+		process.env.NEXT_PUBLIC_URL
+	}/email-verification/${token.toString()}`;
 
 	sendSesEmail({
 		to: email,
@@ -86,10 +99,10 @@ export default async function signupMutation(input: FormData) {
 		variables: { activationUrl },
 	});
 
-	const session = await auth.createSession(user.userId, {});
+	const session = await auth.createSession(user.id, {});
 	const sessionCookie = auth.createSessionCookie(session.id);
 
-	cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
+	cookies().set(sessionCookie);
 
-	redirect("/")
+	redirect("/");
 }

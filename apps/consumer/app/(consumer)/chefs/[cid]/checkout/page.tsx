@@ -14,7 +14,6 @@ export default async function ChefCheckoutPage({
 	params: { cid: string };
 }) {
 	// TODO: Address table deleted
-	// const userAddress = fetchUserAddress();
 	const userCart = getCartCookie();
 	const userPaymentMethods = fetchUserPaymentMethodsQuery();
 	const [cart, paymentMethods] = await Promise.all([
@@ -48,8 +47,9 @@ export default async function ChefCheckoutPage({
 					<CheckoutForm
 						chefId={params.cid}
 						cartTotal={cart.total}
+						subtotal={cart.subtotal}
 						cartItems={cart.items}
-						address={ }
+						address=""
 						paymentMethods={paymentMethods}
 						eventDate={cart.eventDate}
 						eventTime={cart.eventTime}

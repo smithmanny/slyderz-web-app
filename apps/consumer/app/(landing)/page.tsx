@@ -5,7 +5,7 @@ import { db } from "drizzle";
 export interface Chef {
 	id: number;
 	user: {
-		id: number
+		id: number;
 		name: string;
 		headshotUrl: string | null;
 	};
@@ -15,9 +15,9 @@ async function getNearbyChefs() {
 	return await db.query.chefs.findMany({
 		with: {
 			dishes: true,
-			user: true
+			user: true,
 		},
-	})
+	});
 }
 
 export default async function Page() {

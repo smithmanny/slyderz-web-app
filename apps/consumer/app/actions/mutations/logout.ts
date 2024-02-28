@@ -1,13 +1,12 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 import { auth, getSession } from "app/lib/auth";
 
 export default async function logoutMutation() {
-	const { session } = await getSession()
+	const { session } = await getSession();
 
 	if (!session) {
 		return new Response(null, {
@@ -16,10 +15,9 @@ export default async function logoutMutation() {
 	}
 	// make sure to invalidate the current session!
 	await auth.invalidateSession(session.id);
-	const sessionCookie = auth.createBlankSessionCookie()
+	const sessionCookie = auth.createBlankSessionCookie();
 	// delete session cookie
-	cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+	cookies().set(sessionCookie);
 
-	revalidatePath("/");
 	redirect("/");
 }

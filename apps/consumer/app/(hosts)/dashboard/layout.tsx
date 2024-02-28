@@ -24,7 +24,7 @@ interface LayoutProps {
 }
 const Layout = async ({ children, dashboard }: LayoutProps) => {
 	// TODO: redirect if not chef
-	const session = await getSession();
+	const { user } = await getSession();
 	const userProfileImage = await getProfileImageQuery();
 	return (
 		<html lang="en" suppressHydrationWarning>
@@ -45,8 +45,8 @@ const Layout = async ({ children, dashboard }: LayoutProps) => {
 							<div className="md:pr-4">
 								<div className="flex justify-end mb-4">
 									<UserPopover
-										user={session?.user}
-										profilePhoto={userProfileImage?.imageUrl}
+										user={user}
+										profilePhoto={userProfileImage?.headshotUrl}
 									/>
 								</div>
 								<div className="py-8 px-4 md:px-8">{dashboard}</div>

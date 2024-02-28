@@ -1,10 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-import prisma from "db";
-
-import { CHEF_SERVICE_FEE, CONSUMER_SERVICE_FEE } from "types";
-import { OnboardingState } from ".prisma/client";
+import { CHEF_SERVICE_FEE, CONSUMER_SERVICE_FEE, DaysOfWeekType } from "types";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -38,10 +35,10 @@ export const getConsumerServiceFee = (cartTotal: string) =>
 export const getChefServiceFee = (cartTotal: string) =>
 	Number(cartTotal) * CHEF_SERVICE_FEE;
 
-export const getConsumerCartTotal = (cartTotal: string) => {
-	const serviceFee = getConsumerServiceFee(cartTotal);
+export const getConsumerCartTotal = (cartSubTotal: string) => {
+	const serviceFee = getConsumerServiceFee(cartSubTotal);
 
-	return cartTotal + serviceFee;
+	return Number(cartSubTotal + serviceFee);
 };
 
 const SITE_URL = process.env.NEXT_PUBLIC_URL ?? "http://localhost:3000";
@@ -52,7 +49,7 @@ export const getImageUrl = ({
 	userId,
 	fileName,
 	category,
-}: { userId: number; fileName: string; category?: string }) => {
+}: { userId: string; fileName: string; category?: string }) => {
 	if (category) {
 		return `https://assets.slyderz.co/users/${userId}/${category}/${fileName}`;
 	}
@@ -61,12 +58,9 @@ export const getImageUrl = ({
 };
 
 export const onboardingSteps = new Map([
-	[OnboardingState.SETUP_STRIPE, "Setup your stripe account"],
-	[OnboardingState.UPLOAD_HEADSHOT, "Upload your headshot"],
-	[
-		OnboardingState.COMPLETE_SERVSAFE,
-		"Complete ServSafe food handler certification",
-	],
+	["SETUP_STRIPE", "Setup your stripe account"],
+	["UPLOAD_HEADSHOT", "Upload your headshot"],
+	["COMPLETE_SERVSAFE", "Complete ServSafe food handler certification"],
 ]);
 
 export const formatNumberToCurrency = (number: number) => {
@@ -77,7 +71,7 @@ export const formatNumberToCurrency = (number: number) => {
 };
 
 /************************** Date/Time helpers **************************/
-export const convertDayToInt = (day: string): number => {
+export const convertDayToInt = (day: DaysOfWeekType): number => {
 	const daysOfWeek = new Map([
 		["SUNDAY", 0],
 		["MONDAY", 1],

@@ -1,9 +1,7 @@
 "use server";
 
-import {
-	DeleteObjectCommand,
-	S3Client,
-} from "@aws-sdk/client-s3";
+import { DeleteObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { generateId } from "lucia";
 import { revalidatePath } from "next/cache";
 
 import { getChefSession } from "app/lib/auth";
@@ -30,7 +28,7 @@ export async function deleteDishMutation(input: FormData) {
 		description: string;
 		image: Blob;
 		price: string;
-		sectionId: number;
+		sectionId: string;
 	}>(input);
 	const bytes = await image.arrayBuffer();
 	const buffer = Buffer.from(bytes);
@@ -50,22 +48,26 @@ export async function deleteDishMutation(input: FormData) {
 			category: "dishes",
 		});
 
-		await db.insert(dishes).values({
-			description,
-			name,
-			price,
-			sectionId,
-			chefId: chef.id,
-			imageUrl
-		}).onConflictDoUpdate({
-			target: [dishes.chefId, dishes.name],
-			set: {
+		await db
+			.insert(dishes)
+			.values({
+				id: generateId(10),
 				description,
+				name,
 				price,
 				sectionId,
-				imageUrl
-			}
-		})
+				chefId: chef.id,
+				imageUrl,
+			})
+			.onConflictDoUpdate({
+				target: [dishes.chefId, dishes.name],
+				set: {
+					description,
+					price,
+					sectionId,
+					imageUrl,
+				},
+			});
 	} catch (err) {
 		throw new UnknownError({
 			message: "Unknow error uploading image",
@@ -76,6 +78,6 @@ export async function deleteDishMutation(input: FormData) {
 	revalidatePath("/dashboard/menu");
 
 	return {
-		message: "Dish successfully deleted"
-	}
+		message: "Dish successfully deleted",
+	};
 }
