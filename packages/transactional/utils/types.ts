@@ -1,9 +1,13 @@
+export interface ActivateEmailProps {
+	activationUrl: string
+}
+
 type EmailOrderItemsType = {
   name: string;
-  price: number;
+  price: string;
   quantity: number;
 };
-export interface EmailNewOrderType {
+export interface EmailBodyProps {
   orderLocation: string;
   orderDate: string;
   orderTime: string;
@@ -11,7 +15,11 @@ export interface EmailNewOrderType {
   orderItems: Array<EmailOrderItemsType>;
 }
 
-export interface ChefOrderRequest extends EmailNewOrderType {
+export interface ChefOrderRequestEmailProps extends EmailBodyProps {
   orderApproveUrl: string;
   orderDenyUrl: string;
+}
+
+export interface ForgotPasswordEmailProps {
+	resetPasswordUrl: string;
 }

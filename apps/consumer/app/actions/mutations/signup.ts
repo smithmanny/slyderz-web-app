@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import { Argon2id } from "oslo/password";
 
 import { auth, generateVerificationToken } from "app/lib/auth";
-import { sendSesEmail } from "app/lib/aws";
+import { sendActivationEmail } from "app/lib/aws";
 import { UnknownError } from "app/lib/errors";
 import { getStripeServer } from "app/lib/stripe";
 import { requiredFormData } from "app/lib/utils";
@@ -93,10 +93,9 @@ export default async function signupMutation(input: FormData) {
 		process.env.NEXT_PUBLIC_URL
 	}/email-verification/${token.toString()}`;
 
-	sendSesEmail({
+	sendActivationEmail({
 		to: email,
-		type: TRANSACTIONAL_EMAILS.activation,
-		variables: { activationUrl },
+		data: { activationUrl },
 	});
 
 	const session = await auth.createSession(user.id, {});

@@ -67,7 +67,6 @@ export const metadata: Metadata = {
 
 const Layout = async ({ children }: { children: ReactNode }) => {
 	const { user } = await getSession();
-
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body className={cn(roboto.className, "min-h-full")}>

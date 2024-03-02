@@ -2,11 +2,13 @@
 
 import { generateId } from "lucia";
 import { redirect } from "next/navigation";
-import randomstring from "randomstring";
 import { z } from "zod";
 
 import { getProtectedSession } from "app/lib/auth";
-import { sendSesEmail } from "app/lib/aws";
+import {
+	sendChefOrderRequestEmail,
+	sendConsumerNewOrderEmail,
+} from "app/lib/aws";
 import { getCartCookie, setCartCookie } from "app/lib/cookies";
 import { NotFoundError, UnknownError } from "app/lib/errors";
 import {
@@ -17,8 +19,6 @@ import {
 import { db } from "drizzle";
 import { dishesToOrders } from "drizzle/schema/menu";
 import { orders } from "drizzle/schema/order";
-
-import { TRANSACTIONAL_EMAILS } from "types";
 
 const CreateCheckoutSchema = z.object({
 	address: z.string(),
@@ -62,11 +62,7 @@ export default async function createCheckoutMutation(
 	}
 
 	const order = await db.transaction(async (tx) => {
-		const orderConfirmationNumber = `SLY-${randomstring.generate({
-			charset: "alphanumeric",
-			capitalization: "uppercase",
-			length: 7,
-		})}`;
+		const orderConfirmationNumber = `SLY-${generateId(7)}`;
 		const consumerServiceFee = getConsumerServiceFee(cart.total);
 		const cartTotal = cart.total + consumerServiceFee;
 
@@ -139,52 +135,45 @@ export default async function createCheckoutMutation(
 		const consumerServiceFee = getConsumerServiceFee(cart.total);
 		const address = `${order.address1} ${order.city}, ${order.state} ${order.zipcode}`;
 		const customerEmailParams = {
-			to: user.email,
-			type: TRANSACTIONAL_EMAILS.newOrderConsumer,
-			variables: {
-				// orderNumber: order.confirmationNumber,
-				orderDate: readableDate(date),
-				orderTime: input.eventTime,
-				orderLocation: address,
-				// orderSubtotal: order.amount,
-				// orderServiceFee: consumerServiceFee,
-				orderTotal: order.total,
-				orderItems: order.items.map((item) => ({
-					quantity: item.quantity,
-					price: item.price,
-					name: item.name,
-					image: item.imageUrl,
-				})),
-			},
+			// orderNumber: order.confirmationNumber,
+			orderDate: readableDate(date),
+			orderTime: input.eventTime,
+			orderLocation: address,
+			// orderSubtotal: order.amount,
+			// orderServiceFee: consumerServiceFee,
+			orderTotal: order.total,
+			orderItems: order.items.map((item) => ({
+				quantity: item.quantity,
+				price: item.price,
+				name: item.name,
+				image: item.imageUrl,
+			})),
 		};
+		// TODO
 		const chefEmailParams = {
-			to: chef.user.email,
-			type: TRANSACTIONAL_EMAILS.newOrderChef,
-			variables: {
-				orderApproveUrl: acceptUrl,
-				orderDenyUrl: denyUrl,
-				orderNumber: order.confirmationNumber,
-				orderDate: readableDate(date),
-				orderTime: input.eventTime,
-				orderLocation: address,
-				// orderSubtotal: order.amount,
-				// orderServiceFee: chefServiceFee,
-				orderTotal: String(
-					Number(order.subtotal) - getChefServiceFee(order.subtotal),
-				),
-				orderItems: order.items.map((item) => ({
-					quantity: item.quantity,
-					price: String(item.price),
-					name: item.name,
-					image: item.imageUrl,
-				})),
-			},
+			orderApproveUrl: acceptUrl,
+			orderDenyUrl: denyUrl,
+			orderNumber: order.confirmationNumber,
+			orderDate: readableDate(date),
+			orderTime: input.eventTime,
+			orderLocation: address,
+			// orderSubtotal: order.amount,
+			// orderServiceFee: chefServiceFee,
+			orderTotal: String(
+				Number(order.subtotal) - getChefServiceFee(order.subtotal),
+			),
+			orderItems: order.items.map((item) => ({
+				quantity: item.quantity,
+				price: String(item.price),
+				name: item.name,
+				image: item.imageUrl,
+			})),
 		};
 
 		// Send email to chef and user
 		Promise.all([
-			sendSesEmail(customerEmailParams),
-			sendSesEmail(chefEmailParams),
+			sendConsumerNewOrderEmail({ to: user.email, data: customerEmailParams }),
+			sendChefOrderRequestEmail({ to: chef.user.email, data: chefEmailParams }),
 		])
 			.then(() => console.log("Order confirmation email sent"))
 			.catch((err) => {

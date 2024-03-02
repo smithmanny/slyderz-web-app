@@ -3,7 +3,10 @@
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { sendSesEmail } from "app/lib/aws";
+import {
+	sendChefOrderApprovedEmail,
+	sendChefOrderDeniedEmail,
+} from "app/lib/aws";
 import { NotFoundError } from "app/lib/errors";
 import { getStripeServer } from "app/lib/stripe";
 import {
@@ -13,8 +16,6 @@ import {
 } from "app/lib/utils";
 import { db } from "drizzle";
 import { orders } from "drizzle/schema/order";
-
-import { TRANSACTIONAL_EMAILS } from "types";
 
 const FetchOrderStatusQuerySchema = z.object({
 	confirmationNumber: z.string(),
@@ -51,7 +52,7 @@ export default async function fetchOrderStatusQuery(
 		});
 	}
 
-	if (order.orderStatus !== "PENDING") {
+	if (order.orderStatus !== "pending") {
 		throw new Error("Wrong order status.");
 	}
 
@@ -62,15 +63,23 @@ export default async function fetchOrderStatusQuery(
 			await db
 				.update(orders)
 				.set({
-					orderStatus: "DECLINED",
+					orderStatus: "declined",
 				})
 				.where(eq(orders.id, order.id));
 
-			await sendSesEmail({
+			await sendChefOrderDeniedEmail({
 				to: order.user.email,
-				type: TRANSACTIONAL_EMAILS.denyOrder,
-				variables: {
-					orderNumber: order.confirmationNumber,
+				data: {
+					orderDate: readableDate(new Date(order.eventDate)),
+					orderTime: order.eventTime,
+					orderLocation: "address",
+					orderTotal: order.total,
+					orderItems: order.dishes.map((item) => ({
+						quantity: item.quantity,
+						price: String(item.price),
+						name: item.name,
+						image: item.imageUrl,
+					})),
 				},
 			});
 			return;
@@ -123,7 +132,7 @@ export default async function fetchOrderStatusQuery(
 				const updateOrder = db
 					.update(orders)
 					.set({
-						orderStatus: "ACCEPTED",
+						orderStatus: "accepted",
 					})
 					.where(eq(orders.id, order.id));
 
@@ -132,20 +141,17 @@ export default async function fetchOrderStatusQuery(
 				const eventDate = new Date(order.eventDate);
 				const address = `${order.address1} ${order.city}, ${order.state} ${order.zipcode}`;
 
-				await sendSesEmail({
+				await sendChefOrderApprovedEmail({
 					to: order.user.email,
-					type: TRANSACTIONAL_EMAILS.confirmOrder,
-					variables: {
-						orderNumber: order.confirmationNumber,
+					data: {
 						orderDate: readableDate(eventDate),
 						orderTime: order.eventTime,
 						orderLocation: address,
-						orderSubtotal: order.subtotal,
-						orderServiceFee: consumerServiceFee,
 						orderTotal: order.total,
 						orderItems: order.dishes.map((dish) => ({
 							quantity: dish.quantity,
 							name: dish.name,
+							price: String(dish.price),
 							image: dish.imageUrl,
 						})),
 					},

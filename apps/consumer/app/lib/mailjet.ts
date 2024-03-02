@@ -33,14 +33,14 @@ export const createMailjetContact = async (email: string, name?: string) => {
 
 		if (contactId) {
 			return mailjetClient
-				.post("contact")
+				.put("contact")
 				.id(contactId)
 				.action("managecontactslists")
 				.request({
 					ContactsLists: [
 						{
 							ListID: 10251087, //Subscribers list
-							Action: "addnoforce",
+							Action: "addforce",
 						},
 					],
 				});

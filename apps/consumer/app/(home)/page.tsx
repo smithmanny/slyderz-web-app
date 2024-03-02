@@ -3,9 +3,9 @@ import HomePage from "./home-page";
 import { db } from "drizzle";
 
 export interface Chef {
-	id: number;
+	id: string;
 	user: {
-		id: number;
+		id: string;
 		name: string;
 		headshotUrl: string | null;
 	};

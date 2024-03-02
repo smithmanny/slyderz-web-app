@@ -4,7 +4,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "emails/*": ["../../packages/transactional/emails"]
+      "emails/*": ["../../packages/transactional/emails/*"],
+      "emails/utils/*": ["../../packages/transactional/utils/*"]
     },
     "module": "ESNext",
     "moduleResolution": "Bundler",

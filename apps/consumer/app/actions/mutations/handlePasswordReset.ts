@@ -9,7 +9,7 @@ import { z } from "zod";
 
 import { invalidateAllUserTokens, validateToken } from "app/lib/auth";
 import { auth, invalidateAllUserSessions } from "app/lib/auth";
-import { sendSesEmail } from "app/lib/aws";
+import { sendPasswordChangedEmail } from "app/lib/aws";
 import { TokenError, UnknownError } from "app/lib/errors";
 import { requiredFormData } from "app/lib/utils";
 import { db } from "drizzle";
@@ -22,7 +22,7 @@ const ResetPasswordFormSchema = z.object({
 	passwordConfirmation: z.string(),
 });
 export default async function handlePasswordResetMutation(
-	token: number,
+	token: string,
 	input: FormData,
 ) {
 	ResetPasswordFormSchema.parse(Object.fromEntries(input.entries()));
@@ -61,15 +61,10 @@ export default async function handlePasswordResetMutation(
 
 		const session = await auth.createSession(user.id, {});
 		const sessionCookie = auth.createSessionCookie(session.id);
-		cookies().set(
-			sessionCookie.name,
-			sessionCookie.value,
-			sessionCookie.attributes,
-		);
+		cookies().set(sessionCookie);
 
-		await sendSesEmail({
+		await sendPasswordChangedEmail({
 			to: user.email,
-			type: TRANSACTIONAL_EMAILS.passwordReset,
 		});
 	} catch (e) {
 		if (e instanceof TokenError && e.message === "Expired token") {

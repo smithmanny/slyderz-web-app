@@ -117,46 +117,32 @@ const generateToken = async (userId: string) => {
 };
 
 export const validateToken = async (tokenId: string) => {
-	try {
-		const storedToken = await db.query.tokens.findFirst({
-			where: (tokens, { eq }) => eq(tokens.id, tokenId),
-		});
+	const storedToken = await db.query.tokens.findFirst({
+		where: (tokens, { eq }) => eq(tokens.id, tokenId),
+	});
 
-		if (!storedToken) {
-			throw new Error("Token not found");
-		}
-
-		await db.transaction(async (tx) => {
-			try {
-				const deleteToken = tx
-					.delete(tokens)
-					.where(eq(tokens.id, storedToken.id));
-				const insertToken = db.insert(tokens).values({
-					id: storedToken.id,
-					expiresAt: createDate(new TimeSpan(2, "h")),
-					userId: storedToken.userId,
-				});
-
-				await Promise.all([deleteToken, insertToken]);
-			} catch (err) {
-				return tx.rollback();
-			}
-		});
-
-		const tokenExpires = storedToken.expiresAt;
-		if (!isWithinExpirationDate(tokenExpires)) {
-			throw new TokenError({
-				message: "Expired token",
-			});
-		}
-
-		return storedToken.userId;
-	} catch (err) {
+	if (!storedToken) {
 		throw new TokenError({
-			message: "Invalid token",
-			cause: err,
+			message: "Token not found"
 		});
 	}
+
+	await db.transaction(async (tx) => {
+		try {
+			await tx.delete(tokens).where(eq(tokens.id, storedToken.id));
+		} catch {
+			tx.rollback();
+		}
+	});
+
+	const tokenExpires = storedToken.expiresAt;
+	if (!isWithinExpirationDate(tokenExpires)) {
+		throw new TokenError({
+			message: "Expired token",
+		});
+	}
+
+	return storedToken.userId;
 };
 
 export const invalidateAllUserTokens = async (userId: string) => {

@@ -36,7 +36,6 @@ export default function ChefDish(props: ChefDishType) {
 		dishId: props.dishId,
 		chefId: props.chefId,
 	};
-	const addItemToCart = addItemToCartMutation.bind(null, input);
 	return (
 		<div className="block rounded-lg shadow-sm shadow-indigo-100">
 			<Dialog open={isDishDialogOpen} onOpenChange={setIsDishDialogOpen}>
@@ -92,7 +91,7 @@ export default function ChefDish(props: ChefDishType) {
 							<Quantity count={guestCount} setCount={setGuestCount} />
 							<Button
 								onClick={async () => {
-									await addItemToCart();
+									await addItemToCartMutation(input);
 									setIsDishDialogOpen(false);
 								}}
 							>

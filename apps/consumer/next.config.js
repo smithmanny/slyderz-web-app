@@ -7,6 +7,14 @@ module.exports = {
 	},
 	webpack: (config) => {
 		config.externals.push("@node-rs/argon2", "@node-rs/bcrypt");
+
+		config.module.rules.push({
+			test: /\.m?js$/,
+			type: "javascript/auto",
+			resolve: {
+				fullySpecified: false,
+			},
+		});
 		return config;
-	}
+	},
 };
