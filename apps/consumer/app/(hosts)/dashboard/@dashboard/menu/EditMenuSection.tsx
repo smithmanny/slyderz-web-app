@@ -28,7 +28,7 @@ import { deleteMenuSectionMutation } from "app/actions/mutations/deleteMenuSecti
 import { useSlyderzForm } from "app/hooks/useSlyderzForm";
 
 type SectionType = {
-	id: number;
+	id: string;
 	name: string;
 };
 interface AddMenuSectionButtonProps {

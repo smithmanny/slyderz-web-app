@@ -42,7 +42,7 @@ import {
 } from "app/components/ui/table";
 
 export type MenuTableColumns = {
-	id: number;
+	id: string;
 	amount: string;
 	name: string;
 	section: string;
@@ -146,7 +146,7 @@ export const columns: ColumnDef<MenuTableColumns>[] = [
 ];
 
 type MenuTableDish = {
-	id: number;
+	id: string;
 	name: string;
 	amount: string;
 	section: string;

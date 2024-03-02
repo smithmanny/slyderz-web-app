@@ -1,6 +1,6 @@
 import type { RudderAnalytics } from "@rudderstack/analytics-js";
-// import { default as ServerRudderAnalytics } from '@rudderstack/rudder-sdk-node';
 import { useEffect, useState } from "react";
+// import { default as ServerRudderAnalytics } from '@rudderstack/rudder-sdk-node';
 
 export const useRudderStackAnalytics = (): RudderAnalytics | undefined => {
 	const [analytics, setAnalytics] = useState<RudderAnalytics>();

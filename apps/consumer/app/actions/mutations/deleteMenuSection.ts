@@ -8,7 +8,7 @@ import { db } from "drizzle";
 import { sections } from "drizzle/schema/menu";
 
 const deleteMenuSectionSchema = z.object({
-	sectionId: z.number(),
+	sectionId: z.string(),
 });
 export async function deleteMenuSectionMutation(
 	input: z.infer<typeof deleteMenuSectionSchema>,

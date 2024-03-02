@@ -16,7 +16,7 @@ import { orders } from "./order";
 export const sections = pgTable(
   "sections",
   {
-    id: varchar("id", { length: 255 }).unique(),
+    id: varchar("id", { length: 255 }).unique().notNull(),
     createdAt: timestamp("created_at", {
       precision: 3,
       mode: "string",

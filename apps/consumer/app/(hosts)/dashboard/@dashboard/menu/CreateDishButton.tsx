@@ -39,7 +39,7 @@ import createMenuSectionMutation from "app/actions/mutations/createMenuSection";
 import { useSlyderzForm } from "app/hooks/useSlyderzForm";
 
 interface DishModalProps {
-	sections: Array<{ label: string; value: number }>;
+	sections: Array<{ label: string; value: string }>;
 	closeModal: () => void;
 }
 function DishModal(props: DishModalProps) {
@@ -52,7 +52,7 @@ function DishModal(props: DishModalProps) {
 		name: z.string(),
 		description: z.string().max(250),
 		price: z.number().min(0),
-		sectionId: z.number(),
+		sectionId: z.string(),
 	});
 	const dishForm = useSlyderzForm(createDishSchema, {
 		image: "",
@@ -253,7 +253,7 @@ const generateMenuSectionsFormValues = (sections: Array<MenuSection>) => {
 };
 
 type MenuSection = {
-	id: number;
+	id: string;
 	name: string;
 };
 interface CreateDishButtonProps {

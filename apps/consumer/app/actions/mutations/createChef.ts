@@ -52,10 +52,7 @@ export default async function createChefMutation(userId: string) {
 		})
 		.where(eq(users.id, user.id));
 
-	 await Promise.all([
-		chef,
-		convertUserToChef,
-	]).catch((err) => {
+	await Promise.all([chef, convertUserToChef]).catch((err) => {
 		throw new UnknownError({
 			message: "Chef not created",
 			cause: err,

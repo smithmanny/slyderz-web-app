@@ -6,11 +6,11 @@ import getMenuDishesQuery from "app/actions/queries/getMenuDishes";
 import getMenuSectionsQuery from "app/actions/queries/getMenuSections";
 
 type MenuTableDishSection = {
-	id: number;
+	id: string;
 	name: string;
 };
 type MenuTableDish = {
-	id: number;
+	id: string;
 	name: string;
 	price: string;
 	isActive: boolean;
@@ -33,6 +33,7 @@ export default async function MenuDashboardPage() {
 		getMenuDishes,
 	]);
 	const dishes = generateMenuTableData(menuDishes);
+
 	return (
 		<div>
 			<span className="flex justify-between">
