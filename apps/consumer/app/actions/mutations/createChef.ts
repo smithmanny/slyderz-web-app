@@ -44,13 +44,6 @@ export default async function createChefMutation(userId: string) {
 		userId: user.id,
 	});
 
-	const createAccountLink = stripe.accountLinks.create({
-		account: stripeAccount.id,
-		refresh_url: `${process.env.NEXT_PUBLIC_URL}/api/stripe/reauth`,
-		return_url: `${process.env.NEXT_PUBLIC_URL}/dashboard`,
-		type: "account_onboarding",
-	});
-
 	// Set user role to chef
 	const convertUserToChef = db
 		.update(users)
@@ -59,18 +52,15 @@ export default async function createChefMutation(userId: string) {
 		})
 		.where(eq(users.id, user.id));
 
-	try {
-		const [_, accountLink] = await Promise.all([
-			chef,
-			createAccountLink,
-			convertUserToChef,
-		]);
-
-		return accountLink.url;
-	} catch (err) {
+	 await Promise.all([
+		chef,
+		convertUserToChef,
+	]).catch((err) => {
 		throw new UnknownError({
 			message: "Chef not created",
 			cause: err,
 		});
-	}
+	});
+
+	redirect("/dashboard");
 }

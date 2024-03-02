@@ -15,9 +15,9 @@ const ServerSafeStep = dynamic(() => import("./FoodHandlerOnboarding"));
 const OnboardingStateEnum = chefs.onboardingState.enumValues;
 type OnboardingState = (typeof OnboardingStateEnum)[number];
 const onboardingStepsIndex: { [key: string]: number } = {
-	SETUP_STRIPE: 1,
-	UPLOAD_HEADSHOT: 2,
-	COMPLETE_SERVSAFE: 3,
+	setup_stripe: 1,
+	upload_headshot: 2,
+	complete_servsafe: 3,
 } as const;
 
 interface OnboardingWrapperProps extends PropsWithChildren {
@@ -30,11 +30,15 @@ function OnboardingWrapper(props: OnboardingWrapperProps) {
 	const title = onboardingSteps.get(onboardingStep);
 	const stepCount = onboardingStepsIndex[onboardingStep];
 
-	useEffect(() => {
-		if (props.state !== "setup_stripe") {
-			setOnboardingStep(props.state);
-		}
-	}, [props.state]);
+	if (props.state !== "setup_stripe") {
+		setOnboardingStep(props.state);
+	}
+
+	// useEffect(() => {
+	// 	if (props.state !== "setup_stripe") {
+	// 		setOnboardingStep(props.state);
+	// 	}
+	// }, [props.state]);
 
 	return (
 		<Card className="mt-6 max-w-2xl">

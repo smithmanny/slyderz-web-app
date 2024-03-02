@@ -28,14 +28,14 @@ export default async function getOnboardingStateQuery() {
 		});
 	}
 
-	if (chef.onboardingState === "SETUP_STRIPE") {
+	if (chef.onboardingState === "setup_stripe") {
 		const account = await stripe.accounts.retrieve(chef.stripeAccountId);
 
 		if (account.charges_enabled) {
 			const data = await db
 				.update(chefs)
 				.set({
-					onboardingState: "UPLOAD_HEADSHOT",
+					onboardingState: "upload_headshot",
 				})
 				.where(eq(chefs.id, chef.id))
 				.returning();

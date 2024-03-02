@@ -123,7 +123,7 @@ export const validateToken = async (tokenId: string) => {
 
 	if (!storedToken) {
 		throw new TokenError({
-			message: "Token not found"
+			message: "Token not found",
 		});
 	}
 

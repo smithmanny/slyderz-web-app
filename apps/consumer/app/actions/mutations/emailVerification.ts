@@ -16,8 +16,8 @@ export default async function verifyEmailMutation(token: string) {
 			emailVerified: true,
 			email: true,
 			name: true,
-			id: true
-		}
+			id: true,
+		},
 	});
 
 	if (!user) {
@@ -48,6 +48,6 @@ export default async function verifyEmailMutation(token: string) {
 
 	await fetch(`${process.env.NEXT_PUBLIC_URL}/api/verify-email`, {
 		method: "POST",
-		body: JSON.stringify({ sessionId: session.id })
-	})
+		body: JSON.stringify({ sessionId: session.id }),
+	});
 }
