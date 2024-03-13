@@ -1,6 +1,5 @@
 import type { RudderAnalytics } from "@rudderstack/analytics-js";
 import { useEffect, useState } from "react";
-// import { default as ServerRudderAnalytics } from '@rudderstack/rudder-sdk-node';
 
 export const useRudderStackAnalytics = (): RudderAnalytics | undefined => {
 	const [analytics, setAnalytics] = useState<RudderAnalytics>();
@@ -39,7 +38,3 @@ export const useRudderStackAnalytics = (): RudderAnalytics | undefined => {
 
 	return analytics;
 };
-
-// const client = new ServerRudderAnalytics("2d4Zf4uiFC5KTr2gxOX1Gq3yYui", {
-//   dataPlaneUrl: "https://slyderzcotqlbk.dataplane.rudderstack.com",
-// })

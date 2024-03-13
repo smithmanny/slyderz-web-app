@@ -1,9 +1,116 @@
 {
-  "id": "beea6046-36b3-4bc2-98be-c6fd3d23fcdd",
-  "prevId": "780cf954-e8a9-49bf-b6b5-924db00bd678",
+  "id": "b5ee4ec6-0877-49d5-89e6-c3099169bbe5",
+  "prevId": "1eabd1e8-cfe2-4515-90cb-7f4a93727dc5",
   "version": "5",
   "dialect": "pg",
   "tables": {
+    "calendar": {
+      "name": "calendar",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(255)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "is_sunday_enabled": {
+          "name": "is_sunday_enabled",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "is_monday_enabled": {
+          "name": "is_monday_enabled",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "is_tuesday_enabled": {
+          "name": "is_tuesday_enabled",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "is_wednesday_enabled": {
+          "name": "is_wednesday_enabled",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "is_thursday_enabled": {
+          "name": "is_thursday_enabled",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "is_friday_enabled": {
+          "name": "is_friday_enabled",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "is_saturday_enabled": {
+          "name": "is_saturday_enabled",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "chef_id": {
+          "name": "chef_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "calendar_chef_id_chefs_id_fk": {
+          "name": "calendar_chef_id_chefs_id_fk",
+          "tableFrom": "calendar",
+          "tableTo": "chefs",
+          "columnsFrom": [
+            "chef_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "calendar_id_unique": {
+          "name": "calendar_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id"
+          ]
+        }
+      }
+    },
     "dishes": {
       "name": "dishes",
       "schema": "",
@@ -12,7 +119,7 @@
           "name": "id",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "created_at": {
           "name": "created_at",
@@ -225,47 +332,33 @@
           "notNull": false,
           "default": "now()"
         },
-        "days_of_week": {
-          "name": "days_of_week",
-          "type": "text[]",
-          "primaryKey": false,
-          "notNull": false
-        },
         "start_time": {
           "name": "start_time",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "end_time": {
           "name": "end_time",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
-        "chef_id": {
-          "name": "chef_id",
-          "type": "varchar(255)",
+        "day_of_week": {
+          "name": "day_of_week",
+          "type": "varchar(50)",
           "primaryKey": false,
           "notNull": true
+        },
+        "calendar_id": {
+          "name": "calendar_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "hours_chef_id_chefs_id_fk": {
-          "name": "hours_chef_id_chefs_id_fk",
-          "tableFrom": "hours",
-          "tableTo": "chefs",
-          "columnsFrom": [
-            "chef_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "hours_id_unique": {
@@ -285,7 +378,7 @@
           "name": "id",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "created_at": {
           "name": "created_at",
@@ -442,13 +535,13 @@
         },
         "event_date": {
           "name": "event_date",
-          "type": "timestamp(3)",
+          "type": "date",
           "primaryKey": false,
           "notNull": true
         },
         "event_time": {
           "name": "event_time",
-          "type": "text",
+          "type": "time(3)",
           "primaryKey": false,
           "notNull": true
         },
@@ -457,7 +550,7 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "default": "'PENDING'"
+          "default": "'pending'"
         },
         "user_id": {
           "name": "user_id",
@@ -567,7 +660,7 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "default": "'SETUP_STRIPE'"
+          "default": "'setup_stripe'"
         },
         "description": {
           "name": "description",

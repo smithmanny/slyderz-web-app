@@ -32,11 +32,11 @@ import { CartItem } from "./CartItem";
 
 import { createCartMutation } from "app/actions/mutations/createCart";
 import { useSlyderzForm } from "app/hooks/useSlyderzForm";
-import { cn, convertDayToInt, todAM, todPM } from "app/lib/utils";
-import type { Cart as CartType, DaysOfWeekType } from "types";
+import { cn, convertDayToInt, getHoursForDay } from "app/lib/utils";
+import type { Cart as CartType } from "types";
 
 type HoursType = {
-	daysOfWeek: Array<DaysOfWeekType>;
+	daysOfWeek: Array<any>;
 	startTime: string | null;
 	endTime: string | null;
 };
@@ -174,7 +174,6 @@ interface EventTimeProps {
 	hours: Array<HoursType>;
 }
 function EventTime(props: EventTimeProps) {
-	const time = useMemo(() => [...todAM, ...todPM], []);
 	const values = props.form.getValues();
 
 	const getAvailableTime = useCallback(() => {
@@ -190,19 +189,19 @@ function EventTime(props: EventTimeProps) {
 				(dayOfWeek) => convertDayToInt(dayOfWeek) === selectedDayOfWeek,
 			),
 		);
-		const startTime = time.find((t) => t.label === selectedTime?.startTime);
-		const endTime = time.find((t) => t.label === selectedTime?.endTime);
+		const startTime = getHoursForDay.find((t) => t.label === selectedTime?.startTime);
+		const endTime = getHoursForDay.find((t) => t.label === selectedTime?.endTime);
 
 		if (startTime && endTime) {
-			const startTimeIndex = time.indexOf(startTime);
-			const endTimeIndex = time.indexOf(endTime);
-			const availableTime = time.slice(startTimeIndex, endTimeIndex + 1);
+			const startTimeIndex = getHoursForDay.indexOf(startTime);
+			const endTimeIndex = getHoursForDay.indexOf(endTime);
+			const availableTime = getHoursForDay.slice(startTimeIndex, endTimeIndex + 1);
 
 			return availableTime;
 		}
 
 		return [];
-	}, [props.hours, time, values.eventDate]);
+	}, [props.hours, values.eventDate]);
 
 	const availableTime = getAvailableTime();
 

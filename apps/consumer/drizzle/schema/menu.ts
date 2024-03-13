@@ -55,28 +55,53 @@ export const hours = pgTable("hours", {
     precision: 3,
     mode: "string",
   }).defaultNow(),
-  daysOfWeek: text("days_of_week", {
-    enum: [
-      "SUNDAY",
-      "MONDAY",
-      "TUESDAY",
-      "WEDNESDAY",
-      "THURSDAY",
-      "FRIDAY",
-      "SATURDAY",
-    ],
-  }).array().notNull(),
-  startTime: text("start_time"),
-  endTime: text("end_time"),
+  startTime: text("start_time").notNull(),
+  endTime: text("end_time").notNull(),
+  dayOfWeek: varchar("day_of_week", { length: 50, enum: [
+    "sunday",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+  ] }).notNull(),
+  calendarId: varchar("calendar_id", { length: 255 }).references(() => calendar.id, { onDelete: "cascade", onUpdate: "cascade" }).notNull()
+});
+export const hoursRelations = relations(hours, ({ one }) => ({
+  calendar: one(calendar, {
+    fields: [hours.calendarId],
+    references: [calendar.id],
+  }),
+}));
+
+export const calendar = pgTable("calendar", {
+  id: varchar("id", { length: 255 }).unique().primaryKey(),
+  createdAt: timestamp("created_at", {
+    precision: 3,
+    mode: "string",
+  }).defaultNow(),
+  updatedAt: timestamp("updated_at", {
+    precision: 3,
+    mode: "string",
+  }).defaultNow(),
+  isSundayEnabled: boolean("is_sunday_enabled").default(false).notNull(),
+  isMondayEnabled: boolean("is_monday_enabled").default(false).notNull(),
+  isTuesdayEnabled: boolean("is_tuesday_enabled").default(false).notNull(),
+  isWednesdayEnabled: boolean("is_wednesday_enabled").default(false).notNull(),
+  isThursdayEnabled: boolean("is_thursday_enabled").default(false).notNull(),
+  isFridayEnabled: boolean("is_friday_enabled").default(false).notNull(),
+  isSaturdayEnabled: boolean("is_saturday_enabled").default(false).notNull(),
   chefId: varchar("chef_id", { length: 255 })
     .notNull()
     .references(() => chefs.id, { onDelete: "cascade", onUpdate: "cascade" }),
 });
-export const hoursRelations = relations(hours, ({ one }) => ({
+export const calendarRelations = relations(calendar, ({ one, many }) => ({
   chef: one(chefs, {
-    fields: [hours.chefId],
+    fields: [calendar.chefId],
     references: [chefs.id],
   }),
+  hours: many(hours),
 }));
 
 export const dishes = pgTable(

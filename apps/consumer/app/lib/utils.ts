@@ -1,7 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-import { CHEF_SERVICE_FEE, CONSUMER_SERVICE_FEE, DaysOfWeekType } from "types";
+import { CHEF_SERVICE_FEE, CONSUMER_SERVICE_FEE } from "types";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -71,7 +71,7 @@ export const formatNumberToCurrency = (number: number) => {
 };
 
 /************************** Date/Time helpers **************************/
-export const convertDayToInt = (day: DaysOfWeekType): number => {
+export const convertDayToInt = (day: any): number => {
 	const daysOfWeek = new Map([
 		["SUNDAY", 0],
 		["MONDAY", 1],
@@ -108,36 +108,65 @@ export const readableDate = (date: Date): string => {
 };
 
 // Render times for chef hours
-interface TimeType {
-	label: string;
-	value: string;
-}
+const buildHours = () => {
+	const times = [
+		"1:00 AM",
+		"2:00 AM",
+		"2:30 AM",
+		"3:00 AM",
+		"3:30 AM",
+		"4:00 AM",
+		"4:30 AM",
+		"5:00 AM",
+		"5:30 AM",
+		"6:00 AM",
+		"6:30 AM",
+		"7:00 AM",
+		"7:30 AM",
+		"8:00 AM",
+		"8:30 AM",
+		"9:00 AM",
+		"9:30 AM",
+		"10:00 AM",
+		"10:30 AM",
+		"11:00 AM",
+		"11:30 AM",
+		"12:00 PM",
+		"12:30 PM",
+		"1:00 PM",
+		"1:30 PM",
+		"2:00 PM",
+		"2:30 PM",
+		"3:00 PM",
+		"3:30 PM",
+		"4:00 PM",
+		"4:30 PM",
+		"5:00 PM",
+		"5:30 PM",
+		"6:00 PM",
+		"6:30 PM",
+		"7:00 PM",
+		"7:30 PM",
+		"8:00 PM",
+		"8:30 PM",
+		"9:00 PM",
+		"9:30 PM",
+		"10:00 PM",
+		"10:30 PM",
+		"11:00 PM",
+		"11:30 PM",
+		"12:00 AM",
+		"12:30 AM",
+	]
 
-const renderHours = (tod = "AM") => {
-	const hours = 12;
-	const times: Array<TimeType> = [];
+	const hours = times.map((time) => ({
+		label: time,
+		value: time
+	}))
 
-	for (let x = 1; x <= hours; x++) {
-		for (let y = 0; y < 60; y += 30) {
-			let time = `${x}:${y} ${tod}`;
-
-			if (y === 0) {
-				time = `${x}:${y}0 ${tod}`;
-			}
-
-			const data = {
-				label: time,
-				value: time,
-			};
-
-			times.push(data);
-		}
-	}
-
-	return times;
+	return hours
 };
-export const todAM = renderHours();
-export const todPM = renderHours("PM");
+export const getHoursForDay = buildHours()
 
 export const weekdays = [
 	{

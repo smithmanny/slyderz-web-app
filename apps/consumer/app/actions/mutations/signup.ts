@@ -9,12 +9,11 @@ import { Argon2id } from "oslo/password";
 import { auth, generateVerificationToken } from "app/lib/auth";
 import { sendActivationEmail } from "app/lib/aws";
 import { UnknownError } from "app/lib/errors";
+import { rudderstackServer } from "app/lib/rudderstackServer";
 import { getStripeServer } from "app/lib/stripe";
 import { requiredFormData } from "app/lib/utils";
 import { db } from "drizzle";
 import { users } from "drizzle/schema/user";
-
-import { TRANSACTIONAL_EMAILS } from "types";
 
 export default async function signupMutation(input: FormData) {
 	const { email, name, password } = requiredFormData<{
@@ -88,6 +87,16 @@ export default async function signupMutation(input: FormData) {
 	};
 
 	const user = await createUser();
+
+	// Record new user event
+	rudderstackServer.identify({
+		userId: user.id,
+		traits: {
+			email: user.email,
+			name: user.name
+		}
+	})
+
 	const token = await generateVerificationToken(user.id);
 	const activationUrl = `${
 		process.env.NEXT_PUBLIC_URL

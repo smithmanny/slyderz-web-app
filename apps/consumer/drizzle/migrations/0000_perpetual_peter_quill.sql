@@ -1,5 +1,20 @@
+CREATE TABLE IF NOT EXISTS "calendar" (
+	"id" varchar(255) PRIMARY KEY NOT NULL,
+	"created_at" timestamp(3) DEFAULT now(),
+	"updated_at" timestamp(3) DEFAULT now(),
+	"is_sunday_enabled" boolean DEFAULT false NOT NULL,
+	"is_monday_enabled" boolean DEFAULT false NOT NULL,
+	"is_tuesday_enabled" boolean DEFAULT false NOT NULL,
+	"is_wednesday_enabled" boolean DEFAULT false NOT NULL,
+	"is_thursday_enabled" boolean DEFAULT false NOT NULL,
+	"is_friday_enabled" boolean DEFAULT false NOT NULL,
+	"is_saturday_enabled" boolean DEFAULT false NOT NULL,
+	"chef_id" varchar(255) NOT NULL,
+	CONSTRAINT "calendar_id_unique" UNIQUE("id")
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "dishes" (
-	"id" varchar(255),
+	"id" varchar(255) NOT NULL,
 	"created_at" timestamp(3) DEFAULT now(),
 	"updated_at" timestamp(3) DEFAULT now(),
 	"description" text NOT NULL,
@@ -27,15 +42,14 @@ CREATE TABLE IF NOT EXISTS "hours" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"created_at" timestamp(3) DEFAULT now(),
 	"updated_at" timestamp(3) DEFAULT now(),
-	"days_of_week" text[],
-	"start_time" text,
-	"end_time" text,
-	"chef_id" varchar(255) NOT NULL,
+	"start_time" text NOT NULL,
+	"end_time" text NOT NULL,
+	"calendar_id" varchar(255),
 	CONSTRAINT "hours_id_unique" UNIQUE("id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "sections" (
-	"id" varchar(255),
+	"id" varchar(255) NOT NULL,
 	"created_at" timestamp(3) DEFAULT now(),
 	"updated_at" timestamp(3) DEFAULT now(),
 	"name" varchar(255) NOT NULL,
@@ -59,9 +73,9 @@ CREATE TABLE IF NOT EXISTS "orders" (
 	"city" text NOT NULL,
 	"state" text NOT NULL,
 	"zipcode" text NOT NULL,
-	"event_date" timestamp(3) NOT NULL,
-	"event_time" text NOT NULL,
-	"order_status" text DEFAULT 'PENDING' NOT NULL,
+	"event_date" date NOT NULL,
+	"event_time" "time(3)" NOT NULL,
+	"order_status" text DEFAULT 'pending' NOT NULL,
 	"user_id" varchar(255) NOT NULL,
 	"chef_id" varchar(255) NOT NULL,
 	CONSTRAINT "orders_id_unique" UNIQUE("id"),
@@ -75,7 +89,7 @@ CREATE TABLE IF NOT EXISTS "chefs" (
 	"stripe_account_id" text NOT NULL,
 	"is_onboarding_complete" boolean DEFAULT false NOT NULL,
 	"user_id" varchar(255) NOT NULL,
-	"onboarding_state" text DEFAULT 'SETUP_STRIPE' NOT NULL,
+	"onboarding_state" text DEFAULT 'setup_stripe' NOT NULL,
 	"description" text DEFAULT '' NOT NULL,
 	CONSTRAINT "chefs_id_unique" UNIQUE("id"),
 	CONSTRAINT "chefs_stripe_account_id_unique" UNIQUE("stripe_account_id"),
@@ -86,11 +100,6 @@ CREATE TABLE IF NOT EXISTS "sessions" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"user_id" varchar(255) NOT NULL,
 	"expires_at" timestamp with time zone NOT NULL,
-	"email" text DEFAULT '' NOT NULL,
-	"name" text DEFAULT '' NOT NULL,
-	"stripe_customer_id" text DEFAULT '' NOT NULL,
-	"email_verified" boolean DEFAULT false NOT NULL,
-	"role" text DEFAULT 'USER' NOT NULL,
 	CONSTRAINT "sessions_id_unique" UNIQUE("id")
 );
 --> statement-breakpoint
@@ -119,6 +128,12 @@ CREATE TABLE IF NOT EXISTS "users" (
 );
 --> statement-breakpoint
 DO $$ BEGIN
+ ALTER TABLE "calendar" ADD CONSTRAINT "calendar_chef_id_chefs_id_fk" FOREIGN KEY ("chef_id") REFERENCES "chefs"("id") ON DELETE cascade ON UPDATE cascade;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  ALTER TABLE "dishes" ADD CONSTRAINT "dishes_section_id_sections_id_fk" FOREIGN KEY ("section_id") REFERENCES "sections"("id") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -138,12 +153,6 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "dishes_to_orders" ADD CONSTRAINT "dishes_to_orders_order_id_orders_id_fk" FOREIGN KEY ("order_id") REFERENCES "orders"("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "hours" ADD CONSTRAINT "hours_chef_id_chefs_id_fk" FOREIGN KEY ("chef_id") REFERENCES "chefs"("id") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

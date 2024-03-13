@@ -1,7 +1,7 @@
 import { relations } from 'drizzle-orm';
 import { boolean, pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core"
 
-import { dishes, hours, sections } from "./menu";
+import { calendar, dishes, sections } from "./menu";
 import { orders } from "./order";
 
 export const users = pgTable("users", {
@@ -67,7 +67,7 @@ export const chefsRelations = relations(chefs, ({ one, many }) => ({
     fields: [chefs.userId],
     references: [users.id]
   }),
-  hours: many(hours),
+  calendar: one(calendar),
   sections: many(sections),
   dishes: many(dishes),
   orders: many(orders),

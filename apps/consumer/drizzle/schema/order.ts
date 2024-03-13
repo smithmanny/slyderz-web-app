@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm';
-import { date, numeric, pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core"
+import { date, numeric, pgTable, text, time, timestamp, varchar } from "drizzle-orm/pg-core"
 
 import { dishesToOrders } from "./menu";
 import { chefs, users } from "./user";
@@ -19,7 +19,7 @@ export const orders = pgTable("orders", {
   state: text("state").notNull(),
   zipcode: text("zipcode").notNull(),
   eventDate: date("event_date").notNull(),
-  eventTime: timestamp("event_time", { precision: 3, mode: 'string' }).notNull(),
+  eventTime: time("event_time", { precision: 3 }).notNull(),
   orderStatus: text("order_status", {
     enum: ['pending', 'accepted', 'completed', 'declined']
   }).default('pending').notNull(),

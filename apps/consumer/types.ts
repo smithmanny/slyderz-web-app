@@ -129,6 +129,3 @@ export type EmailNewOrderType = {
 	orderTotal: string;
 	orderItems: Array<EmailOrderItemsType>;
 };
-
-const dayEnum = hours.daysOfWeek.enumValues
-export type DaysOfWeekType = typeof dayEnum[number]
