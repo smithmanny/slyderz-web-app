@@ -1,6 +1,10 @@
 import ChefHours from "./ChefHours";
 
+import { getChefHoursQuery } from "app/actions/queries/getChefHours";
+
 export default async function HoursDashboardPage() {
+	const calendar = await getChefHoursQuery()
+
 	return (
 		<div>
 			<span className="flex justify-between">
@@ -9,7 +13,7 @@ export default async function HoursDashboardPage() {
 				</h1>
 			</span>
 
-			<ChefHours />
+			<ChefHours calendar={calendar} />
 		</div>
 	);
 }

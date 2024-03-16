@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 import { TimeSpan, createDate, isWithinExpirationDate } from "oslo";
 import { cache } from "react";
 
-import { TokenError } from "app/lib/errors";
+import { NotFoundError, TokenError } from "app/lib/errors";
 import { db } from "drizzle";
 import { sessions, tokens, users } from "drizzle/schema/user";
 import { AuthError } from "./errors";
@@ -74,23 +74,33 @@ export const getProtectedSession = cache(async () => {
 	};
 });
 export const getChefSession = cache(async () => {
-	const { session, user } = await getSession();
-
-	if (!session || !user) {
-		throw new AuthError();
-	}
+	const { session, user } = await getProtectedSession();
 
 	const chef = await db.query.chefs.findFirst({
-		where: (chefs, { eq }) => eq(chefs.userId, user.id),
+		where: (chefs, { eq, }) => eq(chefs.userId, user.id),
+		with: {
+			calendar: {
+				columns: {
+					id: true
+				}
+			}
+		}
 	});
 
-	if (!chef) {
-		throw new Error("Chef not found");
+	if (!chef || !chef.calendar) {
+		throw new NotFoundError({
+			message: "Chef not found"
+		});
 	}
 
 	return {
 		session,
-		chef,
+		chef: {
+			...chef,
+			calendar: {
+				...chef.calendar
+			}
+		}
 	};
 });
 

@@ -17,13 +17,17 @@ export default async function chefProfileQuery(chefId: string) {
 	const chef = await db.query.chefs.findFirst({
 		where: (chefs, { eq }) => eq(chefs.id, chefId),
 		with: {
-			hours: true,
+			calendar: {
+				with: {
+					hours: true
+				}
+			},
 			dishes: true,
 			user: true,
 		},
 	});
 
-	if (!chef || !chef.dishes || !chef.hours) {
+	if (!chef || !chef.dishes || !chef.calendar?.hours) {
 		throw new NotFoundError({
 			message: "Chef not found",
 		});
@@ -34,13 +38,15 @@ export default async function chefProfileQuery(chefId: string) {
 			const chefWorkingDays: Array<number> = [];
 			const today = new Date();
 
-			for (const hourBlock of chef.hours) {
-				if (hourBlock.daysOfWeek) {
-					for (const day of hourBlock.daysOfWeek) {
-						const matchedDay = convertDayToInt(day);
-						chefWorkingDays.push(matchedDay);
-					}
-				}
+			if (!chef.calendar) {
+				throw new NotFoundError({
+					message: "Calendar not found",
+				});
+			}
+
+			for (const hourBlock of chef.calendar.hours) {
+				const matchedDay = convertDayToInt(hourBlock.dayOfWeek);
+				chefWorkingDays.push(matchedDay);
 			}
 
 			function getNextDay(day: number | undefined): Date {
@@ -100,7 +106,7 @@ export default async function chefProfileQuery(chefId: string) {
 			dishes: chef.dishes,
 			chefName: chef.user.name,
 			chefImage: chef.user.headshotUrl,
-			hours: chef.hours,
+			hours: chef.calendar.hours,
 		};
 	} catch (err) {
 		throw new NotFoundError({

@@ -9,13 +9,13 @@ import { calendar, hours } from "drizzle/schema/menu"
 
 function buildDaysFromInput(input: string) {
   const dayOfWeek = new Map([
-    ["dayOfWeekSunday", "sunday"],
-    ["dayOfWeekMonday", "monday"],
-    ["dayOfWeekTuesday", "tueday"],
-    ["dayOfWeekWednesday", "wednesday"],
-    ["dayOfWeekThursday", "thursday"],
-    ["dayOfWeekFriday", "friday"],
-    ["dayOfWeekSaturday", "saturday"],
+    ["0", "sunday"],
+    ["1", "monday"],
+    ["2", "tueday"],
+    ["3", "wednesday"],
+    ["4", "thursday"],
+    ["5", "friday"],
+    ["6", "saturday"],
   ])
 
   const day = dayOfWeek.get(input)
@@ -27,42 +27,37 @@ function buildDaysFromInput(input: string) {
   return day
 }
 
-function buildWorkingHours(entries: {[key: string]: FormDataEntryValue}) {
-  const activeHours = []
-  const workingHoursIndexes = new Set()
-  const daysOfWeekKeys = Object.keys(entries).filter(entry => entry.includes("dayOfWeek"))
+type DaysOfWeekEnumType = typeof hours.dayOfWeek.enumValues[number]
 
-  // Loop over daysOfWeekKeys and group days by two to get startTime and endTime for day. Data returns array of strings so use index to determine if it's startTime or endTime.
-  for (let x = 0; x < daysOfWeekKeys.length; x+= 2) {
+function buildSelectedHours(entries: {[key: string]: FormDataEntryValue}) {
+  const activeHours = []
+  const hourKeys = Object.keys(entries).filter(entry => entry.includes("hours."))
+
+  // Loop over hourKeys and group days by two to get startTime and endTime for day. Data returns array of strings so use index to determine if it's startTime or endTime.
+  for (let x = 0; x < hourKeys.length; x+= 2) {
     const hourBlock = {
-      id: "",
+      id: generateId(10),
       startTime: "",
       endTime: "",
-      dayOfWeek: "",
+      dayOfWeek: "" as DaysOfWeekEnumType,
     }
     let index = 0
 
-    for (let y = x; y < x + 2; y++) {
-      const val = daysOfWeekKeys[y]
-      if (!val) throw new Error("Hour not found")
+    for (let y = x; y <= x + 1; y++) {
+      const hourKey = hourKeys[y]
+      if (!hourKey) throw new Error("Hour not found")
 
-      const stringToArray = val.split(".")
-      const dayOfWeekIndex = `${stringToArray[0]}-${stringToArray[1]}`
-      const time = entries[val] as string
+      const stringToArray = hourKey.split(".")
+      const time = entries[hourKey] as string
 
-      if (workingHoursIndexes.has(dayOfWeekIndex)) continue
-
-      if (stringToArray[0] && time) {
-        const dayOfWeek = buildDaysFromInput(stringToArray[0])
+      if (stringToArray[1] && time) {
+        const dayOfWeek = buildDaysFromInput(stringToArray[1]) as DaysOfWeekEnumType
 
         if (index === 0) {
           hourBlock.dayOfWeek = dayOfWeek
           hourBlock.startTime = time
         } else {
           hourBlock.endTime = time
-
-          // set workingDays index after adding endTime
-          workingHoursIndexes.add(dayOfWeekIndex)
         }
 
         index++
@@ -81,6 +76,7 @@ function buildWorkingHours(entries: {[key: string]: FormDataEntryValue}) {
 
 export async function updateChefHoursMutation(input: FormData) {
   const { chef } = await getChefSession();
+
   const entries = Object.fromEntries(input.entries())
   const workingDays: { [key: string]: boolean } = {
     isSundayEnabled: false,
@@ -93,8 +89,8 @@ export async function updateChefHoursMutation(input: FormData) {
   }
   const enabledWorkDays = Object.keys(entries).filter(entry => entry.includes("Enabled"))
 
-  for (const day of enabledWorkDays) {
-    workingDays[day] = true
+  for (const enabledDay of enabledWorkDays) {
+    workingDays[enabledDay] = true
   }
 
   // Set chef working days
@@ -110,33 +106,68 @@ export async function updateChefHoursMutation(input: FormData) {
   const areAllDaysDisabled = Object.values(workingDays).every(day => !day)
   if (areAllDaysDisabled) {
     return {
-      error: false,
       message: "Successfully saved hours"
     }
   }
 
   const chefCalendar = chefCalendarRes[0]
-  const workingHours = buildWorkingHours(entries).map(hourBlock => ({
+  const selectedHours = buildSelectedHours(entries).map(hourBlock => ({
     ...hourBlock,
     calendarId: chefCalendar.id
   }))
-
   const previousHours = await db.query.hours.findMany({
     where: ((hours, { eq }) => eq(hours.calendarId, chefCalendar.id ))
   })
 
-  console.log("workingHours", workingHours)
-  console.log("previousHours", previousHours)
+  await db.transaction(async (tx) => {
+    const unsavedHours = [] as typeof selectedHours
 
-  if (previousHours.length === 0) {
-    await db.insert(hours).values([...workingHours])
-  }
+    if (previousHours.length !== 0) {
+      // Check previous hours saved on db. If no currently selected hours match delete hour from db
+      for (const prevHour of previousHours) {
+        const foundHour = selectedHours.find(wh => {
+          if (
+            wh.dayOfWeek === prevHour.dayOfWeek &&
+            wh.startTime === prevHour.startTime &&
+            wh.endTime === prevHour.endTime
+            ) return true
 
-  // await db.insert(hours).values({
-  //   id: generateId(10),
-  //   calendarId: chefCalendar.id,
-  //   dayOfWeek: "sunday",
-  //   startTime: "1:00 AM",
-  //   endTime: "1:00 AM",
-  // })
+            return false
+          })
+
+        if (!foundHour) {
+          await tx.delete(hours).where(eq(hours.id, prevHour.id))
+        }
+      }
+
+      // Check selected hours and filter out hours thats already saved on db
+      for (const hour of selectedHours) {
+        const foundHour = previousHours.find(wh => {
+          if (
+            wh.dayOfWeek === hour.dayOfWeek &&
+            wh.startTime === hour.startTime &&
+            wh.endTime === hour.endTime
+            ) return true
+
+            return false
+          })
+
+        if (!foundHour) {
+          unsavedHours.push(hour)
+        }
+      }
+
+      if (unsavedHours.length > 0) {
+        await tx.insert(hours).values([...unsavedHours])
+      }
+
+      return
+    }
+
+    await db.insert(hours).values([...selectedHours])
+
+    return {
+      message: "Successfully updated hours"
+    }
+  })
 }
