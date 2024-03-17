@@ -73,13 +73,13 @@ export const formatNumberToCurrency = (number: number) => {
 /************************** Date/Time helpers **************************/
 export const convertDayToInt = (day: any): number => {
 	const daysOfWeek = new Map([
-		["SUNDAY", 0],
-		["MONDAY", 1],
-		["TUESDAY", 2],
-		["WEDNESDAY", 3],
-		["THURSDAY", 4],
-		["FRIDAY", 5],
-		["SATURDAY", 6],
+		["sunday", 0],
+		["monday", 1],
+		["tuesday", 2],
+		["wednesday", 3],
+		["thursday", 4],
+		["friday", 5],
+		["saturday", 6],
 	]);
 
 	const validDay = daysOfWeek.get(day);

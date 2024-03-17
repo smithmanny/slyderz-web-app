@@ -2,6 +2,7 @@
 
 import { eq } from "drizzle-orm"
 import { generateId } from "lucia"
+import { revalidatePath } from "next/cache"
 
 import { getChefSession } from "app/lib/auth"
 import { db } from "drizzle"
@@ -165,6 +166,8 @@ export async function updateChefHoursMutation(input: FormData) {
     }
 
     await db.insert(hours).values([...selectedHours])
+
+    revalidatePath("/dashboard/hours")
 
     return {
       message: "Successfully updated hours"

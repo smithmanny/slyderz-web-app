@@ -15,6 +15,7 @@ const AddItemToCartProps = z.object({
 	quantity: z.number(),
 	dishId: z.string(),
 	chefId: z.string(),
+	imageUrl: z.string(),
 });
 export async function addItemToCart(input: z.infer<typeof AddItemToCartProps>) {
 	const values = AddItemToCartProps.parse(input);
@@ -31,7 +32,7 @@ export async function addItemToCart(input: z.infer<typeof AddItemToCartProps>) {
 			}, 0);
 		}
 
-		cart.total = sum;
+		cart.total = String(sum);
 		cart.items = [...cart.items, input];
 
 		setCartCookie(JSON.stringify(cart));

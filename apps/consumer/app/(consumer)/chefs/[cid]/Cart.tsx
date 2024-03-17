@@ -3,7 +3,7 @@
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
 import Image from "next/image";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import * as z from "zod";
 
 import { Button } from "app/components/ui/button";
@@ -36,7 +36,7 @@ import { cn, convertDayToInt, getHoursForDay } from "app/lib/utils";
 import type { Cart as CartType } from "types";
 
 type HoursType = {
-	daysOfWeek: Array<any>;
+	dayOfWeek: string;
 	startTime: string | null;
 	endTime: string | null;
 };
@@ -60,12 +60,10 @@ export default function Cart(props: CartProps) {
 			const daysOfWeek: Array<number> = [0, 1, 2, 3, 4, 5, 6];
 			const workingDays: Array<number> = [];
 
-			props.hours.map((hourBlock) =>
-				hourBlock.daysOfWeek.map((day) => {
-					const matchedDay = convertDayToInt(day);
-					workingDays.push(matchedDay);
-				}),
-			);
+			props.hours.map((hourBlock) => {
+				const matchedDay = convertDayToInt(hourBlock.dayOfWeek);
+				workingDays.push(matchedDay);
+			});
 
 			const offDays = daysOfWeek.filter((day) => !workingDays.includes(day));
 
@@ -184,11 +182,7 @@ function EventTime(props: EventTimeProps) {
 		 * 4. Return times
 		 */
 		const selectedDayOfWeek: number = new Date(values.eventDate).getDay();
-		const selectedTime = props.hours.find((hourBlock) =>
-			hourBlock.daysOfWeek.find(
-				(dayOfWeek) => convertDayToInt(dayOfWeek) === selectedDayOfWeek,
-			),
-		);
+		const selectedTime = props.hours.find((hourBlock) => convertDayToInt(hourBlock.dayOfWeek) === selectedDayOfWeek);
 		const startTime = getHoursForDay.find((t) => t.label === selectedTime?.startTime);
 		const endTime = getHoursForDay.find((t) => t.label === selectedTime?.endTime);
 

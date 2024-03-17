@@ -1,6 +1,6 @@
 "use server";
 
-import { NotFoundError } from "app/lib/errors";
+import { NotFoundError, UnknownError } from "app/lib/errors";
 import { convertDayToInt } from "app/lib/utils";
 import {
 	nextFriday,
@@ -109,8 +109,8 @@ export default async function chefProfileQuery(chefId: string) {
 			hours: chef.calendar.hours,
 		};
 	} catch (err) {
-		throw new NotFoundError({
-			message: "Chef not found",
+		throw new UnknownError({
+			message: "Unknown error fetching chef",
 			cause: err,
 		});
 	}

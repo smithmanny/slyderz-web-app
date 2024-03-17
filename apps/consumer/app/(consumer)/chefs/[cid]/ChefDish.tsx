@@ -20,7 +20,7 @@ type ChefDishType = {
 	price: number;
 	description: string;
 	name: string;
-	image: string | undefined;
+	image: string;
 	chefId: string;
 	dishId: string;
 };
@@ -35,6 +35,7 @@ export default function ChefDish(props: ChefDishType) {
 		quantity: guestCount,
 		dishId: props.dishId,
 		chefId: props.chefId,
+		imageUrl: props.image,
 	};
 	return (
 		<div className="block rounded-lg shadow-sm shadow-indigo-100">

@@ -1,5 +1,6 @@
 "use client";
 
+import { Controller } from "react-hook-form";
 import * as z from "zod";
 
 import { Button } from "app/components/ui/button";
@@ -42,116 +43,104 @@ interface CheckoutFormProps {
 export default function CheckoutForm(props: CheckoutFormProps) {
 	const formSchema = z.object({
 		selectedAddress: z.string(),
-		paymentMethod: z.string(),
+		paymentMethodId: z.string(),
 	});
 	const form = useSlyderzForm(formSchema, {
 		selectedAddress: props.address || "",
-		paymentMethod: props.paymentMethods[0]?.id || "",
+		paymentMethodId: props.paymentMethods[0]?.id || "",
 	});
 	const values = form.getValues();
+	console.log("props.subtotal", props.subtotal)
+
+	const handleForm = async (input: FormData) => {
+		const address = input.get("selectedAddress") as string
+		const paymentMethodId = input.get("paymentMethodId") as string
+
+		await createCheckoutMutation({
+			eventDate: props.eventDate,
+			eventTime: props.eventTime,
+			address,
+			chefId: props.chefId,
+			subtotal: props.cartTotal,
+			serviceFee: props.cartTotal,
+			total: props.cartTotal,
+			paymentMethodId,
+			cartItems: props.cartItems,
+		});
+	}
 
 	return (
-		<Form {...form}>
-			<form action="/" className="space-y-8">
-				<FormField
-					control={form.control}
-					name="selectedAddress"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Event address</FormLabel>
-							<Select onValueChange={field.onChange} defaultValue={field.value}>
-								<FormControl>
-									<SelectTrigger>
-										<SelectValue placeholder="Select an address for your event." />
-									</SelectTrigger>
-								</FormControl>
-								<SelectContent>
-									{[props.address].map((address, i) => (
-										<SelectItem key={address} value={address}>
-											{address}
-										</SelectItem>
-									))}
-								</SelectContent>
-							</Select>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<FormField
-					control={form.control}
-					name="paymentMethod"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Payment method</FormLabel>
-							<Select onValueChange={field.onChange} defaultValue={field.value}>
-								<FormControl>
-									<SelectTrigger>
-										<SelectValue placeholder="Select a card for payment." />
-									</SelectTrigger>
-								</FormControl>
-								<SelectContent>
-									{props.paymentMethods.map((paymentMethod, i) => (
-										<SelectItem key={paymentMethod.id} value={paymentMethod.id}>
-											{paymentMethod.card.last4}
-										</SelectItem>
-									))}
-								</SelectContent>
-							</Select>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
+		<form action={handleForm} className="space-y-8">
+			<Controller
+				control={form.control}
+				name="selectedAddress"
+				render={({ field }) => (
+					<Select onValueChange={field.onChange} defaultValue={field.value} {...field}>
+						<SelectTrigger>
+							<SelectValue placeholder="Select an address for your event." />
+						</SelectTrigger>
+						<SelectContent>
+							{["0"].map((address, i) => (
+								<SelectItem key={address} value={address}>
+									{address}
+								</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
+				)}
+			/>
+			<Controller
+				control={form.control}
+				name="paymentMethodId"
+				render={({ field }) => (
+					<Select onValueChange={field.onChange} defaultValue={field.value} {...field}>
+						<SelectTrigger>
+							<SelectValue placeholder="Select a card for payment." />
+						</SelectTrigger>
+						<SelectContent>
+							{props.paymentMethods.map((paymentMethod, i) => (
+								<SelectItem key={paymentMethod.id} value={paymentMethod.id}>
+									{paymentMethod.card.last4}
+								</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
+				)}
+			/>
 
-				<div>
-					<div className="grid grid-cols-2 mb-2">
-						<p className="text-muted-foreground">Subtotal</p>
-						<p>{formatNumberToCurrency(Number(props.cartTotal))}</p>
-					</div>
-					<div className="grid grid-cols-2 mb-2">
-						<p className="text-muted-foreground">Taxes</p>
-						<p>{formatNumberToCurrency(10)}</p>
-					</div>
-					<div className="grid grid-cols-2 mb-2 pb-2 border-b-2">
-						<p className="text-muted-foreground">Service fee</p>
-						<p>
-							{formatNumberToCurrency(getConsumerServiceFee(props.subtotal))}
-						</p>
-					</div>
-					<div className="grid grid-cols-2">
-						<p>Total</p>
-						<p>
-							{formatNumberToCurrency(getConsumerCartTotal(props.subtotal))}
-						</p>
-					</div>
+			<div>
+				<div className="grid grid-cols-2 mb-2">
+					<p className="text-muted-foreground">Subtotal</p>
+					<p>{formatNumberToCurrency(Number(props.cartTotal))}</p>
 				</div>
+				<div className="grid grid-cols-2 mb-2">
+					<p className="text-muted-foreground">Taxes</p>
+					<p>{formatNumberToCurrency(10)}</p>
+				</div>
+				<div className="grid grid-cols-2 mb-2 pb-2 border-b-2">
+					<p className="text-muted-foreground">Service fee</p>
+					<p>
+						{formatNumberToCurrency(getConsumerServiceFee(props.subtotal))}
+					</p>
+				</div>
+				<div className="grid grid-cols-2">
+					<p>Total</p>
+					<p>
+						{formatNumberToCurrency(getConsumerCartTotal(props.subtotal))}
+					</p>
+				</div>
+			</div>
 
-				<small className="block">
-					* A hold will be put on your card until the chef confirms your order.
-				</small>
+			<small className="block">
+				* A hold will be put on your card until the chef confirms your order.
+			</small>
 
-				<Button
-					className="mt-4"
-					disabled={!values.selectedAddress || !values.paymentMethod}
-					onClick={async (e) => {
-						e.preventDefault();
-						e.stopPropagation();
-
-						await createCheckoutMutation({
-							eventDate: props.eventDate,
-							eventTime: props.eventTime,
-							address: values.selectedAddress,
-							chefId: props.chefId,
-							subtotal: props.cartTotal,
-							serviceFee: props.cartTotal,
-							total: props.cartTotal,
-							paymentMethodId: values.paymentMethod,
-							cartItems: props.cartItems,
-						});
-					}}
-				>
-					Checkout
-				</Button>
-			</form>
-		</Form>
+			<Button
+				className="mt-4"
+				disabled={!values.selectedAddress || !values.paymentMethod}
+			>
+				Checkout
+			</Button>
+		</form>
 	);
 }
