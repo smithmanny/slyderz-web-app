@@ -1,23 +1,6 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { Cart } from "types";
-
-export async function getCartCookie() {
-	const cookieStore = cookies();
-	const cartCookie = cookieStore.get("cart");
-
-	if (cartCookie) {
-		return JSON.parse(cartCookie.value) as Cart;
-	}
-
-	return {
-		items: [],
-		subtotal: "0",
-		serviceFee: "0",
-		total: "0",
-	} as Cart;
-}
 
 export async function setCartCookie(value: string) {
 	const cookieStore = cookies();

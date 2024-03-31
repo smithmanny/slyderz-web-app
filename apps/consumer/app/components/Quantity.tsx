@@ -69,29 +69,29 @@ export function Quantity(props: QuantityProps) {
 }
 
 interface CartQuantityProps {
+	cartId: string;
 	quantity: number;
 	id: string;
 }
 export function CartQuantity(props: CartQuantityProps) {
-	const increaseCartItemQuantity = increaseCartItemQuantityMutation.bind(null, {
-		quantity: props.quantity,
-		id: props.id,
-	});
-	const decreaseCartItemQuantity = decreaseCartItemQuantityMutation.bind(null, {
-		quantity: props.quantity,
-		id: props.id,
-	});
-
 	const decreaseQuantity = async (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		e.stopPropagation();
-		await decreaseCartItemQuantity();
+		await decreaseCartItemQuantityMutation({
+			cartId: props.cartId,
+			quantity: props.quantity,
+			id: props.id,
+		});
 	};
 
 	const increaseQuantity = async (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		e.stopPropagation();
-		await increaseCartItemQuantity();
+		await increaseCartItemQuantityMutation({
+			cartId: props.cartId,
+			quantity: props.quantity,
+			id: props.id,
+		});
 	};
 
 	return (

@@ -133,7 +133,8 @@ export default function Cart(props: CartProps) {
 						{props.cart.items.map((item, i) => (
 							<CartItem
 								key={`${item.dishId}-${i}`}
-								cartId={item.id}
+								itemId={item.id}
+								cartId={props.cart.id}
 								name={item.name}
 								price={item.price}
 								dishId={item.dishId}
@@ -156,6 +157,7 @@ export default function Cart(props: CartProps) {
 								eventDate,
 								eventTime,
 								chefId: props.chefId,
+								cartId: props.cart?.id,
 							});
 						}}
 					>

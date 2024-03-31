@@ -6,6 +6,7 @@
     "dev": "pnpm --filter slyderz-consumer dev",
     "start": "pnpm --filter slyderz-consumer start",
     "migrate": "pnpm --filter slyderz-consumer migrate",
+    "rollback": "pnpm --filter slyderz-consumer migrate:rollback",
     "studio": "pnpm --filter slyderz-consumer studio",
     "lint": "pnpm --filter slyderz-consumer lint",
     "emails": "pnpm --filter transactional dev"

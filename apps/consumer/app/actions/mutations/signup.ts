@@ -13,6 +13,7 @@ import { rudderstackServer } from "app/lib/rudderstackServer";
 import { getStripeServer } from "app/lib/stripe";
 import { requiredFormData } from "app/lib/utils";
 import { db } from "drizzle";
+import { cart } from "drizzle/schema/order";
 import { users } from "drizzle/schema/user";
 
 export default async function signupMutation(input: FormData) {
@@ -66,6 +67,11 @@ export default async function signupMutation(input: FormData) {
 				if (!insertedUser) {
 					return tx.rollback();
 				}
+
+				await db.insert(cart).values({
+					id: generateId(10),
+					userId: insertedUser.id,
+				})
 
 				return {
 					id: insertedUser.id,

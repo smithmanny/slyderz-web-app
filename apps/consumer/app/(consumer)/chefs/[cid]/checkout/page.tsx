@@ -5,7 +5,7 @@ import { CheckoutCartItem } from "../CartItem";
 import CheckoutForm from "./CheckoutForm";
 
 import fetchUserPaymentMethodsQuery from "app/actions/queries/fetchUserPaymentMethods";
-import { getCartCookie } from "app/lib/cookies";
+import { getCartQuery } from "app/actions/queries/getCart";
 import { cn } from "app/lib/utils";
 
 export default async function ChefCheckoutPage({
@@ -14,7 +14,7 @@ export default async function ChefCheckoutPage({
 	params: { cid: string };
 }) {
 	// TODO: Address table deleted
-	const userCart = getCartCookie();
+	const userCart = getCartQuery();
 	const userPaymentMethods = fetchUserPaymentMethodsQuery();
 	const [cart, paymentMethods] = await Promise.all([
 		userCart,
@@ -33,7 +33,8 @@ export default async function ChefCheckoutPage({
 					{cart.items.map((item, i) => (
 						<CheckoutCartItem
 							key={`${item.dishId}-${i}`}
-							cartId={item.id}
+							itemId={item.id}
+							cartId={cart.id}
 							name={item.name}
 							price={item.price}
 							dishId={item.dishId}
@@ -46,8 +47,9 @@ export default async function ChefCheckoutPage({
 				<section className="col-span-4 md:col-span-2">
 					<CheckoutForm
 						chefId={params.cid}
-						cartTotal={cart.total}
 						subtotal={cart.subtotal}
+						serviceFee={cart.serviceFee}
+						total={cart.total}
 						cartItems={cart.items}
 						address=""
 						paymentMethods={paymentMethods}

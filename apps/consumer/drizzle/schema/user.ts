@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm';
-import { boolean, pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core"
+import { boolean, integer, numeric, pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core"
 
 import { calendar, dishes, sections } from "./menu";
 import { orders } from "./order";

@@ -29,16 +29,16 @@ export const localImageLoader = ({
 	return `${src}?w=${width}&q=${quality || 75}`;
 };
 
-export const getConsumerServiceFee = (cartTotal: string) =>
-	Number(cartTotal) * CONSUMER_SERVICE_FEE;
+export const getConsumerServiceFee = (cartSubTotal: number) =>
+	cartSubTotal * CONSUMER_SERVICE_FEE;
 
-export const getChefServiceFee = (cartTotal: string) =>
-	Number(cartTotal) * CHEF_SERVICE_FEE;
+export const getChefServiceFee = (cartSubTotal: string) =>
+	Number(cartSubTotal) * CHEF_SERVICE_FEE;
 
-export const getConsumerCartTotal = (cartSubTotal: string) => {
+export const getConsumerCartTotal = (cartSubTotal: number) => {
 	const serviceFee = getConsumerServiceFee(cartSubTotal);
 
-	return Number(cartSubTotal + serviceFee);
+	return cartSubTotal + serviceFee;
 };
 
 const SITE_URL = process.env.NEXT_PUBLIC_URL ?? "http://localhost:3000";

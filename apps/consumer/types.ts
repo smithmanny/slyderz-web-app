@@ -32,12 +32,13 @@ export interface EmailBodyResponseType {
 	orderTotal: number;
 }
 export interface Cart {
+	id: string
 	eventDate?: string | null;
 	eventTime?: string | null;
 	items: Array<CartItem>;
-	total: string;
-	subtotal: string;
-	serviceFee: string;
+	total: number;
+	subtotal: number;
+	serviceFee: number;
 }
 
 // Email section

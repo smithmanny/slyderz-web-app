@@ -5,14 +5,6 @@ import * as z from "zod";
 
 import { Button } from "app/components/ui/button";
 import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "app/components/ui/form";
-import {
 	Select,
 	SelectContent,
 	SelectItem,
@@ -32,8 +24,9 @@ import { CartItem } from "types";
 
 interface CheckoutFormProps {
 	chefId: string;
-	cartTotal: string;
-	subtotal: string;
+	subtotal: number;
+	serviceFee: number;
+	total: number;
 	cartItems: Array<CartItem>;
 	address: string;
 	eventDate: string;
@@ -49,8 +42,8 @@ export default function CheckoutForm(props: CheckoutFormProps) {
 		selectedAddress: props.address || "",
 		paymentMethodId: props.paymentMethods[0]?.id || "",
 	});
-	const values = form.getValues();
-	console.log("props.subtotal", props.subtotal)
+	const selectedAddress = form.watch("selectedAddress")
+	const paymentMethodId = form.watch("paymentMethodId")
 
 	const handleForm = async (input: FormData) => {
 		const address = input.get("selectedAddress") as string
@@ -61,9 +54,9 @@ export default function CheckoutForm(props: CheckoutFormProps) {
 			eventTime: props.eventTime,
 			address,
 			chefId: props.chefId,
-			subtotal: props.cartTotal,
-			serviceFee: props.cartTotal,
-			total: props.cartTotal,
+			subtotal: props.subtotal,
+			serviceFee: props.serviceFee,
+			total: props.total,
 			paymentMethodId,
 			cartItems: props.cartItems,
 		});
@@ -111,7 +104,7 @@ export default function CheckoutForm(props: CheckoutFormProps) {
 			<div>
 				<div className="grid grid-cols-2 mb-2">
 					<p className="text-muted-foreground">Subtotal</p>
-					<p>{formatNumberToCurrency(Number(props.cartTotal))}</p>
+					<p>{formatNumberToCurrency(Number(props.subtotal))}</p>
 				</div>
 				<div className="grid grid-cols-2 mb-2">
 					<p className="text-muted-foreground">Taxes</p>
@@ -137,7 +130,7 @@ export default function CheckoutForm(props: CheckoutFormProps) {
 
 			<Button
 				className="mt-4"
-				disabled={!values.selectedAddress || !values.paymentMethod}
+				disabled={!selectedAddress || !paymentMethodId}
 			>
 				Checkout
 			</Button>

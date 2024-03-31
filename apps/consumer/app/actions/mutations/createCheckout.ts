@@ -4,12 +4,13 @@ import { generateId } from "lucia";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
+import { getCartQuery } from "app/actions/queries/getCart";
 import { getProtectedSession } from "app/lib/auth";
 import {
 	sendChefOrderRequestEmail,
 	sendConsumerNewOrderEmail,
 } from "app/lib/aws";
-import { getCartCookie, setCartCookie } from "app/lib/cookies";
+import { setCartCookie } from "app/lib/cookies";
 import { NotFoundError, UnknownError } from "app/lib/errors";
 import {
 	getChefServiceFee,
@@ -23,9 +24,9 @@ import { orders } from "drizzle/schema/order";
 const CreateCheckoutSchema = z.object({
 	address: z.string(),
 	chefId: z.string(),
-	subtotal: z.string(),
-	serviceFee: z.string(),
-	total: z.string(),
+	subtotal: z.number(),
+	serviceFee: z.number(),
+	total: z.number(),
 	cartItems: z.array(
 		z.object({
 			id: z.string(),
@@ -47,7 +48,7 @@ export default async function createCheckoutMutation(
 	CreateCheckoutSchema.parse(input);
 
 	const { user } = await getProtectedSession();
-	const cart = await getCartCookie();
+	const cart = await getCartQuery();
 
 	// verify chef exists before creating order
 	const chef = await db.query.chefs.findFirst({
@@ -63,7 +64,7 @@ export default async function createCheckoutMutation(
 
 	const order = await db.transaction(async (tx) => {
 		const orderConfirmationNumber = `SLY-${generateId(7)}`;
-		const consumerServiceFee = getConsumerServiceFee(cart.total);
+		const consumerServiceFee = getConsumerServiceFee(cart.subtotal);
 		const cartTotal = cart.total + consumerServiceFee;
 
 		try {
