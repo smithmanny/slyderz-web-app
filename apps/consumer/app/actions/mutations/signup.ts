@@ -71,7 +71,7 @@ export default async function signupMutation(input: FormData) {
 				await db.insert(cart).values({
 					id: generateId(10),
 					userId: insertedUser.id,
-				})
+				});
 
 				return {
 					id: insertedUser.id,
@@ -99,9 +99,9 @@ export default async function signupMutation(input: FormData) {
 		userId: user.id,
 		traits: {
 			email: user.email,
-			name: user.name
-		}
-	})
+			name: user.name,
+		},
+	});
 
 	const token = await generateVerificationToken(user.id);
 	const activationUrl = `${

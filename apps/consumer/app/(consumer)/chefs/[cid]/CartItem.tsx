@@ -21,7 +21,11 @@ export function CartItem(props: CartItemProps) {
 		<div className="grid grid-cols-6 gap-2 w-full items-center border-b-2 pb-2 mb-2">
 			<p className="col-span-3 text-sm leading-7">{props.name}</p>
 			<div className="col-span-2">
-				<CartQuantity quantity={props.quantity} id={props.itemId} cartId={props.cartId} />
+				<CartQuantity
+					quantity={props.quantity}
+					id={props.itemId}
+					cartId={props.cartId}
+				/>
 			</div>
 			<div className="col-span-1 flex flex-row items-center">
 				<p className="col-span-1 text-sm leading-7">

@@ -19,8 +19,8 @@ export default async function chefProfileQuery(chefId: string) {
 		with: {
 			calendar: {
 				with: {
-					hours: true
-				}
+					hours: true,
+				},
 			},
 			dishes: true,
 			user: true,

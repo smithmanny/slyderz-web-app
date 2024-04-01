@@ -25,7 +25,10 @@ const AddItemToCartProps = z.object({
 	imageUrl: z.string(),
 });
 
-function calculateCartSum(items: Array<CartItem>, { price, quantity }: { price: number, quantity: number }) {
+function calculateCartSum(
+	items: Array<CartItem>,
+	{ price, quantity }: { price: number; quantity: number },
+) {
 	let subtotal = price * quantity;
 
 	if (items.length !== 0) {
@@ -43,9 +46,12 @@ function addItemToCartCookie(values: z.infer<typeof AddItemToCartProps>) {
 
 	if (cartCookie) {
 		const cart = JSON.parse(cartCookie.value) as Cart;
-		const subtotal = calculateCartSum(cart.items, { price: values.price, quantity: values.quantity })
-		const serviceFee = getConsumerServiceFee(subtotal)
-		const total = getConsumerCartTotal(subtotal)
+		const subtotal = calculateCartSum(cart.items, {
+			price: values.price,
+			quantity: values.quantity,
+		});
+		const serviceFee = getConsumerServiceFee(subtotal);
+		const total = getConsumerCartTotal(subtotal);
 
 		cart.subtotal = subtotal;
 		cart.total = total;
@@ -60,69 +66,79 @@ function addItemToCartCookie(values: z.infer<typeof AddItemToCartProps>) {
 	throw new Error("Failed to add item to cart.");
 }
 
-async function addItemToCartSession(userId: string, input: z.infer<typeof AddItemToCartProps>) {
+async function addItemToCartSession(
+	userId: string,
+	input: z.infer<typeof AddItemToCartProps>,
+) {
 	const sessionCart = await db.query.cart.findFirst({
 		where: (cart, { eq }) => eq(cart.userId, userId),
 		with: {
-			items: true
-		}
-	})
+			items: true,
+		},
+	});
 
 	if (!sessionCart) {
 		throw new NotFoundError({
-			message: "Cart not found"
-		})
+			message: "Cart not found",
+		});
 	}
 
-	const sessionItems = sessionCart.items.map(item => ({
+	const sessionItems = sessionCart.items.map((item) => ({
 		...item,
-		price: Number(item.price)
-	}))
-	const items = [...sessionItems]
+		price: Number(item.price),
+	}));
+	const items = [...sessionItems];
 
-	const subtotal = calculateCartSum(items, { price: input.price, quantity: input.quantity })
-	const serviceFee = getConsumerServiceFee(subtotal)
-	const total = getConsumerCartTotal(subtotal)
+	const subtotal = calculateCartSum(items, {
+		price: input.price,
+		quantity: input.quantity,
+	});
+	const serviceFee = getConsumerServiceFee(subtotal);
+	const total = getConsumerCartTotal(subtotal);
 
-	const userCartResp = await db.update(cart).set({
-		subtotal: subtotal.toString(),
-		serviceFee: serviceFee.toString(),
-		total: total.toString(),
-	}).where(eq(cart.userId, userId)).returning({ id: cart.id })
+	const userCartResp = await db
+		.update(cart)
+		.set({
+			subtotal: subtotal.toString(),
+			serviceFee: serviceFee.toString(),
+			total: total.toString(),
+		})
+		.where(eq(cart.userId, userId))
+		.returning({ id: cart.id });
 
-	const userCart = userCartResp[0]
+	const userCart = userCartResp[0];
 
 	if (!userCart) {
 		throw new NotFoundError({
-			message: "Cart not found"
-		})
+			message: "Cart not found",
+		});
 	}
 
 	// Set cart item on cart
 	await db.insert(cartItems).values({
 		...input,
 		price: input.price.toString(),
-		cartId: userCart.id
-	})
+		cartId: userCart.id,
+	});
 
 	const headersList = headers();
-	const path = headersList.get("referer")?.split("/chefs/")
-	const chefId = path?.at(-1)
+	const path = headersList.get("referer")?.split("/chefs/");
+	const chefId = path?.at(-1);
 
-	revalidatePath(`/chefs/${chefId}`, "page")
+	revalidatePath(`/chefs/${chefId}`, "page");
 }
 
 export async function addItemToCart(input: z.infer<typeof AddItemToCartProps>) {
-	const cartInput = AddItemToCartProps.parse(input)
-	const { session, user } = await getSession()
+	const cartInput = AddItemToCartProps.parse(input);
+	const { session, user } = await getSession();
 
 	if (session && user) {
-		await addItemToCartSession(user.id, cartInput)
+		await addItemToCartSession(user.id, cartInput);
 	} else {
-		addItemToCartCookie(cartInput)
+		addItemToCartCookie(cartInput);
 	}
 
 	return {
-		message: "Successfully added item to cart"
-	}
+		message: "Successfully added item to cart",
+	};
 }

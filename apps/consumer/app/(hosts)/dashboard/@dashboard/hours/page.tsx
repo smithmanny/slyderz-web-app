@@ -3,7 +3,7 @@ import ChefHours from "./ChefHours";
 import { getChefHoursQuery } from "app/actions/queries/getChefHours";
 
 export default async function HoursDashboardPage() {
-	const calendar = await getChefHoursQuery()
+	const calendar = await getChefHoursQuery();
 
 	return (
 		<div>

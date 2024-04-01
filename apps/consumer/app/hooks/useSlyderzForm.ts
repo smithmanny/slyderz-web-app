@@ -5,7 +5,11 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 interface DefaultValuesType {
-	[index: string]: string | number | Array<string | number | {[key: string]: any}> | boolean;
+	[index: string]:
+		| string
+		| number
+		| Array<string | number | { [key: string]: any }>
+		| boolean;
 }
 export function useSlyderzForm(
 	formSchema: z.ZodSchema,

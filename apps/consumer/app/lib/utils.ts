@@ -32,8 +32,8 @@ export const localImageLoader = ({
 export const getConsumerServiceFee = (cartSubTotal: number) =>
 	cartSubTotal * CONSUMER_SERVICE_FEE;
 
-export const getChefServiceFee = (cartSubTotal: string) =>
-	Number(cartSubTotal) * CHEF_SERVICE_FEE;
+export const getChefServiceFee = (cartSubTotal: number) =>
+	cartSubTotal * CHEF_SERVICE_FEE;
 
 export const getConsumerCartTotal = (cartSubTotal: number) => {
 	const serviceFee = getConsumerServiceFee(cartSubTotal);
@@ -157,16 +157,16 @@ const buildHours = () => {
 		"11:30 PM",
 		"12:00 AM",
 		"12:30 AM",
-	]
+	];
 
 	const hours = times.map((time) => ({
 		label: time,
-		value: time
-	}))
+		value: time,
+	}));
 
-	return hours
+	return hours;
 };
-export const getHoursForDay = buildHours()
+export const getHoursForDay = buildHours();
 
 export const weekdays = [
 	{

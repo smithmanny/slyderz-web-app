@@ -5,18 +5,15 @@ import fetchOrderStatusQuery from "app/actions/queries/fetchOrderStatus";
 
 export default async function OrdersPage({
 	params,
-	searchParams,
 }: {
 	params: { oid: string };
-	searchParams: { status: number };
 }) {
-	await fetchOrderStatusQuery({
+	const status = await fetchOrderStatusQuery({
 		confirmationNumber: params.oid,
-		status: Number(searchParams.status),
 	});
 	return (
 		<Container>
-			<OrderWrapper status={Number(searchParams.status)} />
+			<OrderWrapper status={status} />
 		</Container>
 	);
 }

@@ -1,10 +1,20 @@
 import { Column, Heading, Hr, Row, Section, Text } from "jsx-email";
 import * as React from "react";
 
-import { EmailNewOrderType } from "utils/types";
 import { EmailOrderItem } from "../components/OrderItem";
 import SlyderzEmailLayout from "./";
 
+type EmailNewOrderType = {
+	orderLocation: string
+	orderDate: string
+	orderTime: string
+	orderTotal: string
+	orderItems: Array<{
+		quantity: number
+		name: string
+		price: string
+	}>
+}
 // TODO
 export const EmailNewOrder = ({
 	orderLocation,
@@ -51,7 +61,7 @@ export const EmailNewOrder = ({
 			<Row className="columns-3 mb-10">
 				<Column>
 					<Text style={global.paragraphWithBold}>Event Date</Text>
-					<Text style={track.number}>{orderDate.toDateString()}</Text>
+					<Text style={track.number}>{orderDate}</Text>
 				</Column>
 				<Column>
 					<Text style={global.paragraphWithBold}>Event Time</Text>

@@ -184,14 +184,23 @@ function EventTime(props: EventTimeProps) {
 		 * 4. Return times
 		 */
 		const selectedDayOfWeek: number = new Date(values.eventDate).getDay();
-		const selectedTime = props.hours.find((hourBlock) => convertDayToInt(hourBlock.dayOfWeek) === selectedDayOfWeek);
-		const startTime = getHoursForDay.find((t) => t.label === selectedTime?.startTime);
-		const endTime = getHoursForDay.find((t) => t.label === selectedTime?.endTime);
+		const selectedTime = props.hours.find(
+			(hourBlock) => convertDayToInt(hourBlock.dayOfWeek) === selectedDayOfWeek,
+		);
+		const startTime = getHoursForDay.find(
+			(t) => t.label === selectedTime?.startTime,
+		);
+		const endTime = getHoursForDay.find(
+			(t) => t.label === selectedTime?.endTime,
+		);
 
 		if (startTime && endTime) {
 			const startTimeIndex = getHoursForDay.indexOf(startTime);
 			const endTimeIndex = getHoursForDay.indexOf(endTime);
-			const availableTime = getHoursForDay.slice(startTimeIndex, endTimeIndex + 1);
+			const availableTime = getHoursForDay.slice(
+				startTimeIndex,
+				endTimeIndex + 1,
+			);
 
 			return availableTime;
 		}

@@ -29,13 +29,17 @@ function increaseAnonItem(id: string) {
 
 		item.quantity += 1;
 
-		const total = cart.items.reduce(
+		const subtotal = cart.items.reduce(
 			(itemTotal: number, currentVal: CartItem) => {
 				return (itemTotal += currentVal.quantity * currentVal.price);
 			},
 			0,
 		);
+		const serviceFee = getConsumerServiceFee(subtotal);
+		const total = getConsumerCartTotal(subtotal);
 
+		cart.subtotal = subtotal;
+		cart.serviceFee = serviceFee;
 		cart.total = total;
 
 		setCartCookie(JSON.stringify(cart));
@@ -46,43 +50,44 @@ function increaseAnonItem(id: string) {
 	throw new Error("Failed to increase item quantity.");
 }
 
-async function increaseSessionItem(cartId: string, { id, quantity }: { id: string, quantity: number }) {
+async function increaseSessionItem(
+	cartId: string,
+	{ id, quantity }: { id: string; quantity: number },
+) {
 	await db.transaction(async (tx) => {
-		await tx.update(cartItems)
-		.set({
-			quantity: quantity += 1,
-		})
-		.where(eq(cartItems.id, id))
+		await tx
+			.update(cartItems)
+			.set({
+				quantity: (quantity += 1),
+			})
+			.where(eq(cartItems.id, id));
 
 		const sessionItems = await tx.query.cartItems.findMany({
-			where: (cartItems, { eq }) => eq(cartItems.cartId, cartId)
-		})
-		const items = sessionItems.map(item => ({
+			where: (cartItems, { eq }) => eq(cartItems.cartId, cartId),
+		});
+		const items = sessionItems.map((item) => ({
 			...item,
-			price: Number(item.price)
-		}))
+			price: Number(item.price),
+		}));
 
-		const subtotal = items.reduce(
-			(itemTotal: number, currentVal: CartItem) => {
-				return (itemTotal += currentVal.quantity * currentVal.price);
-			},
-			0,
-		);
-		const serviceFee = getConsumerServiceFee(subtotal)
-		const total = getConsumerCartTotal(subtotal)
+		const subtotal = items.reduce((itemTotal: number, currentVal: CartItem) => {
+			return (itemTotal += currentVal.quantity * currentVal.price);
+		}, 0);
+		const serviceFee = getConsumerServiceFee(subtotal);
+		const total = getConsumerCartTotal(subtotal);
 
 		await tx.update(cart).set({
 			subtotal: subtotal.toString(),
 			serviceFee: serviceFee.toString(),
 			total: total.toString(),
-		})
+		});
 
 		const headersList = headers();
-		const path = headersList.get("referer")?.split("/chefs/")
-		const chefId = path?.at(-1)
+		const path = headersList.get("referer")?.split("/chefs/");
+		const chefId = path?.at(-1);
 
-		revalidatePath(`/chefs/${chefId}`, "page")
-	})
+		revalidatePath(`/chefs/${chefId}`, "page");
+	});
 }
 
 const IncreaseCartItemQuantitySchema = z.object({
@@ -94,15 +99,15 @@ export async function increaseCartItemQuantityMutation(
 	input: z.infer<typeof IncreaseCartItemQuantitySchema>,
 ) {
 	const item = IncreaseCartItemQuantitySchema.parse(input);
-	const { session } = await getSession()
+	const { session } = await getSession();
 
 	if (!session) {
-		increaseAnonItem(item.id)
+		increaseAnonItem(item.id);
 	} else {
-		await increaseSessionItem(item.cartId, item)
+		await increaseSessionItem(item.cartId, item);
 	}
 
 	return {
-		message: "Successfully increased item quantity"
-	}
+		message: "Successfully increased item quantity",
+	};
 }

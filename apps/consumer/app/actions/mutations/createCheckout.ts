@@ -1,5 +1,6 @@
 "use server";
 
+import { eq } from "drizzle-orm";
 import { generateId } from "lucia";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -10,16 +11,11 @@ import {
 	sendChefOrderRequestEmail,
 	sendConsumerNewOrderEmail,
 } from "app/lib/aws";
-import { setCartCookie } from "app/lib/cookies";
 import { NotFoundError, UnknownError } from "app/lib/errors";
-import {
-	getChefServiceFee,
-	getConsumerServiceFee,
-	readableDate,
-} from "app/lib/utils";
+import { getConsumerServiceFee, readableDate } from "app/lib/utils";
 import { db } from "drizzle";
 import { dishesToOrders } from "drizzle/schema/menu";
-import { orders } from "drizzle/schema/order";
+import { cart, cartItems, orders } from "drizzle/schema/order";
 
 const CreateCheckoutSchema = z.object({
 	address: z.string(),
@@ -45,14 +41,14 @@ const CreateCheckoutSchema = z.object({
 export default async function createCheckoutMutation(
 	input: z.infer<typeof CreateCheckoutSchema>,
 ) {
-	CreateCheckoutSchema.parse(input);
+	const checkout = CreateCheckoutSchema.parse(input);
 
 	const { user } = await getProtectedSession();
-	const cart = await getCartQuery();
+	const userCart = await getCartQuery();
 
 	// verify chef exists before creating order
 	const chef = await db.query.chefs.findFirst({
-		where: (chefs, { eq }) => eq(chefs.id, input.chefId),
+		where: (chefs, { eq }) => eq(chefs.id, checkout.chefId),
 		with: {
 			user: true,
 		},
@@ -63,28 +59,27 @@ export default async function createCheckoutMutation(
 	}
 
 	const order = await db.transaction(async (tx) => {
-		const orderConfirmationNumber = `SLY-${generateId(7)}`;
-		const consumerServiceFee = getConsumerServiceFee(cart.subtotal);
-		const cartTotal = cart.total + consumerServiceFee;
+		const orderConfirmationNumber = `SLY-${generateId(10)}`;
+		const consumerServiceFee = getConsumerServiceFee(userCart.subtotal);
 
 		try {
 			const insertOrder = await tx
 				.insert(orders)
 				.values({
 					id: generateId(10),
-					serviceFee: String(consumerServiceFee),
-					subtotal: String(cart.total),
-					total: String(cartTotal),
-					chefId: input.chefId,
+					serviceFee: consumerServiceFee.toString(),
+					subtotal: userCart.subtotal.toString(),
+					total: userCart.total.toString(),
+					chefId: checkout.chefId,
 					confirmationNumber: orderConfirmationNumber,
 					address1: "",
 					address2: "",
 					state: "",
 					city: "",
 					zipcode: "",
-					eventDate: input.eventDate,
-					eventTime: input.eventTime,
-					paymentMethodId: input.paymentMethodId,
+					eventDate: checkout.eventDate,
+					eventTime: checkout.eventTime,
+					paymentMethodId: checkout.paymentMethodId,
 					userId: user.id,
 				})
 				.returning();
@@ -99,7 +94,7 @@ export default async function createCheckoutMutation(
 			}
 
 			// create order items
-			const orderDishes = input.cartItems.map((item) => ({
+			const orderDishes = checkout.cartItems.map((item) => ({
 				dishId: item.dishId,
 				orderId: order.id,
 				name: item.name,
@@ -107,16 +102,16 @@ export default async function createCheckoutMutation(
 				price: String(item.price),
 				quantity: item.quantity,
 			}));
-			const orderItems = await db
+			const orderItems = await tx
 				.insert(dishesToOrders)
 				.values(orderDishes)
 				.returning();
 
 			return {
-				...order,
-				items: {
-					...orderItems,
-				},
+				address: "4288 New Road",
+				confirmationNumber: order.confirmationNumber,
+				total: order.total,
+				items: orderItems,
 			};
 		} catch (err) {
 			tx.rollback();
@@ -127,68 +122,74 @@ export default async function createCheckoutMutation(
 		}
 	});
 
-	// Send email
-	if (order?.confirmationNumber) {
-		const date = new Date(input.eventDate);
-		const acceptUrl = `${process.env.NEXT_PUBLIC_URL}/orders/${order.confirmationNumber}/confirm`;
-		const denyUrl = `${process.env.NEXT_PUBLIC_URL}/orders/${order.confirmationNumber}/deny`;
-		// const chefServiceFee = getChefServiceFee(order.amount);
-		const consumerServiceFee = getConsumerServiceFee(cart.total);
-		const address = `${order.address1} ${order.city}, ${order.state} ${order.zipcode}`;
-		const customerEmailParams = {
-			// orderNumber: order.confirmationNumber,
-			orderDate: readableDate(date),
-			orderTime: input.eventTime,
-			orderLocation: address,
-			// orderSubtotal: order.amount,
-			// orderServiceFee: consumerServiceFee,
-			orderTotal: order.total,
-			orderItems: order.items.map((item) => ({
-				quantity: item.quantity,
-				price: item.price,
-				name: item.name,
-				image: item.imageUrl,
-			})),
-		};
-		// TODO
-		const chefEmailParams = {
-			orderApproveUrl: acceptUrl,
-			orderDenyUrl: denyUrl,
-			orderNumber: order.confirmationNumber,
-			orderDate: readableDate(date),
-			orderTime: input.eventTime,
-			orderLocation: address,
-			// orderSubtotal: order.amount,
-			// orderServiceFee: chefServiceFee,
-			orderTotal: String(
-				Number(order.subtotal) - getChefServiceFee(order.subtotal),
-			),
-			orderItems: order.items.map((item) => ({
-				quantity: item.quantity,
-				price: String(item.price),
-				name: item.name,
-				image: item.imageUrl,
-			})),
-		};
+	const date = new Date(checkout.eventDate);
+	const acceptUrl = `${process.env.NEXT_PUBLIC_URL}/orders/${order.confirmationNumber}/confirm`;
+	const denyUrl = `${process.env.NEXT_PUBLIC_URL}/orders/${order.confirmationNumber}/deny`;
+	// const chefServiceFee = getChefServiceFee(order.amount);
+	const address = order.address;
+	const customerEmailParams = {
+		// orderNumber: order.confirmationNumber,
+		orderDate: readableDate(date),
+		orderTime: checkout.eventTime,
+		orderLocation: address,
+		// orderSubtotal: order.amount,
+		// orderServiceFee: consumerServiceFee,
+		orderTotal: order.total,
+		orderItems: order.items.map((item) => ({
+			quantity: item.quantity,
+			price: item.price,
+			name: item.name,
+			image: item.imageUrl,
+		})),
+	};
+	// TODO
+	const chefEmailParams = {
+		orderApproveUrl: acceptUrl,
+		orderDenyUrl: denyUrl,
+		orderNumber: order.confirmationNumber,
+		orderDate: readableDate(date),
+		orderTime: checkout.eventTime,
+		orderLocation: address,
+		// orderSubtotal: order.amount,
+		// orderServiceFee: chefServiceFee,
+		orderTotal: order.total,
+		orderItems: order.items.map((item) => ({
+			quantity: item.quantity,
+			price: item.price,
+			name: item.name,
+			image: item.imageUrl,
+		})),
+	};
 
-		// Send email to chef and user
-		Promise.all([
-			sendConsumerNewOrderEmail({ to: user.email, data: customerEmailParams }),
-			sendChefOrderRequestEmail({ to: chef.user.email, data: chefEmailParams }),
-		])
-			.then(() => console.log("Order confirmation email sent"))
-			.catch((err) => {
-				console.log("Order confirmation email failed to send", err);
-				throw new Error("Email failed to send.");
+	// clear cart
+	const resetCartItems = db
+		.delete(cartItems)
+		.where(eq(cartItems.cartId, userCart.id));
+	const resetCart = db
+		.update(cart)
+		.set({
+			eventDate: null,
+			eventTime: null,
+			subtotal: null,
+			serviceFee: null,
+			total: null,
+		})
+		.where(eq(cart.id, userCart.id));
+
+	// TODO: send emails with lambda
+	Promise.all([
+		sendConsumerNewOrderEmail({ to: user.email, data: customerEmailParams }),
+		sendChefOrderRequestEmail({ to: chef.user.email, data: chefEmailParams }),
+		resetCartItems,
+		resetCart,
+	])
+		.then(() => console.log("Order confirmation email sent"))
+		.catch((err) => {
+			throw new UnknownError({
+				message: "Failed to send email",
+				cause: err,
 			});
+		});
 
-		const initialUserCart = {
-			items: [],
-			total: 0,
-		};
-
-		setCartCookie(JSON.stringify(initialUserCart));
-
-		redirect(`/orders/${order.confirmationNumber}/new`);
-	}
+	redirect(`/orders/${order.confirmationNumber}`);
 }

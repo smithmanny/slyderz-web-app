@@ -2,20 +2,24 @@
 
 import dynamic from "next/dynamic";
 
+import { orders } from "drizzle/schema/order";
+
 const DynamicAcceptedOrder = dynamic(() => import("./AcceptedOrder"));
 const DynamicPendingOrder = dynamic(() => import("./PendingOrder"));
 const DynamicDeniedOrder = dynamic(() => import("./DeniedOrder"));
 
+type StatusType = (typeof orders.orderStatus.enumValues)[number];
+
 interface OrderWrapperProps {
-	status: number;
+	status: StatusType;
 }
 export default function OrderWrapper(props: OrderWrapperProps) {
 	switch (props.status) {
-		case 0: //pending state
+		case "pending": //pending state
 			return <DynamicPendingOrder />;
-		case 1: //denied state
+		case "declined": //denied state
 			return <DynamicDeniedOrder />;
-		case 2: //accepted state
+		case "accepted": //accepted state
 			return <DynamicAcceptedOrder />;
 	}
 }

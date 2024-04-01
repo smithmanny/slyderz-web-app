@@ -91,21 +91,21 @@ export default function ProfileInfoForm(props: ProfileInfoFormProps) {
 
 				<Button
 					className="mt-4"
-				// disabled={!values.selectedAddress || !values.paymentMethod}
-				// onClick={async (e) => {
-				//   e.preventDefault();
-				//   e.stopPropagation();
+					// disabled={!values.selectedAddress || !values.paymentMethod}
+					// onClick={async (e) => {
+					//   e.preventDefault();
+					//   e.stopPropagation();
 
-				//   await createCheckoutMutation({
-				//     eventDate: props.eventDate,
-				//     eventTime: props.eventTime,
-				//     address: values.selectedAddress,
-				//     chefId: props.chefId,
-				//     cartTotal: props.cartTotal,
-				//     paymentMethodId: values.paymentMethod,
-				//     cartItems: props.cartItems,
-				//   });
-				// }}
+					//   await createCheckoutMutation({
+					//     eventDate: props.eventDate,
+					//     eventTime: props.eventTime,
+					//     address: values.selectedAddress,
+					//     chefId: props.chefId,
+					//     cartTotal: props.cartTotal,
+					//     paymentMethodId: values.paymentMethod,
+					//     cartItems: props.cartItems,
+					//   });
+					// }}
 				>
 					Save
 				</Button>

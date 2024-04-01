@@ -42,7 +42,7 @@ export const EmailNewOrderDenied = ({
 			<Row className="columns-3 mb-10">
 				<Column>
 					<Text style={global.paragraphWithBold}>Event Date</Text>
-					<Text style={track.number}>{orderDate.toDateString()}</Text>
+					<Text style={track.number}>{orderDate}</Text>
 				</Column>
 				<Column>
 					<Text style={global.paragraphWithBold}>Event Time</Text>

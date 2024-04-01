@@ -19,16 +19,15 @@ import { orders } from "drizzle/schema/order";
 
 const FetchOrderStatusQuerySchema = z.object({
 	confirmationNumber: z.string(),
-	status: z.number(),
 });
 export default async function fetchOrderStatusQuery(
 	input: z.infer<typeof FetchOrderStatusQuerySchema>,
 ) {
-	FetchOrderStatusQuerySchema.parse(input);
+	const data = FetchOrderStatusQuerySchema.parse(input);
 
 	const order = await db.query.orders.findFirst({
 		where: (orders, { eq }) =>
-			eq(orders.confirmationNumber, input.confirmationNumber),
+			eq(orders.confirmationNumber, data.confirmationNumber),
 		with: {
 			dishes: true,
 			chef: {
@@ -52,14 +51,11 @@ export default async function fetchOrderStatusQuery(
 		});
 	}
 
-	if (order.orderStatus !== "pending") {
-		throw new Error("Wrong order status.");
-	}
-
-	switch (input.status) {
-		case 0: // pending state
-			return;
-		case 1: // denied state
+	switch (order.orderStatus) {
+		case "pending": // pending state
+		case "completed": // pending state
+			break;
+		case "declined": // denied state
 			await db
 				.update(orders)
 				.set({
@@ -82,24 +78,20 @@ export default async function fetchOrderStatusQuery(
 					})),
 				},
 			});
-			return;
-		case 2:
+			break;
+		case "accepted":
 			{
-				// accepted state
 				const stripe = getStripeServer();
-				const consumerServiceFee = getConsumerServiceFee(order.subtotal);
 				// Stripe amount must be in cents
 				const stripeOrderAmount = Number(
-					(
-						parseFloat(String(order.subtotal + consumerServiceFee)) * 100
-					).toString(),
+					(parseFloat(order.total) * 100).toString(),
 				);
 				const stripeApplicationFee = Number(
 					(
 						parseFloat(
 							String(
-								getChefServiceFee(order.subtotal) +
-									getConsumerServiceFee(order.subtotal),
+								getChefServiceFee(Number(order.subtotal)) +
+									getConsumerServiceFee(Number(order.subtotal)),
 							),
 						) * 100
 					).toString(),
@@ -157,8 +149,10 @@ export default async function fetchOrderStatusQuery(
 					},
 				});
 			}
-			return;
+			break;
 		default:
 			throw new Error("There is a problem with order.");
 	}
+
+	return order.orderStatus;
 }

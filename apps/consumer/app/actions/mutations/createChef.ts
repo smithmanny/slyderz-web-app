@@ -8,7 +8,7 @@ import { UnknownError } from "app/lib/errors";
 import { getStripeServer } from "app/lib/stripe";
 import { db } from "drizzle";
 
-import { calendar } from "drizzle/schema/menu"
+import { calendar } from "drizzle/schema/menu";
 import { chefs, users } from "drizzle/schema/user";
 
 export default async function createChefMutation(userId: string) {
@@ -40,11 +40,14 @@ export default async function createChefMutation(userId: string) {
 	});
 
 	await db.transaction(async (tx) => {
-		const createChef = tx.insert(chefs).values({
-			id: generateId(10),
-			stripeAccountId: stripeAccount.id,
-			userId: user.id,
-		}).returning({ id: chefs.id });
+		const createChef = tx
+			.insert(chefs)
+			.values({
+				id: generateId(10),
+				stripeAccountId: stripeAccount.id,
+				userId: user.id,
+			})
+			.returning({ id: chefs.id });
 
 		// Set user role to chef
 		const convertUserToChef = tx
@@ -54,14 +57,16 @@ export default async function createChefMutation(userId: string) {
 			})
 			.where(eq(users.id, user.id));
 
-		const [chefRes] = await Promise.all([createChef, convertUserToChef]).catch((err) => {
-			throw new UnknownError({
-				message: "Chef not created",
-				cause: err,
-			});
-		});
+		const [chefRes] = await Promise.all([createChef, convertUserToChef]).catch(
+			(err) => {
+				throw new UnknownError({
+					message: "Chef not created",
+					cause: err,
+				});
+			},
+		);
 
-		const chef = chefRes[0]
+		const chef = chefRes[0];
 
 		if (!chef) {
 			throw new UnknownError({
@@ -71,10 +76,9 @@ export default async function createChefMutation(userId: string) {
 
 		await tx.insert(calendar).values({
 			id: generateId(10),
-			chefId: chef.id
-		})
-	})
-
+			chefId: chef.id,
+		});
+	});
 
 	redirect("/dashboard");
 }

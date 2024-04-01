@@ -2,12 +2,13 @@
 
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { headers } from "next/headers"
+import { headers } from "next/headers";
 import { cookies } from "next/headers";
 import { z } from "zod";
 
 import { getSession } from "app/lib/auth";
 import { setCartCookie } from "app/lib/cookies";
+import { getConsumerCartTotal, getConsumerServiceFee } from "app/lib/utils";
 import { db } from "drizzle";
 import { cartItems } from "drizzle/schema/order";
 
@@ -22,35 +23,40 @@ function deleteAnonItem(itemId: string) {
 		const updatedCartItems: Array<CartItem> = cart.items.filter(
 			(item) => item.id !== itemId,
 		);
-		const sum = updatedCartItems.reduce((total, currentVal: CartItem) => {
+		const subtotal = updatedCartItems.reduce((total, currentVal: CartItem) => {
 			return (total += currentVal.quantity * currentVal.price);
 		}, 0);
 
-		cart.total = sum;
+		const serviceFee = getConsumerServiceFee(subtotal);
+		const total = getConsumerCartTotal(subtotal);
+
+		cart.subtotal = subtotal;
+		cart.serviceFee = serviceFee;
+		cart.total = total;
 		cart.items = [...updatedCartItems];
 
 		setCartCookie(JSON.stringify(cart));
 	}
 
 	return {
-		error: "Failed to delete dish."
-	}
+		error: "Failed to delete dish.",
+	};
 }
 
 async function deleteSessionItem(itemId: string) {
 	const headersList = headers();
-	const path = headersList.get("referer")?.split("/chefs/")
-	const chefId = path?.at(-1)
+	const path = headersList.get("referer")?.split("/chefs/");
+	const chefId = path?.at(-1);
 
 	try {
-		await db.delete(cartItems).where(eq(cartItems.id, itemId))
+		await db.delete(cartItems).where(eq(cartItems.id, itemId));
 	} catch (err: any) {
 		return {
-			error: `Error deleting cart item ${err.message}`
-		}
+			error: `Error deleting cart item ${err.message}`,
+		};
 	}
 
-	revalidatePath(`/chefs/${chefId}`, "page")
+	revalidatePath(`/chefs/${chefId}`, "page");
 }
 
 const DeleteCartItemSchema = z.object({
@@ -61,15 +67,15 @@ export async function deleteCartItemMutation(
 ) {
 	const cartItem = DeleteCartItemSchema.parse(input);
 
-	const { session } = await getSession()
+	const { session } = await getSession();
 
 	if (session) {
-		await deleteSessionItem(cartItem.id)
+		await deleteSessionItem(cartItem.id);
 	} else {
-		deleteAnonItem(cartItem.id)
+		deleteAnonItem(cartItem.id);
 	}
 
 	return {
-		message: "Successfully deleted cart item"
-	}
+		message: "Successfully deleted cart item",
+	};
 }

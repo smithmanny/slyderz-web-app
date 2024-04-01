@@ -77,19 +77,19 @@ export const getChefSession = cache(async () => {
 	const { session, user } = await getProtectedSession();
 
 	const chef = await db.query.chefs.findFirst({
-		where: (chefs, { eq, }) => eq(chefs.userId, user.id),
+		where: (chefs, { eq }) => eq(chefs.userId, user.id),
 		with: {
 			calendar: {
 				columns: {
-					id: true
-				}
-			}
-		}
+					id: true,
+				},
+			},
+		},
 	});
 
 	if (!chef || !chef.calendar) {
 		throw new NotFoundError({
-			message: "Chef not found"
+			message: "Chef not found",
 		});
 	}
 
@@ -98,9 +98,9 @@ export const getChefSession = cache(async () => {
 		chef: {
 			...chef,
 			calendar: {
-				...chef.calendar
-			}
-		}
+				...chef.calendar,
+			},
+		},
 	};
 });
 

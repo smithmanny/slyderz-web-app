@@ -19,7 +19,7 @@ export const orders = pgTable("orders", {
   state: text("state").notNull(),
   zipcode: text("zipcode").notNull(),
   eventDate: date("event_date").notNull(),
-  eventTime: time("event_time", { precision: 3 }).notNull(),
+  eventTime: time("event_time", { precision: 6 }).notNull(),
   orderStatus: text("order_status", {
     enum: ['pending', 'accepted', 'completed', 'declined']
   }).default('pending').notNull(),

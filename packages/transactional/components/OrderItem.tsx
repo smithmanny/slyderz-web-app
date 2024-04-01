@@ -4,14 +4,14 @@ import * as React from "react";
 interface EmailOrderItem {
 	name: string;
 	quantity: number;
-	price: number;
+	price: string;
 	imageLink?: string;
 }
 
 export const EmailOrderItem = ({
-	name = "Surf & Turf",
-	quantity = 1,
-	price = 25,
+	name,
+	quantity,
+	price,
 	imageLink = "https://react-email-demo-ijnnx5hul-resend.vercel.app/static/nike-product.png",
 }: EmailOrderItem) => {
 	return (

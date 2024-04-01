@@ -42,12 +42,12 @@ export default function CheckoutForm(props: CheckoutFormProps) {
 		selectedAddress: props.address || "",
 		paymentMethodId: props.paymentMethods[0]?.id || "",
 	});
-	const selectedAddress = form.watch("selectedAddress")
-	const paymentMethodId = form.watch("paymentMethodId")
+	const selectedAddress = form.watch("selectedAddress");
+	const paymentMethodId = form.watch("paymentMethodId");
 
 	const handleForm = async (input: FormData) => {
-		const address = input.get("selectedAddress") as string
-		const paymentMethodId = input.get("paymentMethodId") as string
+		const address = input.get("selectedAddress") as string;
+		const paymentMethodId = input.get("paymentMethodId") as string;
 
 		await createCheckoutMutation({
 			eventDate: props.eventDate,
@@ -60,7 +60,7 @@ export default function CheckoutForm(props: CheckoutFormProps) {
 			paymentMethodId,
 			cartItems: props.cartItems,
 		});
-	}
+	};
 
 	return (
 		<form action={handleForm} className="space-y-8">
@@ -68,7 +68,11 @@ export default function CheckoutForm(props: CheckoutFormProps) {
 				control={form.control}
 				name="selectedAddress"
 				render={({ field }) => (
-					<Select onValueChange={field.onChange} defaultValue={field.value} {...field}>
+					<Select
+						onValueChange={field.onChange}
+						defaultValue={field.value}
+						{...field}
+					>
 						<SelectTrigger>
 							<SelectValue placeholder="Select an address for your event." />
 						</SelectTrigger>
@@ -86,7 +90,11 @@ export default function CheckoutForm(props: CheckoutFormProps) {
 				control={form.control}
 				name="paymentMethodId"
 				render={({ field }) => (
-					<Select onValueChange={field.onChange} defaultValue={field.value} {...field}>
+					<Select
+						onValueChange={field.onChange}
+						defaultValue={field.value}
+						{...field}
+					>
 						<SelectTrigger>
 							<SelectValue placeholder="Select a card for payment." />
 						</SelectTrigger>
@@ -112,15 +120,11 @@ export default function CheckoutForm(props: CheckoutFormProps) {
 				</div>
 				<div className="grid grid-cols-2 mb-2 pb-2 border-b-2">
 					<p className="text-muted-foreground">Service fee</p>
-					<p>
-						{formatNumberToCurrency(getConsumerServiceFee(props.subtotal))}
-					</p>
+					<p>{formatNumberToCurrency(getConsumerServiceFee(props.subtotal))}</p>
 				</div>
 				<div className="grid grid-cols-2">
 					<p>Total</p>
-					<p>
-						{formatNumberToCurrency(getConsumerCartTotal(props.subtotal))}
-					</p>
+					<p>{formatNumberToCurrency(getConsumerCartTotal(props.subtotal))}</p>
 				</div>
 			</div>
 
@@ -128,10 +132,7 @@ export default function CheckoutForm(props: CheckoutFormProps) {
 				* A hold will be put on your card until the chef confirms your order.
 			</small>
 
-			<Button
-				className="mt-4"
-				disabled={!selectedAddress || !paymentMethodId}
-			>
+			<Button className="mt-4" disabled={!selectedAddress || !paymentMethodId}>
 				Checkout
 			</Button>
 		</form>
