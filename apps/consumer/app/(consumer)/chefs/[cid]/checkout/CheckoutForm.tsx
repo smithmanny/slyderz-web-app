@@ -20,7 +20,7 @@ import {
 	getConsumerServiceFee,
 } from "app/lib/utils";
 
-import { CartItem } from "types";
+import type { CartItem } from "types";
 
 interface CheckoutFormProps {
 	chefId: string;

@@ -6,8 +6,11 @@ export function middleware(request: NextRequest) {
 	const cartCookie = request.cookies.get("cart")?.value;
 	const nextResponse = NextResponse.next();
 	const initialUserCart: Cart = {
-		items: [],
+		id: "",
+		serviceFee: 0,
+		subtotal: 0,
 		total: 0,
+		items: [],
 	};
 
 	if (!cartCookie) {

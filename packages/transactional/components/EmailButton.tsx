@@ -11,7 +11,7 @@ interface EmailButtonProps {
 }
 
 export const EmailButton = ({
-	link = "http://localhost:3000",
+	link,
 	children,
 	...props
 }: EmailButtonProps) => {

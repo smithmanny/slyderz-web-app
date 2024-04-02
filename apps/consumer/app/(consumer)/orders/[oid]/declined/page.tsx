@@ -1,20 +1,20 @@
 import Container from "app/components/Container";
-import PendingOrder from "../PendingOrder";
+import DeniedOrder from "../../DeniedOrder";
 
-import fetchPendingOrder from "app/actions/queries/fetchPendingOrder";
+import denyOrderMutation from "app/actions/mutations/denyOrder";
 
 export default async function OrdersPage({
 	params,
 }: {
 	params: { oid: string };
 }) {
-	await fetchPendingOrder({
+	await denyOrderMutation({
 		confirmationNumber: params.oid,
 	});
 
 	return (
 		<Container>
-			<PendingOrder />
+			<DeniedOrder />
 		</Container>
 	);
 }

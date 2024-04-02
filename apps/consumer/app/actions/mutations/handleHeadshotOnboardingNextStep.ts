@@ -25,14 +25,14 @@ export default async function handleHeadshotOnboardingNextStepMutation() {
 		});
 	}
 
-	if (chef.onboardingState !== "UPLOAD_HEADSHOT") {
+	if (chef.onboardingState !== "upload_headshot") {
 		throw new Error("Error confirming onboarding step");
 	}
 
 	await db
 		.update(chefs)
 		.set({
-			onboardingState: "COMPLETE_SERVSAFE",
+			onboardingState: "complete_servsafe",
 		})
 		.where(eq(chefs.id, chef.id));
 

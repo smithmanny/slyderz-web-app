@@ -1,20 +1,20 @@
 import Container from "app/components/Container";
-import PendingOrder from "../PendingOrder";
+import AcceptedOrder from "../../AcceptedOrder";
 
-import fetchPendingOrder from "app/actions/queries/fetchPendingOrder";
+import acceptOrderMutation from "app/actions/mutations/acceptOrder";
 
 export default async function OrdersPage({
 	params,
 }: {
 	params: { oid: string };
 }) {
-	await fetchPendingOrder({
+	await acceptOrderMutation({
 		confirmationNumber: params.oid,
 	});
 
 	return (
 		<Container>
-			<PendingOrder />
+			<AcceptedOrder />
 		</Container>
 	);
 }

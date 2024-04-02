@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { Button } from "app/components/ui/button";
 
-export default function AcceptedOrder() {
+export default function DeniedOrder() {
 	return (
 		<div className="text-center max-w-lg m-auto">
 			<Player
@@ -15,13 +15,13 @@ export default function AcceptedOrder() {
 				loop
 			/>
 			<h4 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-6">
-				Maybe next time
+				Order has been denied.
 			</h4>
 			<p className="mt-6 text-xl leading-8 text-gray-600">
-				Sorry, your order has been denied. Your card will not be charged.
+				No further action is required on your part.
 			</p>
 
-			<Link href="/" replace>
+			<Link href="/dashboard" replace>
 				<Button className="mt-4">Go home</Button>
 			</Link>
 		</div>
