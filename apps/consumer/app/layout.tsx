@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
 
 import "app/base.css";

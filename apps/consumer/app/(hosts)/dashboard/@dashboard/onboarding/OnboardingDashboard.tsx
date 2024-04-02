@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { type PropsWithChildren, useEffect, useState } from "react";
 
 import { Button } from "app/components/ui/button";
 import { Card, CardContent } from "app/components/ui/card";

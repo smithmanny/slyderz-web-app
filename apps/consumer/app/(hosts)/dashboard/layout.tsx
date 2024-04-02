@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { ReactNode } from "react";
+import React, { type ReactNode } from "react";
 
 import Container from "app/components/Container";
 import UserPopover from "app/components/UserPopover";

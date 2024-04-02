@@ -9,13 +9,13 @@ import EmailNewOrderApproved from "emails/order-approved";
 import EmailNewOrderDenied from "emails/order-denied";
 import EmailPasswordChangedEmail from "emails/password-changed";
 
-import {
+import type {
 	ActivateEmailProps,
 	ChefOrderRequestEmailProps,
 	EmailBodyProps,
 	ForgotPasswordEmailProps,
 } from "emails/utils/types";
-import { SESParamsType } from "types";
+import type { SESParamsType } from "types";
 
 const REGION = "us-east-1";
 

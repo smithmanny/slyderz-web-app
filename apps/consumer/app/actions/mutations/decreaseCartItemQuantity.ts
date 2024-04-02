@@ -12,7 +12,7 @@ import { getConsumerCartTotal, getConsumerServiceFee } from "app/lib/utils";
 import { db } from "drizzle";
 import { cart, cartItems } from "drizzle/schema/order";
 
-import { Cart, CartItem } from "types";
+import type { Cart, CartItem } from "types";
 
 function decreaseAnonItem(id: string) {
 	const cookieStore = cookies();

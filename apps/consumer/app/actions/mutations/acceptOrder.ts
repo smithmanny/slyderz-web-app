@@ -55,10 +55,12 @@ export default async function acceptOrderMutation(
 
 	const stripe = getStripeServer();
 	// Stripe amount must be in cents
-	const stripeOrderAmount = Number((parseFloat(order.total) * 100).toString());
+	const stripeOrderAmount = Number(
+		(Number.parseFloat(order.total) * 100).toString(),
+	);
 	const stripeApplicationFee = Number(
 		(
-			parseFloat(
+			Number.parseFloat(
 				String(
 					getChefServiceFee(Number(order.subtotal)) +
 						getConsumerServiceFee(Number(order.subtotal)),

@@ -1,5 +1,5 @@
 import Mailjet, { Client } from "node-mailjet";
-import { Contact, LibraryResponse } from "node-mailjet";
+import type { Contact, LibraryResponse } from "node-mailjet";
 
 const mailjet = new Mailjet({
 	apiKey: process.env.MJ_APIKEY_PUBLIC,

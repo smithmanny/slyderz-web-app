@@ -185,7 +185,7 @@ function DishModal(props: DishModalProps) {
 										{field.value
 											? props.sections.find(
 													(section) => section.value === field.value,
-											  )?.label
+												)?.label
 											: "Select section"}
 										<CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 									</Button>

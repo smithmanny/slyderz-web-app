@@ -1,5 +1,5 @@
-import { Metadata } from "next";
-import React, { ReactNode } from "react";
+import type { Metadata } from "next";
+import React, { type ReactNode } from "react";
 
 import { getSession } from "app/lib/auth";
 

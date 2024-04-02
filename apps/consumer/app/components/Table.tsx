@@ -2,10 +2,10 @@
 
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import {
-	ColumnDef,
-	ColumnFiltersState,
-	SortingState,
-	VisibilityState,
+	type ColumnDef,
+	type ColumnFiltersState,
+	type SortingState,
+	type VisibilityState,
 	flexRender,
 	getCoreRowModel,
 	getFilteredRowModel,
@@ -125,7 +125,7 @@ export default function MenuTable(props: TableProps<any, any>) {
 												: flexRender(
 														header.column.columnDef.header,
 														header.getContext(),
-												  )}
+													)}
 										</TableHead>
 									);
 								})}

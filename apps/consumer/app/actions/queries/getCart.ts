@@ -7,7 +7,7 @@ import { getSession } from "app/lib/auth";
 import { NotFoundError } from "app/lib/errors";
 import { db } from "drizzle";
 
-import { Cart } from "types";
+import type { Cart } from "types";
 
 function getAnonCart() {
 	const cookieStore = cookies();

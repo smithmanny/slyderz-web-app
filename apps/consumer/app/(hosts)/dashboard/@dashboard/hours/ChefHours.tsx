@@ -80,8 +80,9 @@ function HoursInput(props: HoursInputProps) {
 									render={({ field, fieldState }) => (
 										<Select onValueChange={field.onChange} {...field}>
 											<SelectTrigger
-												className={`w-[140px] md:w-[286px] ${fieldState.error ? "border-red-500" : null
-													}`}
+												className={`w-[140px] md:w-[286px] ${
+													fieldState.error ? "border-red-500" : null
+												}`}
 											>
 												<SelectValue placeholder="Select a start time" />
 											</SelectTrigger>
@@ -226,15 +227,15 @@ export default function ChefHours(props: ChefHoursProps) {
 				hours:
 					dayHours.length > 0
 						? dayHours.map((dh) => ({
-							startTime: dh.startTime,
-							endTime: dh.endTime,
-						}))
+								startTime: dh.startTime,
+								endTime: dh.endTime,
+							}))
 						: [
-							{
-								startTime: "",
-								endTime: "",
-							},
-						],
+								{
+									startTime: "",
+									endTime: "",
+								},
+							],
 			};
 		}),
 	});

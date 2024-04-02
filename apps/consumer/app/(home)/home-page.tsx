@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
 
-import { Chef } from "./page";
+import type { Chef } from "./page";
 interface HomePageTypes {
 	nearbyChefs: Array<Chef>;
 }
