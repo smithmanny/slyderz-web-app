@@ -1,5 +1,4 @@
 import { Column, Img, Row, Text } from "jsx-email";
-import * as React from "react";
 
 interface EmailOrderItem {
 	name: string;

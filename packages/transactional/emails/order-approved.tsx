@@ -1,18 +1,17 @@
 import { Column, Heading, Hr, Row, Section, Text } from "jsx-email";
-import * as React from "react";
 
-import SlyderzEmailLayout from "./";
 import { EmailOrderItem } from "../components/OrderItem";
+import SlyderzEmailLayout from "./";
 
-import { EmailNewOrderType } from "utils/types";
+import type { EmailBodyProps } from "../utils/types";
 
 export const EmailNewOrderApproved = ({
-	orderLocation = "4511 Glider Circle, Douglasville, Ga, 30135",
-	orderDate = "Oct 30, 2023",
-	orderTime = "9:36 PM",
-	orderTotal = "100.36",
-	orderItems = [{ name: "Surf & Turf", price: 25, quantity: 2 }],
-}: EmailNewOrderType) => (
+	orderLocation,
+	orderDate,
+	orderTime,
+	orderTotal,
+	orderItems,
+}: EmailBodyProps) => (
 	<SlyderzEmailLayout
 		style={container}
 		previewText="Your order has been approved 🥳"

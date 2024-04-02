@@ -1,11 +1,10 @@
 import { Column, Heading, Hr, Row, Section, Text } from "jsx-email";
-import * as React from "react";
 
 import EmailButton from "../components/EmailButton";
 import EmailOrderItem from "../components/OrderItem";
 import SlyderzEmailLayout from "./";
 
-import { ChefOrderRequestEmailProps } from "utils/types";
+import type { ChefOrderRequestEmailProps } from "../utils/types";
 
 export const EmailChefOrderRequest = ({
 	orderLocation,

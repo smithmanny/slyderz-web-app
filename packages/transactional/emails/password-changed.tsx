@@ -1,5 +1,4 @@
 import { Section, Text } from "jsx-email";
-import * as React from "react";
 
 import SlyderzEmailLayout from "./";
 

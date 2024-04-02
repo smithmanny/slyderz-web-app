@@ -1,5 +1,4 @@
 import { Column, Heading, Hr, Row, Section, Text } from "jsx-email";
-import * as React from "react";
 
 import { EmailOrderItem } from "../components/OrderItem";
 import SlyderzEmailLayout from "./";

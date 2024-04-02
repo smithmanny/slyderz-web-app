@@ -1,7 +1,7 @@
 "use client";
 
 import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
-import { Controller, UseFormReturn, useFieldArray } from "react-hook-form";
+import { Controller, type UseFormReturn, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "app/components/ui/button";
@@ -20,7 +20,7 @@ import { Switch } from "app/components/ui/switch";
 import { updateChefHoursMutation } from "app/actions/mutations/updateChefHours";
 import { useSlyderzForm } from "app/hooks/useSlyderzForm";
 import { getHoursForDay } from "app/lib/utils";
-import { hours } from "drizzle/schema/menu";
+import type { hours } from "drizzle/schema/menu";
 
 interface HoursInputProps {
 	form: UseFormReturn<any, any, any>;
@@ -80,9 +80,8 @@ function HoursInput(props: HoursInputProps) {
 									render={({ field, fieldState }) => (
 										<Select onValueChange={field.onChange} {...field}>
 											<SelectTrigger
-												className={`w-[140px] md:w-[286px] ${
-													fieldState.error ? "border-red-500" : null
-												}`}
+												className={`w-[140px] md:w-[286px] ${fieldState.error ? "border-red-500" : null
+													}`}
 											>
 												<SelectValue placeholder="Select a start time" />
 											</SelectTrigger>
@@ -227,15 +226,15 @@ export default function ChefHours(props: ChefHoursProps) {
 				hours:
 					dayHours.length > 0
 						? dayHours.map((dh) => ({
-								startTime: dh.startTime,
-								endTime: dh.endTime,
-						  }))
+							startTime: dh.startTime,
+							endTime: dh.endTime,
+						}))
 						: [
-								{
-									startTime: "",
-									endTime: "",
-								},
-						  ],
+							{
+								startTime: "",
+								endTime: "",
+							},
+						],
 			};
 		}),
 	});

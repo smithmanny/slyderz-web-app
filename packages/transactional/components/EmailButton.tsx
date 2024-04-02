@@ -1,5 +1,4 @@
 import { Button } from "jsx-email";
-import * as React from "react";
 
 interface EmailButtonProps {
 	pX?: number;

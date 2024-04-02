@@ -1,8 +1,7 @@
 import { Section, Text } from "jsx-email";
-import * as React from "react";
 
-import { ForgotPasswordEmailProps } from "utils/types";
 import EmailButton from "../components/EmailButton";
+import type { ForgotPasswordEmailProps } from "../utils/types";
 import SlyderzEmailLayout from "./";
 
 export const EmailForgotPasswordEmail = ({

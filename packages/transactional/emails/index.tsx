@@ -1,8 +1,6 @@
 import { Body, Container, Head, Html, Preview, Tailwind } from "jsx-email";
-import * as React from "react";
 
 import EmailFooter from "../components/Footer";
-import EmailHeader from "../components/Header";
 
 interface SlyderzEmailLayoutProps {
 	previewText: string;

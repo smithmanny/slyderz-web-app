@@ -1,8 +1,7 @@
 import { Column, Heading, Hr, Row, Section, Text } from "jsx-email";
-import * as React from "react";
 
-import { EmailBodyProps } from "utils/types";
 import { EmailOrderItem } from "../components/OrderItem";
+import type { EmailBodyProps } from "../utils/types";
 import SlyderzEmailLayout from "./";
 
 export const EmailNewOrderDenied = ({

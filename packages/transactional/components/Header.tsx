@@ -1,5 +1,4 @@
-import { Text, Section } from "jsx-email";
-import * as React from "react";
+import { Section, Text } from "jsx-email";
 
 export const EmailHeader = (props: any) => {
 	return (
