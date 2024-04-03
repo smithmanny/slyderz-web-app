@@ -1,6 +1,7 @@
 import { Column, Heading, Hr, Row, Section, Text } from "jsx-email";
 
 import { EmailOrderItem } from "../components/OrderItem";
+import { formatNumberToCurrency } from "../utils/helpers"
 import SlyderzEmailLayout from "./";
 
 type EmailNewOrderType = {
@@ -68,7 +69,7 @@ export const EmailNewOrder = ({
 				</Column>
 				<Column>
 					<Text style={global.paragraphWithBold}>Event Total</Text>
-					<Text style={track.number}>$ {orderTotal}</Text>
+					<Text style={track.number}>{formatNumberToCurrency(Number(orderTotal))}</Text>
 				</Column>
 			</Row>
 		</Section>

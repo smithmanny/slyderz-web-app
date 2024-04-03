@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
+import { getChefSession } from "app/lib/auth";
 import { sendChefOrderApprovedEmail } from "app/lib/aws";
 import { NotFoundError } from "app/lib/errors";
 import { getStripeServer } from "app/lib/stripe";
@@ -22,6 +23,7 @@ export default async function acceptOrderMutation(
 	input: z.infer<typeof acceptOrderSchema>,
 ) {
 	const data = acceptOrderSchema.parse(input);
+	const { chef } = await getChefSession();
 
 	const order = await db.query.orders.findFirst({
 		where: (orders, { eq }) =>
@@ -49,7 +51,7 @@ export default async function acceptOrderMutation(
 		});
 	}
 
-	if (order.orderStatus !== "pending") {
+	if (order.orderStatus !== "pending" || chef.id !== order.chefId) {
 		redirect("/");
 	}
 

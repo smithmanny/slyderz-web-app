@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
+import { getChefSession } from "app/lib/auth";
 import { sendChefOrderDeniedEmail } from "app/lib/aws";
 import { NotFoundError } from "app/lib/errors";
 import { readableDate } from "app/lib/utils";
@@ -17,6 +18,7 @@ export default async function denyOrderMutation(
 	input: z.infer<typeof DenyOrderSchema>,
 ) {
 	const data = DenyOrderSchema.parse(input);
+	const { chef } = await getChefSession();
 
 	const order = await db.query.orders.findFirst({
 		where: (orders, { eq }) =>
@@ -37,7 +39,7 @@ export default async function denyOrderMutation(
 		});
 	}
 
-	if (order.orderStatus !== "pending") {
+	if (order.orderStatus !== "pending" || chef.id !== order.chefId) {
 		redirect("/");
 	}
 

@@ -4,6 +4,7 @@ import EmailButton from "../components/EmailButton";
 import EmailOrderItem from "../components/OrderItem";
 import SlyderzEmailLayout from "./";
 
+import { formatNumberToCurrency } from "../utils/helpers"
 import type { ChefOrderRequestEmailProps } from "../utils/types";
 
 export const EmailChefOrderRequest = ({
@@ -56,7 +57,7 @@ export const EmailChefOrderRequest = ({
 				</Column>
 				<Column align="center">
 					<Text style={global.paragraphWithBold}>Event Total</Text>
-					<Text style={track.number}>$ {orderTotal}</Text>
+					<Text style={track.number}>{formatNumberToCurrency(Number(orderTotal))}</Text>
 				</Column>
 			</Row>
 			<Row>

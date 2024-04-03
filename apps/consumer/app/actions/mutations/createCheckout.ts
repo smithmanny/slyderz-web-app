@@ -124,7 +124,7 @@ export default async function createCheckoutMutation(
 
 	const date = new Date(checkout.eventDate);
 	const acceptUrl = `${process.env.NEXT_PUBLIC_URL}/orders/${order.confirmationNumber}/confirm`;
-	const denyUrl = `${process.env.NEXT_PUBLIC_URL}/orders/${order.confirmationNumber}/deny`;
+	const denyUrl = `${process.env.NEXT_PUBLIC_URL}/orders/${order.confirmationNumber}/declined`;
 	// const chefServiceFee = getChefServiceFee(order.amount);
 	const address = order.address;
 	const customerEmailParams = {
