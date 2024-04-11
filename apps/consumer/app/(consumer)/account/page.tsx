@@ -4,7 +4,6 @@ import ProfileInfoForm from "./ProfileInfoForm";
 
 import createSetupIntentMutation from "app/actions/mutations/createSetupIntent";
 import getAccount from "app/actions/queries/getAccount";
-import { getProtectedSession } from "app/lib/auth";
 
 export default async function AccountPage() {
 	const stripeClientSecret = createSetupIntentMutation();

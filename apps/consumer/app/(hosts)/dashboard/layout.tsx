@@ -3,19 +3,17 @@ import React, { type ReactNode } from "react";
 
 import Container from "app/components/Container";
 import UserPopover from "app/components/UserPopover";
+import TanstackProvider from "app/lib/tanstack";
 import SidePanel from "./SidePanel";
 
-import getProfileImageQuery from "app/actions/queries/getProfileImage";
-import { getSession } from "app/lib/auth";
+import { getChefSession } from "app/lib/auth";
 
 interface LayoutProps {
 	children: ReactNode;
 	dashboard: ReactNode;
 }
 const Layout = async ({ children, dashboard }: LayoutProps) => {
-	// TODO: redirect if not chef
-	const { user } = await getSession();
-	const userProfileImage = await getProfileImageQuery();
+	const { user } = await getChefSession();
 	return (
 		<Container className="px-0 sm:px-0 lg:px-0 max-w-screen-3xl">
 			<div className="grid grid-cols-1 md:grid-cols-6">
@@ -24,7 +22,7 @@ const Layout = async ({ children, dashboard }: LayoutProps) => {
 						<p className="text-xl leading-8 font-bold pl-4">Slyderz</p>
 					</Link>
 
-					<div className="py-8">
+					<div className="pt-12 pb-8">
 						<SidePanel />
 					</div>
 				</section>
@@ -32,12 +30,11 @@ const Layout = async ({ children, dashboard }: LayoutProps) => {
 				<section className="col-span-1 md:col-span-5 py-3">
 					<div className="md:pr-4">
 						<div className="flex justify-end mb-4">
-							<UserPopover
-								user={user}
-								profilePhoto={userProfileImage?.headshotUrl}
-							/>
+							<UserPopover user={user} />
 						</div>
-						<div className="py-8 px-4 md:px-8">{dashboard}</div>
+						<div className="py-8 px-4 md:px-8">
+							<TanstackProvider>{dashboard}</TanstackProvider>
+						</div>
 					</div>
 				</section>
 			</div>

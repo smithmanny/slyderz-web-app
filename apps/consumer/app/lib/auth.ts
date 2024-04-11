@@ -35,6 +35,7 @@ export const auth = new Lucia(adapter, {
 			emailVerified: userData.emailVerified,
 			name: userData.name,
 			role: userData.role,
+			headshotUrl: userData.headshotUrl,
 		};
 	},
 });
@@ -94,6 +95,7 @@ export const getChefSession = cache(async () => {
 	}
 
 	return {
+		user,
 		session,
 		chef: {
 			...chef,
@@ -199,4 +201,5 @@ interface DatabaseUserAttributes {
 	emailVerified: boolean;
 	name: string;
 	role: string;
+	headshotUrl: string | null;
 }

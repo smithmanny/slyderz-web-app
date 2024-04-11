@@ -1,7 +1,6 @@
 "use server";
 
 import { generateId } from "lucia";
-import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 import { getChefSession } from "app/lib/auth";
@@ -31,8 +30,6 @@ export default async function createMenuSectionMutation(
 					isActive: true,
 				},
 			});
-
-		revalidatePath("/dashboard/menu");
 	} catch (err: any) {
 		// TODO: catch right error for duplicate section
 		if (err.code === "P2002") {

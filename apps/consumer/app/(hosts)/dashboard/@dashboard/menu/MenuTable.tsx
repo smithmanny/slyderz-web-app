@@ -6,6 +6,7 @@ import {
 	DotsHorizontalIcon,
 	TrashIcon,
 } from "@radix-ui/react-icons";
+import { useQuery } from "@tanstack/react-query";
 import {
 	type ColumnDef,
 	type ColumnFiltersState,
@@ -18,8 +19,9 @@ import {
 	getSortedRowModel,
 	useReactTable,
 } from "@tanstack/react-table";
-import * as React from "react";
+import { useMemo, useState } from "react";
 
+import getMenuDishesQuery from "app/actions/queries/getMenuDishes";
 import { Button } from "app/components/ui/button";
 import { Checkbox } from "app/components/ui/checkbox";
 import {
@@ -145,26 +147,40 @@ export const columns: ColumnDef<MenuTableColumns>[] = [
 	},
 ];
 
-type MenuTableDish = {
+type DishSection = {
 	id: string;
 	name: string;
-	amount: string;
-	section: string;
 };
-interface MenuTableProps {
-	dishes: Array<MenuTableDish>;
-}
-export default function MenuTable(props: MenuTableProps) {
-	const [sorting, setSorting] = React.useState<SortingState>([]);
-	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-		[],
-	);
-	const [columnVisibility, setColumnVisibility] =
-		React.useState<VisibilityState>({});
-	const [rowSelection, setRowSelection] = React.useState({});
+type DishType = {
+	id: string;
+	name: string;
+	price: string;
+	isActive: boolean;
+	section: DishSection;
+};
+const generateMenuTableData = (dishes: Array<DishType>) => {
+	return dishes.map((dish) => ({
+		id: dish.id,
+		amount: dish.price,
+		name: dish.name,
+		section: dish.section.name,
+	}));
+};
+
+export default function MenuTable() {
+	const { data: menuDishes = [] } = useQuery({
+		queryKey: ["dashboard-menu-dishes"],
+		queryFn: () => getMenuDishesQuery(),
+	});
+
+	const dishes = useMemo(() => generateMenuTableData(menuDishes), [menuDishes]);
+	const [sorting, setSorting] = useState<SortingState>([]);
+	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+	const [rowSelection, setRowSelection] = useState({});
 
 	const table = useReactTable({
-		data: props.dishes,
+		data: dishes,
 		columns,
 		onSortingChange: setSorting,
 		onColumnFiltersChange: setColumnFilters,

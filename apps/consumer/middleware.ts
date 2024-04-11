@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { Cart } from "types";
+import type { Cart } from "types";
 
 export function middleware(request: NextRequest) {
 	const cartCookie = request.cookies.get("cart")?.value;
@@ -23,4 +23,8 @@ export function middleware(request: NextRequest) {
 		});
 	}
 	return nextResponse;
+}
+
+export const config = {
+  matcher: ['/chefs/:path*'],
 }

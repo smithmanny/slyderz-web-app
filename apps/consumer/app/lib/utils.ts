@@ -58,9 +58,9 @@ export const getImageUrl = ({
 };
 
 export const onboardingSteps = new Map([
-	["SETUP_STRIPE", "Setup your stripe account"],
-	["UPLOAD_HEADSHOT", "Upload your headshot"],
-	["COMPLETE_SERVSAFE", "Complete ServSafe food handler certification"],
+	["setup_stripe", "Setup your stripe account"],
+	["upload_headshot", "Upload your headshot"],
+	["complete_servsafe", "Complete ServSafe food handler certification"],
 ]);
 
 export const formatNumberToCurrency = (number: number) => {

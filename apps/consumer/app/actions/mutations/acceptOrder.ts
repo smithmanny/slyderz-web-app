@@ -99,6 +99,7 @@ export default async function acceptOrderMutation(
 		.update(orders)
 		.set({
 			orderStatus: "accepted",
+			updatedAt: new Date().toISOString(),
 		})
 		.where(eq(orders.id, order.id));
 

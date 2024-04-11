@@ -1,6 +1,7 @@
 "use server";
 
 import { eq } from "drizzle-orm";
+import { redirect } from "next/navigation";
 
 import { getProtectedSession } from "app/lib/auth";
 import { NotFoundError } from "app/lib/errors";
@@ -23,10 +24,10 @@ export default async function getOnboardingStateQuery() {
 	});
 
 	if (!chef) {
-		throw new NotFoundError({
-			message: "Chef not found",
-		});
+		redirect("/host");
 	}
+
+	if (chef.isOnboardingComplete) redirect("/dashboard");
 
 	if (chef.onboardingState === "setup_stripe") {
 		const account = await stripe.accounts.retrieve(chef.stripeAccountId);

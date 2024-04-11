@@ -1,6 +1,7 @@
 "use client";
 
 import { TrashIcon } from "@radix-ui/react-icons";
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -25,16 +26,10 @@ import { Input } from "app/components/ui/input";
 
 import createMenuSectionMutation from "app/actions/mutations/createMenuSection";
 import { deleteMenuSectionMutation } from "app/actions/mutations/deleteMenuSection";
+import getMenuSectionsQuery from "app/actions/queries/getMenuSections";
 import { useSlyderzForm } from "app/hooks/useSlyderzForm";
 
-type SectionType = {
-	id: string;
-	name: string;
-};
-interface AddMenuSectionButtonProps {
-	sections: Array<SectionType>;
-}
-export default function AddMenuSectionButton(props: AddMenuSectionButtonProps) {
+export default function AddMenuSectionButton() {
 	const formSchema = z.object({
 		name: z.string(),
 	});
@@ -42,18 +37,50 @@ export default function AddMenuSectionButton(props: AddMenuSectionButtonProps) {
 		name: "",
 	});
 
+	const { data: menuSections = [] } = useQuery({
+		queryKey: ["dashboard-menu-sections"],
+		queryFn: () => getMenuSectionsQuery(),
+	});
+
+	const createMenuSection = useMutation({
+		mutationFn: createMenuSectionMutation,
+		onSuccess: () => {
+			const queryClient = new QueryClient();
+
+			queryClient.invalidateQueries({
+				queryKey: ["dashboard-menu-sections"],
+			});
+
+			form.reset();
+			toast.success("Section successfully created");
+		},
+	});
+	const deleteMenuSection = useMutation({
+		mutationFn: deleteMenuSectionMutation,
+		onSuccess: ({ message, error }) => {
+			const queryClient = new QueryClient();
+
+			queryClient.invalidateQueries({
+				queryKey: ["dashboard-menu-sections"],
+			});
+
+			if (error) {
+				return toast.error(message);
+			}
+
+			toast.success(message);
+		},
+	});
+
 	const handleCreateSection = async (input: FormData) => {
 		const sectionName = input.get("name") as string;
 
 		if (sectionName) {
 			try {
-				await createMenuSectionMutation({ name: sectionName });
+				await createMenuSection.mutateAsync({ name: sectionName });
 			} catch (err: any) {
 				return toast.error(err.message);
 			}
-
-			form.reset();
-			return toast.success("Section successfully created");
 		}
 
 		toast.error("Section name can't be empty");
@@ -92,7 +119,7 @@ export default function AddMenuSectionButton(props: AddMenuSectionButtonProps) {
 
 						<ul>
 							<FormLabel>Edit Section</FormLabel>
-							{props.sections.map((section) => (
+							{menuSections.map((section) => (
 								<li key={section.id} className="flex">
 									<h6 className="flex-1 capitalize">{section.name}</h6>
 									<Button
@@ -102,16 +129,9 @@ export default function AddMenuSectionButton(props: AddMenuSectionButtonProps) {
 											e.preventDefault();
 											e.stopPropagation();
 
-											const { message, error } =
-												await deleteMenuSectionMutation({
-													sectionId: section.id,
-												});
-
-											if (error) {
-												return toast.error(message);
-											}
-
-											toast.success(message);
+											await deleteMenuSection.mutateAsync({
+												sectionId: section.id,
+											});
 										}}
 									>
 										<TrashIcon className="text-red-600 h-4 w-4" />

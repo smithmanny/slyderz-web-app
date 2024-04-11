@@ -1,3 +1,5 @@
+"use server";
+
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { eq } from "drizzle-orm";
 
@@ -16,10 +18,9 @@ const S3 = new S3Client({
 	},
 });
 
-export async function PUT(request: Request) {
+export default async function uploadProfilePhotoMutation(input: FormData) {
 	const { user } = await getProtectedSession();
-	const formData = await request.formData();
-	const file = formData.get("file") as unknown as File;
+	const file = input.get("file") as unknown as File;
 
 	if (!file) {
 		throw new Error("No file uploaded");
@@ -49,20 +50,11 @@ export async function PUT(request: Request) {
 			})
 			.where(eq(users.id, user.id));
 
-		return Response.json({ imageUrl });
+		return imageUrl;
 	} catch (err) {
 		throw new UnknownError({
 			message: "Unknow error uploading image",
 			cause: err,
 		});
 	}
-}
-
-export async function GET() {
-	const { user } = await getProtectedSession();
-	const profilePic = await db.query.users.findFirst({
-		where: (users, { eq }) => eq(users.id, user.id),
-	});
-
-	return Response.json({ imageUrl: profilePic?.headshotUrl });
 }

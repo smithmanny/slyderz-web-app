@@ -1,6 +1,7 @@
 "use client";
 
 import { CaretSortIcon, CheckIcon, PlusIcon } from "@radix-ui/react-icons";
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { useCallback, useState } from "react";
 import { Controller } from "react-hook-form";
 import { toast } from "sonner";
@@ -36,6 +37,7 @@ import { cn } from "app/lib/utils";
 
 import { createDishMutation } from "app/actions/mutations/createDish";
 import createMenuSectionMutation from "app/actions/mutations/createMenuSection";
+import getMenuSectionsQuery from "app/actions/queries/getMenuSections";
 import { useSlyderzForm } from "app/hooks/useSlyderzForm";
 
 interface DishModalProps {
@@ -43,6 +45,23 @@ interface DishModalProps {
 	closeModal: () => void;
 }
 function DishModal(props: DishModalProps) {
+	const createMenuSection = useMutation({
+		mutationFn: createMenuSectionMutation,
+		onSuccess: () => {
+			const queryClient = new QueryClient();
+			queryClient.invalidateQueries({ queryKey: ["dashboard-menu-sections"] });
+		},
+	});
+	const createDish = useMutation({
+		mutationFn: createDishMutation,
+		onSuccess: () => {
+			const queryClient = new QueryClient();
+			queryClient.invalidateQueries({ queryKey: ["dashboard-menu-dishes"] });
+
+			props.closeModal();
+		},
+	});
+
 	const [open, setOpen] = useState<boolean>(false);
 	const [image, setImage] = useState<File>();
 	const [newSectionName, setNewSectionName] = useState<string>("");
@@ -65,7 +84,7 @@ function DishModal(props: DishModalProps) {
 	const handleCreateSection = async () => {
 		if (newSectionName) {
 			try {
-				return await createMenuSectionMutation({ name: newSectionName });
+				return await createMenuSection.mutateAsync({ name: newSectionName });
 			} catch (err: any) {
 				return toast.error(err.message);
 			}
@@ -76,13 +95,10 @@ function DishModal(props: DishModalProps) {
 
 	const handleFormSubmit = async (input: FormData) => {
 		try {
-			await createDishMutation(input);
+			await createDish.mutateAsync(input);
 		} catch (err) {
 			console.log(err);
-			return;
 		}
-
-		props.closeModal();
 	};
 	return (
 		<DialogContent className="sm:max-w-lg h-3/4">
@@ -244,6 +260,10 @@ function DishModal(props: DishModalProps) {
 		</DialogContent>
 	);
 }
+type MenuSection = {
+	id: string;
+	name: string;
+};
 
 const generateMenuSectionsFormValues = (sections: Array<MenuSection>) => {
 	return sections.map((section) => ({
@@ -252,17 +272,14 @@ const generateMenuSectionsFormValues = (sections: Array<MenuSection>) => {
 	}));
 };
 
-type MenuSection = {
-	id: string;
-	name: string;
-};
-interface CreateDishButtonProps {
-	sections: Array<MenuSection>;
-}
-export default function CreateDishButton(props: CreateDishButtonProps) {
-	const [openModal, setModalOpen] = useState<boolean>(false);
-	const sections = generateMenuSectionsFormValues(props.sections);
+export default function CreateDishButton() {
+	const { data: menuSections = [] } = useQuery({
+		queryKey: ["dashboard-menu-sections"],
+		queryFn: () => getMenuSectionsQuery(),
+	});
 
+	const [openModal, setModalOpen] = useState<boolean>(false);
+	const sections = generateMenuSectionsFormValues(menuSections);
 	const closeModal = useCallback(() => setModalOpen(false), []);
 	return (
 		<Dialog open={openModal} onOpenChange={setModalOpen}>

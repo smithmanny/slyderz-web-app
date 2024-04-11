@@ -47,6 +47,7 @@ export default async function denyOrderMutation(
 		.update(orders)
 		.set({
 			orderStatus: "declined",
+			updatedAt: new Date().toISOString(),
 		})
 		.where(eq(orders.id, order.id));
 

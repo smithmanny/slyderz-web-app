@@ -2,7 +2,6 @@
 
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { generateId } from "lucia";
-import { revalidatePath } from "next/cache";
 
 import { getChefSession } from "app/lib/auth";
 import { UnknownError } from "app/lib/errors";
@@ -31,7 +30,6 @@ export async function createDishMutation(input: FormData) {
 	}>(input);
 	const bytes = await image.arrayBuffer();
 	const buffer = Buffer.from(bytes);
-	let imageUrl = "";
 
 	try {
 		const command = new PutObjectCommand({
@@ -42,7 +40,7 @@ export async function createDishMutation(input: FormData) {
 
 		S3.send(command);
 
-		imageUrl = getImageUrl({
+		const imageUrl = getImageUrl({
 			userId: chef.userId,
 			fileName: image.name,
 			category: "dishes",
@@ -75,8 +73,6 @@ export async function createDishMutation(input: FormData) {
 			cause: err,
 		});
 	}
-
-	revalidatePath("/dashboard/menu");
 
 	return {
 		message: "Dish successfully created",
