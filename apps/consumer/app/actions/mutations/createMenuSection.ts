@@ -15,6 +15,7 @@ export default async function createMenuSectionMutation(
 	input: z.infer<typeof createMenuSectionSchema>,
 ) {
 	const { chef } = await getChefSession();
+	const section = createMenuSectionSchema.parse(input)
 
 	try {
 		await db
@@ -22,7 +23,7 @@ export default async function createMenuSectionMutation(
 			.values({
 				id: generateId(10),
 				chefId: chef.id,
-				name: input.name.toLowerCase(),
+				name: section.name.toLowerCase(),
 			})
 			.onConflictDoUpdate({
 				target: [sections.chefId, sections.name],

@@ -6,7 +6,7 @@ import {
 	DotsHorizontalIcon,
 	TrashIcon,
 } from "@radix-ui/react-icons";
-import { useQuery } from "@tanstack/react-query";
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import {
 	type ColumnDef,
 	type ColumnFiltersState,
@@ -21,6 +21,7 @@ import {
 } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
 
+import { deleteDishMutation } from "app/actions/mutations/deleteDish";
 import getMenuDishesQuery from "app/actions/queries/getMenuDishes";
 import { Button } from "app/components/ui/button";
 import { Checkbox } from "app/components/ui/checkbox";
@@ -43,16 +44,37 @@ import {
 	TableRow,
 } from "app/components/ui/table";
 
+function DeleteDishButton(props: { id: string }) {
+	const deleteDish = useMutation({
+		mutationFn: deleteDishMutation,
+		onSuccess: () => {
+			const queryClient = new QueryClient()
+
+			queryClient.invalidateQueries({
+				queryKey: ["dashboard-menu-dishes"]
+			})
+		}
+	})
+
+	return (
+		<DropdownMenuItem className="text-red-500" onClick={async () => {
+			await deleteDish.mutateAsync({ dishId: props.id })
+		}}>
+			<TrashIcon /> Delete Dish
+		</DropdownMenuItem>
+	)
+}
+
 export type MenuTableColumns = {
 	id: string;
 	amount: string;
 	name: string;
 	section: string;
 };
-
 export const columns: ColumnDef<MenuTableColumns>[] = [
 	{
 		id: "select",
+		accessorKey: "id",
 		header: ({ table }) => (
 			<Checkbox
 				checked={
@@ -123,8 +145,9 @@ export const columns: ColumnDef<MenuTableColumns>[] = [
 	{
 		id: "actions",
 		enableHiding: false,
-		cell: ({ row }) => {
-			const payment = row.original;
+		cell: ({ row, }) => {
+			const dishId = row.getValue("select") as string
+			console.log("dishId", dishId)
 
 			return (
 				<DropdownMenu>
@@ -137,9 +160,7 @@ export const columns: ColumnDef<MenuTableColumns>[] = [
 					<DropdownMenuContent align="end">
 						<DropdownMenuLabel>Actions</DropdownMenuLabel>
 						<DropdownMenuSeparator />
-						<DropdownMenuItem className="text-red-500">
-							<TrashIcon /> Delete Dish
-						</DropdownMenuItem>
+						<DeleteDishButton id={dishId} />
 					</DropdownMenuContent>
 				</DropdownMenu>
 			);
@@ -247,9 +268,9 @@ export default function MenuTable() {
 											{header.isPlaceholder
 												? null
 												: flexRender(
-														header.column.columnDef.header,
-														header.getContext(),
-													)}
+													header.column.columnDef.header,
+													header.getContext(),
+												)}
 										</TableHead>
 									);
 								})}
