@@ -1,4 +1,5 @@
 import Container from "app/components/Container";
+import AccountAddressForm from "./AddressForm";
 import CreditCardForm from "./CreditCardForm";
 import ProfileInfoForm from "./ProfileInfoForm";
 
@@ -12,11 +13,12 @@ export default async function AccountPage() {
 		stripeClientSecret,
 		getUserAccount,
 	]);
-	const { paymentMethods, user } = userAccount;
+	const { paymentMethods, user, address } = userAccount;
+
 	return (
 		<Container className="max-w-lg">
 			{/* Profile information */}
-			<section className="my-6 border-b-2 pb-6">
+			<section>
 				<h4 className="scroll-m-20 text-2xl font-semibold tracking-tight">
 					Profile Information
 				</h4>
@@ -26,8 +28,22 @@ export default async function AccountPage() {
 				<ProfileInfoForm email={user.email} name={user.name} />
 			</section>
 
+			<div className="border-b-2 my-9" />
+
+			<section>
+				<h4 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+					Address
+				</h4>
+				<p className="mb-6 text-sm leading-8 text-gray-600">
+					Update your addresses.
+				</p>
+				<AccountAddressForm address={address} />
+			</section>
+
+			<div className="border-b-2 my-9" />
+
 			{/* Credit card information */}
-			<section className="my-6 pb-6">
+			<section>
 				<h4 className="scroll-m-20 text-2xl font-semibold tracking-tight">
 					Credit Card Information
 				</h4>

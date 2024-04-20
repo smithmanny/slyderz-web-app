@@ -48,21 +48,24 @@ function DeleteDishButton(props: { id: string }) {
 	const deleteDish = useMutation({
 		mutationFn: deleteDishMutation,
 		onSuccess: () => {
-			const queryClient = new QueryClient()
+			const queryClient = new QueryClient();
 
 			queryClient.invalidateQueries({
-				queryKey: ["dashboard-menu-dishes"]
-			})
-		}
-	})
+				queryKey: ["dashboard-menu-dishes"],
+			});
+		},
+	});
 
 	return (
-		<DropdownMenuItem className="text-red-500" onClick={async () => {
-			await deleteDish.mutateAsync({ dishId: props.id })
-		}}>
+		<DropdownMenuItem
+			className="text-red-500"
+			onClick={async () => {
+				await deleteDish.mutateAsync({ dishId: props.id });
+			}}
+		>
 			<TrashIcon /> Delete Dish
 		</DropdownMenuItem>
-	)
+	);
 }
 
 export type MenuTableColumns = {
@@ -145,9 +148,9 @@ export const columns: ColumnDef<MenuTableColumns>[] = [
 	{
 		id: "actions",
 		enableHiding: false,
-		cell: ({ row, }) => {
-			const dishId = row.getValue("select") as string
-			console.log("dishId", dishId)
+		cell: ({ row }) => {
+			const dishId = row.getValue("select") as string;
+			console.log("dishId", dishId);
 
 			return (
 				<DropdownMenu>
@@ -268,9 +271,9 @@ export default function MenuTable() {
 											{header.isPlaceholder
 												? null
 												: flexRender(
-													header.column.columnDef.header,
-													header.getContext(),
-												)}
+														header.column.columnDef.header,
+														header.getContext(),
+													)}
 										</TableHead>
 									);
 								})}

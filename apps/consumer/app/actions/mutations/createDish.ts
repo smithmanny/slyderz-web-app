@@ -20,7 +20,7 @@ const S3 = new S3Client({
 });
 
 export async function createDishMutation(input: FormData) {
-	const { chef, session } = await getChefSession();
+	const { chef } = await getChefSession();
 	const { name, description, price, sectionId, image } = requiredFormData<{
 		name: string;
 		description: string;

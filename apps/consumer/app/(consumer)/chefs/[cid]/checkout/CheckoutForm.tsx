@@ -4,6 +4,7 @@ import { Controller } from "react-hook-form";
 import * as z from "zod";
 
 import { Button } from "app/components/ui/button";
+import { Label } from "app/components/ui/label";
 import {
 	Select,
 	SelectContent,
@@ -19,8 +20,11 @@ import {
 	getConsumerCartTotal,
 	getConsumerServiceFee,
 } from "app/lib/utils";
+import type { address } from "drizzle/schema/user";
 
 import type { CartItem } from "types";
+
+type AddressType = typeof address.$inferSelect
 
 interface CheckoutFormProps {
 	chefId: string;
@@ -28,7 +32,7 @@ interface CheckoutFormProps {
 	serviceFee: number;
 	total: number;
 	cartItems: Array<CartItem>;
-	address: string;
+	address: Array<AddressType>;
 	eventDate: string;
 	eventTime: string;
 	paymentMethods: Array<any>;
@@ -39,7 +43,7 @@ export default function CheckoutForm(props: CheckoutFormProps) {
 		paymentMethodId: z.string(),
 	});
 	const form = useSlyderzForm(formSchema, {
-		selectedAddress: props.address || "",
+		selectedAddress: props.address[0]?.id || "",
 		paymentMethodId: props.paymentMethods[0]?.id || "",
 	});
 	const selectedAddress = form.watch("selectedAddress");
@@ -68,44 +72,50 @@ export default function CheckoutForm(props: CheckoutFormProps) {
 				control={form.control}
 				name="selectedAddress"
 				render={({ field }) => (
-					<Select
-						onValueChange={field.onChange}
-						defaultValue={field.value}
-						{...field}
-					>
-						<SelectTrigger>
-							<SelectValue placeholder="Select an address for your event." />
-						</SelectTrigger>
-						<SelectContent>
-							{["0"].map((address, i) => (
-								<SelectItem key={address} value={address}>
-									{address}
-								</SelectItem>
-							))}
-						</SelectContent>
-					</Select>
+					<div className="space-y-2">
+						<Label>Event address</Label>
+						<Select
+							onValueChange={field.onChange}
+							defaultValue={field.value}
+							{...field}
+						>
+							<SelectTrigger>
+								<SelectValue placeholder="Select an address for your event." />
+							</SelectTrigger>
+							<SelectContent>
+								{props.address.map((address, i) => (
+									<SelectItem key={address.id} value={address.id}>
+										{address.address1}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
+					</div>
 				)}
 			/>
 			<Controller
 				control={form.control}
 				name="paymentMethodId"
 				render={({ field }) => (
-					<Select
-						onValueChange={field.onChange}
-						defaultValue={field.value}
-						{...field}
-					>
-						<SelectTrigger>
-							<SelectValue placeholder="Select a card for payment." />
-						</SelectTrigger>
-						<SelectContent>
-							{props.paymentMethods.map((paymentMethod, i) => (
-								<SelectItem key={paymentMethod.id} value={paymentMethod.id}>
-									{paymentMethod.card.last4}
-								</SelectItem>
-							))}
-						</SelectContent>
-					</Select>
+					<div className="space-y-2">
+						<Label>Payment method</Label>
+						<Select
+							onValueChange={field.onChange}
+							defaultValue={field.value}
+							{...field}
+						>
+							<SelectTrigger>
+								<SelectValue placeholder="Select a card for payment." />
+							</SelectTrigger>
+							<SelectContent>
+								{props.paymentMethods.map((paymentMethod, i) => (
+									<SelectItem key={paymentMethod.id} value={paymentMethod.id}>
+										{paymentMethod.card.last4}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
+					</div>
 				)}
 			/>
 
@@ -114,10 +124,11 @@ export default function CheckoutForm(props: CheckoutFormProps) {
 					<p className="text-muted-foreground">Subtotal</p>
 					<p>{formatNumberToCurrency(Number(props.subtotal))}</p>
 				</div>
-				<div className="grid grid-cols-2 mb-2">
+				{/* TODO: calculate taxes */}
+				{/* <div className="grid grid-cols-2 mb-2">
 					<p className="text-muted-foreground">Taxes</p>
 					<p>{formatNumberToCurrency(10)}</p>
-				</div>
+				</div> */}
 				<div className="grid grid-cols-2 mb-2 pb-2 border-b-2">
 					<p className="text-muted-foreground">Service fee</p>
 					<p>{formatNumberToCurrency(getConsumerServiceFee(props.subtotal))}</p>

@@ -15,7 +15,7 @@ export default async function createMenuSectionMutation(
 	input: z.infer<typeof createMenuSectionSchema>,
 ) {
 	const { chef } = await getChefSession();
-	const section = createMenuSectionSchema.parse(input)
+	const section = createMenuSectionSchema.parse(input);
 
 	try {
 		await db

@@ -4,6 +4,7 @@ import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
 import Image from "next/image";
 import { useCallback } from "react";
+import { useFormStatus } from "react-dom";
 import * as z from "zod";
 
 import { Button } from "app/components/ui/button";
@@ -35,6 +36,36 @@ import { useSlyderzForm } from "app/hooks/useSlyderzForm";
 import { cn, convertDayToInt, getHoursForDay } from "app/lib/utils";
 import type { Cart as CartType } from "types";
 
+interface CheckoutButtonProps {
+	eventDate: Date
+	eventTime: string
+	chefId: string
+	cartId: string
+}
+function CheckoutButton(props: CheckoutButtonProps) {
+	const { pending } = useFormStatus()
+	const { eventDate, eventTime, chefId, cartId } = props;
+	return (
+		<Button
+			className="mt-4"
+			disabled={!eventTime || pending}
+			onClick={async (e) => {
+				e.preventDefault();
+				e.stopPropagation();
+
+				await createCartMutation({
+					eventDate,
+					eventTime,
+					chefId,
+					cartId,
+				});
+			}}
+		>
+			Checkout
+		</Button>
+	)
+}
+
 type HoursType = {
 	dayOfWeek: string;
 	startTime: string | null;
@@ -54,6 +85,7 @@ export default function Cart(props: CartProps) {
 		eventDate: "",
 		eventTime: "",
 	});
+	const { eventDate, eventTime } = form.getValues();
 
 	const disableDaysOff = useCallback(
 		(date: Date) => {
@@ -145,24 +177,12 @@ export default function Cart(props: CartProps) {
 				)}
 
 				{props.cart.items.length !== 0 && (
-					<Button
-						className="mt-4"
-						disabled={!form.getValues().eventTime}
-						onClick={async (e) => {
-							e.preventDefault();
-							e.stopPropagation();
-
-							const { eventDate, eventTime } = form.getValues();
-							await createCartMutation({
-								eventDate,
-								eventTime,
-								chefId: props.chefId,
-								cartId: props.cart?.id,
-							});
-						}}
-					>
-						Checkout
-					</Button>
+					<CheckoutButton
+						eventDate={eventDate}
+						eventTime={eventTime}
+						chefId={props.chefId}
+						cartId={props.cart.id}
+					/>
 				)}
 			</form>
 		</Form>

@@ -24,7 +24,10 @@ export default async function ChefPage({
 				<section className="col-span-3 md:col-span-2 order-2 md:order-1">
 					<div className="flex items-center">
 						<Avatar className="w-20 h-20">
-							<AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+							<AvatarImage
+								src={chef.chefImage || "https://github.com/shadcn.png"}
+								alt="chef headshot"
+							/>
 							<AvatarFallback>CN</AvatarFallback>
 						</Avatar>
 						<h1 className="scroll-m-20 pb-2 text-1xl sm:text-2xl font-medium tracking-tight first:mt-0 ml-2">

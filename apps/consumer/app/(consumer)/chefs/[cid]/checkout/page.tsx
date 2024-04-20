@@ -1,3 +1,5 @@
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import Container from "app/components/Container";
@@ -6,6 +8,7 @@ import CheckoutForm from "./CheckoutForm";
 
 import fetchUserPaymentMethodsQuery from "app/actions/queries/fetchUserPaymentMethods";
 import { getCartQuery } from "app/actions/queries/getCart";
+import getUserAddressQuery from "app/actions/queries/getUserAddress";
 import { cn } from "app/lib/utils";
 
 export default async function ChefCheckoutPage({
@@ -13,12 +16,13 @@ export default async function ChefCheckoutPage({
 }: {
 	params: { cid: string };
 }) {
-	// TODO: Address table deleted
 	const userCart = getCartQuery();
 	const userPaymentMethods = fetchUserPaymentMethodsQuery();
-	const [cart, paymentMethods] = await Promise.all([
+	const getAddress = getUserAddressQuery()
+	const [cart, paymentMethods, addresses] = await Promise.all([
 		userCart,
 		userPaymentMethods,
+		getAddress
 	]);
 
 	if (cart.items.length === 0 || !cart.eventDate || !cart.eventTime) {
@@ -30,6 +34,10 @@ export default async function ChefCheckoutPage({
 			<div className="grid grid-cols-4 gap-6">
 				{/* Left Section */}
 				<section className="col-span-4 md:col-span-2">
+					<Link href={`/chefs/${params.cid}`}>
+						<ArrowLeft className="mb-8" />
+					</Link>
+
 					{cart.items.map((item, i) => (
 						<CheckoutCartItem
 							key={`${item.dishId}-${i}`}
@@ -51,7 +59,7 @@ export default async function ChefCheckoutPage({
 						serviceFee={cart.serviceFee}
 						total={cart.total}
 						cartItems={cart.items}
-						address=""
+						address={addresses}
 						paymentMethods={paymentMethods}
 						eventDate={cart.eventDate}
 						eventTime={cart.eventTime}
