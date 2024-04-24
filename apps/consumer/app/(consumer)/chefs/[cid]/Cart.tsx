@@ -37,13 +37,13 @@ import { cn, convertDayToInt, getHoursForDay } from "app/lib/utils";
 import type { Cart as CartType } from "types";
 
 interface CheckoutButtonProps {
-	eventDate: Date
-	eventTime: string
-	chefId: string
-	cartId: string
+	eventDate: Date;
+	eventTime: string;
+	chefId: string;
+	cartId: string;
 }
 function CheckoutButton(props: CheckoutButtonProps) {
-	const { pending } = useFormStatus()
+	const { pending } = useFormStatus();
 	const { eventDate, eventTime, chefId, cartId } = props;
 	return (
 		<Button
@@ -63,7 +63,7 @@ function CheckoutButton(props: CheckoutButtonProps) {
 		>
 			Checkout
 		</Button>
-	)
+	);
 }
 
 type HoursType = {

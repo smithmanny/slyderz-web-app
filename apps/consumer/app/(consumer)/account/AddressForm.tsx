@@ -8,11 +8,11 @@ import * as z from "zod";
 import { InputFormField } from "app/components/Form";
 import { Button } from "app/components/ui/button";
 
-import { updateAccountAddressMutation } from "app/actions/mutations/updateAccountAddress";
+import { updateAccountAddressMutation } from "app/actions/mutations/updateAddress";
 import { useSlyderzForm } from "app/hooks/useSlyderzForm";
 import type { address } from "drizzle/schema/user";
 
-function mapGoogleToAddress(addressComponents: any) {
+export function mapGoogleToAddress(addressComponents: any) {
 	const addressMap = new Map();
 
 	for (const component of addressComponents) {
@@ -44,18 +44,18 @@ function mapGoogleToAddress(addressComponents: any) {
 }
 
 async function handleAccountForm(input: FormData) {
-	const { message, error } = await updateAccountAddressMutation(input)
+	const { message, error } = await updateAccountAddressMutation(input);
 
 	if (error) {
-		return toast.error(message)
+		return toast.error(message);
 	}
 
-	return toast.success(message)
+	return toast.success(message);
 }
 
 type AccountAddressFormProps = {
-	address: typeof address.$inferSelect | undefined
-}
+	address: typeof address.$inferSelect | undefined;
+};
 export default function AccountAddressForm(props: AccountAddressFormProps) {
 	const formSchema = z.object({
 		address1: z.string(),
@@ -94,7 +94,7 @@ export default function AccountAddressForm(props: AccountAddressFormProps) {
 				name="address1"
 				render={({ field }) => (
 					<InputFormField
-						label="Address"
+						label="Street Number"
 						placeholder="Enter your address"
 						autoComplete="off"
 						role="presentation"
@@ -152,7 +152,9 @@ export default function AccountAddressForm(props: AccountAddressFormProps) {
 				/>
 			</div>
 
-			<Button type="submit" className="mt-4">Save</Button>
+			<Button type="submit" className="mt-4">
+				Save
+			</Button>
 		</form>
 	);
 }

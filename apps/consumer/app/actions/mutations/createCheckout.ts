@@ -58,6 +58,10 @@ export default async function createCheckoutMutation(
 		throw new Error("Chef not found");
 	}
 
+	if (checkout.cartItems.length === 0) {
+		return;
+	}
+
 	const order = await db.transaction(async (tx) => {
 		const orderConfirmationNumber = `SLY-${generateId(10)}`;
 		const consumerServiceFee = getConsumerServiceFee(userCart.subtotal);

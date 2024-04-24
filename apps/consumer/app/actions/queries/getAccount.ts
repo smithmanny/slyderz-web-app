@@ -14,8 +14,8 @@ export default async function getAccountQuery() {
 	});
 
 	const address = await db.query.address.findFirst({
-		where: (address, { eq }) => eq(address.userId, user.id)
-	})
+		where: (address, { eq }) => eq(address.userId, user.id),
+	});
 
 	return {
 		paymentMethods: paymentMethods.data,

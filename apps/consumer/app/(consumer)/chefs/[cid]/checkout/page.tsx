@@ -18,11 +18,11 @@ export default async function ChefCheckoutPage({
 }) {
 	const userCart = getCartQuery();
 	const userPaymentMethods = fetchUserPaymentMethodsQuery();
-	const getAddress = getUserAddressQuery()
+	const getAddress = getUserAddressQuery();
 	const [cart, paymentMethods, addresses] = await Promise.all([
 		userCart,
 		userPaymentMethods,
-		getAddress
+		getAddress,
 	]);
 
 	if (cart.items.length === 0 || !cart.eventDate || !cart.eventTime) {

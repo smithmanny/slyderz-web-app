@@ -20,11 +20,12 @@ import {
 	getConsumerCartTotal,
 	getConsumerServiceFee,
 } from "app/lib/utils";
-import type { address } from "drizzle/schema/user";
+import AddressModal from "./AddressModal";
 
+import type { address } from "drizzle/schema/user";
 import type { CartItem } from "types";
 
-type AddressType = typeof address.$inferSelect
+type AddressType = typeof address.$inferSelect;
 
 interface CheckoutFormProps {
 	chefId: string;
@@ -73,7 +74,10 @@ export default function CheckoutForm(props: CheckoutFormProps) {
 				name="selectedAddress"
 				render={({ field }) => (
 					<div className="space-y-2">
-						<Label>Event address</Label>
+						<div className="flex gap-3 items-center">
+							<Label>Event address</Label>
+							<AddressModal chefId={props.chefId} />
+						</div>
 						<Select
 							onValueChange={field.onChange}
 							defaultValue={field.value}
