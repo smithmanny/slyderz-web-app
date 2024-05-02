@@ -1,6 +1,10 @@
 {
   "name": "slyderz",
   "private": true,
+  "engines": {
+    "node": ">=20.6.2",
+    "pnpm": ">=8"
+  },
   "scripts": {
     "build": "pnpm --filter slyderz-consumer build",
     "dev": "pnpm --filter slyderz-consumer dev",
