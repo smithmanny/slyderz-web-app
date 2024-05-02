@@ -12,7 +12,7 @@ import { AuthError } from "./errors";
 
 const domain =
 	process.env.NODE_ENV === "development" ? "localhost:3000" : "slyderz.co";
-const secure = process.env.NODE_ENV === "development" ? false : true;
+const secure = process.env.NODE_ENV !== "development";
 const adapter = new DrizzlePostgreSQLAdapter(db, sessions, users);
 
 export const auth = new Lucia(adapter, {
