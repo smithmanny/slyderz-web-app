@@ -1,19 +1,10 @@
-import { Metadata } from "next";
-import { Noto_Sans } from "next/font/google";
-import React, { ReactNode } from "react";
+import type { Metadata } from "next";
+import React, { type ReactNode } from "react";
 
 import { getSession } from "app/lib/auth";
-import { cn } from "app/lib/utils";
 
 import Appbar from "app/components/AppBar";
 import Footer from "app/components/Footer";
-import "app/styles/base.css";
-
-const roboto = Noto_Sans({
-	subsets: ["latin"],
-	weight: ["300", "400", "500", "600", "700"],
-	variable: "--font-sans",
-});
 
 export const metadata: Metadata = {
 	title: "Slyderz",
@@ -65,18 +56,13 @@ export const metadata: Metadata = {
 };
 
 const Layout = async ({ children }: { children: ReactNode }) => {
-	const session = await getSession();
+	const { user } = await getSession();
 	return (
-		<html lang="en" suppressHydrationWarning>
-			<body className={cn(roboto.className, "min-h-full")}>
-				<Appbar
-					user={session?.user}
-					className="max-w-screen-xl relative mx-auto"
-				/>
-				<main>{children}</main>
-				<Footer />
-			</body>
-		</html>
+		<>
+			<Appbar user={user} className="max-w-screen-xl relative mx-auto" />
+			{children}
+			<Footer />
+		</>
 	);
 };
 

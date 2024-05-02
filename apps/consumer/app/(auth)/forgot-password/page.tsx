@@ -6,9 +6,9 @@ import ResetPasswordForm from "./ForgotPasswordForm";
 import { getSession } from "app/lib/auth";
 
 export default async function ForgotPasswordPage() {
-	const session = await getSession();
+	const { session } = await getSession();
 
-	if (session?.user) {
+	if (session?.userId) {
 		redirect("/");
 	}
 

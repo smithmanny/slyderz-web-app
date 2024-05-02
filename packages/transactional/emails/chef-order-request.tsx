@@ -1,21 +1,21 @@
 import { Column, Heading, Hr, Row, Section, Text } from "jsx-email";
-import * as React from "react";
 
-import SlyderzEmailLayout from "./";
 import EmailButton from "../components/EmailButton";
 import EmailOrderItem from "../components/OrderItem";
+import SlyderzEmailLayout from "./";
 
-import { ChefOrderRequest } from "utils/types";
+import { formatNumberToCurrency } from "../utils/helpers"
+import type { ChefOrderRequestEmailProps } from "../utils/types";
 
 export const EmailChefOrderRequest = ({
-	orderLocation = "4511 Glider Circle, Douglasville, Ga, 30135",
-	orderDate = "Oct 30, 2023",
-	orderTime = "9:36 PM",
-	orderTotal = "100.36",
-	orderItems = [{ name: "Surf & Turf", price: 25, quantity: 2 }],
+	orderLocation,
+	orderDate,
+	orderTime,
+	orderTotal,
+	orderItems,
 	orderApproveUrl,
 	orderDenyUrl,
-}: ChefOrderRequest) => (
+}: ChefOrderRequestEmailProps) => (
 	<SlyderzEmailLayout
 		style={container}
 		previewText="🥳 You received a new order!"
@@ -57,7 +57,7 @@ export const EmailChefOrderRequest = ({
 				</Column>
 				<Column align="center">
 					<Text style={global.paragraphWithBold}>Event Total</Text>
-					<Text style={track.number}>$ {orderTotal}</Text>
+					<Text style={track.number}>{formatNumberToCurrency(Number(orderTotal))}</Text>
 				</Column>
 			</Row>
 			<Row>

@@ -15,13 +15,13 @@ export default function AcceptedOrder() {
 				loop
 			/>
 			<h4 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-6">
-				Great news! The chef has accepted your order.
+				Great news! The order has been accepted.
 			</h4>
 			<p className="mt-6 text-xl leading-8 text-gray-600">
-				Your order has been accepted and the card on file will be charged.
+				Check your dashboard for more information.
 			</p>
 
-			<Link href="/" replace>
+			<Link href="/dashboard" replace>
 				<Button className="mt-4">Go home</Button>
 			</Link>
 		</div>

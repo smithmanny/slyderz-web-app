@@ -1,7 +1,7 @@
 "use client";
 
+import { generateId } from "lucia";
 import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 
 import { Quantity } from "app/components/Quantity";
 import { Button } from "app/components/ui/button";
@@ -20,7 +20,7 @@ type ChefDishType = {
 	price: number;
 	description: string;
 	name: string;
-	image: string | undefined;
+	image: string;
 	chefId: string;
 	dishId: string;
 };
@@ -28,15 +28,15 @@ export default function ChefDish(props: ChefDishType) {
 	const [guestCount, setGuestCount] = useState<number>(1);
 	const [isDishDialogOpen, setIsDishDialogOpen] = useState<boolean>(false);
 	const input = {
-		id: uuidv4(),
+		id: generateId(10),
 		price: props.price,
 		name: props.name,
 		description: props.description,
 		quantity: guestCount,
 		dishId: props.dishId,
 		chefId: props.chefId,
+		imageUrl: props.image,
 	};
-	const addItemToCart = addItemToCartMutation.bind(null, input);
 	return (
 		<div className="block rounded-lg shadow-sm shadow-indigo-100">
 			<Dialog open={isDishDialogOpen} onOpenChange={setIsDishDialogOpen}>
@@ -92,7 +92,7 @@ export default function ChefDish(props: ChefDishType) {
 							<Quantity count={guestCount} setCount={setGuestCount} />
 							<Button
 								onClick={async () => {
-									await addItemToCart();
+									await addItemToCartMutation(input);
 									setIsDishDialogOpen(false);
 								}}
 							>

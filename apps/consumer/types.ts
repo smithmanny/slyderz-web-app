@@ -1,3 +1,5 @@
+import { hours } from "drizzle/schema/menu";
+
 export const CHEF_SERVICE_FEE = 0.15; // 15%
 export const CONSUMER_SERVICE_FEE = 0.1; // 10%
 export interface CartItem {
@@ -7,6 +9,7 @@ export interface CartItem {
 	price: number;
 	dishId: string;
 	quantity: number;
+	imageUrl: string
 }
 export interface EmailBodyType {
 	cartItems: Array<CartItem>;
@@ -29,10 +32,13 @@ export interface EmailBodyResponseType {
 	orderTotal: number;
 }
 export interface Cart {
+	id: string
 	eventDate?: string | null;
 	eventTime?: string | null;
 	items: Array<CartItem>;
 	total: number;
+	subtotal: number;
+	serviceFee: number;
 }
 
 // Email section

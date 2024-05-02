@@ -1,16 +1,27 @@
 import { Column, Heading, Hr, Row, Section, Text } from "jsx-email";
-import * as React from "react";
 
-import SlyderzEmailLayout from "./";
 import { EmailOrderItem } from "../components/OrderItem";
-import { EmailNewOrderType } from "utils/types";
+import { formatNumberToCurrency } from "../utils/helpers"
+import SlyderzEmailLayout from "./";
 
+type EmailNewOrderType = {
+	orderLocation: string
+	orderDate: string
+	orderTime: string
+	orderTotal: string
+	orderItems: Array<{
+		quantity: number
+		name: string
+		price: string
+	}>
+}
+// TODO
 export const EmailNewOrder = ({
-	orderLocation = "4511 Glider Circle, Douglasville, Ga, 30135",
-	orderDate = "Oct 30, 2023",
-	orderTime = "9:36 PM",
-	orderTotal = "100.36",
-	orderItems = [{ name: "Surf & Turf", price: 25, quantity: 2 }],
+	orderLocation,
+	orderDate,
+	orderTime,
+	orderTotal,
+	orderItems,
 }: EmailNewOrderType) => (
 	<SlyderzEmailLayout
 		style={container}
@@ -58,7 +69,7 @@ export const EmailNewOrder = ({
 				</Column>
 				<Column>
 					<Text style={global.paragraphWithBold}>Event Total</Text>
-					<Text style={track.number}>$ {orderTotal}</Text>
+					<Text style={track.number}>{formatNumberToCurrency(Number(orderTotal))}</Text>
 				</Column>
 			</Row>
 		</Section>

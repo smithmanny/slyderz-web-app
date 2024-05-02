@@ -1,5 +1,4 @@
 import { Button } from "jsx-email";
-import * as React from "react";
 
 interface EmailButtonProps {
 	pX?: number;
@@ -11,7 +10,7 @@ interface EmailButtonProps {
 }
 
 export const EmailButton = ({
-	link = "http://localhost:3000",
+	link,
 	children,
 	...props
 }: EmailButtonProps) => {

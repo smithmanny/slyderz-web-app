@@ -10,10 +10,10 @@ export default async function ResetPasswordPage({
 }: {
 	searchParams: { token: string };
 }) {
-	const session = await getSession();
+	const { session } = await getSession();
 	const token = searchParams.token;
 
-	if (session?.user || !token) {
+	if (session?.userId || !token) {
 		redirect("/");
 	}
 

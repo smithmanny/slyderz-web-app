@@ -1,14 +1,19 @@
 "use server";
 
-import * as context from "next/headers";
+import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { Argon2id } from "oslo/password";
 import { z } from "zod";
 
 import { invalidateAllUserTokens, validateToken } from "app/lib/auth";
-import { auth } from "app/lib/auth";
-import { sendSesEmail } from "app/lib/aws";
+import { auth, invalidateAllUserSessions } from "app/lib/auth";
+import { sendPasswordChangedEmail } from "app/lib/aws";
 import { TokenError, UnknownError } from "app/lib/errors";
 import { requiredFormData } from "app/lib/utils";
+import { db } from "drizzle";
+import { users } from "drizzle/schema/user";
 
 import { TRANSACTIONAL_EMAILS } from "types";
 
@@ -25,13 +30,28 @@ export default async function handlePasswordResetMutation(
 
 	try {
 		const userId = await validateToken(token);
-		const user = await auth.getUser(userId);
+		const user = await db.query.users.findFirst({
+			where: (users, { eq }) => eq(users.id, userId),
+		});
+
+		if (!user) {
+			throw new Error("User not found");
+		}
+
+		const argon2id = new Argon2id();
+		const hashedPassword = await argon2id.hash(password);
+		const updatePassword = db
+			.update(users)
+			.set({
+				hashedPassword,
+			})
+			.where(eq(users.id, user.id));
 
 		// Invalidate all sessions, user tokens and update password
 		await Promise.all([
-			auth.invalidateAllUserSessions(user.userId),
-			invalidateAllUserTokens(user.userId),
-			auth.updateKeyPassword("email", user.email, password),
+			invalidateAllUserSessions(user.id),
+			invalidateAllUserTokens(user.id),
+			updatePassword,
 		]).catch((err) => {
 			throw new UnknownError({
 				message: "Please try again",
@@ -39,23 +59,12 @@ export default async function handlePasswordResetMutation(
 			});
 		});
 
-		// update key
-		const session = await auth.createSession({
-			userId: user.userId,
-			attributes: {
-				stripeCustomerId: user.stripeCustomerId,
-				email: user.email,
-				emailVerified: user.emailVerified,
-				name: user.name,
-				role: user.role,
-			},
-		});
-		const authRequest = auth.handleRequest("GET", context);
-		authRequest.setSession(session);
+		const session = await auth.createSession(user.id, {});
+		const sessionCookie = auth.createSessionCookie(session.id);
+		cookies().set(sessionCookie);
 
-		await sendSesEmail({
+		await sendPasswordChangedEmail({
 			to: user.email,
-			type: TRANSACTIONAL_EMAILS.passwordReset,
 		});
 	} catch (e) {
 		if (e instanceof TokenError && e.message === "Expired token") {
@@ -70,5 +79,6 @@ export default async function handlePasswordResetMutation(
 		}
 	}
 
+	revalidatePath("/");
 	redirect("/");
 }

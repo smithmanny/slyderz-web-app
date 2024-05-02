@@ -6,11 +6,12 @@ import {
 	DotsHorizontalIcon,
 	TrashIcon,
 } from "@radix-ui/react-icons";
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import {
-	ColumnDef,
-	ColumnFiltersState,
-	SortingState,
-	VisibilityState,
+	type ColumnDef,
+	type ColumnFiltersState,
+	type SortingState,
+	type VisibilityState,
 	flexRender,
 	getCoreRowModel,
 	getFilteredRowModel,
@@ -18,8 +19,10 @@ import {
 	getSortedRowModel,
 	useReactTable,
 } from "@tanstack/react-table";
-import * as React from "react";
+import { useMemo, useState } from "react";
 
+import { deleteDishMutation } from "app/actions/mutations/deleteDish";
+import getMenuDishesQuery from "app/actions/queries/getMenuDishes";
 import { Button } from "app/components/ui/button";
 import { Checkbox } from "app/components/ui/checkbox";
 import {
@@ -41,16 +44,40 @@ import {
 	TableRow,
 } from "app/components/ui/table";
 
+function DeleteDishButton(props: { id: string }) {
+	const deleteDish = useMutation({
+		mutationFn: deleteDishMutation,
+		onSuccess: () => {
+			const queryClient = new QueryClient();
+
+			queryClient.invalidateQueries({
+				queryKey: ["dashboard-menu-dishes"],
+			});
+		},
+	});
+
+	return (
+		<DropdownMenuItem
+			className="text-red-500"
+			onClick={async () => {
+				await deleteDish.mutateAsync({ dishId: props.id });
+			}}
+		>
+			<TrashIcon /> Delete Dish
+		</DropdownMenuItem>
+	);
+}
+
 export type MenuTableColumns = {
 	id: string;
-	amount: number;
+	amount: string;
 	name: string;
 	section: string;
 };
-
 export const columns: ColumnDef<MenuTableColumns>[] = [
 	{
 		id: "select",
+		accessorKey: "id",
 		header: ({ table }) => (
 			<Checkbox
 				checked={
@@ -107,7 +134,7 @@ export const columns: ColumnDef<MenuTableColumns>[] = [
 		accessorKey: "amount",
 		header: () => <div className="text-right">Amount</div>,
 		cell: ({ row }) => {
-			const amount = parseFloat(row.getValue("amount"));
+			const amount = Number.parseFloat(row.getValue("amount"));
 
 			// Format the amount as a dollar amount
 			const formatted = new Intl.NumberFormat("en-US", {
@@ -122,7 +149,8 @@ export const columns: ColumnDef<MenuTableColumns>[] = [
 		id: "actions",
 		enableHiding: false,
 		cell: ({ row }) => {
-			const payment = row.original;
+			const dishId = row.getValue("select") as string;
+			console.log("dishId", dishId);
 
 			return (
 				<DropdownMenu>
@@ -135,9 +163,7 @@ export const columns: ColumnDef<MenuTableColumns>[] = [
 					<DropdownMenuContent align="end">
 						<DropdownMenuLabel>Actions</DropdownMenuLabel>
 						<DropdownMenuSeparator />
-						<DropdownMenuItem className="text-red-500">
-							<TrashIcon /> Delete Dish
-						</DropdownMenuItem>
+						<DeleteDishButton id={dishId} />
 					</DropdownMenuContent>
 				</DropdownMenu>
 			);
@@ -145,26 +171,40 @@ export const columns: ColumnDef<MenuTableColumns>[] = [
 	},
 ];
 
-type MenuTableDish = {
+type DishSection = {
 	id: string;
 	name: string;
-	amount: number;
-	section: string;
 };
-interface MenuTableProps {
-	dishes: Array<MenuTableDish>;
-}
-export default function MenuTable(props: MenuTableProps) {
-	const [sorting, setSorting] = React.useState<SortingState>([]);
-	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-		[],
-	);
-	const [columnVisibility, setColumnVisibility] =
-		React.useState<VisibilityState>({});
-	const [rowSelection, setRowSelection] = React.useState({});
+type DishType = {
+	id: string;
+	name: string;
+	price: string;
+	isActive: boolean;
+	section: DishSection;
+};
+const generateMenuTableData = (dishes: Array<DishType>) => {
+	return dishes.map((dish) => ({
+		id: dish.id,
+		amount: dish.price,
+		name: dish.name,
+		section: dish.section.name,
+	}));
+};
+
+export default function MenuTable() {
+	const { data: menuDishes = [] } = useQuery({
+		queryKey: ["dashboard-menu-dishes"],
+		queryFn: () => getMenuDishesQuery(),
+	});
+
+	const dishes = useMemo(() => generateMenuTableData(menuDishes), [menuDishes]);
+	const [sorting, setSorting] = useState<SortingState>([]);
+	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+	const [rowSelection, setRowSelection] = useState({});
 
 	const table = useReactTable({
-		data: props.dishes,
+		data: dishes,
 		columns,
 		onSortingChange: setSorting,
 		onColumnFiltersChange: setColumnFilters,
@@ -233,7 +273,7 @@ export default function MenuTable(props: MenuTableProps) {
 												: flexRender(
 														header.column.columnDef.header,
 														header.getContext(),
-												  )}
+													)}
 										</TableHead>
 									);
 								})}

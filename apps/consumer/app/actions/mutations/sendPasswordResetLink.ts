@@ -2,35 +2,29 @@
 
 import { z } from "zod";
 
-import { auth } from "app/lib/auth";
 import { generateVerificationToken } from "app/lib/auth";
-import { sendSesEmail } from "app/lib/aws";
-import prisma from "db";
-
-import { TRANSACTIONAL_EMAILS } from "types";
+import { sendforgotPasswordEmail } from "app/lib/aws";
+import { requiredFormData } from "app/lib/utils";
+import { db } from "drizzle";
 
 const sendPasswordResetLinkSchema = z.string().email();
 export default async function sendPasswordResetLinkMutation(input: FormData) {
-	const email = input.get("email")?.toString();
+	const { email } = requiredFormData<{ email: string }>(input);
 	sendPasswordResetLinkSchema.parse(email);
 
-	const dbUser = await prisma.authUser.findFirst({
-		where: {
-			email,
-		},
+	const user = await db.query.users.findFirst({
+		where: (users, { eq }) => eq(users.email, email),
 	});
 
-	if (!dbUser) {
+	if (!user) {
 		return await new Promise((resolve) => setTimeout(resolve, 750));
 	}
 
-	const user = auth.transformDatabaseUser(dbUser);
-	const token = await generateVerificationToken(user.userId);
+	const token = await generateVerificationToken(user.id);
 
-	await sendSesEmail({
+	await sendforgotPasswordEmail({
 		to: user.email,
-		type: TRANSACTIONAL_EMAILS.forgotPassword,
-		variables: {
+		data: {
 			resetPasswordUrl: `${
 				process.env.NEXT_PUBLIC_URL
 			}/reset-password?token=${token.toString()}`,

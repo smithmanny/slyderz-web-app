@@ -1,29 +1,33 @@
 "use server";
 
+import { eq } from "drizzle-orm";
+import { generateId } from "lucia";
 import { redirect } from "next/navigation";
 
-import { auth } from "app/lib/auth";
 import { UnknownError } from "app/lib/errors";
 import { getStripeServer } from "app/lib/stripe";
-import prisma from "db";
+import { db } from "drizzle";
 
-import { RoleType } from ".prisma/client";
+import { calendar } from "drizzle/schema/menu";
+import { chefs, users } from "drizzle/schema/user";
 
 export default async function createChefMutation(userId: string) {
 	const stripe = getStripeServer();
 
-	const user = await prisma.authUser.findFirstOrThrow({
-		where: { id: userId },
-		select: {
+	const user = await db.query.users.findFirst({
+		where: (users, { eq }) => eq(users.id, userId),
+		columns: {
 			id: true,
 			email: true,
-			chef: {
-				select: {
-					stripeAccountId: true,
-				},
-			},
+		},
+		with: {
+			chef: true,
 		},
 	});
+
+	if (!user) {
+		throw new Error("User not found");
+	}
 
 	if (user.chef?.stripeAccountId) redirect("/dashboard");
 
@@ -35,37 +39,46 @@ export default async function createChefMutation(userId: string) {
 		default_currency: "USD",
 	});
 
-	const chef = prisma.chef.create({
-		data: {
-			stripeAccountId: stripeAccount.id,
-			userId: user.id,
-		},
-	});
+	await db.transaction(async (tx) => {
+		const createChef = tx
+			.insert(chefs)
+			.values({
+				id: generateId(10),
+				stripeAccountId: stripeAccount.id,
+				userId: user.id,
+			})
+			.returning({ id: chefs.id });
 
-	const createAccountLink = stripe.accountLinks.create({
-		account: stripeAccount.id,
-		refresh_url: `${process.env.NEXT_PUBLIC_URL}/api/stripe/reauth`,
-		return_url: `${process.env.NEXT_PUBLIC_URL}/dashboard`,
-		type: "account_onboarding",
-	});
+		// Set user role to chef
+		const convertUserToChef = tx
+			.update(users)
+			.set({
+				role: "CHEF",
+			})
+			.where(eq(users.id, user.id));
 
-	// Set user role to chef
-	const convertUserToChef = auth.updateUserAttributes(user.id, {
-		role: RoleType.CHEF,
-	});
+		const [chefRes] = await Promise.all([createChef, convertUserToChef]).catch(
+			(err) => {
+				throw new UnknownError({
+					message: "Chef not created",
+					cause: err,
+				});
+			},
+		);
 
-	try {
-		const [_, accountLink] = await Promise.all([
-			chef,
-			createAccountLink,
-			convertUserToChef,
-		]);
+		const chef = chefRes[0];
 
-		return accountLink.url;
-	} catch (err) {
-		throw new UnknownError({
-			message: "Chef not created",
-			cause: err,
+		if (!chef) {
+			throw new UnknownError({
+				message: "Chef not found",
+			});
+		}
+
+		await tx.insert(calendar).values({
+			id: generateId(10),
+			chefId: chef.id,
 		});
-	}
+	});
+
+	redirect("/dashboard");
 }

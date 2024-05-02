@@ -1,5 +1,5 @@
 import Mailjet, { Client } from "node-mailjet";
-import { Contact, LibraryResponse } from "node-mailjet";
+import type { Contact, LibraryResponse } from "node-mailjet";
 
 const mailjet = new Mailjet({
 	apiKey: process.env.MJ_APIKEY_PUBLIC,
@@ -33,14 +33,14 @@ export const createMailjetContact = async (email: string, name?: string) => {
 
 		if (contactId) {
 			return mailjetClient
-				.post("contact")
+				.put("contact")
 				.id(contactId)
 				.action("managecontactslists")
 				.request({
 					ContactsLists: [
 						{
 							ListID: 10251087, //Subscribers list
-							Action: "addnoforce",
+							Action: "addforce",
 						},
 					],
 				});

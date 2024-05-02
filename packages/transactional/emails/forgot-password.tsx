@@ -1,16 +1,12 @@
 import { Section, Text } from "jsx-email";
-import * as React from "react";
 
-import SlyderzEmailLayout from "./";
 import EmailButton from "../components/EmailButton";
-
-interface EmailForgotPasswordEmailProps {
-	resetPasswordUrl: string;
-}
+import type { ForgotPasswordEmailProps } from "../utils/types";
+import SlyderzEmailLayout from "./";
 
 export const EmailForgotPasswordEmail = ({
 	resetPasswordUrl,
-}: EmailForgotPasswordEmailProps) => {
+}: ForgotPasswordEmailProps) => {
 	return (
 		<SlyderzEmailLayout previewText="You requested to change your password.">
 			<Section>

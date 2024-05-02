@@ -1,13 +1,12 @@
 import Link from "next/link";
 
-import Announcement from "app/components/Announcement";
 import UserPopover from "app/components/UserPopover";
 import { cn } from "app/lib/utils";
 import type { User } from "lucia";
 
 interface AppBarTypes {
 	className?: string;
-	user: User | undefined;
+	user: User | null;
 }
 export default function AppBar(props: AppBarTypes) {
 	return (

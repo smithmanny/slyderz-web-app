@@ -1,4 +1,4 @@
-import { Stripe, loadStripe } from "@stripe/stripe-js";
+import { type Stripe, loadStripe } from "@stripe/stripe-js";
 import { default as StripeServer } from "stripe";
 import type StripeServerType from "stripe";
 

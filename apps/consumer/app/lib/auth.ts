@@ -1,136 +1,180 @@
-import { prisma } from "@lucia-auth/adapter-prisma";
-import { lucia } from "lucia";
-import { nextjs_future } from "lucia/middleware";
-import { isWithinExpiration } from "lucia/utils"; // v2 beta.0
-import * as context from "next/headers";
+import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
+import { eq } from "drizzle-orm";
+import { Lucia, generateId } from "lucia";
+import { cookies } from "next/headers";
+import { TimeSpan, createDate, isWithinExpirationDate } from "oslo";
 import { cache } from "react";
 
-import { TokenError } from "app/lib/errors";
-import db from "db";
-import prismaClient from "db";
+import { NotFoundError, TokenError } from "app/lib/errors";
+import { db } from "drizzle";
+import { sessions, tokens, users } from "drizzle/schema/user";
 import { AuthError } from "./errors";
 
-import "lucia/polyfill/node";
+const domain =
+	process.env.NODE_ENV === "development" ? "localhost:3000" : "slyderz.co";
+const secure = process.env.NODE_ENV !== "development";
+const adapter = new DrizzlePostgreSQLAdapter(db, sessions, users);
 
-const env = process.env.NODE_ENV === "development" ? "DEV" : "PROD";
-
-export const auth = lucia({
-	adapter: prisma(prismaClient, {
-		session: "authSession",
-		user: "authUser",
-		key: "authKey",
-	}),
-	env,
-	middleware: nextjs_future(),
+export const auth = new Lucia(adapter, {
+	sessionExpiresIn: new TimeSpan(30, "d"),
 	sessionCookie: {
 		expires: false,
+		attributes: {
+			secure,
+			sameSite: "strict",
+			domain,
+		},
 	},
-	getSessionAttributes: (databaseSession) => {
-		return {
-			stripeCustomerId: databaseSession.stripeCustomerId,
-			emailVeried: databaseSession.emailVerified,
-			email: databaseSession.email,
-			name: databaseSession.name,
-		};
+	getSessionAttributes: (databaseSession: DatabaseSessionAttributes) => {
+		return {};
 	},
-	getUserAttributes: (userData) => {
+	getUserAttributes: (userData: DatabaseUserAttributes) => {
 		return {
 			stripeCustomerId: userData.stripeCustomerId,
 			email: userData.email,
 			emailVerified: userData.emailVerified,
 			name: userData.name,
 			role: userData.role,
+			headshotUrl: userData.headshotUrl,
 		};
 	},
 });
 
-export const getSession = cache(() => {
-	const authRequest = auth.handleRequest("GET", context);
-	return authRequest.validate();
+export const getSession = cache(async () => {
+	const sessionId = cookies().get(auth.sessionCookieName)?.value ?? null;
+
+	if (!sessionId) {
+		return {
+			user: null,
+			session: null,
+		};
+	}
+
+	const result = await auth.validateSession(sessionId);
+
+	if (result.session?.fresh) {
+		const sessionCookie = auth.createSessionCookie(result.session.id);
+		cookies().set(sessionCookie);
+	}
+
+	return {
+		session: result.session,
+		user: result.user,
+	};
 });
 export const getProtectedSession = cache(async () => {
-	const authRequest = auth.handleRequest("GET", context);
-	const session = await authRequest.validate();
+	const { session, user } = await getSession();
 
-	if (!session) {
+	if (!session || !user) {
 		throw new AuthError();
 	}
-
-	return session;
-});
-export const getChefSession = cache(async () => {
-	const authRequest = auth.handleRequest("GET", context);
-	const session = await authRequest.validate();
-
-	if (!session) {
-		throw new AuthError();
-	}
-
-	const chef = await db.chef.findFirstOrThrow({
-		where: { userId: session.user.userId },
-	});
 
 	return {
 		session,
-		chef,
+		user,
 	};
 });
+export const getChefSession = cache(async () => {
+	const { session, user } = await getProtectedSession();
 
-const EXPIRES_IN = 1000 * 60 * 60 * 2; // 2 hours
-
-const generateToken = async (userId: string) => {
-	const expiresAt = new Date(new Date().getTime() + EXPIRES_IN);
-
-	// delete all user tokens
-	const deleteToken = db.token.deleteMany({ where: { userId } });
-	const createToken = db.token.create({
-		data: {
-			expiresAt,
-			userId,
+	const chef = await db.query.chefs.findFirst({
+		where: (chefs, { eq }) => eq(chefs.userId, user.id),
+		with: {
+			calendar: {
+				columns: {
+					id: true,
+				},
+			},
 		},
 	});
 
-	const [_, token] = await Promise.all([deleteToken, createToken]);
+	if (!chef || !chef.calendar) {
+		throw new NotFoundError({
+			message: "Chef not found",
+		});
+	}
+
+	return {
+		user,
+		session,
+		chef: {
+			...chef,
+			calendar: {
+				...chef.calendar,
+			},
+		},
+	};
+});
+
+const generateToken = async (userId: string) => {
+	const deleteToken = db.delete(tokens).where(eq(tokens.userId, userId));
+	const insertToken = db
+		.insert(tokens)
+		.values({
+			id: generateId(10),
+			userId,
+			expiresAt: createDate(new TimeSpan(2, "h")),
+		})
+		.returning({ id: tokens.id });
+
+	const [, generatedToken] = await Promise.all([deleteToken, insertToken]);
+
+	const token = generatedToken[0];
+
+	if (!token) {
+		throw new Error("Token not created");
+	}
 
 	return token.id;
 };
 
-export const validateToken = async (token: string) => {
-	try {
-		const storedToken = await db.token.findFirstOrThrow({
-			where: { id: token },
-		});
-		await db.token.delete({ where: { id: token } });
+export const validateToken = async (tokenId: string) => {
+	const storedToken = await db.query.tokens.findFirst({
+		where: (tokens, { eq }) => eq(tokens.id, tokenId),
+	});
 
-		const tokenExpires = Number(storedToken.expiresAt); // bigint => number conversion
-		if (!isWithinExpiration(tokenExpires)) {
-			// should throw a vague error to user (expired *or* invalid token)
-			throw new TokenError({
-				message: "Expired token",
-			});
-		}
-
-		return storedToken.userId;
-	} catch (err) {
+	if (!storedToken) {
 		throw new TokenError({
-			message: "Invalid token",
-			cause: err,
+			message: "Token not found",
 		});
 	}
+
+	await db.transaction(async (tx) => {
+		try {
+			await tx.delete(tokens).where(eq(tokens.id, storedToken.id));
+		} catch {
+			tx.rollback();
+		}
+	});
+
+	const tokenExpires = storedToken.expiresAt;
+	if (!isWithinExpirationDate(tokenExpires)) {
+		throw new TokenError({
+			message: "Expired token",
+		});
+	}
+
+	return storedToken.userId;
 };
 
 export const invalidateAllUserTokens = async (userId: string) => {
-	return db.token.deleteMany({ where: { id: userId } });
+	return await db.delete(tokens).where(eq(tokens.userId, userId));
+};
+
+export const invalidateAllUserSessions = async (userId: string) => {
+	return await db.delete(sessions).where(eq(sessions.userId, userId));
 };
 
 export const generateVerificationToken = async (userId: string) => {
-	const storedUserTokens = await db.token.findMany({ where: { userId } });
+	const storedUserTokens = await db.query.tokens.findMany({
+		where: (tokens, { eq }) => eq(tokens.userId, userId),
+	});
 
 	if (storedUserTokens.length > 0) {
 		const reusableStoredToken = storedUserTokens.find((token) => {
 			// check if expiration is within 1 hour
 			// and reuse the token if true
-			return isWithinExpiration(Number(token.expiresAt) - EXPIRES_IN / 2);
+			return isWithinExpirationDate(createDate(new TimeSpan(1, "h")));
 		});
 		if (reusableStoredToken) return reusableStoredToken.id;
 	}
@@ -140,3 +184,22 @@ export const generateVerificationToken = async (userId: string) => {
 };
 
 export type Auth = typeof auth;
+
+declare module "lucia" {
+	interface Register {
+		Lucia: typeof auth;
+		DatabaseSessionAttributes: DatabaseSessionAttributes;
+		DatabaseUserAttributes: DatabaseUserAttributes;
+	}
+}
+
+// biome-ignore lint/complexity/noBannedTypes: <explanation>
+type DatabaseSessionAttributes = {};
+interface DatabaseUserAttributes {
+	stripeCustomerId: string;
+	email: string;
+	emailVerified: boolean;
+	name: string;
+	role: string;
+	headshotUrl: string | null;
+}

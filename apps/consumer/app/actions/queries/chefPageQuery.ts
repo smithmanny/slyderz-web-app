@@ -1,6 +1,6 @@
 "use server";
 
-import { NotFoundError } from "app/lib/errors";
+import { NotFoundError, UnknownError } from "app/lib/errors";
 import { convertDayToInt } from "app/lib/utils";
 import {
 	nextFriday,
@@ -11,56 +11,42 @@ import {
 	nextTuesday,
 	nextWednesday,
 } from "date-fns";
-import prisma from "db";
+import { db } from "drizzle";
 
 export default async function chefProfileQuery(chefId: string) {
-	const chef = await prisma.chef.findFirstOrThrow({
-		where: {
-			id: chefId,
-			// AND: {
-			// 	hours: {
-			// 		some: {
-			// 			daysOfWeek: {
-			// 				isEmpty: false, // Prevent page from showing if chef hours are not set
-			// 			},
-			// 		},
-			// 	},
-			// },
-		},
-		select: {
-			dishes: {
-				where: {
-					deleted: false,
-				},
-				include: {
-					image: true,
+	const chef = await db.query.chefs.findFirst({
+		where: (chefs, { eq }) => eq(chefs.id, chefId),
+		with: {
+			calendar: {
+				with: {
+					hours: true,
 				},
 			},
-			hours: {
-				select: {
-					daysOfWeek: true,
-					endTime: true,
-					startTime: true,
-				},
-			},
-			user: {
-				select: {
-					name: true,
-					image: true,
-				},
-			},
+			dishes: true,
+			user: true,
 		},
 	});
+
+	if (!chef || !chef.dishes || !chef.calendar?.hours) {
+		throw new NotFoundError({
+			message: "Chef not found",
+		});
+	}
+
 	try {
 		const getNextAvailableChefDay = () => {
 			const chefWorkingDays: Array<number> = [];
 			const today = new Date();
 
-			for (const hourBlock of chef.hours) {
-				for (const day of hourBlock.daysOfWeek) {
-					const matchedDay = convertDayToInt(day);
-					chefWorkingDays.push(matchedDay);
-				}
+			if (!chef.calendar) {
+				throw new NotFoundError({
+					message: "Calendar not found",
+				});
+			}
+
+			for (const hourBlock of chef.calendar.hours) {
+				const matchedDay = convertDayToInt(hourBlock.dayOfWeek);
+				chefWorkingDays.push(matchedDay);
 			}
 
 			function getNextDay(day: number | undefined): Date {
@@ -119,12 +105,12 @@ export default async function chefProfileQuery(chefId: string) {
 			nextAvailableChefDay: nextAvailableChefDay,
 			dishes: chef.dishes,
 			chefName: chef.user.name,
-			chefImage: chef.user.image?.imageUrl,
-			hours: chef.hours,
+			chefImage: chef.user.headshotUrl,
+			hours: chef.calendar.hours,
 		};
 	} catch (err) {
-		throw new NotFoundError({
-			message: "Chef not found",
+		throw new UnknownError({
+			message: "Unknown error fetching chef",
 			cause: err,
 		});
 	}

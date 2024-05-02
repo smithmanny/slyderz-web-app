@@ -1,11 +1,12 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { generateId } from "lucia";
 import { z } from "zod";
 
 import { getChefSession } from "app/lib/auth";
 import { UnknownError } from "app/lib/errors";
-import prisma from "db";
+import { db } from "drizzle";
+import { sections } from "drizzle/schema/menu";
 
 const createMenuSectionSchema = z.object({
 	name: z.string().min(4),
@@ -14,26 +15,24 @@ export default async function createMenuSectionMutation(
 	input: z.infer<typeof createMenuSectionSchema>,
 ) {
 	const { chef } = await getChefSession();
+	const section = createMenuSectionSchema.parse(input);
 
 	try {
-		await prisma.section.upsert({
-			where: {
-				name_chefId: {
-					name: input.name.toLowerCase(),
-					chefId: chef.id,
-				},
-			},
-			create: {
-				name: input.name.toLowerCase(),
+		await db
+			.insert(sections)
+			.values({
+				id: generateId(10),
 				chefId: chef.id,
-			},
-			update: {
-				isActive: true,
-			},
-		});
-
-		revalidatePath("/dashboard/menu");
+				name: section.name.toLowerCase(),
+			})
+			.onConflictDoUpdate({
+				target: [sections.chefId, sections.name],
+				set: {
+					isActive: true,
+				},
+			});
 	} catch (err: any) {
+		// TODO: catch right error for duplicate section
 		if (err.code === "P2002") {
 			throw new Error("Section name must be unique");
 		}

@@ -1,26 +1,23 @@
-import dynamic from "next/dynamic";
+import {
+	HydrationBoundary,
+	QueryClient,
+	dehydrate,
+} from "@tanstack/react-query";
 
-import getOnboardingStateQuery from "app/actions/queries/getOnboardingState";
-
-const DynamicOnboadrdingDashboard = dynamic(
-	() => import("./onboarding/OnboardingDashboard"),
-);
-const DynamicDashboard = dynamic(() => import("./Dashboard"));
+import Dashboard from "./Dashboard";
 
 export default async function DashboardPage() {
-	const { onboardingState, isOnboardingComplete } =
-		await getOnboardingStateQuery();
+	const queryClient = new QueryClient();
+
 	return (
 		<div>
 			<h1 className="text-2xl font-bold tracking-tight text-gray-900">
-				{isOnboardingComplete ? "Dashboard" : "Onboarding"}
+				Dashboard
 			</h1>
 
-			{isOnboardingComplete ? (
-				<DynamicDashboard />
-			) : (
-				<DynamicOnboadrdingDashboard state={onboardingState} />
-			)}
+			<HydrationBoundary state={dehydrate(queryClient)}>
+				<Dashboard />
+			</HydrationBoundary>
 		</div>
 	);
 }

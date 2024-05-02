@@ -1,10 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-import prisma from "db";
-
 import { CHEF_SERVICE_FEE, CONSUMER_SERVICE_FEE } from "types";
-import { OnboardingState } from ".prisma/client";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -32,16 +29,16 @@ export const localImageLoader = ({
 	return `${src}?w=${width}&q=${quality || 75}`;
 };
 
-export const getConsumerServiceFee = (cartTotal: number) =>
-	cartTotal * CONSUMER_SERVICE_FEE;
+export const getConsumerServiceFee = (cartSubTotal: number) =>
+	cartSubTotal * CONSUMER_SERVICE_FEE;
 
-export const getChefServiceFee = (cartTotal: number) =>
-	cartTotal * CHEF_SERVICE_FEE;
+export const getChefServiceFee = (cartSubTotal: number) =>
+	cartSubTotal * CHEF_SERVICE_FEE;
 
-export const getConsumerCartTotal = (cartTotal: number) => {
-	const serviceFee = getConsumerServiceFee(cartTotal);
+export const getConsumerCartTotal = (cartSubTotal: number) => {
+	const serviceFee = getConsumerServiceFee(cartSubTotal);
 
-	return cartTotal + serviceFee;
+	return cartSubTotal + serviceFee;
 };
 
 const SITE_URL = process.env.NEXT_PUBLIC_URL ?? "http://localhost:3000";
@@ -61,12 +58,9 @@ export const getImageUrl = ({
 };
 
 export const onboardingSteps = new Map([
-	[OnboardingState.SETUP_STRIPE, "Setup your stripe account"],
-	[OnboardingState.UPLOAD_HEADSHOT, "Upload your headshot"],
-	[
-		OnboardingState.COMPLETE_SERVSAFE,
-		"Complete ServSafe food handler certification",
-	],
+	["setup_stripe", "Setup your stripe account"],
+	["upload_headshot", "Upload your headshot"],
+	["complete_servsafe", "Complete ServSafe food handler certification"],
 ]);
 
 export const formatNumberToCurrency = (number: number) => {
@@ -77,15 +71,15 @@ export const formatNumberToCurrency = (number: number) => {
 };
 
 /************************** Date/Time helpers **************************/
-export const convertDayToInt = (day: string): number => {
+export const convertDayToInt = (day: any): number => {
 	const daysOfWeek = new Map([
-		["SUNDAY", 0],
-		["MONDAY", 1],
-		["TUESDAY", 2],
-		["WEDNESDAY", 3],
-		["THURSDAY", 4],
-		["FRIDAY", 5],
-		["SATURDAY", 6],
+		["sunday", 0],
+		["monday", 1],
+		["tuesday", 2],
+		["wednesday", 3],
+		["thursday", 4],
+		["friday", 5],
+		["saturday", 6],
 	]);
 
 	const validDay = daysOfWeek.get(day);
@@ -114,36 +108,65 @@ export const readableDate = (date: Date): string => {
 };
 
 // Render times for chef hours
-interface TimeType {
-	label: string;
-	value: string;
-}
+const buildHours = () => {
+	const times = [
+		"12:00 AM",
+		"12:30 AM",
+		"1:00 AM",
+		"2:00 AM",
+		"2:30 AM",
+		"3:00 AM",
+		"3:30 AM",
+		"4:00 AM",
+		"4:30 AM",
+		"5:00 AM",
+		"5:30 AM",
+		"6:00 AM",
+		"6:30 AM",
+		"7:00 AM",
+		"7:30 AM",
+		"8:00 AM",
+		"8:30 AM",
+		"9:00 AM",
+		"9:30 AM",
+		"10:00 AM",
+		"10:30 AM",
+		"11:00 AM",
+		"11:30 AM",
+		"12:00 PM",
+		"12:30 PM",
+		"1:00 PM",
+		"1:30 PM",
+		"2:00 PM",
+		"2:30 PM",
+		"3:00 PM",
+		"3:30 PM",
+		"4:00 PM",
+		"4:30 PM",
+		"5:00 PM",
+		"5:30 PM",
+		"6:00 PM",
+		"6:30 PM",
+		"7:00 PM",
+		"7:30 PM",
+		"8:00 PM",
+		"8:30 PM",
+		"9:00 PM",
+		"9:30 PM",
+		"10:00 PM",
+		"10:30 PM",
+		"11:00 PM",
+		"11:30 PM",
+	];
 
-const renderHours = (tod = "AM") => {
-	const hours = 12;
-	const times: Array<TimeType> = [];
+	const hours = times.map((time) => ({
+		label: time,
+		value: time,
+	}));
 
-	for (let x = 1; x <= hours; x++) {
-		for (let y = 0; y < 60; y += 30) {
-			let time = `${x}:${y} ${tod}`;
-
-			if (y === 0) {
-				time = `${x}:${y}0 ${tod}`;
-			}
-
-			const data = {
-				label: time,
-				value: time,
-			};
-
-			times.push(data);
-		}
-	}
-
-	return times;
+	return hours;
 };
-export const todAM = renderHours();
-export const todPM = renderHours("PM");
+export const getHoursForDay = buildHours();
 
 export const weekdays = [
 	{
@@ -175,3 +198,58 @@ export const weekdays = [
 		value: "SATURDAY",
 	},
 ];
+
+export const states = new Map(
+	Object.entries({
+		AL: "Alabama",
+		AK: "Alaska",
+		AZ: "Arizona",
+		AR: "Arkansas",
+		CA: "California",
+		CO: "Colorado",
+		CT: "Connecticut",
+		DE: "Delaware",
+		FL: "Florida",
+		GA: "Georgia",
+		HI: "Hawaii",
+		ID: "Idaho",
+		IL: "Illinois",
+		IN: "Indiana",
+		IA: "Iowa",
+		KS: "Kansas",
+		KY: "Kentucky",
+		LA: "Louisiana",
+		ME: "Maine",
+		MD: "Maryland",
+		MA: "Massachusetts",
+		MI: "Michigan",
+		MN: "Minnesota",
+		MS: "Mississippi",
+		MO: "Missouri",
+		MT: "Montana",
+		NE: "Nebraska",
+		NV: "Nevada",
+		NH: "New Hampshire",
+		NJ: "New Jersey",
+		NM: "New Mexico",
+		NY: "New York",
+		NC: "North Carolina",
+		ND: "North Dakota",
+		OH: "Ohio",
+		OK: "Oklahoma",
+		OR: "Oregon",
+		PA: "Pennsylvania",
+		RI: "Rhode Island",
+		SC: "South Carolina",
+		SD: "South Dakota",
+		TN: "Tennessee",
+		TX: "Texas",
+		UT: "Utah",
+		VT: "Vermont",
+		VA: "Virginia",
+		WA: "Washington",
+		WV: "West Virginia",
+		WI: "Wisconsin",
+		WY: "Wyoming",
+	}),
+);

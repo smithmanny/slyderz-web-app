@@ -4,15 +4,15 @@ import { default as UserCart } from "./Cart";
 import ChefDish from "./ChefDish";
 
 import chefProfileQuery from "app/actions/queries/chefPageQuery";
-import { getCartCookie } from "app/lib/cookies";
+import { getCartQuery } from "app/actions/queries/getCart";
 
 export default async function ChefPage({
 	params,
 }: {
 	params: { cid: string };
 }) {
-	const data = await chefProfileQuery(params.cid);
-	const cart = await getCartCookie();
+	const chef = await chefProfileQuery(params.cid);
+	const cart = await getCartQuery();
 
 	return (
 		<Container className="mt-6">
@@ -24,11 +24,14 @@ export default async function ChefPage({
 				<section className="col-span-3 md:col-span-2 order-2 md:order-1">
 					<div className="flex items-center">
 						<Avatar className="w-20 h-20">
-							<AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+							<AvatarImage
+								src={chef.chefImage || "https://github.com/shadcn.png"}
+								alt="chef headshot"
+							/>
 							<AvatarFallback>CN</AvatarFallback>
 						</Avatar>
 						<h1 className="scroll-m-20 pb-2 text-1xl sm:text-2xl font-medium tracking-tight first:mt-0 ml-2">
-							{data.chefName}
+							{chef.chefName}
 						</h1>
 					</div>
 
@@ -38,13 +41,13 @@ export default async function ChefPage({
 					</span>
 
 					<div className="py-8 isolate grid grid-col-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-						{data.dishes.map((dish, i) => (
+						{chef.dishes.map((dish, i) => (
 							<ChefDish
 								key={dish.id}
 								name={dish.name}
 								description={dish.description}
-								price={Number(dish.price.toString())}
-								image={dish.image[0]?.imageUrl}
+								price={Number(dish.price)}
+								image={dish.imageUrl}
 								dishId={dish.id}
 								chefId={dish.chefId}
 							/>
@@ -57,7 +60,7 @@ export default async function ChefPage({
 					<h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
 						Your Reservation
 					</h2>
-					<UserCart hours={data.hours} cart={cart} chefId={params.cid} />
+					<UserCart hours={chef.hours} cart={cart} chefId={params.cid} />
 				</section>
 			</div>
 		</Container>

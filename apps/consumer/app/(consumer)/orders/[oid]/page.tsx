@@ -1,22 +1,20 @@
 import Container from "app/components/Container";
-import OrderWrapper from "../OrderWrapper";
+import PendingOrder from "../PendingOrder";
 
-import fetchOrderStatusQuery from "app/actions/queries/fetchOrderStatus";
+import fetchPendingOrder from "app/actions/queries/fetchPendingOrder";
 
 export default async function OrdersPage({
 	params,
-	searchParams,
 }: {
 	params: { oid: string };
-	searchParams: { status: number };
 }) {
-	await fetchOrderStatusQuery({
+	await fetchPendingOrder({
 		confirmationNumber: params.oid,
-		status: Number(searchParams.status),
 	});
+
 	return (
 		<Container>
-			<OrderWrapper status={Number(searchParams.status)} />
+			<PendingOrder />
 		</Container>
 	);
 }

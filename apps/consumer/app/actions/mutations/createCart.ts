@@ -1,35 +1,66 @@
 "use server";
 
-import { cookies } from "next/headers";
+import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
-import { setCookie } from "app/lib/cookies";
+import { getSession } from "app/lib/auth";
+import { setCartCookie } from "app/lib/cookies";
+import { UnknownError } from "app/lib/errors";
+import { db } from "drizzle";
+import { cart } from "drizzle/schema/order";
 
-import { Cart } from "types";
+type UserCartType = {
+	eventDate: Date;
+	eventTime: string;
+};
+async function createSessionCart(cartId: string, userCart: UserCartType) {
+	try {
+		await db
+			.update(cart)
+			.set({
+				eventDate: userCart.eventDate.toISOString(),
+				eventTime: userCart.eventTime,
+			})
+			.where(eq(cart.id, cartId));
+	} catch (err: any) {
+		throw new UnknownError({
+			message: "Failed to create user cart",
+			cause: err,
+		});
+	}
+
+	const initialUserCart = {
+		items: [],
+		total: 0,
+	};
+
+	setCartCookie(JSON.stringify(initialUserCart));
+}
 
 const CreateCartSchema = z.object({
 	eventDate: z.date(),
 	eventTime: z.string(),
 	chefId: z.string(),
+	cartId: z.string().optional(),
 });
 export async function createCartMutation(
 	input: z.infer<typeof CreateCartSchema>,
 ) {
-	CreateCartSchema.parse(input);
-	const cookieStore = cookies();
-	const cartCookie = cookieStore.get("cart");
+	const cart = CreateCartSchema.parse(input);
+	const { session } = await getSession();
 
-	if (cartCookie) {
-		const cart = JSON.parse(cartCookie.value) as Cart;
-
-		cart.eventDate = input.eventDate.toISOString();
-		cart.eventTime = input.eventTime;
-
-		setCookie("cart", JSON.stringify(cart));
-
-		redirect(`/chefs/${input.chefId}/checkout`);
+	if (session && cart.cartId) {
+		await createSessionCart(cart.cartId, {
+			eventDate: cart.eventDate,
+			eventTime: cart.eventTime,
+		});
 	} else {
-		throw new Error("Failed to create cart.");
+		return {
+			error: true,
+			message: "Please log in",
+		};
 	}
+
+	redirect(`/chefs/${cart.chefId}/checkout`);
 }

@@ -1,31 +1,40 @@
-export const RudderStack = (() => {
-	let instance: any;
+import type { RudderAnalytics } from "@rudderstack/analytics-js";
+import { useEffect, useState } from "react";
 
-	async function createInstance() {
-		window.rudderanalytics = await import("rudder-sdk-js");
+export const useRudderStackAnalytics = (): RudderAnalytics | undefined => {
+	const [analytics, setAnalytics] = useState<RudderAnalytics>();
 
-		window.rudderanalytics.load(
-			process.env.NEXT_PUBLIC_POSTHOG_KEY,
-			process.env.NEXT_PUBLIC_POSTHOG_HOST,
-			{
-				integrations: { All: true }, // load call options
-			},
-		);
+	useEffect(() => {
+		if (!analytics) {
+			const initialize = async () => {
+				const { RudderAnalytics } = await import("@rudderstack/analytics-js");
+				const analyticsInstance = new RudderAnalytics();
 
-		window.rudderanalytics.ready(() => {
-			console.log("RudderStack loaded...");
-		});
+				if (
+					!process.env.NEXT_PUBLIC_RUDDERSHACK_WEB_WRITE_KEY ||
+					!process.env.NEXT_PUBLIC_RUDDERSHACK_DATA_URL
+				) {
+					throw new Error("Missing keys");
+				}
 
-		return window.rudderanalytics;
-	}
+				analyticsInstance.load(
+					process.env.NEXT_PUBLIC_RUDDERSHACK_WEB_WRITE_KEY,
+					process.env.NEXT_PUBLIC_RUDDERSHACK_DATA_URL,
+					{
+						integrations: { All: true }, // load call options
+					},
+				);
 
-	return {
-		getInstance: () => {
-			if (!instance) {
-				instance = createInstance();
-			}
+				analyticsInstance.ready(() => {
+					console.log("We are all set!!!");
+				});
 
-			return instance;
-		},
-	};
-})();
+				setAnalytics(analyticsInstance);
+			};
+
+			initialize().catch((e) => console.log(e));
+		}
+	}, [analytics]);
+
+	return analytics;
+};

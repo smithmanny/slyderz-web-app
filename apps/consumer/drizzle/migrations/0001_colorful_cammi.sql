@@ -1,0 +1,1 @@
+ALTER TABLE "hours" ADD COLUMN "day_of_week" varchar(50) NOT NULL;

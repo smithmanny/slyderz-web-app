@@ -1,9 +1,8 @@
-import { Heading, Hr, Link, Section, Text } from "jsx-email";
-import * as React from "react";
+import { Hr, Link, Section, Text } from "jsx-email";
 
-import SlyderzEmailLayout from "./index";
 import EmailButton from "../components/EmailButton";
 import EmailHeader from "../components/Header";
+import SlyderzEmailLayout from "./index";
 
 interface EmailActivateAccountProps {
 	activationUrl: string;

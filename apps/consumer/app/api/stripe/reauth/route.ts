@@ -1,33 +1,12 @@
-import { getProtectedSession } from "app/lib/auth";
-import { NotFoundError } from "app/lib/errors";
+import { getChefSession } from "app/lib/auth";
 import { getStripeServer } from "app/lib/stripe";
-import prisma from "db";
 
 export async function POST() {
-	const session = await getProtectedSession();
+	const { chef } = await getChefSession();
 	const stripe = getStripeServer();
 
-	const user = await prisma.authUser.findFirstOrThrow({
-		where: { id: session.user.userId },
-		select: {
-			id: true,
-			email: true,
-			chef: {
-				select: {
-					stripeAccountId: true,
-				},
-			},
-		},
-	});
-
-	if (!user.chef) {
-		throw new NotFoundError({
-			message: "Chef not found",
-		});
-	}
-
 	const createAccountLink = await stripe.accountLinks.create({
-		account: user.chef.stripeAccountId,
+		account: chef.stripeAccountId,
 		refresh_url: `${process.env.NEXT_PUBLIC_URL}/api/stripe/reauth`,
 		return_url: `${process.env.NEXT_PUBLIC_URL}/dashboard`,
 		type: "account_onboarding",

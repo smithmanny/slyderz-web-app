@@ -3,7 +3,8 @@
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
 import Image from "next/image";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
+import { useFormStatus } from "react-dom";
 import * as z from "zod";
 
 import { Button } from "app/components/ui/button";
@@ -32,13 +33,41 @@ import { CartItem } from "./CartItem";
 
 import { createCartMutation } from "app/actions/mutations/createCart";
 import { useSlyderzForm } from "app/hooks/useSlyderzForm";
-import { cn, convertDayToInt, todAM, todPM } from "app/lib/utils";
-
+import { cn, convertDayToInt, getHoursForDay } from "app/lib/utils";
 import type { Cart as CartType } from "types";
-import type { DaysOfWeekTypeEnum } from ".prisma/client";
+
+interface CheckoutButtonProps {
+	eventDate: Date;
+	eventTime: string;
+	chefId: string;
+	cartId: string;
+}
+function CheckoutButton(props: CheckoutButtonProps) {
+	const { pending } = useFormStatus();
+	const { eventDate, eventTime, chefId, cartId } = props;
+	return (
+		<Button
+			className="mt-4"
+			disabled={!eventTime || pending}
+			onClick={async (e) => {
+				e.preventDefault();
+				e.stopPropagation();
+
+				await createCartMutation({
+					eventDate,
+					eventTime,
+					chefId,
+					cartId,
+				});
+			}}
+		>
+			Checkout
+		</Button>
+	);
+}
 
 type HoursType = {
-	daysOfWeek: Array<DaysOfWeekTypeEnum>;
+	dayOfWeek: string;
 	startTime: string | null;
 	endTime: string | null;
 };
@@ -56,25 +85,68 @@ export default function Cart(props: CartProps) {
 		eventDate: "",
 		eventTime: "",
 	});
+	const [eventDate, eventTime] = form.watch(["eventDate", "eventTime"]);
 
 	const disableDaysOff = useCallback(
 		(date: Date) => {
 			const daysOfWeek: Array<number> = [0, 1, 2, 3, 4, 5, 6];
 			const workingDays: Array<number> = [];
 
-			props.hours.map((hourBlock) =>
-				hourBlock.daysOfWeek.map((day) => {
-					const matchedDay = convertDayToInt(day);
-					workingDays.push(matchedDay);
-				}),
-			);
+			props.hours.map((hourBlock) => {
+				const matchedDay = convertDayToInt(hourBlock.dayOfWeek);
+				workingDays.push(matchedDay);
+			});
 
-			const offDays = daysOfWeek.filter((day) => !workingDays.includes(day));
+			const offDay = daysOfWeek
+				.filter((day) => !workingDays.includes(day))
+				.includes(date.getDay());
 
-			return offDays.includes(date.getDay());
+			if (offDay) {
+				return true;
+			}
+
+			if (new Date() > new Date(date)) {
+				return true;
+			}
+
+			return false;
 		},
 		[props.hours],
 	);
+
+	const getAvailableTime = useCallback(() => {
+		/*
+		 * 1. Get selected day
+		 * 2. Find chef hour block for selected day
+		 * 3. Get the earliest/latest time chef is available
+		 * 4. Return times
+		 */
+		const selectedDayOfWeek: number = new Date(eventDate).getDay();
+		const selectedTime = props.hours.find(
+			(hourBlock) => convertDayToInt(hourBlock.dayOfWeek) === selectedDayOfWeek,
+		);
+		const startTime = getHoursForDay.find(
+			(t) => t.label === selectedTime?.startTime,
+		);
+		const endTime = getHoursForDay.find(
+			(t) => t.label === selectedTime?.endTime,
+		);
+
+		if (startTime && endTime) {
+			const startTimeIndex = getHoursForDay.indexOf(startTime);
+			const endTimeIndex = getHoursForDay.indexOf(endTime);
+			const availableTime = getHoursForDay.slice(
+				startTimeIndex,
+				endTimeIndex + 1,
+			);
+
+			return availableTime;
+		}
+
+		return [];
+	}, [props.hours, eventDate]);
+
+	const availableTime = getAvailableTime();
 
 	return (
 		<Form {...form}>
@@ -118,7 +190,31 @@ export default function Cart(props: CartProps) {
 						</FormItem>
 					)}
 				/>
-				<EventTime form={form} hours={props.hours} />
+
+				<FormField
+					control={form.control}
+					name="eventTime"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Event Time</FormLabel>
+							<Select onValueChange={field.onChange} defaultValue={field.value}>
+								<FormControl>
+									<SelectTrigger>
+										<SelectValue placeholder="Select an event date to display" />
+									</SelectTrigger>
+								</FormControl>
+								<SelectContent>
+									{availableTime.map((hour, i) => (
+										<SelectItem key={hour.label} value={hour.value}>
+											{hour.label}
+										</SelectItem>
+									))}
+								</SelectContent>
+							</Select>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
 
 				{props.cart.items.length === 0 ? (
 					<div className="flex justify-center flex-col items-center">
@@ -137,7 +233,8 @@ export default function Cart(props: CartProps) {
 						{props.cart.items.map((item, i) => (
 							<CartItem
 								key={`${item.dishId}-${i}`}
-								cartId={item.id}
+								itemId={item.id}
+								cartId={props.cart.id}
 								name={item.name}
 								price={item.price}
 								dishId={item.dishId}
@@ -148,90 +245,14 @@ export default function Cart(props: CartProps) {
 				)}
 
 				{props.cart.items.length !== 0 && (
-					<Button
-						className="mt-4"
-						disabled={!form.getValues().eventTime}
-						onClick={async (e) => {
-							e.preventDefault();
-							e.stopPropagation();
-
-							const { eventDate, eventTime } = form.getValues();
-							await createCartMutation({
-								eventDate,
-								eventTime,
-								chefId: props.chefId,
-							});
-						}}
-					>
-						Checkout
-					</Button>
+					<CheckoutButton
+						eventDate={eventDate}
+						eventTime={eventTime}
+						chefId={props.chefId}
+						cartId={props.cart.id}
+					/>
 				)}
 			</form>
 		</Form>
-	);
-}
-
-interface EventTimeProps {
-	form: any;
-	hours: Array<HoursType>;
-}
-function EventTime(props: EventTimeProps) {
-	const time = useMemo(() => [...todAM, ...todPM], []);
-	const values = props.form.getValues();
-
-	const getAvailableTime = useCallback(() => {
-		/*
-		 * 1. Get selected day
-		 * 2. Find chef hour block for selected day
-		 * 3. Get the earliest/latest time chef is available
-		 * 4. Return times
-		 */
-		const selectedDayOfWeek: number = new Date(values.eventDate).getDay();
-		const selectedTime = props.hours.find((hourBlock) =>
-			hourBlock.daysOfWeek.find(
-				(dayOfWeek) => convertDayToInt(dayOfWeek) === selectedDayOfWeek,
-			),
-		);
-		const startTime = time.find((t) => t.label === selectedTime?.startTime);
-		const endTime = time.find((t) => t.label === selectedTime?.endTime);
-
-		if (startTime && endTime) {
-			const startTimeIndex = time.indexOf(startTime);
-			const endTimeIndex = time.indexOf(endTime);
-			const availableTime = time.slice(startTimeIndex, endTimeIndex + 1);
-
-			return availableTime;
-		}
-
-		return [];
-	}, [props.hours, time, values.eventDate]);
-
-	const availableTime = getAvailableTime();
-
-	return (
-		<FormField
-			control={props.form.control}
-			name="eventTime"
-			render={({ field }) => (
-				<FormItem>
-					<FormLabel>Event Time</FormLabel>
-					<Select onValueChange={field.onChange} defaultValue={field.value}>
-						<FormControl>
-							<SelectTrigger>
-								<SelectValue placeholder="Select an event date to display" />
-							</SelectTrigger>
-						</FormControl>
-						<SelectContent>
-							{availableTime.map((hour, i) => (
-								<SelectItem key={hour.label} value={hour.value}>
-									{hour.label}
-								</SelectItem>
-							))}
-						</SelectContent>
-					</Select>
-					<FormMessage />
-				</FormItem>
-			)}
-		/>
 	);
 }

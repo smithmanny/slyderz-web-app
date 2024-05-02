@@ -1,4 +1,4 @@
-import { Link, Section, Text, Hr } from "jsx-email";
+import { Hr, Section, Text } from "jsx-email";
 
 function EmailFooter() {
 	return (
@@ -22,9 +22,4 @@ const footerText = {
 	lineHeight: "15px",
 	textAlign: "left" as const,
 	marginBottom: "50px",
-};
-
-const footerLink = {
-	color: "#b7b7b7",
-	textDecoration: "underline",
 };
