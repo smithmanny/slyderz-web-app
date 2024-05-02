@@ -8,7 +8,7 @@ export default async function OrdersPage({
 }: {
 	params: { oid: string };
 }) {
-	await denyOrderMutation({
+	denyOrderMutation({
 		confirmationNumber: params.oid,
 	});
 

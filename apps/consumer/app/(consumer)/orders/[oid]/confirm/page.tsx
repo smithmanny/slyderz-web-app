@@ -8,7 +8,7 @@ export default async function OrdersPage({
 }: {
 	params: { oid: string };
 }) {
-	await acceptOrderMutation({
+	acceptOrderMutation({
 		confirmationNumber: params.oid,
 	});
 

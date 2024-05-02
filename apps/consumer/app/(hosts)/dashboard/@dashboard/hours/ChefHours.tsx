@@ -38,9 +38,17 @@ const days = [
 function HoursInput(props: HoursInputProps) {
 	const { form } = props;
 	const isDayActive = form.watch(`is${days[props.dayIndex]}Enabled`);
-	// const selectedStartTime = form.watch(`hours.${props.dayIndex}.dayOfWeek${props.day}`)[0]
-	// const selectedStartTimeIndex = getHoursForDay.map((hour) => hour.value).indexOf(selectedStartTime)
-	// const endTimes = getHoursForDay.slice(selectedStartTimeIndex + 1)
+
+	const getEndTime = (index: number) => {
+		const selectedStartTime =
+			form.watch("days")[props.dayIndex].hours[index].startTime;
+		const selectedStartTimeIndex = getHoursForDay
+			.map((hour) => hour.value)
+			.indexOf(selectedStartTime);
+		const endTimes = getHoursForDay.slice(selectedStartTimeIndex + 1);
+
+		return endTimes;
+	};
 
 	const { fields, append, remove } = useFieldArray({
 		control: form.control,
@@ -71,7 +79,7 @@ function HoursInput(props: HoursInputProps) {
 				{isDayActive ? (
 					<div className="grid grid-cols-9 gap-4 relative">
 						{fields.map((hourBlock, index) => (
-							<div className="flex gap-4 col-span-9">
+							<div key={hourBlock.id} className="flex gap-4 col-span-9">
 								<Controller
 									key={hourBlock.id}
 									control={form.control}
@@ -116,7 +124,7 @@ function HoursInput(props: HoursInputProps) {
 											<SelectContent>
 												<SelectGroup>
 													<SelectLabel>End time</SelectLabel>
-													{getHoursForDay.map((hour) => (
+													{getEndTime(index).map((hour) => (
 														<SelectItem
 															key={`${hour.label}.${index}.endTime`}
 															{...field}

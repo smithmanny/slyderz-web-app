@@ -110,6 +110,8 @@ export const readableDate = (date: Date): string => {
 // Render times for chef hours
 const buildHours = () => {
 	const times = [
+		"12:00 AM",
+		"12:30 AM",
 		"1:00 AM",
 		"2:00 AM",
 		"2:30 AM",
@@ -155,8 +157,6 @@ const buildHours = () => {
 		"10:30 PM",
 		"11:00 PM",
 		"11:30 PM",
-		"12:00 AM",
-		"12:30 AM",
 	];
 
 	const hours = times.map((time) => ({
