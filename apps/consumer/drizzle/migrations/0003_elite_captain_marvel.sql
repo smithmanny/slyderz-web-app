@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS "cart" (
 	"subtotal" numeric(15, 6),
 	"total" numeric(15, 6),
 	"event_date" date,
-	"event_time" "time(6)",
+	"event_time" time(6),
 	CONSTRAINT "cart_id_unique" UNIQUE("id")
 );
 --> statement-breakpoint
