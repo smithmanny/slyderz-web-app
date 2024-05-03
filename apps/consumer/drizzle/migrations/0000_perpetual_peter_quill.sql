@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS "orders" (
 	"state" text NOT NULL,
 	"zipcode" text NOT NULL,
 	"event_date" date NOT NULL,
-	"event_time" "time(3)" NOT NULL,
+	"event_time" time(3) NOT NULL,
 	"order_status" text DEFAULT 'pending' NOT NULL,
 	"user_id" varchar(255) NOT NULL,
 	"chef_id" varchar(255) NOT NULL,
