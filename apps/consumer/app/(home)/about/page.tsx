@@ -1,6 +1,8 @@
 import Image from "next/image";
 
 import Container from "app/components/Container";
+import MissionImage from "public/our-mission-min.jpeg";
+import AboutImage from "public/our-story-min.jpeg";
 
 export default async function AboutPage() {
 	return (
@@ -32,34 +34,13 @@ export default async function AboutPage() {
 						</p>
 					</div>
 
-					<div className="relative">
-						<div className="gap-8 columns-3">
-							<img
-								alt="about"
-								className="w-full aspect-video"
-								src="https://images.unsplash.com/photo-1603871165848-0aa92c869fa1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&q=80"
-							/>
-							<img
-								alt="about"
-								className="w-full aspect-square"
-								src="https://images.unsplash.com/photo-1603871165848-0aa92c869fa1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&q=80"
-							/>
-							<img
-								alt="about"
-								className="w-full aspect-square"
-								src="https://images.unsplash.com/photo-1603871165848-0aa92c869fa1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&q=80"
-							/>
-							<img
-								alt="about"
-								className="w-full aspect-square"
-								src="https://images.unsplash.com/photo-1603871165848-0aa92c869fa1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&q=80"
-							/>
-							<img
-								alt="about"
-								className="w-full aspect-square"
-								src="https://images.unsplash.com/photo-1603871165848-0aa92c869fa1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&q=80"
-							/>
-						</div>
+					<div className="h-[400px] w-full order-first md:order-last relative">
+						<Image
+							alt="About Slyderz"
+							fill
+							src={MissionImage}
+							objectFit="cover"
+						/>
 					</div>
 				</div>
 
@@ -96,8 +77,13 @@ export default async function AboutPage() {
 								of their own homes.
 							</p>
 						</div>
-						<div className="bg-gray-500 h-[400px] w-full order-first md:order-last">
-							Pic
+						<div className="h-[400px] w-full order-first md:order-last relative">
+							<Image
+								alt="About Slyderz"
+								fill
+								src={AboutImage}
+								objectFit="cover"
+							/>
 						</div>
 					</section>
 
