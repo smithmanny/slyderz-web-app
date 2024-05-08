@@ -1,4 +1,7 @@
+import Image from "next/image";
+
 import Container from "app/components/Container";
+import OurVisionImage from "public/our-vision-min.jpeg";
 
 import { getSession } from "app/lib/auth";
 import BecomeHostButton from "./BecomeHostButton";
@@ -113,8 +116,13 @@ export default async function HostPage() {
 								budget, customer support, payment processing, etc.
 							</p>
 						</div>
-						<div className="bg-gray-500 h-[400px] w-full order-first md:order-last">
-							Pic
+						<div className="h-[400px] w-full order-first md:order-last relative">
+							<Image
+								alt="Become a host"
+								fill
+								src={OurVisionImage}
+								objectFit="cover"
+							/>
 						</div>
 					</section>
 				</div>

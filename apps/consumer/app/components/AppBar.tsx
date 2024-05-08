@@ -21,11 +21,7 @@ export default function AppBar(props: AppBarTypes) {
 					<div className="flex flex-1 items-center justify-center">
 						<div className="flex flex-1 items-center">
 							<Link href="/">
-								<img
-									className="h-8 w-auto"
-									src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-									alt="Your Company"
-								/>
+								<h6 className="text-2xl font-bold">Slyderz</h6>
 							</Link>
 						</div>
 					</div>
