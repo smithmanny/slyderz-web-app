@@ -1,4 +1,5 @@
 import Container from "app/components/Container";
+import { UploadImage } from "app/components/UploadImage";
 import AccountAddressForm from "./AddressForm";
 import CreditCardForm from "./CreditCardForm";
 import ProfileInfoForm from "./ProfileInfoForm";
@@ -17,6 +18,13 @@ export default async function AccountPage() {
 
 	return (
 		<Container className="max-w-lg">
+			{/* Avatar section */}
+			<section>
+				<UploadImage profilePhoto={user.headshotUrl} />
+			</section>
+
+			<div className="border-b-2 my-9" />
+
 			{/* Profile information */}
 			<section>
 				<h4 className="scroll-m-20 text-2xl font-semibold tracking-tight">

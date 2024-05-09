@@ -1,3 +1,5 @@
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -20,6 +22,10 @@ export function requiredFormData<T extends Record<string, TypedFormDataValue>>(
 
 	return { ...entries } as T;
 }
+const isProd = process.env.NODE_ENV === "production";
+const SITE_URL = process.env.NEXT_PUBLIC_URL ?? "http://localhost:3000";
+
+export const getSiteUrl = SITE_URL;
 
 export const localImageLoader = ({
 	src,
@@ -41,20 +47,54 @@ export const getConsumerCartTotal = (cartSubTotal: number) => {
 	return cartSubTotal + serviceFee;
 };
 
-const SITE_URL = process.env.NEXT_PUBLIC_URL ?? "http://localhost:3000";
-
-export const getSiteUrl = SITE_URL;
-
 export const getImageUrl = ({
 	userId,
 	fileName,
-	category,
-}: { userId: string; fileName: string; category?: string }) => {
-	if (category) {
-		return `https://assets.slyderz.co/users/${userId}/${category}/${fileName}`;
+}: { userId: string; fileName: string }) => {
+	return `https://assets.slyderz.co/${
+		isProd ? "prod" : "dev"
+	}/${userId}/${fileName}`;
+};
+
+export const uploadS3Image = async ({
+	userId,
+	file,
+}: { userId: string; file: File }) => {
+	const S3 = new S3Client({
+		region: "auto",
+		endpoint: process.env.CLOUDFLARE_R2_URL,
+		credentials: {
+			accessKeyId: process.env.CLOUDFLARE_R2_ACCESS_KEY || "",
+			secretAccessKey: process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY || "",
+		},
+	});
+	const bytes = await file.arrayBuffer();
+	const buffer = Buffer.from(bytes);
+
+	const command = new PutObjectCommand({
+		Bucket: "web-app",
+		Key: `${isProd ? "prod" : "dev"}/${userId}/${file.name}`,
+		ContentLength: file.size,
+		Body: buffer,
+	});
+
+	try {
+		const url = await getSignedUrl(S3, command, { expiresIn: 3600 });
+
+		await fetch(url, {
+			method: "PUT",
+			body: file,
+		});
+	} catch (err) {
+		throw new Error("Failed to upload image");
 	}
 
-	return `https://assets.slyderz.co/users/${userId}/${fileName}`;
+	const imageUrl = getImageUrl({
+		userId: userId,
+		fileName: file.name,
+	});
+
+	return imageUrl;
 };
 
 export const onboardingSteps = new Map([
