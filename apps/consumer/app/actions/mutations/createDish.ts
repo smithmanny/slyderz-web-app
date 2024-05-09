@@ -1,12 +1,12 @@
 "use server";
 
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { S3Client } from "@aws-sdk/client-s3";
 import { generateId } from "lucia";
 
 import { getChefSession } from "app/lib/auth";
 import { UnknownError } from "app/lib/errors";
-import { getImageUrl } from "app/lib/utils";
 import { requiredFormData } from "app/lib/utils";
+import { uploadS3Image } from "app/lib/utils";
 import { db } from "drizzle";
 import { dishes } from "drizzle/schema/menu";
 
@@ -24,26 +24,15 @@ export async function createDishMutation(input: FormData) {
 	const { name, description, price, sectionId, image } = requiredFormData<{
 		name: string;
 		description: string;
-		image: Blob;
+		image: File;
 		price: string;
 		sectionId: string;
 	}>(input);
-	const bytes = await image.arrayBuffer();
-	const buffer = Buffer.from(bytes);
 
 	try {
-		const command = new PutObjectCommand({
-			Bucket: "web-app",
-			Key: `users/${chef.userId}/dishes/${image.name}`,
-			Body: buffer,
-		});
-
-		S3.send(command);
-
-		const imageUrl = getImageUrl({
+		const imageUrl = await uploadS3Image({
 			userId: chef.userId,
-			fileName: image.name,
-			category: "dishes",
+			file: image,
 		});
 
 		await db
