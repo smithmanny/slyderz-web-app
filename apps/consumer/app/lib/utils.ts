@@ -1,9 +1,14 @@
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import {
+	DeleteObjectCommand,
+	PutObjectCommand,
+	S3Client,
+} from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 import { CHEF_SERVICE_FEE, CONSUMER_SERVICE_FEE } from "types";
+import { UnknownError } from "./errors";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -95,6 +100,33 @@ export const uploadS3Image = async ({
 	});
 
 	return imageUrl;
+};
+
+export const deleteS3Image = async ({
+	userId,
+	url,
+}: { userId: string; url: string }) => {
+	const S3 = new S3Client({
+		region: "auto",
+		endpoint: process.env.CLOUDFLARE_R2_URL,
+		credentials: {
+			accessKeyId: process.env.CLOUDFLARE_R2_ACCESS_KEY || "",
+			secretAccessKey: process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY || "",
+		},
+	});
+	const command = new DeleteObjectCommand({
+		Bucket: "web-app",
+		Key: `${isProd ? "prod" : "dev"}/${userId}/${url}`,
+	});
+
+	try {
+		await S3.send(command);
+	} catch (err) {
+		throw new UnknownError({
+			message: "Failed to delete image",
+			cause: err,
+		});
+	}
 };
 
 export const onboardingSteps = new Map([

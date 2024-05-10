@@ -20,6 +20,7 @@ import {
 	useReactTable,
 } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
+import { toast } from "sonner";
 
 import { deleteDishMutation } from "app/actions/mutations/deleteDish";
 import getMenuDishesQuery from "app/actions/queries/getMenuDishes";
@@ -48,12 +49,14 @@ import EditDishButton from "./EditDishButton";
 function DeleteDishButtonAction(props: { id: string }) {
 	const deleteDish = useMutation({
 		mutationFn: deleteDishMutation,
-		onSuccess: () => {
+		onSuccess: ({ message }) => {
 			const queryClient = new QueryClient();
 
 			queryClient.invalidateQueries({
 				queryKey: ["dashboard-menu-dishes"],
 			});
+
+			toast.success(message);
 		},
 	});
 

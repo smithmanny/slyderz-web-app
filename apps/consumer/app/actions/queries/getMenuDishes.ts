@@ -7,7 +7,8 @@ export default async function getMenuDishesQuery() {
 	const { chef } = await getChefSession();
 
 	return await db.query.dishes.findMany({
-		where: (dishes, { eq }) => eq(dishes.chefId, chef.id),
+		where: (dishes, { eq, and }) =>
+			and(eq(dishes.chefId, chef.id), eq(dishes.isActive, true)),
 		with: {
 			section: true,
 		},

@@ -1,6 +1,6 @@
 import HomePage from "./home-page";
 
-import { db } from "drizzle";
+import getHomePageChefs from "app/actions/queries/getHomePageChefs";
 
 export interface Chef {
 	id: string;
@@ -10,18 +10,9 @@ export interface Chef {
 		headshotUrl: string | null;
 	};
 }
-async function getNearbyChefs() {
-	// TODO filter out chefs who have no hours or dishes
-	return await db.query.chefs.findMany({
-		with: {
-			dishes: true,
-			user: true,
-		},
-	});
-}
 
 export default async function Page() {
-	const nearbyChefs = await getNearbyChefs();
+	const nearbyChefs = await getHomePageChefs();
 
 	return <HomePage nearbyChefs={nearbyChefs} />;
 }

@@ -72,10 +72,11 @@ function DishModalCreateForm(props: DishModalProps) {
 	});
 	const createDish = useMutation({
 		mutationFn: createDishMutation,
-		onSuccess: () => {
+		onSuccess: ({ message }) => {
 			const queryClient = new QueryClient();
 			queryClient.invalidateQueries({ queryKey: ["dashboard-menu-dishes"] });
 
+			toast.success(message);
 			props.closeModal();
 		},
 	});

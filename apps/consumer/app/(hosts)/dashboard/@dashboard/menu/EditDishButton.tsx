@@ -26,7 +26,7 @@ const EditDishButton: FC<ComponentWithChildrenProps> = (props) => {
 	return (
 		<Dialog open={openModal} onOpenChange={setModalOpen}>
 			<DialogTrigger asChild>
-				<Button variant="link" className="text-black">
+				<Button variant="link" className="text-black capitalize">
 					{props.children}
 				</Button>
 			</DialogTrigger>

@@ -32,7 +32,7 @@ export async function updateDishMutation(input: FormData) {
 			.update(dishes)
 			.set({
 				description: verifiedInputs.description,
-				name: verifiedInputs.name,
+				name: verifiedInputs.name.toLowerCase(),
 				price: verifiedInputs.price,
 				sectionId: verifiedInputs.sectionId,
 				chefId: chef.id,

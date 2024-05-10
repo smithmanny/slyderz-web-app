@@ -6,6 +6,13 @@ import type { Chef } from "./page";
 interface HomePageTypes {
 	nearbyChefs: Array<Chef>;
 }
+const chef = {
+	user: {
+		id: 1,
+		name: "shaki",
+	},
+};
+const chefs = Array(10).fill(chef);
 export default function HomePage(props: HomePageTypes) {
 	return (
 		<div className="bg-white">
@@ -56,8 +63,8 @@ export default function HomePage(props: HomePageTypes) {
 						Nearby Chefs
 					</h3>
 
-					<div className="grid grid-flow-col auto-cols-max gap-4">
-						{props.nearbyChefs.map((chef, i) => (
+					<div className="grid grid-flow-col auto-cols-max gap-4 relative overflow-x-scroll">
+						{chefs.map((chef, i) => (
 							<Link href={`/chefs/${chef.id}`} key={chef.user.id}>
 								<Card className="w-[225px] h-80">
 									<div className="group relative bg-black h-80 flex rounded-[0.75rem]">
@@ -68,13 +75,13 @@ export default function HomePage(props: HomePageTypes) {
 										/>
 
 										<div className="relative p-2 pb-4 mt-auto">
-											<p className="text-sm font-medium uppercase tracking-widest text-pink-500">
-												Soul Food
+											<p className="text-xs font-medium uppercase tracking-widest text-pink-500">
+												Douglasville, GA
 											</p>
 
-											<p className="text-xl font-bold text-white text-wrap">
+											<h4 className="text-2xl font-bold text-white text-wrap capitalize">
 												{chef.user.name}
-											</p>
+											</h4>
 										</div>
 									</div>
 								</Card>
