@@ -16,12 +16,12 @@ export default async function MenuDashboardPage() {
 
 	await queryClient.prefetchQuery({
 		queryKey: ["dashboard-menu-sections"],
-		queryFn: () => getMenuSectionsQuery(),
+		queryFn: getMenuSectionsQuery,
 	});
 
 	await queryClient.prefetchQuery({
 		queryKey: ["dashboard-menu-dishes"],
-		queryFn: () => getMenuDishesQuery(),
+		queryFn: getMenuDishesQuery,
 	});
 
 	return (

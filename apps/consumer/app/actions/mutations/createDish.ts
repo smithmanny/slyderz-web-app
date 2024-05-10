@@ -1,7 +1,7 @@
 "use server";
 
-import { S3Client } from "@aws-sdk/client-s3";
 import { generateId } from "lucia";
+import { revalidatePath } from "next/cache";
 
 import { getChefSession } from "app/lib/auth";
 import { UnknownError } from "app/lib/errors";
@@ -31,7 +31,7 @@ export async function createDishMutation(input: FormData) {
 			.values({
 				id: generateId(10),
 				description,
-				name,
+				name: name.toLowerCase(),
 				price,
 				sectionId,
 				chefId: chef.id,
@@ -53,6 +53,8 @@ export async function createDishMutation(input: FormData) {
 			cause: err,
 		});
 	}
+
+	revalidatePath("/dashboard/menu");
 
 	return {
 		message: "Dish successfully created",

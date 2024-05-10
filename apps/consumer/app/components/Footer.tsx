@@ -82,7 +82,7 @@ export default function Footer() {
 							</ul>
 						</div>
 
-						<ul className="col-span-2 flex justify-start gap-6 lg:col-span-5 lg:justify-end">
+						<ul className="col-span-2 flex justify-center gap-6 lg:col-span-5 lg:justify-end">
 							<li>
 								<Link
 									href="https://www.facebook.com/slyderz"

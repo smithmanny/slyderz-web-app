@@ -7,7 +7,7 @@ import { Controller } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { Avatar, AvatarFallback, AvatarImage } from "app/components/ui/avatar";
+import { Avatar, AvatarImage } from "app/components/ui/avatar";
 import { Button } from "app/components/ui/button";
 import {
 	Command,
@@ -176,6 +176,7 @@ function DishModalUpdateForm(props: DishModalProps) {
 								id="name"
 								placeholder="Enter your dish name"
 								required
+								className="capitalize"
 								{...field}
 							/>
 						</div>
@@ -222,6 +223,7 @@ function DishModalUpdateForm(props: DishModalProps) {
 										className={cn(
 											"justify-between",
 											!field.value && "text-muted-foreground",
+											"capitalize",
 										)}
 									>
 										{field.value

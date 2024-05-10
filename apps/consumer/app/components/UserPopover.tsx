@@ -2,10 +2,11 @@
 
 import { Menu, Transition } from "@headlessui/react";
 import logoutMutation from "app/actions/mutations/logout";
+import { User as UserIcon } from "lucide-react";
 import Link from "next/link";
 import { Fragment } from "react";
 
-import { Avatar, AvatarImage } from "app/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "app/components/ui/avatar";
 import {
 	chefLoggedInRoutes,
 	loggedInRoutes,
@@ -51,12 +52,10 @@ export default function UserPopover(props: UserPopoverProps) {
 					<span className="absolute -inset-1.5" />
 					<span className="sr-only">Open user menu</span>
 					<Avatar>
-						<AvatarImage
-							src={
-								props.user?.headshotUrl ||
-								"https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-							}
-						/>
+						<AvatarImage src={props.user?.headshotUrl ?? ""} />
+						<AvatarFallback>
+							<UserIcon />
+						</AvatarFallback>
 					</Avatar>
 				</Menu.Button>
 			</div>

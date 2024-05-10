@@ -1,4 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
+
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
 
@@ -56,25 +58,26 @@ export default function HomePage(props: HomePageTypes) {
 						Nearby Chefs
 					</h3>
 
-					<div className="grid grid-flow-col auto-cols-max gap-4">
+					<div className="grid grid-flow-col auto-cols-max gap-4 relative overflow-x-scroll">
 						{props.nearbyChefs.map((chef, i) => (
 							<Link href={`/chefs/${chef.id}`} key={chef.user.id}>
 								<Card className="w-[225px] h-80">
 									<div className="group relative bg-black h-80 flex rounded-[0.75rem]">
-										<img
+										<Image
 											alt="Developer"
-											src="https://images.unsplash.com/photo-1603871165848-0aa92c869fa1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=772&q=80"
-											className="absolute inset-0 h-full w-full object-cover opacity-75 transition-opacity group-hover:opacity-50 rounded-[0.75rem]"
+											src="https://images.unsplash.com/photo-1712949056051-2a7c5ffe1db6?q=80&w=3174&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+											className="absolute inset-0 h-full w-full object-cover opacity-65 transition-opacity group-hover:opacity-50 rounded-[0.75rem]"
+											fill
 										/>
 
 										<div className="relative p-2 pb-4 mt-auto">
-											<p className="text-sm font-medium uppercase tracking-widest text-pink-500">
-												Soul Food
+											<p className="text-xs font-medium uppercase tracking-widest text-pink-500">
+												Douglasville, GA
 											</p>
 
-											<p className="text-xl font-bold text-white text-wrap">
+											<h4 className="text-2xl font-bold text-white text-wrap capitalize">
 												{chef.user.name}
-											</p>
+											</h4>
 										</div>
 									</div>
 								</Card>
