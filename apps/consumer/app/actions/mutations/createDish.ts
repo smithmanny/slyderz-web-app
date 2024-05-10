@@ -10,15 +10,6 @@ import { uploadS3Image } from "app/lib/utils";
 import { db } from "drizzle";
 import { dishes } from "drizzle/schema/menu";
 
-const S3 = new S3Client({
-	region: "auto",
-	endpoint: process.env.CLOUDFLARE_R2_URL,
-	credentials: {
-		accessKeyId: process.env.CLOUDFLARE_R2_ACCESS_KEY || "",
-		secretAccessKey: process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY || "",
-	},
-});
-
 export async function createDishMutation(input: FormData) {
 	const { chef } = await getChefSession();
 	const { name, description, price, sectionId, image } = requiredFormData<{

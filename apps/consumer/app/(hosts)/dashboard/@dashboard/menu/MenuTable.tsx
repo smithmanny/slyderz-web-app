@@ -43,8 +43,9 @@ import {
 	TableHeader,
 	TableRow,
 } from "app/components/ui/table";
+import EditDishButton from "./EditDishButton";
 
-function DeleteDishButton(props: { id: string }) {
+function DeleteDishButtonAction(props: { id: string }) {
 	const deleteDish = useMutation({
 		mutationFn: deleteDishMutation,
 		onSuccess: () => {
@@ -63,7 +64,7 @@ function DeleteDishButton(props: { id: string }) {
 				await deleteDish.mutateAsync({ dishId: props.id });
 			}}
 		>
-			<TrashIcon /> Delete Dish
+			<TrashIcon className="mr-2" /> Delete Dish
 		</DropdownMenuItem>
 	);
 }
@@ -111,7 +112,16 @@ export const columns: ColumnDef<MenuTableColumns>[] = [
 				</Button>
 			);
 		},
-		cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
+		cell: ({ row }) => {
+			const dishId = row.getValue("select") as string;
+			return (
+				<div className="capitalize">
+					<EditDishButton dishId={dishId}>
+						{row.getValue("name")}
+					</EditDishButton>
+				</div>
+			);
+		},
 	},
 	{
 		accessorKey: "section",
@@ -150,7 +160,6 @@ export const columns: ColumnDef<MenuTableColumns>[] = [
 		enableHiding: false,
 		cell: ({ row }) => {
 			const dishId = row.getValue("select") as string;
-			console.log("dishId", dishId);
 
 			return (
 				<DropdownMenu>
@@ -163,7 +172,7 @@ export const columns: ColumnDef<MenuTableColumns>[] = [
 					<DropdownMenuContent align="end">
 						<DropdownMenuLabel>Actions</DropdownMenuLabel>
 						<DropdownMenuSeparator />
-						<DeleteDishButton id={dishId} />
+						<DeleteDishButtonAction id={dishId} />
 					</DropdownMenuContent>
 				</DropdownMenu>
 			);
