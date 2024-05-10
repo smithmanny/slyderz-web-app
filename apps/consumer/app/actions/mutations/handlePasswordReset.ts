@@ -11,7 +11,6 @@ import { invalidateAllUserTokens, validateToken } from "app/lib/auth";
 import { auth, invalidateAllUserSessions } from "app/lib/auth";
 import { sendPasswordChangedEmail } from "app/lib/aws";
 import { TokenError, UnknownError } from "app/lib/errors";
-import { requiredFormData } from "app/lib/utils";
 import { db } from "drizzle";
 import { users } from "drizzle/schema/user";
 
@@ -25,8 +24,9 @@ export default async function handlePasswordResetMutation(
 	token: string,
 	input: FormData,
 ) {
-	ResetPasswordFormSchema.parse(Object.fromEntries(input.entries()));
-	const { password } = requiredFormData<{ password: string }>(input);
+	const validFields = ResetPasswordFormSchema.parse(
+		Object.fromEntries(input.entries()),
+	);
 
 	try {
 		const userId = await validateToken(token);
@@ -39,7 +39,7 @@ export default async function handlePasswordResetMutation(
 		}
 
 		const argon2id = new Argon2id();
-		const hashedPassword = await argon2id.hash(password);
+		const hashedPassword = await argon2id.hash(validFields.password);
 		const updatePassword = db
 			.update(users)
 			.set({
