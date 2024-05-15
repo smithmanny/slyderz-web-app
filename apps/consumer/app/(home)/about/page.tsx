@@ -20,7 +20,7 @@ export default async function AboutPage() {
 						}}
 					/>
 				</div>
-				<div className="grid grid-cols-2 gap-2 py-20">
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-20 mt-28">
 					<div>
 						<h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-6xl">
 							We&apos;re changing the way people eat.
@@ -87,7 +87,7 @@ export default async function AboutPage() {
 						</div>
 					</section>
 
-					<section className="grid grid-cols-1 md:grid-cols-3 gap-2 py-20">
+					<section className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-2 py-20">
 						<div>
 							<h3 className="scroll-m-20 text-lg font-semibold tracking-tight">
 								Enjoy gourmet meals in the comfort of your own home
