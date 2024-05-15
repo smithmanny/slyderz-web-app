@@ -36,7 +36,7 @@ export default async function HostPage() {
 				</div>
 
 				<div className="max-w-screen-2xl mx-auto text-center">
-					<section className="grid grid-cols-1 md:grid-cols-3 gap-2">
+					<section className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-2">
 						<div>
 							<h3 className="scroll-m-20 text-lg font-semibold tracking-tight">
 								Showcase your cooking skills
